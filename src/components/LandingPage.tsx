@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Brain, ArrowLeft } from 'lucide-react';
+import { Brain, ArrowRight } from 'lucide-react';
 
 interface LandingPageProps {
   onEnterSystem?: () => void;
@@ -35,8 +35,8 @@ export function LandingPage({ onEnterSystem }: LandingPageProps) {
       </div>
 
       {/* Subtle floating elements */}
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl" />
+      <div className="absolute top-1/4 start-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 end-1/4 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl" />
 
       {/* Main content */}
       <div className="relative z-10 text-center max-w-4xl">
@@ -107,7 +107,7 @@ export function LandingPage({ onEnterSystem }: LandingPageProps) {
           >
             <span className="flex items-center gap-3">
               شروع آموزش
-              <ArrowLeft className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="h-5 w-5 group-hover:-translate-x-1 transition-transform" />
             </span>
           </button>
         </motion.div>

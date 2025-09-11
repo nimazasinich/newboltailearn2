@@ -28,16 +28,17 @@ export class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return this.props.fallback || (
-        <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center p-6" dir="rtl">
+        <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center p-6">
           <div className="text-center max-w-md">
-            <div className="text-6xl mb-4">⚠️</div>
+            <div className="text-6xl mb-4" role="img" aria-label="خطا">⚠️</div>
             <h2 className="text-2xl font-bold mb-4">خطا در بارگذاری</h2>
             <p className="text-gray-400 mb-6">
               مشکلی در نمایش این بخش پیش آمده است
             </p>
             <button
               onClick={() => window.location.reload()}
-              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900"
+              type="button"
             >
               تازه‌سازی صفحه
             </button>
