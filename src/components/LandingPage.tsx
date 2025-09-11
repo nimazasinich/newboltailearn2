@@ -1,23 +1,29 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { Brain, ArrowLeft } from 'lucide-react';
+import { useAuth } from '../hooks/useAuth';
 
 interface LandingPageProps {
   onEnterSystem?: () => void;
 }
 
 export function LandingPage({ onEnterSystem }: LandingPageProps) {
-  const handleStart = () => {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
+  const handleStart = async () => {
     if (onEnterSystem) {
       onEnterSystem();
     } else {
-      // Multiple fallback methods
-      window.location.hash = '#/models';
-      setTimeout(() => {
-        if (window.location.hash !== '#/models') {
-          window.location.href = '/models';
-        }
-      }, 50);
+      // Auto-login as demo user for now
+      try {
+        await login({ email: 'admin@legal-ai.ir', password: 'demo' });
+      } catch (error) {
+        console.error('Login failed:', error);
+        // Continue anyway for demo
+      }
+      navigate('/dashboard');
     }
   };
 

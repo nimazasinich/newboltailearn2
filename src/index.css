@@ -1,9 +1,9 @@
+/* Import Persian fonts */
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Import Persian fonts */
-@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css');
 
 /* Base styles */
 * {
@@ -11,12 +11,12 @@
 }
 
 html {
-  font-family: 'Vazirmatn', 'Vazir', 'Tahoma', 'Arial', sans-serif;
+  font-family: 'Vazirmatn', Tahoma, Inter, sans-serif;
   direction: rtl;
 }
 
 body {
-  font-family: 'Vazirmatn', 'Vazir', 'Tahoma', 'Arial', sans-serif;
+  font-family: 'Vazirmatn', Tahoma, Inter, sans-serif;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
