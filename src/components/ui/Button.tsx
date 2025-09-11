@@ -5,6 +5,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
   size?: 'default' | 'sm' | 'lg' | 'icon';
   loading?: boolean;
+  asChild?: boolean;
 }
 
 export function Button({
@@ -12,6 +13,7 @@ export function Button({
   variant = 'default',
   size = 'default',
   loading = false,
+  asChild = false,
   children,
   disabled,
   ...props
@@ -34,9 +36,19 @@ export function Button({
     icon: 'h-10 w-10',
   };
 
+  const classes = cn(baseStyles, variants[variant], sizes[size], className);
+
+  if (asChild) {
+    return React.cloneElement(children as React.ReactElement, {
+      className: cn((children as React.ReactElement).props.className, classes),
+      ...(disabled && { 'aria-disabled': true }),
+      ...props,
+    });
+  }
+
   return (
     <button
-      className={cn(baseStyles, variants[variant], sizes[size], className)}
+      className={classes}
       disabled={disabled || loading}
       {...props}
     >
