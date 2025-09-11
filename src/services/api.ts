@@ -2,8 +2,8 @@ import io from 'socket.io-client';
 
 const API_BASE_URL = '/api';
 
-// Socket.IO connection
-export const socket = io('http://localhost:3001', {
+// Socket.IO connection - use relative URL for proper proxy handling
+export const socket = io({
   autoConnect: false
 });
 

@@ -1,16 +1,24 @@
+/* Import Persian fonts */
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Base styles */
+* {
+  box-sizing: border-box;
+}
+
 /* Base font family */
 @layer base {
   html {
-    font-family: 'Vazirmatn', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Vazirmatn', Tahoma, Inter, sans-serif;
     direction: rtl;
   }
   
   body {
-    font-family: 'Vazirmatn', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Vazirmatn', Tahoma, Inter, sans-serif;
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Brain, ArrowRight } from 'lucide-react';
+import { Brain, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 
 export function LandingPage() {
@@ -18,7 +18,7 @@ export function LandingPage() {
     }
     
     // Navigate to dashboard
-    navigate('/app/dashboard');
+    navigate('/dashboard');
   };
 
   return (
