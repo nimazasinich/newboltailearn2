@@ -4,7 +4,7 @@ import { ErrorBoundary } from '../components/ErrorBoundary';
 
 export function TrainingPage() {
   return (
-    <div className="p-6">
+    <div>
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2" tabIndex={-1}>
           آموزش مدل‌ها

@@ -122,7 +122,7 @@ export function DataPage() {
   }
 
   return (
-    <div className="space-y-6" dir="rtl">
+    <div className="space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
@@ -147,7 +147,7 @@ export function DataPage() {
             <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
               <Database className="h-6 w-6 text-blue-600 dark:text-blue-400" />
             </div>
-            <div className="mr-4">
+            <div className="ms-4">
               <p className="text-sm font-medium text-gray-600 dark:text-gray-400">کل دیتاست‌ها</p>
               <p className="text-2xl font-bold text-gray-900 dark:text-white">{datasets.length}</p>
             </div>
@@ -159,7 +159,7 @@ export function DataPage() {
             <div className="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
               <CheckCircle className="h-6 w-6 text-green-600 dark:text-green-400" />
             </div>
-            <div className="mr-4">
+            <div className="ms-4">
               <p className="text-sm font-medium text-gray-600 dark:text-gray-400">در دسترس</p>
               <p className="text-2xl font-bold text-gray-900 dark:text-white">
                 {datasets.filter(d => d.status === 'available').length}
@@ -173,7 +173,7 @@ export function DataPage() {
             <div className="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg">
               <Database className="h-6 w-6 text-purple-600 dark:text-purple-400" />
             </div>
-            <div className="mr-4">
+            <div className="ms-4">
               <p className="text-sm font-medium text-gray-600 dark:text-gray-400">کل نمونه‌ها</p>
               <p className="text-2xl font-bold text-gray-900 dark:text-white">
                 {datasets.reduce((sum, d) => sum + d.samples, 0).toLocaleString('fa-IR')}
@@ -187,7 +187,7 @@ export function DataPage() {
             <div className="p-2 bg-orange-100 dark:bg-orange-900 rounded-lg">
               <Download className="h-6 w-6 text-orange-600 dark:text-orange-400" />
             </div>
-            <div className="mr-4">
+            <div className="ms-4">
               <p className="text-sm font-medium text-gray-600 dark:text-gray-400">حجم کل</p>
               <p className="text-2xl font-bold text-gray-900 dark:text-white">
                 {datasets.reduce((sum, d) => sum + d.size_mb, 0).toFixed(1)} MB

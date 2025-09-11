@@ -26,11 +26,7 @@ export const routes = [
   },
   {
     path: '/app',
-    element: (
-      <Suspense fallback={<PageSkeleton />}>
-        <AppLayout />
-      </Suspense>
-    ),
+    element: <AppLayout />,
     children: [
       {
         index: true,
@@ -38,83 +34,43 @@ export const routes = [
       },
       {
         path: 'dashboard',
-        element: (
-          <Suspense fallback={<PageSkeleton />}>
-            <DashboardPage />
-          </Suspense>
-        ),
+        element: <DashboardPage />,
       },
       {
         path: 'training',
-        element: (
-          <Suspense fallback={<PageSkeleton />}>
-            <TrainingPage />
-          </Suspense>
-        ),
+        element: <TrainingPage />,
       },
       {
         path: 'documents',
-        element: (
-          <Suspense fallback={<PageSkeleton />}>
-            <DocumentsPage />
-          </Suspense>
-        ),
+        element: <DocumentsPage />,
       },
       {
         path: 'download',
-        element: (
-          <Suspense fallback={<PageSkeleton />}>
-            <DownloadPage />
-          </Suspense>
-        ),
+        element: <DownloadPage />,
       },
       {
         path: 'analytics',
-        element: (
-          <Suspense fallback={<PageSkeleton />}>
-            <AnalyticsPage />
-          </Suspense>
-        ),
+        element: <AnalyticsPage />,
       },
       {
         path: 'data',
-        element: (
-          <Suspense fallback={<PageSkeleton />}>
-            <DataPage />
-          </Suspense>
-        ),
+        element: <DataPage />,
       },
       {
         path: 'models',
-        element: (
-          <Suspense fallback={<PageSkeleton />}>
-            <ModelsPage />
-          </Suspense>
-        ),
+        element: <ModelsPage />,
       },
       {
         path: 'monitoring',
-        element: (
-          <Suspense fallback={<PageSkeleton />}>
-            <MonitoringPage />
-          </Suspense>
-        ),
+        element: <MonitoringPage />,
       },
       {
         path: 'logs',
-        element: (
-          <Suspense fallback={<PageSkeleton />}>
-            <LogsPage />
-          </Suspense>
-        ),
+        element: <LogsPage />,
       },
       {
         path: 'settings',
-        element: (
-          <Suspense fallback={<PageSkeleton />}>
-            <SettingsPage />
-          </Suspense>
-        ),
+        element: <SettingsPage />,
       },
     ],
   },
