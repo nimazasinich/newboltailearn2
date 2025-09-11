@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import { Brain, Home, BarChart3, FileText, Download, Menu, X, Database, Settings, Monitor, FileX } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useAuth } from '../../hooks/useAuth';
+import { PageSkeleton } from '../ui/PageSkeleton';
 
 const navigation = [
   { name: 'داشبورد', href: '/app/dashboard', icon: Home },
@@ -47,6 +48,15 @@ export function AppLayout() {
       if (mainHeading) {
         (mainHeading as HTMLElement).setAttribute('tabindex', '-1');
         (mainHeading as HTMLElement).focus();
+        // Announce the page change to screen readers
+        const announcement = `صفحه ${mainHeading.textContent} بارگذاری شد`;
+        const announcer = document.createElement('div');
+        announcer.setAttribute('aria-live', 'polite');
+        announcer.setAttribute('aria-atomic', 'true');
+        announcer.className = 'sr-only';
+        announcer.textContent = announcement;
+        document.body.appendChild(announcer);
+        setTimeout(() => document.body.removeChild(announcer), 1000);
       }
     }, 100);
 
@@ -55,6 +65,14 @@ export function AppLayout() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 lg:grid lg:grid-cols-[20rem_1fr]" dir="rtl">
+      {/* Skip to main content link */}
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-blue-600 text-white px-4 py-2 rounded-md z-50"
+      >
+        پرش به محتوای اصلی
+      </a>
+      
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div 
@@ -129,7 +147,7 @@ export function AppLayout() {
                   }
                   aria-current={({ isActive }) => isActive ? 'page' : undefined}
                 >
-                  <Icon className="ml-3 h-5 w-5 flex-shrink-0" />
+                  <Icon className="me-3 h-5 w-5 flex-shrink-0" />
                   {item.name}
                 </NavLink>
               );
@@ -142,7 +160,7 @@ export function AppLayout() {
               to="/"
               className="group flex items-center px-3 py-2 text-base font-medium rounded-md text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white transition-colors"
             >
-              <Home className="ml-3 h-5 w-5 flex-shrink-0" />
+              <Home className="me-3 h-5 w-5 flex-shrink-0" />
               صفحه اصلی
             </NavLink>
           </div>
@@ -178,8 +196,16 @@ export function AppLayout() {
         </header>
 
         {/* Page content */}
-        <main className="flex-1 bg-gray-50 dark:bg-gray-900" tabIndex={-1}>
-          <Outlet />
+        <main 
+          id="main-content"
+          className="flex-1 bg-gray-50 dark:bg-gray-900 p-6" 
+          tabIndex={-1}
+          role="main"
+          aria-label="محتوای اصلی"
+        >
+          <Suspense fallback={<PageSkeleton />}>
+            <Outlet />
+          </Suspense>
         </main>
       </div>
     </div>

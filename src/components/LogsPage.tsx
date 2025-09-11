@@ -277,7 +277,7 @@ export function LogsPage() {
                       )}
                     </div>
                   </div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap mr-4">
+                  <div className="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap me-4">
                     {new Date(log.timestamp).toLocaleString('fa-IR')}
                   </div>
                 </div>

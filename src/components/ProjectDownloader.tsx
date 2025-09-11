@@ -1038,12 +1038,12 @@ export default {
           >
             {isGenerating ? (
               <>
-                <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent ml-2" />
+                <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent ms-2" />
                 در حال تولید...
               </>
             ) : (
               <>
-                <Download className="h-5 w-5 ml-2" />
+                <Download className="h-5 w-5 ms-2" />
                 دانلود پروژه کامل (ZIP)
               </>
             )}

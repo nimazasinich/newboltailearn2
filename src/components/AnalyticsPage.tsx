@@ -119,7 +119,7 @@ export function AnalyticsPage() {
             <div className="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
               <Brain className="h-6 w-6 text-blue-600 dark:text-blue-400" />
             </div>
-            <div className="mr-4">
+            <div className="ms-4">
               <p className="text-sm font-medium text-gray-600 dark:text-gray-400">کل مدل‌ها</p>
               <p className="text-2xl font-bold text-gray-900 dark:text-white">{analytics.summary.totalModels}</p>
             </div>
@@ -131,7 +131,7 @@ export function AnalyticsPage() {
             <div className="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
               <Activity className="h-6 w-6 text-green-600 dark:text-green-400" />
             </div>
-            <div className="mr-4">
+            <div className="ms-4">
               <p className="text-sm font-medium text-gray-600 dark:text-gray-400">آموزش فعال</p>
               <p className="text-2xl font-bold text-gray-900 dark:text-white">{analytics.summary.activeTraining}</p>
             </div>
@@ -143,7 +143,7 @@ export function AnalyticsPage() {
             <div className="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg">
               <Award className="h-6 w-6 text-purple-600 dark:text-purple-400" />
             </div>
-            <div className="mr-4">
+            <div className="ms-4">
               <p className="text-sm font-medium text-gray-600 dark:text-gray-400">مدل‌های تکمیل شده</p>
               <p className="text-2xl font-bold text-gray-900 dark:text-white">{analytics.summary.completedModels}</p>
             </div>
@@ -155,7 +155,7 @@ export function AnalyticsPage() {
             <div className="p-2 bg-orange-100 dark:bg-orange-900 rounded-lg">
               <Database className="h-6 w-6 text-orange-600 dark:text-orange-400" />
             </div>
-            <div className="mr-4">
+            <div className="ms-4">
               <p className="text-sm font-medium text-gray-600 dark:text-gray-400">دیتاست‌ها</p>
               <p className="text-2xl font-bold text-gray-900 dark:text-white">{analytics.summary.totalDatasets}</p>
             </div>

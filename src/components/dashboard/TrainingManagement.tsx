@@ -234,7 +234,7 @@ export function TrainingManagement() {
         </div>
         {canTrainModels && (
           <Button onClick={() => setShowCreateForm(true)} className="px-6 py-3 text-base">
-            <Plus className="h-5 w-5 ml-2" />
+            <Plus className="h-5 w-5 ms-2" />
             جلسه جدید
           </Button>
         )}
@@ -315,7 +315,7 @@ export function TrainingManagement() {
             </div>
             <div className="flex gap-2">
               <Button onClick={handleCreateSession} loading={isCreating}>
-                <Brain className="h-4 w-4 ml-2" />
+                <Brain className="h-4 w-4 ms-2" />
                 ایجاد جلسه
               </Button>
               <Button variant="outline" onClick={() => setShowCreateForm(false)}>
@@ -418,14 +418,14 @@ export function TrainingManagement() {
                 onClick={() => handleStopTraining(activeSession.id)}
                 loading={actionLoading === activeSession.id}
               >
-                <Square className="h-4 w-4 ml-2" />
+                <Square className="h-4 w-4 ms-2" />
                 توقف آموزش
               </Button>
               <Button 
                 variant="outline" 
                 onClick={() => handleCreateCheckpoint(activeSession.id)}
               >
-                <Save className="h-4 w-4 ml-2" />
+                <Save className="h-4 w-4 ms-2" />
                 ایجاد Checkpoint
               </Button>
             </div>
@@ -508,7 +508,7 @@ export function TrainingManagement() {
                     }}
                     loading={actionLoading === session.id}
                   >
-                    <Play className="h-3 w-3 ml-1" />
+                    <Play className="h-3 w-3 ms-1" />
                     شروع
                   </Button>
                 )}
@@ -523,7 +523,7 @@ export function TrainingManagement() {
                     }}
                     loading={actionLoading === session.id}
                   >
-                    <Pause className="h-3 w-3 ml-1" />
+                    <Pause className="h-3 w-3 ms-1" />
                     توقف
                   </Button>
                 )}
@@ -537,7 +537,7 @@ export function TrainingManagement() {
                     }}
                     loading={actionLoading === session.id}
                   >
-                    <Play className="h-3 w-3 ml-1" />
+                    <Play className="h-3 w-3 ms-1" />
                     ادامه
                   </Button>
                 )}
@@ -550,7 +550,7 @@ export function TrainingManagement() {
                     setSelectedSession(session);
                   }}
                 >
-                  <BarChart3 className="h-3 w-3 ml-1" />
+                  <BarChart3 className="h-3 w-3 ms-1" />
                   جزئیات
                 </Button>
 
@@ -586,7 +586,7 @@ export function TrainingManagement() {
             </p>
             {canTrainModels && (
               <Button onClick={() => setShowCreateForm(true)}>
-                <Plus className="h-4 w-4 ml-2" />
+                <Plus className="h-4 w-4 ms-2" />
                 ایجاد جلسه جدید
               </Button>
             )}
