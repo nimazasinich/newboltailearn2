@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react';
-import { createBrowserRouter, createHashRouter, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { AppLayout } from '../components/layout/AppLayout';
 import { LandingPage } from '../components/LandingPage';
 import { PageSkeleton } from '../components/ui/PageSkeleton';
@@ -11,7 +11,15 @@ const TrainingPage = lazy(() => import('../pages/TrainingPage').then(m => ({ def
 const DocumentsPage = lazy(() => import('../pages/DocumentsPage').then(m => ({ default: m.DocumentsPage })));
 const DownloadPage = lazy(() => import('../pages/DownloadPage').then(m => ({ default: m.DownloadPage })));
 
-const routes = [
+// Import additional page components
+const AnalyticsPage = lazy(() => import('../components/AnalyticsPage').then(m => ({ default: m.AnalyticsPage })));
+const DataPage = lazy(() => import('../components/DataPage').then(m => ({ default: m.DataPage })));
+const ModelsPage = lazy(() => import('../components/ModelsPage').then(m => ({ default: m.ModelsPage })));
+const MonitoringPage = lazy(() => import('../components/MonitoringPage').then(m => ({ default: m.MonitoringPage })));
+const LogsPage = lazy(() => import('../components/LogsPage').then(m => ({ default: m.LogsPage })));
+const SettingsPage = lazy(() => import('../components/SettingsPage').then(m => ({ default: m.SettingsPage })));
+
+export const routes = [
   {
     path: '/',
     element: <LandingPage />,
@@ -60,6 +68,54 @@ const routes = [
           </Suspense>
         ),
       },
+      {
+        path: 'analytics',
+        element: (
+          <Suspense fallback={<PageSkeleton />}>
+            <AnalyticsPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'data',
+        element: (
+          <Suspense fallback={<PageSkeleton />}>
+            <DataPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'models',
+        element: (
+          <Suspense fallback={<PageSkeleton />}>
+            <ModelsPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'monitoring',
+        element: (
+          <Suspense fallback={<PageSkeleton />}>
+            <MonitoringPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'logs',
+        element: (
+          <Suspense fallback={<PageSkeleton />}>
+            <LogsPage />
+          </Suspense>
+        ),
+      },
+      {
+        path: 'settings',
+        element: (
+          <Suspense fallback={<PageSkeleton />}>
+            <SettingsPage />
+          </Suspense>
+        ),
+      },
     ],
   },
   // Redirect old hash routes to new structure
@@ -79,6 +135,30 @@ const routes = [
     path: '/download',
     element: <Navigate to="/app/download" replace />,
   },
+  {
+    path: '/analytics',
+    element: <Navigate to="/app/analytics" replace />,
+  },
+  {
+    path: '/data',
+    element: <Navigate to="/app/data" replace />,
+  },
+  {
+    path: '/models',
+    element: <Navigate to="/app/models" replace />,
+  },
+  {
+    path: '/monitoring',
+    element: <Navigate to="/app/monitoring" replace />,
+  },
+  {
+    path: '/logs',
+    element: <Navigate to="/app/logs" replace />,
+  },
+  {
+    path: '/settings',
+    element: <Navigate to="/app/settings" replace />,
+  },
   // 404 page
   {
     path: '*',
@@ -86,12 +166,4 @@ const routes = [
   },
 ];
 
-// Try BrowserRouter first, fallback to HashRouter for static hosting
-export const router = (() => {
-  try {
-    return createBrowserRouter(routes);
-  } catch {
-    // Fallback to hash router for static hosting environments
-    return createHashRouter(routes);
-  }
-})();
+// Router is now created in App.tsx based on environment variable

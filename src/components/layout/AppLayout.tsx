@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
-import { Brain, Home, BarChart3, FileText, Download, Menu, X } from 'lucide-react';
+import { Brain, Home, BarChart3, FileText, Download, Menu, X, Database, Settings, Monitor, FileX } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useAuth } from '../../hooks/useAuth';
 
 const navigation = [
-  { name: 'داشبورد', href: '/app/dashboard', icon: BarChart3 },
+  { name: 'داشبورد', href: '/app/dashboard', icon: Home },
   { name: 'آموزش مدل‌ها', href: '/app/training', icon: Brain },
+  { name: 'تحلیل‌ها', href: '/app/analytics', icon: BarChart3 },
+  { name: 'مدیریت داده', href: '/app/data', icon: Database },
+  { name: 'مدیریت مدل‌ها', href: '/app/models', icon: Brain },
+  { name: 'نظارت سیستم', href: '/app/monitoring', icon: Monitor },
+  { name: 'لاگ‌ها', href: '/app/logs', icon: FileX },
   { name: 'مدیریت اسناد', href: '/app/documents', icon: FileText },
+  { name: 'تنظیمات', href: '/app/settings', icon: Settings },
   { name: 'دانلود پروژه', href: '/app/download', icon: Download },
 ];
 
@@ -48,7 +54,7 @@ export function AppLayout() {
   }, [location]);
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 lg:grid lg:grid-cols-[20rem_1fr]">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 lg:grid lg:grid-cols-[20rem_1fr]" dir="rtl">
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div 
@@ -62,11 +68,12 @@ export function AppLayout() {
       <aside 
         className={`
           fixed inset-y-0 right-0 z-50 w-80 bg-white dark:bg-gray-800 border-s border-gray-200 dark:border-gray-700
-          transform transition-transform duration-300 ease-in-out lg:transform-none lg:static lg:w-auto
+          transform transition-transform duration-300 ease-in-out lg:transform-none lg:static lg:w-auto lg:col-span-1
           ${sidebarOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}
         `}
         role="navigation"
         aria-label="منوی اصلی"
+        aria-expanded={sidebarOpen}
       >
         <div className="flex h-full flex-col">
           {/* Sidebar header */}
@@ -143,7 +150,7 @@ export function AppLayout() {
       </aside>
 
       {/* Main content area */}
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen lg:col-span-1">
         {/* Top bar */}
         <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 lg:hidden">
           <div className="flex items-center justify-between h-16 px-4">
@@ -152,6 +159,7 @@ export function AppLayout() {
               className="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
               onClick={() => setSidebarOpen(true)}
               aria-label="باز کردن منو"
+              aria-expanded={sidebarOpen}
             >
               <Menu className="h-6 w-6" />
             </button>
