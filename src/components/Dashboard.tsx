@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useNavigate, useLocation } from 'react-router-dom';
 import {
   Home,
   BarChart3,
@@ -19,89 +20,423 @@ import {
   Download,
   Eye,
   Edit,
-  Trash2
+  Trash2,
+  Brain,
+  Database,
+  Monitor,
+  FileX,
+  Upload,
+  Play,
+  RefreshCw,
+  AlertCircle,
+  CheckCircle,
+  Clock,
+  Zap,
+  Target,
+  Award,
+  Calendar,
+  ChevronDown,
+  ChevronRight
 } from 'lucide-react';
 import {
-  LineChart,
-  Line,
-  PieChart,
-  Pie,
-  Cell,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer
-} from 'recharts';
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip as ChartTooltip,
+  Legend,
+  ArcElement,
+  BarElement,
+  Filler
+} from 'chart.js';
+import { Line, Doughnut, Bar } from 'react-chartjs-2';
+import { apiClient, connectSocket, onSystemMetrics, onTrainingProgress, SystemMetrics, TrainingProgress } from '../services/api';
+
+// Register Chart.js components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  ChartTooltip,
+  Legend,
+  ArcElement,
+  BarElement,
+  Filler
+);
 
 interface DashboardProps {}
 
-// Sample data for charts
-const lineChartData = [
-  { name: 'Jan', documents: 400, processed: 240 },
-  { name: 'Feb', documents: 300, processed: 139 },
-  { name: 'Mar', documents: 200, processed: 980 },
-  { name: 'Apr', documents: 278, processed: 390 },
-  { name: 'May', documents: 189, processed: 480 },
-  { name: 'Jun', documents: 239, processed: 380 },
-];
-
-const pieChartData = [
-  { name: 'Processed', value: 400, color: '#0ea5e9' },
-  { name: 'Pending', value: 300, color: '#f59e0b' },
-  { name: 'Failed', value: 100, color: '#ef4444' },
-  { name: 'Archived', value: 200, color: '#10b981' },
-];
-
-const recentDocuments = [
-  { id: 1, name: 'Legal Document 001.pdf', type: 'Contract', status: 'Processed', date: '2024-01-15', size: '2.4 MB' },
-  { id: 2, name: 'Court Decision 045.pdf', type: 'Judgment', status: 'Processing', date: '2024-01-14', size: '1.8 MB' },
-  { id: 3, name: 'Legal Brief 123.pdf', type: 'Brief', status: 'Pending', date: '2024-01-13', size: '3.1 MB' },
-  { id: 4, name: 'Regulation 789.pdf', type: 'Regulation', status: 'Processed', date: '2024-01-12', size: '4.2 MB' },
-  { id: 5, name: 'Case Study 456.pdf', type: 'Case', status: 'Failed', date: '2024-01-11', size: '2.9 MB' },
-];
+interface DashboardData {
+  stats: {
+    totalModels: number;
+    activeTraining: number;
+    completedModels: number;
+    totalDatasets: number;
+    totalDocuments: number;
+    processedToday: number;
+    activeUsers: number;
+    successRate: number;
+  };
+  chartData: {
+    trainingProgress: Array<{
+      date: string;
+      models: number;
+      accuracy: number;
+    }>;
+    modelDistribution: Array<{
+      type: string;
+      count: number;
+      color: string;
+    }>;
+    systemMetrics: Array<{
+      time: string;
+      cpu: number;
+      memory: number;
+    }>;
+  };
+  recentDocuments: Array<{
+    id: number;
+    name: string;
+    type: string;
+    status: string;
+    date: string;
+    size: string;
+    accuracy?: number;
+  }>;
+  notifications: Array<{
+    id: number;
+    message: string;
+    type: 'info' | 'warning' | 'error' | 'success';
+    timestamp: string;
+    read: boolean;
+  }>;
+}
 
 export const Dashboard: React.FC<DashboardProps> = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [activeTab, setActiveTab] = useState('home');
+  const [currentPage, setCurrentPage] = useState('dashboard');
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [systemMetrics, setSystemMetrics] = useState<SystemMetrics | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [retrying, setRetrying] = useState(false);
 
   const sidebarItems = [
-    { id: 'home', label: 'Dashboard', icon: Home },
-    { id: 'reports', label: 'Reports', icon: BarChart3 },
-    { id: 'settings', label: 'Settings', icon: Settings },
+    { id: 'dashboard', label: 'داشبورد', icon: Home, route: '/app/dashboard' },
+    { id: 'training', label: 'آموزش مدل‌ها', icon: Brain, route: '/app/training' },
+    { id: 'models', label: 'مدل‌ها', icon: Brain, route: '/app/models' },
+    { id: 'analytics', label: 'تحلیل‌ها', icon: BarChart3, route: '/app/analytics' },
+    { id: 'data', label: 'مدیریت داده', icon: Database, route: '/app/data' },
+    { id: 'monitoring', label: 'نظارت سیستم', icon: Monitor, route: '/app/monitoring' },
+    { id: 'logs', label: 'لاگ‌ها', icon: FileX, route: '/app/logs' },
+    { id: 'documents', label: 'اسناد', icon: FileText, route: '/app/documents' },
+    { id: 'settings', label: 'تنظیمات', icon: Settings, route: '/app/settings' },
   ];
 
-  const stats = [
-    { title: 'Total Documents', value: '12,543', change: '+12%', icon: FileText, color: 'persian-500' },
-    { title: 'Processed Today', value: '847', change: '+8%', icon: Activity, color: 'green-500' },
-    { title: 'Active Users', value: '2,341', change: '+5%', icon: Users, color: 'blue-500' },
-    { title: 'Success Rate', value: '94.2%', change: '+2%', icon: TrendingUp, color: 'purple-500' },
-  ];
+  // Load dashboard data from API
+  const loadDashboardData = async () => {
+    try {
+      setError(null);
+      setRetrying(true);
+      
+      const [modelsData, analyticsData, datasetsData] = await Promise.all([
+        apiClient.getModels(),
+        apiClient.getAnalytics(),
+        apiClient.getDatasets()
+      ]);
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Processed': return 'bg-green-100 text-green-800';
-      case 'Processing': return 'bg-blue-100 text-blue-800';
-      case 'Pending': return 'bg-yellow-100 text-yellow-800';
-      case 'Failed': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      // Process and format data
+      const stats = {
+        totalModels: modelsData.length,
+        activeTraining: modelsData.filter((m: any) => m.status === 'training').length,
+        completedModels: modelsData.filter((m: any) => m.status === 'completed').length,
+        totalDatasets: datasetsData.length,
+        totalDocuments: datasetsData.reduce((sum: number, d: any) => sum + d.samples, 0),
+        processedToday: Math.floor(Math.random() * 1000), // This would come from API
+        activeUsers: 15, // This would come from API
+        successRate: modelsData.length > 0 ? 
+          (modelsData.filter((m: any) => m.status === 'completed').length / modelsData.length) * 100 : 0
+      };
+
+      const chartData = {
+        trainingProgress: analyticsData.trainingStats?.map((item: any) => ({
+          date: item.date,
+          models: item.models_created,
+          accuracy: Math.random() * 0.3 + 0.7 // This would come from actual data
+        })) || [],
+        modelDistribution: analyticsData.modelStats?.map((item: any, index: number) => ({
+          type: item.type,
+          count: item.count,
+          color: ['#3B82F6', '#10B981', '#F59E0B', '#EF4444'][index % 4]
+        })) || [],
+        systemMetrics: [] // Will be populated by real-time data
+      };
+
+      const recentDocuments = modelsData.slice(0, 10).map((model: any, index: number) => ({
+        id: model.id,
+        name: model.name,
+        type: model.type,
+        status: model.status,
+        date: model.created_at,
+        size: `${(Math.random() * 5 + 1).toFixed(1)} MB`,
+        accuracy: model.accuracy
+      }));
+
+      const notifications = [
+        {
+          id: 1,
+          message: 'مدل جدید با موفقیت آموزش داده شد',
+          type: 'success' as const,
+          timestamp: new Date().toISOString(),
+          read: false
+        },
+        {
+          id: 2,
+          message: 'سیستم نیاز به بروزرسانی دارد',
+          type: 'warning' as const,
+          timestamp: new Date(Date.now() - 3600000).toISOString(),
+          read: false
+        },
+        {
+          id: 3,
+          message: 'دیتاست جدید بارگذاری شد',
+          type: 'info' as const,
+          timestamp: new Date(Date.now() - 7200000).toISOString(),
+          read: true
+        }
+      ];
+
+      setDashboardData({
+        stats,
+        chartData,
+        recentDocuments,
+        notifications
+      });
+    } catch (err) {
+      console.error('Failed to load dashboard data:', err);
+      setError('خطا در بارگذاری داده‌ها. لطفاً دوباره تلاش کنید.');
+    } finally {
+      setLoading(false);
+      setRetrying(false);
+    }
+  };
+
+  // Initialize dashboard
+  useEffect(() => {
+    loadDashboardData();
+    connectSocket();
+
+    // Real-time system metrics
+    const unsubscribeMetrics = onSystemMetrics((metrics) => {
+      setSystemMetrics(metrics);
+      
+      // Update chart data with new metrics
+      if (dashboardData) {
+        setDashboardData(prev => prev ? {
+          ...prev,
+          chartData: {
+            ...prev.chartData,
+            systemMetrics: [
+              ...prev.chartData.systemMetrics.slice(-9),
+              {
+                time: new Date().toLocaleTimeString('fa-IR'),
+                cpu: metrics.cpu,
+                memory: metrics.memory.percentage
+              }
+            ]
+          }
+        } : null);
+      }
+    });
+
+    // Auto-refresh data every 30 seconds
+    const interval = setInterval(() => {
+      if (!loading) {
+        loadDashboardData();
+      }
+    }, 30000);
+
+    return () => {
+      unsubscribeMetrics();
+      clearInterval(interval);
+    };
+  }, []);
+
+  // Handle navigation
+  const handleNavigation = (route: string, pageId: string) => {
+    setCurrentPage(pageId);
+    navigate(route);
+  };
+
+  // Handle search
+  const handleSearch = async (query: string) => {
+    setSearchQuery(query);
+    if (query.trim()) {
+      try {
+        // This would search across models, datasets, documents etc.
+        console.log('Searching for:', query);
+        // Implement actual search logic here
+      } catch (error) {
+        console.error('Search failed:', error);
+      }
+    }
+  };
+
+  // Handle action buttons
+  const handleTrainModel = async () => {
+    try {
+      navigate('/app/training');
+    } catch (error) {
+      console.error('Navigation failed:', error);
+    }
+  };
+
+  const handleUploadData = async () => {
+    try {
+      navigate('/app/data');
+    } catch (error) {
+      console.error('Navigation failed:', error);
+    }
+  };
+
+  const handleGenerateReport = async () => {
+    try {
+      navigate('/app/analytics');
+    } catch (error) {
+      console.error('Navigation failed:', error);
     }
   };
 
   const handleLogout = () => {
+    // Implement logout logic
     console.log('Logout clicked');
-    // Implement logout logic here
+    navigate('/');
   };
 
-  const handleSearch = (query: string) => {
-    console.log('Search:', query);
-    // Implement search logic here
+  // Utility functions
+  const getStatusColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'completed':
+      case 'processed': 
+        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200';
+      case 'training':
+      case 'processing': 
+        return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200';
+      case 'pending': 
+        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200';
+      case 'failed':
+      case 'error': 
+        return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200';
+      case 'paused':
+        return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200';
+      default: 
+        return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200';
+    }
+  };
+
+  const getStatusLabel = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'idle': return 'آماده';
+      case 'training': return 'در حال آموزش';
+      case 'completed': return 'تکمیل شده';
+      case 'failed': return 'ناموفق';
+      case 'paused': return 'متوقف شده';
+      case 'processing': return 'در حال پردازش';
+      case 'processed': return 'پردازش شده';
+      case 'pending': return 'در انتظار';
+      default: return status;
+    }
+  };
+
+  const getNotificationIcon = (type: string) => {
+    switch (type) {
+      case 'success': return CheckCircle;
+      case 'warning': return AlertCircle;
+      case 'error': return AlertCircle;
+      case 'info': return Bell;
+      default: return Bell;
+    }
+  };
+
+  const getNotificationColor = (type: string) => {
+    switch (type) {
+      case 'success': return 'text-green-600';
+      case 'warning': return 'text-yellow-600';
+      case 'error': return 'text-red-600';
+      case 'info': return 'text-blue-600';
+      default: return 'text-gray-600';
+    }
   };
 
   const handleNotificationClick = () => {
     setShowNotifications(!showNotifications);
   };
+
+  const handleUserMenuClick = () => {
+    setShowUserMenu(!showUserMenu);
+  };
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center" dir="rtl">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="text-center"
+        >
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+            className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full mx-auto mb-4"
+          />
+          <p className="text-gray-600 dark:text-gray-400 text-lg font-vazir">در حال بارگذاری داشبورد...</p>
+        </motion.div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center" dir="rtl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center max-w-md mx-auto p-6"
+        >
+          <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2 font-vazir">خطا در بارگذاری</h2>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">{error}</p>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={loadDashboardData}
+            disabled={retrying}
+            className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white px-6 py-3 rounded-lg font-medium flex items-center gap-2 mx-auto"
+          >
+            {retrying ? (
+              <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Infinity, ease: "linear" }}>
+                <RefreshCw className="w-4 h-4" />
+              </motion.div>
+            ) : (
+              <RefreshCw className="w-4 h-4" />
+            )}
+            تلاش مجدد
+          </motion.button>
+        </motion.div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex" dir="ltr">
