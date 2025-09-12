@@ -20,16 +20,14 @@ interface SidebarProps {
 }
 
 const navigationItems = [
-  { name: 'داشبورد', href: '/dashboard', icon: BarChart3 },
-  { name: 'آموزش مدل‌ها', href: '/dashboard/training', icon: Brain },
-  { name: 'تحلیلات', href: '/dashboard/analytics', icon: TrendingUp },
-  { name: 'مدیریت داده‌ها', href: '/dashboard/data', icon: Database },
-  { name: 'مدل‌ها', href: '/dashboard/models', icon: Brain },
-  { name: 'نظارت سیستم', href: '/dashboard/monitoring', icon: Activity },
-  { name: 'گزارش‌ها', href: '/dashboard/logs', icon: FileText },
-  { name: 'تیم', href: '/dashboard/team', icon: Users },
-  { name: 'تنظیمات', href: '/dashboard/settings', icon: Settings },
-  { name: 'دانلود پروژه', href: '/dashboard/download', icon: Download },
+  { name: 'داشبورد اصلی', href: '/app/dashboard', icon: BarChart3, description: 'نمای کلی سیستم' },
+  { name: 'آموزش مدل‌ها', href: '/app/training', icon: Brain, description: 'مدیریت آموزش AI' },
+  { name: 'نظارت سیستم', href: '/app/monitoring', icon: Activity, description: 'وضعیت سیستم' },
+  { name: 'تحلیل‌ها', href: '/app/analytics', icon: TrendingUp, description: 'گزارش‌ها و آمار' },
+  { name: 'مدل‌ها', href: '/app/models', icon: Brain, description: 'مدیریت مدل‌های AI' },
+  { name: 'دیتاست‌ها', href: '/app/data', icon: Database, description: 'مدیریت داده‌ها' },
+  { name: 'لاگ‌ها', href: '/app/logs', icon: FileText, description: 'سوابق سیستم' },
+  { name: 'تیم', href: '/app/team', icon: Users, description: 'اعضای تیم' },
 ];
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
@@ -48,7 +46,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               </div>
               <div>
                 <h1 className="text-lg font-bold text-white">
-                  هوش مصنوعی حقوقی
+                  هوش مصنوعی حقوقی ایران
                 </h1>
                 <p className="text-sm text-blue-100">
                   Persian Legal AI
@@ -68,14 +66,22 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                   key={item.name}
                   to={item.href}
                   className={cn(
-                    'flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200',
+                    'group flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-md',
                     isActive
-                      ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 border-l-4 border-blue-500'
-                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700'
+                      ? 'bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 text-blue-600 dark:text-blue-400 border-l-4 border-blue-500 shadow-sm'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 dark:hover:from-gray-700 dark:hover:to-gray-600'
                   )}
+                  title={item.description}
+                  aria-label={`${item.name} - ${item.description}`}
                 >
-                  <Icon className="h-5 w-5 flex-shrink-0" />
-                  <span>{item.name}</span>
+                  <Icon className={cn(
+                    "h-5 w-5 flex-shrink-0 transition-transform duration-200",
+                    isActive ? "scale-110" : "group-hover:scale-110"
+                  )} />
+                  <div className="flex flex-col">
+                    <span className="font-vazir">{item.name}</span>
+                    <span className="text-xs opacity-70 font-vazir">{item.description}</span>
+                  </div>
                 </NavLink>
               );
             })}
@@ -97,7 +103,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               </div>
               <div>
                 <h1 className="text-lg font-bold text-white">
-                  هوش مصنوعی حقوقی
+                  هوش مصنوعی حقوقی ایران
                 </h1>
                 <p className="text-sm text-blue-100">
                   Persian Legal AI
@@ -125,14 +131,22 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                   to={item.href}
                   onClick={onClose}
                   className={cn(
-                    'flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200',
+                    'group flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-md',
                     isActive
-                      ? 'bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 border-l-4 border-blue-500'
-                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700'
+                      ? 'bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 text-blue-600 dark:text-blue-400 border-l-4 border-blue-500 shadow-sm'
+                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 dark:hover:from-gray-700 dark:hover:to-gray-600'
                   )}
+                  title={item.description}
+                  aria-label={`${item.name} - ${item.description}`}
                 >
-                  <Icon className="h-5 w-5 flex-shrink-0" />
-                  <span>{item.name}</span>
+                  <Icon className={cn(
+                    "h-5 w-5 flex-shrink-0 transition-transform duration-200",
+                    isActive ? "scale-110" : "group-hover:scale-110"
+                  )} />
+                  <div className="flex flex-col">
+                    <span className="font-vazir">{item.name}</span>
+                    <span className="text-xs opacity-70 font-vazir">{item.description}</span>
+                  </div>
                 </NavLink>
               );
             })}
