@@ -20,16 +20,14 @@ interface SidebarProps {
 }
 
 const navigationItems = [
-  { name: 'داشبورد', href: '/dashboard', icon: BarChart3 },
-  { name: 'آموزش مدل‌ها', href: '/dashboard/training', icon: Brain },
-  { name: 'تحلیلات', href: '/dashboard/analytics', icon: TrendingUp },
-  { name: 'مدیریت داده‌ها', href: '/dashboard/data', icon: Database },
-  { name: 'مدل‌ها', href: '/dashboard/models', icon: Brain },
-  { name: 'نظارت سیستم', href: '/dashboard/monitoring', icon: Activity },
-  { name: 'گزارش‌ها', href: '/dashboard/logs', icon: FileText },
-  { name: 'تیم', href: '/dashboard/team', icon: Users },
-  { name: 'تنظیمات', href: '/dashboard/settings', icon: Settings },
-  { name: 'دانلود پروژه', href: '/dashboard/download', icon: Download },
+  { name: 'Dashboard Home', href: '/app/dashboard', icon: BarChart3 },
+  { name: 'Training', href: '/app/training', icon: Brain },
+  { name: 'Monitoring', href: '/app/monitoring', icon: Activity },
+  { name: 'Analytics', href: '/app/analytics', icon: TrendingUp },
+  { name: 'Models', href: '/app/models', icon: Brain },
+  { name: 'Datasets', href: '/app/data', icon: Database },
+  { name: 'Logs', href: '/app/logs', icon: FileText },
+  { name: 'Team', href: '/app/team', icon: Users },
 ];
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
@@ -48,7 +46,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               </div>
               <div>
                 <h1 className="text-lg font-bold text-white">
-                  هوش مصنوعی حقوقی
+                  هوش مصنوعی حقوقی ایران
                 </h1>
                 <p className="text-sm text-blue-100">
                   Persian Legal AI
@@ -97,7 +95,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               </div>
               <div>
                 <h1 className="text-lg font-bold text-white">
-                  هوش مصنوعی حقوقی
+                  هوش مصنوعی حقوقی ایران
                 </h1>
                 <p className="text-sm text-blue-100">
                   Persian Legal AI
