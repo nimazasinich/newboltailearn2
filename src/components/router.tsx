@@ -18,6 +18,7 @@ export function AppRoutes() {
       
       {/* Dashboard Hub - Main Layout */}
       <Route path="/app" element={<Dashboard />}>
+        <Route index element={<Navigate to="/app/dashboard" replace />} />
         <Route path="dashboard" element={<Overview />} />
         <Route path="training" element={<TrainingManagement />} />
         <Route path="monitoring" element={<MonitoringPage />} />

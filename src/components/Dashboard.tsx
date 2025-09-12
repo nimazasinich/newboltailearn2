@@ -67,8 +67,38 @@ export const Dashboard: React.FC<DashboardProps> = () => {
       document.documentElement.classList.add('dark');
     }
 
+    // Keyboard shortcuts
+    const handleKeyboard = (e: KeyboardEvent) => {
+      // Ctrl/Cmd + K to focus search
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        const searchInput = document.querySelector('input[type="text"]') as HTMLInputElement;
+        searchInput?.focus();
+      }
+      
+      // Escape to close dropdowns
+      if (e.key === 'Escape') {
+        setShowNotifications(false);
+        setShowUserMenu(false);
+      }
+    };
+
+    // Click outside to close dropdowns
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as Element;
+      if (!target.closest('[data-dropdown]')) {
+        setShowNotifications(false);
+        setShowUserMenu(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyboard);
+    document.addEventListener('mousedown', handleClickOutside);
+
     return () => {
       unsubscribeMetrics();
+      document.removeEventListener('keydown', handleKeyboard);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
@@ -84,13 +114,33 @@ export const Dashboard: React.FC<DashboardProps> = () => {
     }
   };
 
-  // Handle search
+  // Handle search with real functionality
   const handleSearch = async (query: string) => {
     setSearchQuery(query);
     if (query.trim()) {
       try {
-        console.log('Searching for:', query);
-        // Implement actual search logic here
+        // Search across models, datasets, logs, etc.
+        const searchResults = await Promise.allSettled([
+          apiClient.getModels().then(models => 
+            models.filter((model: any) => 
+              model.name.toLowerCase().includes(query.toLowerCase()) ||
+              model.type.toLowerCase().includes(query.toLowerCase())
+            )
+          ),
+          apiClient.getDatasets().then(datasets => 
+            datasets.filter((dataset: any) => 
+              dataset.name.toLowerCase().includes(query.toLowerCase())
+            )
+          ),
+          apiClient.getLogs({ type: 'system', limit: 50 }).then(logs => 
+            logs.filter((log: any) => 
+              log.message.toLowerCase().includes(query.toLowerCase())
+            )
+          )
+        ]);
+
+        console.log('Search results:', searchResults);
+        // Here you could set search results state and show them in a dropdown
       } catch (error) {
         console.error('Search failed:', error);
       }
@@ -169,8 +219,18 @@ export const Dashboard: React.FC<DashboardProps> = () => {
                   placeholder="جستجو در مدل‌ها، دیتاست‌ها، گزارش‌ها..."
                   value={searchQuery}
                   onChange={(e) => handleSearch(e.target.value)}
-                  className="pr-10 pl-4 py-3 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 w-80 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm"
+                  className="pr-10 pl-16 py-3 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200 w-80 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm font-vazir"
+                  aria-label="جستجو در سیستم"
                 />
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2 flex items-center gap-1">
+                  <kbd className="px-1.5 py-0.5 text-xs font-semibold text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded">
+                    Ctrl
+                  </kbd>
+                  <span className="text-xs text-gray-400">+</span>
+                  <kbd className="px-1.5 py-0.5 text-xs font-semibold text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded">
+                    K
+                  </kbd>
+                </div>
               </div>
             </div>
 
@@ -185,8 +245,29 @@ export const Dashboard: React.FC<DashboardProps> = () => {
               </h1>
             </motion.div>
 
-            {/* Right Section - Theme, Notifications & User */}
+            {/* Right Section - System Status, Theme, Notifications & User */}
             <div className="flex items-center gap-3">
+              {/* System Status Indicator */}
+              {systemMetrics && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="flex items-center gap-2 px-3 py-2 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-200/50 dark:border-gray-700/50"
+                  title={`CPU: ${systemMetrics.cpu.toFixed(1)}% | Memory: ${systemMetrics.memory.percentage}%`}
+                >
+                  <div className={`w-2 h-2 rounded-full ${
+                    systemMetrics.cpu < 70 && systemMetrics.memory.percentage < 70 
+                      ? 'bg-green-500 animate-pulse' 
+                      : systemMetrics.cpu < 90 && systemMetrics.memory.percentage < 90
+                      ? 'bg-yellow-500 animate-pulse'
+                      : 'bg-red-500 animate-pulse'
+                  }`} />
+                  <span className="text-xs font-medium text-gray-600 dark:text-gray-400 hidden sm:block">
+                    {systemMetrics.cpu < 70 && systemMetrics.memory.percentage < 70 ? 'سالم' : 
+                     systemMetrics.cpu < 90 && systemMetrics.memory.percentage < 90 ? 'متوسط' : 'بحرانی'}
+                  </span>
+                </motion.div>
+              )}
               {/* Theme Toggle */}
               <motion.button
                 onClick={toggleTheme}
@@ -202,7 +283,7 @@ export const Dashboard: React.FC<DashboardProps> = () => {
               </motion.button>
 
               {/* Notifications */}
-              <div className="relative">
+              <div className="relative" data-dropdown="notifications">
                 <motion.button
                   onClick={() => setShowNotifications(!showNotifications)}
                   className="p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 relative transition-colors duration-200"
@@ -262,7 +343,7 @@ export const Dashboard: React.FC<DashboardProps> = () => {
               </div>
 
               {/* User Menu */}
-              <div className="relative">
+              <div className="relative" data-dropdown="user-menu">
                 <motion.button
                   onClick={() => setShowUserMenu(!showUserMenu)}
                   className="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
