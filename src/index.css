@@ -1,50 +1,7 @@
-/* Import Persian fonts */
-@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Base styles */
-* {
-  box-sizing: border-box;
-}
-
-/* Base font family */
-@layer base {
-  html {
-    font-family: 'Vazirmatn', Tahoma, Inter, sans-serif;
-    direction: rtl;
-  }
-  
-  body {
-    font-family: 'Vazirmatn', Tahoma, Inter, sans-serif;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-}
-
-/* Component-specific overrides for Tailwind classes */
-@layer components {
-  /* Ensure Tailwind classes work with our base styles */
-  .space-x-reverse > :not([hidden]) ~ :not([hidden]) {
-    --tw-space-x-reverse: 1;
-    margin-right: calc(var(--tw-space-x) * var(--tw-space-x-reverse));
-    margin-left: calc(var(--tw-space-x) * calc(1 - var(--tw-space-x-reverse)));
-  }
-}
-
-/* Persian number styles */
-.persian-numbers {
-  font-feature-settings: 'ss01' on;
-}
-
-/* Additional Tailwind utilities for RTL */
-@layer utilities {
-  .rtl\:space-x-reverse > :not([hidden]) ~ :not([hidden]) {
-    --tw-space-x-reverse: 1;
-    margin-right: calc(var(--tw-space-x) * var(--tw-space-x-reverse));
-    margin-left: calc(var(--tw-space-x) * calc(1 - var(--tw-space-x-reverse)));
-  }
-}
+/* Custom global styles */
+:root { color-scheme: light; }
+body { font-family: system-ui, -apple-system, Segoe UI, Roboto, 'Vazirmatn', Arial, sans-serif; }

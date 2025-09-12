@@ -1,34 +1,28 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
-import { Brain, ArrowLeft } from 'lucide-react';
-import { useAuth } from '../hooks/useAuth';
+import React from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { Brain, ArrowRight } from "lucide-react";
 
-export function LandingPage() {
+export function LandingPage(): JSX.Element {
   const navigate = useNavigate();
-  const { login } = useAuth();
 
-  const handleStart = async () => {
-    // Auto-login as demo user for now
-    try {
-      await login({ email: 'admin@legal-ai.ir', password: 'demo' });
-    } catch (error) {
-      console.error('Login failed:', error);
-      // Continue anyway for demo
-    }
-    
-    // Navigate to dashboard
-    navigate('/dashboard');
+  const handleStart = () => {
+    // مستقیم برو به داشبورد
+    navigate("/app/dashboard");
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 text-white flex items-center justify-center px-6" dir="rtl">
+    <div
+      className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 text-white flex items-center justify-center px-6"
+      dir="rtl"
+    >
       {/* Simple background */}
       <div className="absolute inset-0 opacity-10">
-        <div 
+        <div
           style={{
-            backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)',
-            backgroundSize: '50px 50px'
+            backgroundImage:
+              "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0)",
+            backgroundSize: "50px 50px",
           }}
           className="w-full h-full"
         />
@@ -74,7 +68,7 @@ export function LandingPage() {
           آموزش مدل‌های پیشرفته با قوانین جمهوری اسلامی ایران
         </motion.p>
 
-        {/* Stats - simple */}
+        {/* Stats */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
