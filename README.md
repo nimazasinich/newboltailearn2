@@ -140,6 +140,52 @@ SKIP_CSRF=false
 openssl rand -base64 32  # Use this for JWT_SECRET, SESSION_SECRET, CSRF_SECRET
 ```
 
+## 🔐 Development Authentication
+
+For development convenience, you can bypass frontend login using the development authentication endpoint:
+
+### Development Authentication Endpoint
+
+```bash
+# POST to dev identify endpoint (only works in development)
+curl -X POST http://localhost:3001/api/dev/identify \
+  -H "Content-Type: application/json" \
+  -d '{"username": "admin", "password": "Admin123!@#"}'
+```
+
+This returns a JWT token that can be used for API testing without frontend login flow.
+
+**⚠️ SECURITY NOTE:** This endpoint is automatically disabled in production (`NODE_ENV=production`).
+
+### Development Credentials
+
+The development authentication uses the following default credentials:
+- **Username:** `admin`
+- **Password:** `Admin123!@#` (or value from `DEFAULT_ADMIN_PASSWORD` env var)
+
+### Using Development Authentication
+
+1. **Set development credentials in .env:**
+   ```env
+   DEV_ADMIN_USER=admin
+   DEV_ADMIN_PASS=Admin123!@#
+   ```
+
+2. **Test the endpoint:**
+   ```bash
+   curl -X POST http://localhost:3001/api/dev/identify \
+     -H "Content-Type: application/json" \
+     -d '{"username": "admin", "password": "Admin123!@#"}'
+   ```
+
+3. **Use the returned token for API calls:**
+   ```bash
+   curl -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+     http://localhost:3001/api/models
+   ```
+
+**Production Safety:** This endpoint is automatically disabled when `NODE_ENV=production` to ensure security in production deployments.
+
 ## ✨ What Actually Works
 
 ### ✅ **Fully Functional Features**
