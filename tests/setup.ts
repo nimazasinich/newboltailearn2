@@ -2,18 +2,22 @@ import { beforeAll, afterAll, beforeEach } from '@jest/globals';
 import Database from 'better-sqlite3';
 import fs from 'fs';
 import path from 'path';
+import dotenv from 'dotenv';
+
+// Load test environment variables
+dotenv.config({ path: '.env.test' });
 
 // Test database path
-const TEST_DB_PATH = path.join(process.cwd(), 'test_persian_legal_ai.db');
+const TEST_DB_PATH = path.join(process.cwd(), 'test-persian-legal-ai.db');
 
 // Global test database instance
 export let testDb: Database.Database;
 
 beforeAll(async () => {
-  // Set test environment variables
+  // Ensure test environment variables are set
   process.env.NODE_ENV = 'test';
-  process.env.JWT_SECRET = 'test-jwt-secret-key-for-testing-only';
-  process.env.HF_TOKEN_ENC = Buffer.from('hf_test_token_for_testing').toString('base64');
+  process.env.JWT_SECRET = process.env.JWT_SECRET || 'test-jwt-secret-key-for-testing-only';
+  process.env.HF_TOKEN_ENC = process.env.HF_TOKEN_ENC || Buffer.from('hf_test_token_for_testing').toString('base64');
   
   // Ensure test database file is deleted
   if (fs.existsSync(TEST_DB_PATH)) {

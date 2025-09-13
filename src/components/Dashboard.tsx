@@ -17,7 +17,6 @@ import { Sidebar } from './layout/Sidebar';
 import { apiClient, connectSocket, onSystemMetrics, SystemMetrics } from '../services/api';
 import { SocketIntegration } from './SocketIntegration';
 import { SocketStatus } from './SocketStatus';
-import { useAuth } from './AuthGuard';
 
 interface DashboardProps {}
 
