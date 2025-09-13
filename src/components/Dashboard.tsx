@@ -157,6 +157,9 @@ export const Dashboard: React.FC<DashboardProps> = () => {
     switch (path) {
       case '/app/dashboard': return 'داشبورد مدیریت';
       case '/app/training': return 'آموزش مدل‌ها';
+      case '/app/leaderboard': return 'جدول رتبه‌بندی مدل‌ها';
+      case '/app/history': return 'تاریخچه آموزش';
+      case '/app/management': return 'مدیریت مدل‌ها';
       case '/app/monitoring': return 'نظارت سیستم';
       case '/app/analytics': return 'تحلیل‌ها و گزارش‌ها';
       case '/app/models': return 'مدیریت مدل‌ها';
