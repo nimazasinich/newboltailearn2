@@ -21,6 +21,18 @@ export const schemas = {
     role: z.enum(['viewer', 'trainer', 'admin']).optional()
   }),
 
+  updateProfile: z.object({
+    username: z.string().min(3).max(50).regex(/^[a-zA-Z0-9_-]+$/).optional(),
+    email: z.string().email().max(255).optional()
+  }),
+
+  changePassword: z.object({
+    currentPassword: z.string().min(1),
+    newPassword: z.string().min(8).max(128)
+      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+        'Password must contain uppercase, lowercase, number and special character')
+  }),
+
   // Model schemas
   createModel: z.object({
     name: z.string().min(1).max(255),
@@ -45,10 +57,18 @@ export const schemas = {
   // Dataset schemas
   createDataset: z.object({
     name: z.string().min(1).max(255),
+    type: z.string().min(1).max(100),
+    description: z.string().max(1000).optional(),
     source: z.string().min(1).max(500),
     huggingface_id: z.string().optional(),
     samples: z.number().int().min(0).optional(),
     size_mb: z.number().min(0).optional()
+  }),
+
+  updateDataset: z.object({
+    name: z.string().min(1).max(255).optional(),
+    description: z.string().max(1000).optional(),
+    status: z.enum(['idle', 'downloading', 'processing', 'ready', 'error']).optional()
   }),
 
   // Training schemas
@@ -94,7 +114,7 @@ export function validate(schema: z.ZodSchema) {
       if (error instanceof z.ZodError) {
         res.status(400).json({
           error: 'Validation failed',
-          details: error.errors.map(err => ({
+          details: error.issues.map(err => ({
             field: err.path.join('.'),
             message: err.message
           }))
@@ -121,7 +141,7 @@ export function validateQuery(schema: z.ZodSchema) {
       if (error instanceof z.ZodError) {
         res.status(400).json({
           error: 'Invalid query parameters',
-          details: error.errors.map(err => ({
+          details: error.issues.map(err => ({
             field: err.path.join('.'),
             message: err.message
           }))
@@ -148,7 +168,7 @@ export function validateParams(schema: z.ZodSchema) {
       if (error instanceof z.ZodError) {
         res.status(400).json({
           error: 'Invalid URL parameters',
-          details: error.errors.map(err => ({
+          details: error.issues.map(err => ({
             field: err.path.join('.'),
             message: err.message
           }))
