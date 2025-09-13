@@ -48,7 +48,8 @@ export class RealTrainingEngineImpl {
   /**
    * Initialize BERT-like model for Persian text classification
    */
-  async initializeModel(numClasses: number = 3): Promise<void> {
+  async initializeModel(config?: { numClasses?: number; modelType?: string }): Promise<void> {
+    const numClasses = config?.numClasses || 3;
     const vocabSize = this.tokenizer.getVocabSize();
     const embeddingDim = 128;
     const maxLength = 512;
@@ -182,6 +183,25 @@ export class RealTrainingEngineImpl {
     return { texts, labels };
   }
   
+  /**
+   * Start training with real TensorFlow.js
+   */
+  async startTraining(
+    config: any,
+    callbacks: any
+  ): Promise<void> {
+    const modelId = config.modelId || 1;
+    const datasetId = config.datasetId || 'default';
+    const trainingConfig: TrainingConfig = {
+      epochs: config.epochs || 10,
+      batchSize: config.batchSize || 32,
+      learningRate: config.learningRate || 0.001,
+      validationSplit: config.validationSplit || 0.2
+    };
+    
+    await this.train(modelId, datasetId, trainingConfig, callbacks.onProgress);
+  }
+
   /**
    * Train the model with real TensorFlow.js
    */
@@ -434,6 +454,23 @@ export class RealTrainingEngineImpl {
       currentEpoch: this.currentEpoch,
       history: this.trainingHistory
     };
+  }
+
+  /**
+   * Get the current model instance
+   */
+  getModel(): tf.LayersModel | null {
+    return this.model;
+  }
+
+  /**
+   * Save model to file
+   */
+  async saveModel(filePath: string): Promise<void> {
+    if (!this.model) {
+      throw new Error('No model to save');
+    }
+    await this.model.save(`file://${filePath}`);
   }
 }
 

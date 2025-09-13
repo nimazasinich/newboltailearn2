@@ -27,10 +27,10 @@ import {
 // Worker thread execution
 if (!isMainThread) {
   handleWorkerExecution();
-} else {
-  // Main thread exports
-  export { TrainingWorkerPool, WorkerManager };
 }
+
+// Main thread exports
+export { TrainingWorkerPool, WorkerManager };
 
 /**
  * Handle worker thread execution
@@ -547,7 +547,7 @@ async function optimizeHyperparameters(request: OptimizationRequest): Promise<Op
 /**
  * Worker Pool for managing multiple workers
  */
-export class TrainingWorkerPool {
+class TrainingWorkerPool {
   private workers: Worker[] = [];
   private available: Worker[] = [];
   private maxWorkers: number;
@@ -695,7 +695,7 @@ export class TrainingWorkerPool {
 /**
  * Worker Manager for high-level worker operations
  */
-export class WorkerManager {
+class WorkerManager {
   private pool: TrainingWorkerPool;
   private isEnabled: boolean;
 

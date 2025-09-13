@@ -1,11 +1,27 @@
 import { getRealTrainingEngine } from '../../training/RealTrainingEngineImpl.js';
-import { isDemoMode } from '../security/config.js';
+import { config, isDemoMode } from '../security/config.js';
+import { WorkerManager } from '../workers/trainingWorker.js';
 export class TrainingService {
     constructor(db, io) {
+        this.workerManager = null;
         this.activeTrainingSessions = new Map();
+        this.performanceMetrics = {
+            mainThreadResponseTime: 0,
+            workerMemoryUsage: 0,
+            messagePassingLatency: 0,
+            trainingThroughput: 0
+        };
         this.db = db;
         this.io = io;
         this.trainingEngine = getRealTrainingEngine(db);
+        // Initialize worker manager if workers are enabled
+        if (config.USE_WORKERS) {
+            this.workerManager = new WorkerManager(true, 4);
+            console.log('✅ Worker threads enabled for training operations');
+        }
+        else {
+            console.log('⚠️  Worker threads disabled - training will run in main thread');
+        }
     }
     /**
      * Start real training for a model
@@ -55,37 +71,118 @@ export class TrainingService {
      * Run the actual training process
      */
     async runTraining(modelId, datasetId, config, sessionId) {
+        const startTime = Date.now();
         try {
-            // Initialize model
-            await this.trainingEngine.initializeModel(3); // 3 classes for legal text
-            // Progress callback
-            const progressCallback = (progress) => {
-                // Update database
-                this.db.prepare(`
-          UPDATE models 
-          SET current_epoch = ?, loss = ?, accuracy = ?, updated_at = CURRENT_TIMESTAMP 
-          WHERE id = ?
-        `).run(progress.epoch, progress.loss, progress.accuracy, modelId);
-                // Log progress
-                this.db.prepare(`
-          INSERT INTO training_logs (model_id, level, message, epoch, loss, accuracy, timestamp)
-          VALUES (?, 'info', ?, ?, ?, ?, ?)
-        `).run(modelId, `Epoch ${progress.epoch} completed`, progress.epoch, progress.loss, progress.accuracy, progress.timestamp);
-                // Emit progress via Socket.IO
-                this.io.emit('training_progress', {
-                    modelId,
-                    sessionId,
-                    progress
-                });
-                console.log(`Model ${modelId} - Epoch ${progress.epoch}: loss=${progress.loss.toFixed(4)}, accuracy=${progress.accuracy.toFixed(4)}`);
-            };
-            // Start training
-            await this.trainingEngine.train(modelId, datasetId, config, progressCallback);
-            // Training completed successfully
-            this.handleTrainingComplete(modelId, sessionId);
+            // Use worker threads if enabled, otherwise fallback to main thread
+            if (this.workerManager && config.USE_WORKERS) {
+                await this.runTrainingWithWorkers(modelId, datasetId, config, sessionId);
+            }
+            else {
+                await this.runTrainingInMainThread(modelId, datasetId, config, sessionId);
+            }
+            // Update performance metrics
+            this.performanceMetrics.mainThreadResponseTime = Date.now() - startTime;
         }
         catch (error) {
             this.handleTrainingError(modelId, sessionId, error instanceof Error ? error.message : 'Unknown error');
+        }
+    }
+    /**
+     * Run training using worker threads
+     */
+    async runTrainingWithWorkers(modelId, datasetId, config, sessionId) {
+        if (!this.workerManager) {
+            throw new Error('Worker manager not initialized');
+        }
+        const trainingRequest = {
+            modelId,
+            datasetId,
+            config: {
+                ...config,
+                modelType: 'persian-bert' // Default model type
+            },
+            sessionId,
+            userId: 1 // Default user ID
+        };
+        // Set up progress monitoring
+        const progressInterval = setInterval(() => {
+            this.monitorWorkerPerformance();
+        }, 1000);
+        try {
+            // Execute training in worker thread
+            const result = await this.workerManager.trainModel(trainingRequest);
+            // Update database with final results
+            this.db.prepare(`
+        UPDATE models 
+        SET accuracy = ?, loss = ?, epochs = ?, updated_at = CURRENT_TIMESTAMP 
+        WHERE id = ?
+      `).run(result.finalAccuracy, result.finalLoss, result.totalEpochs, modelId);
+            // Update training session
+            this.db.prepare(`
+        UPDATE training_sessions 
+        SET final_accuracy = ?, final_loss = ?, total_epochs = ?, 
+            training_duration_seconds = ?, result = ?
+        WHERE id = ?
+      `).run(result.finalAccuracy, result.finalLoss, result.totalEpochs, Math.floor(result.trainingDuration / 1000), JSON.stringify(result.metrics), sessionId);
+            // Training completed successfully
+            this.handleTrainingComplete(modelId, sessionId);
+        }
+        finally {
+            clearInterval(progressInterval);
+        }
+    }
+    /**
+     * Run training in main thread (fallback)
+     */
+    async runTrainingInMainThread(modelId, datasetId, config, sessionId) {
+        // Initialize model
+        await this.trainingEngine.initializeModel(3); // 3 classes for legal text
+        // Progress callback
+        const progressCallback = (progress) => {
+            // Update database
+            this.db.prepare(`
+        UPDATE models 
+        SET current_epoch = ?, loss = ?, accuracy = ?, updated_at = CURRENT_TIMESTAMP 
+        WHERE id = ?
+      `).run(progress.epoch, progress.loss, progress.accuracy, modelId);
+            // Log progress
+            this.db.prepare(`
+        INSERT INTO training_logs (model_id, level, message, epoch, loss, accuracy, timestamp)
+        VALUES (?, 'info', ?, ?, ?, ?, ?)
+      `).run(modelId, `Epoch ${progress.epoch} completed`, progress.epoch, progress.loss, progress.accuracy, progress.timestamp);
+            // Emit progress via Socket.IO
+            this.io.emit('training_progress', {
+                modelId,
+                sessionId,
+                progress
+            });
+            console.log(`Model ${modelId} - Epoch ${progress.epoch}: loss=${progress.loss.toFixed(4)}, accuracy=${progress.accuracy.toFixed(4)}`);
+        };
+        // Start training
+        await this.trainingEngine.train(modelId, datasetId, config, progressCallback);
+        // Training completed successfully
+        this.handleTrainingComplete(modelId, sessionId);
+    }
+    /**
+     * Monitor worker performance metrics
+     */
+    monitorWorkerPerformance() {
+        if (!this.workerManager)
+            return;
+        const metrics = this.workerManager.getWorkerMetrics();
+        if (metrics.length > 0) {
+            const avgMemoryUsage = metrics.reduce((sum, m) => sum + m.memoryUsage, 0) / metrics.length;
+            const avgCpuUsage = metrics.reduce((sum, m) => sum + m.cpuUsage, 0) / metrics.length;
+            this.performanceMetrics.workerMemoryUsage = avgMemoryUsage;
+            this.performanceMetrics.trainingThroughput = metrics.reduce((sum, m) => sum + m.completedTasks, 0);
+            // Emit performance metrics via Socket.IO
+            this.io.emit('worker_metrics', {
+                memoryUsage: avgMemoryUsage,
+                cpuUsage: avgCpuUsage,
+                activeWorkers: metrics.filter(m => m.activeTasks > 0).length,
+                totalWorkers: metrics.length,
+                timestamp: new Date().toISOString()
+            });
         }
     }
     /**
@@ -236,5 +333,59 @@ export class TrainingService {
      */
     getActiveSessions() {
         return Array.from(this.activeTrainingSessions.keys());
+    }
+    /**
+     * Get performance metrics
+     */
+    getPerformanceMetrics() {
+        return {
+            ...this.performanceMetrics,
+            workersEnabled: !!this.workerManager,
+            activeSessions: this.activeTrainingSessions.size
+        };
+    }
+    /**
+     * Evaluate model using worker threads
+     */
+    async evaluateModel(request) {
+        if (!this.workerManager) {
+            throw new Error('Worker manager not initialized');
+        }
+        return this.workerManager.evaluateModel(request);
+    }
+    /**
+     * Preprocess data using worker threads
+     */
+    async preprocessData(request) {
+        if (!this.workerManager) {
+            throw new Error('Worker manager not initialized');
+        }
+        return this.workerManager.preprocessData(request);
+    }
+    /**
+     * Optimize hyperparameters using worker threads
+     */
+    async optimizeHyperparameters(request) {
+        if (!this.workerManager) {
+            throw new Error('Worker manager not initialized');
+        }
+        return this.workerManager.optimizeHyperparameters(request);
+    }
+    /**
+     * Get worker metrics
+     */
+    getWorkerMetrics() {
+        if (!this.workerManager) {
+            return [];
+        }
+        return this.workerManager.getWorkerMetrics();
+    }
+    /**
+     * Cleanup resources
+     */
+    async cleanup() {
+        if (this.workerManager) {
+            await this.workerManager.terminate();
+        }
     }
 }
