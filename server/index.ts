@@ -94,6 +94,74 @@ db.exec(`
     description TEXT,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
   );
+
+  -- Phase 4: AI Training Data Persistence Tables
+  CREATE TABLE IF NOT EXISTS training_sessions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    model_id INTEGER NOT NULL,
+    dataset_id TEXT NOT NULL,
+    parameters TEXT NOT NULL, -- JSON config
+    start_time DATETIME NOT NULL,
+    end_time DATETIME,
+    status TEXT DEFAULT 'running' CHECK(status IN ('running', 'completed', 'failed', 'paused')),
+    final_accuracy REAL,
+    final_loss REAL,
+    total_epochs INTEGER,
+    training_duration_seconds INTEGER,
+    result TEXT, -- JSON with detailed results
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(model_id) REFERENCES models(id),
+    FOREIGN KEY(dataset_id) REFERENCES datasets(id)
+  );
+
+  CREATE TABLE IF NOT EXISTS checkpoints (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    model_id INTEGER NOT NULL,
+    session_id INTEGER,
+    epoch INTEGER NOT NULL,
+    accuracy REAL,
+    loss REAL,
+    file_path TEXT NOT NULL,
+    file_size_mb REAL,
+    metadata TEXT, -- JSON with additional checkpoint info
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(model_id) REFERENCES models(id),
+    FOREIGN KEY(session_id) REFERENCES training_sessions(id)
+  );
+
+  CREATE TABLE IF NOT EXISTS rankings (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    model_id INTEGER NOT NULL,
+    rank_type TEXT NOT NULL CHECK(rank_type IN ('overall', 'by_dataset', 'by_type', 'by_accuracy', 'by_f1', 'by_stability')),
+    score REAL NOT NULL,
+    rank_position INTEGER,
+    category TEXT,
+    dataset_id TEXT,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(model_id) REFERENCES models(id),
+    FOREIGN KEY(dataset_id) REFERENCES datasets(id)
+  );
+
+  CREATE TABLE IF NOT EXISTS model_categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    model_id INTEGER NOT NULL,
+    category TEXT NOT NULL CHECK(category IN ('Legal QA', 'Laws', 'NER', 'Classification', 'Generation', 'Translation')),
+    confidence REAL DEFAULT 1.0,
+    assigned_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(model_id) REFERENCES models(id)
+  );
+
+  CREATE TABLE IF NOT EXISTS model_exports (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    model_id INTEGER NOT NULL,
+    export_type TEXT NOT NULL CHECK(export_type IN ('weights', 'config', 'full_model', 'checkpoint')),
+    file_path TEXT NOT NULL,
+    file_size_mb REAL,
+    export_format TEXT DEFAULT 'json' CHECK(export_format IN ('json', 'h5', 'pb', 'onnx')),
+    metadata TEXT, -- JSON with export details
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(model_id) REFERENCES models(id)
+  );
 `);
 
 // Insert default datasets
@@ -351,6 +419,21 @@ app.post('/api/models/:id/train', async (req, res) => {
       return res.status(400).json({ error: 'Model is already training' });
     }
     
+    // Create training session
+    const trainingConfig = {
+      epochs,
+      batch_size,
+      learning_rate,
+      dataset_ids: dataset_ids.length > 0 ? dataset_ids : ['iran-legal-qa', 'legal-laws']
+    };
+    
+    const sessionResult = db.prepare(`
+      INSERT INTO training_sessions (model_id, dataset_id, parameters, start_time, status)
+      VALUES (?, ?, ?, CURRENT_TIMESTAMP, 'running')
+    `).run(id, model.dataset_id, JSON.stringify(trainingConfig));
+    
+    const sessionId = sessionResult.lastInsertRowid;
+    
     // Update model status
     db.prepare('UPDATE models SET status = ?, current_epoch = 0, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
       .run('training', id);
@@ -361,17 +444,15 @@ app.post('/api/models/:id/train', async (req, res) => {
       VALUES (?, 'info', 'Training started', 0)
     `).run(id);
     
-    logToDatabase('info', 'training', `Started training model ${id}`, { epochs, batch_size, learning_rate });
+    logToDatabase('info', 'training', `Started training model ${id}`, { epochs, batch_size, learning_rate, sessionId });
     
     // Start real training process
     startRealTraining(parseInt(id), model, {
-      epochs,
-      batch_size,
-      learning_rate,
-      dataset_ids: dataset_ids.length > 0 ? dataset_ids : ['iran-legal-qa', 'legal-laws']
+      ...trainingConfig,
+      sessionId
     });
     
-    res.json({ message: 'Training started successfully' });
+    res.json({ message: 'Training started successfully', sessionId });
   } catch (error) {
     logToDatabase('error', 'api', 'Failed to start training', { error: error.message });
     res.status(500).json({ error: 'Failed to start training' });
@@ -780,6 +861,291 @@ app.get('/api/analytics', (req, res) => {
   }
 });
 
+// Phase 4: New API Endpoints
+
+// Model Export endpoint
+app.post('/api/models/:id/export', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { exportType = 'full_model', format = 'json' } = req.body;
+    
+    const model = db.prepare('SELECT * FROM models WHERE id = ?').get(id) as any;
+    if (!model) {
+      return res.status(404).json({ error: 'Model not found' });
+    }
+    
+    if (model.status !== 'completed') {
+      return res.status(400).json({ error: 'Model must be completed to export' });
+    }
+    
+    const fs = await import('fs');
+    const path = await import('path');
+    
+    // Create exports directory
+    const exportsDir = './exports';
+    if (!fs.existsSync(exportsDir)) {
+      fs.mkdirSync(exportsDir, { recursive: true });
+    }
+    
+    const exportPath = path.join(exportsDir, `model_${id}_${exportType}_${Date.now()}.${format}`);
+    
+    // Create export data
+    const exportData = {
+      modelId: model.id,
+      name: model.name,
+      type: model.type,
+      accuracy: model.accuracy,
+      loss: model.loss,
+      epochs: model.epochs,
+      dataset_id: model.dataset_id,
+      config: JSON.parse(model.config || '{}'),
+      exportedAt: new Date().toISOString(),
+      exportType,
+      format
+    };
+    
+    fs.writeFileSync(exportPath, JSON.stringify(exportData, null, 2));
+    
+    // Get file size
+    const stats = fs.statSync(exportPath);
+    const fileSizeMB = stats.size / (1024 * 1024);
+    
+    // Save export record
+    db.prepare(`
+      INSERT INTO model_exports (model_id, export_type, file_path, file_size_mb, export_format, metadata)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run(
+      model.id,
+      exportType,
+      exportPath,
+      fileSizeMB,
+      format,
+      JSON.stringify({ exportedAt: exportData.exportedAt })
+    );
+    
+    logToDatabase('info', 'export', `Exported model ${id}`, {
+      exportType,
+      format,
+      fileSize: fileSizeMB
+    });
+    
+    res.json({
+      message: 'Model exported successfully',
+      exportPath,
+      fileSize: fileSizeMB,
+      downloadUrl: `/api/models/${id}/download/${path.basename(exportPath)}`
+    });
+  } catch (error) {
+    logToDatabase('error', 'api', 'Failed to export model', { error: error.message });
+    res.status(500).json({ error: 'Failed to export model' });
+  }
+});
+
+// Model Load endpoint
+app.post('/api/models/:id/load', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { checkpointPath, sessionId } = req.body;
+    
+    const model = db.prepare('SELECT * FROM models WHERE id = ?').get(id) as any;
+    if (!model) {
+      return res.status(404).json({ error: 'Model not found' });
+    }
+    
+    const fs = await import('fs');
+    const path = await import('path');
+    
+    // Load checkpoint data
+    let checkpointData;
+    if (checkpointPath) {
+      if (!fs.existsSync(checkpointPath)) {
+        return res.status(404).json({ error: 'Checkpoint file not found' });
+      }
+      checkpointData = JSON.parse(fs.readFileSync(checkpointPath, 'utf8'));
+    } else if (sessionId) {
+      // Load latest checkpoint for session
+      const checkpoint = db.prepare(`
+        SELECT * FROM checkpoints 
+        WHERE session_id = ? 
+        ORDER BY epoch DESC 
+        LIMIT 1
+      `).get(sessionId) as any;
+      
+      if (!checkpoint) {
+        return res.status(404).json({ error: 'No checkpoint found for session' });
+      }
+      
+      if (!fs.existsSync(checkpoint.file_path)) {
+        return res.status(404).json({ error: 'Checkpoint file not found' });
+      }
+      
+      checkpointData = JSON.parse(fs.readFileSync(checkpoint.file_path, 'utf8'));
+    } else {
+      return res.status(400).json({ error: 'Either checkpointPath or sessionId must be provided' });
+    }
+    
+    // Update model with loaded data
+    db.prepare(`
+      UPDATE models 
+      SET status = 'idle', 
+          current_epoch = ?, 
+          accuracy = ?, 
+          loss = ?,
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = ?
+    `).run(
+      checkpointData.epoch || 0,
+      checkpointData.accuracy || 0,
+      checkpointData.loss || 0,
+      model.id
+    );
+    
+    logToDatabase('info', 'load', `Loaded model ${id} from checkpoint`, {
+      epoch: checkpointData.epoch,
+      checkpointPath: checkpointPath || 'from session'
+    });
+    
+    res.json({
+      message: 'Model loaded successfully',
+      model: {
+        id: model.id,
+        name: model.name,
+        type: model.type,
+        current_epoch: checkpointData.epoch || 0,
+        accuracy: checkpointData.accuracy || 0,
+        loss: checkpointData.loss || 0,
+        status: 'idle'
+      }
+    });
+  } catch (error) {
+    logToDatabase('error', 'api', 'Failed to load model', { error: error.message });
+    res.status(500).json({ error: 'Failed to load model' });
+  }
+});
+
+// Rankings endpoint
+app.get('/api/rankings', (req, res) => {
+  try {
+    const { type = 'overall', limit = 50 } = req.query;
+    
+    const rankings = db.prepare(`
+      SELECT 
+        r.*,
+        m.name as model_name,
+        m.type as model_type,
+        m.accuracy,
+        m.loss,
+        m.created_at,
+        d.name as dataset_name,
+        mc.category
+      FROM rankings r
+      JOIN models m ON r.model_id = m.id
+      LEFT JOIN datasets d ON r.dataset_id = d.id
+      LEFT JOIN model_categories mc ON r.model_id = mc.model_id
+      WHERE r.rank_type = ?
+      ORDER BY r.score DESC, r.rank_position ASC
+      LIMIT ?
+    `).all(type, parseInt(limit as string));
+    
+    res.json({
+      rankings,
+      type,
+      total: rankings.length
+    });
+  } catch (error) {
+    logToDatabase('error', 'api', 'Failed to fetch rankings', { error: error.message });
+    res.status(500).json({ error: 'Failed to fetch rankings' });
+  }
+});
+
+// Training Sessions endpoint
+app.get('/api/sessions', (req, res) => {
+  try {
+    const { status, limit = 100, offset = 0 } = req.query;
+    
+    let query = `
+      SELECT 
+        ts.*,
+        m.name as model_name,
+        m.type as model_type,
+        d.name as dataset_name
+      FROM training_sessions ts
+      JOIN models m ON ts.model_id = m.id
+      LEFT JOIN datasets d ON ts.dataset_id = d.id
+    `;
+    
+    const params = [];
+    if (status) {
+      query += ' WHERE ts.status = ?';
+      params.push(status);
+    }
+    
+    query += ' ORDER BY ts.start_time DESC LIMIT ? OFFSET ?';
+    params.push(parseInt(limit as string), parseInt(offset as string));
+    
+    const sessions = db.prepare(query).all(...params);
+    
+    // Get total count
+    let countQuery = 'SELECT COUNT(*) as total FROM training_sessions ts';
+    if (status) {
+      countQuery += ' WHERE ts.status = ?';
+    }
+    const total = (db.prepare(countQuery).get(...(status ? [status] : [])) as any).total;
+    
+    res.json({
+      sessions,
+      total,
+      limit: parseInt(limit as string),
+      offset: parseInt(offset as string)
+    });
+  } catch (error) {
+    logToDatabase('error', 'api', 'Failed to fetch training sessions', { error: error.message });
+    res.status(500).json({ error: 'Failed to fetch training sessions' });
+  }
+});
+
+// Get checkpoints for a model
+app.get('/api/models/:id/checkpoints', (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const checkpoints = db.prepare(`
+      SELECT 
+        c.*,
+        ts.start_time as session_start_time
+      FROM checkpoints c
+      LEFT JOIN training_sessions ts ON c.session_id = ts.id
+      WHERE c.model_id = ?
+      ORDER BY c.epoch DESC
+    `).all(id);
+    
+    res.json(checkpoints);
+  } catch (error) {
+    logToDatabase('error', 'api', 'Failed to fetch checkpoints', { error: error.message });
+    res.status(500).json({ error: 'Failed to fetch checkpoints' });
+  }
+});
+
+// Download exported model
+app.get('/api/models/:id/download/:filename', (req, res) => {
+  try {
+    const { id, filename } = req.params;
+    const fs = require('fs');
+    const path = require('path');
+    
+    const exportPath = path.join('./exports', filename);
+    
+    if (!fs.existsSync(exportPath)) {
+      return res.status(404).json({ error: 'Export file not found' });
+    }
+    
+    res.download(exportPath, filename);
+  } catch (error) {
+    logToDatabase('error', 'api', 'Failed to download model', { error: error.message });
+    res.status(500).json({ error: 'Failed to download model' });
+  }
+});
+
 // Team endpoints
 app.get('/api/team', (req, res) => {
   try {
@@ -1024,6 +1390,11 @@ async function startRealTraining(modelId: number, model: any, config: any) {
                progress.trainingLoss[progress.trainingLoss.length - 1] || 0,
                progress.validationAccuracy[progress.validationAccuracy.length - 1] || 0);
         
+        // Save checkpoint every 5 epochs
+        if (progress.currentEpoch % 5 === 0) {
+          saveModelCheckpoint(modelId, trainedModel, progress.currentEpoch, config.sessionId);
+        }
+        
         // Emit progress via WebSocket
         io.emit('training_progress', {
           modelId,
@@ -1047,6 +1418,30 @@ async function startRealTraining(modelId: number, model: any, config: any) {
       },
       
       onComplete: (trainedModel: any) => {
+        const finalAccuracy = trainedModel?.accuracy || 0;
+        const finalLoss = trainedModel?.loss || 0;
+        const startTime = new Date();
+        
+        // Update training session
+        db.prepare(`
+          UPDATE training_sessions 
+          SET end_time = CURRENT_TIMESTAMP, 
+              status = 'completed',
+              final_accuracy = ?,
+              final_loss = ?,
+              total_epochs = ?,
+              training_duration_seconds = ?,
+              result = ?
+          WHERE model_id = ? AND status = 'running'
+        `).run(
+          finalAccuracy,
+          finalLoss,
+          config.epochs,
+          Math.floor((Date.now() - startTime.getTime()) / 1000),
+          JSON.stringify({ accuracy: finalAccuracy, loss: finalLoss, epochs: config.epochs }),
+          modelId
+        );
+        
         // Training completed
         db.prepare('UPDATE models SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
           .run('completed', modelId);
@@ -1058,8 +1453,14 @@ async function startRealTraining(modelId: number, model: any, config: any) {
         
         logToDatabase('info', 'training', `Model ${modelId} training completed successfully`);
         
-        // Save model checkpoint
-        saveModelCheckpoint(modelId, trainedModel, config.epochs);
+        // Save final model checkpoint
+        saveModelCheckpoint(modelId, trainedModel, config.epochs, config.sessionId);
+        
+        // Update rankings
+        updateModelRankings(modelId, finalAccuracy, finalLoss, config.dataset_ids[0]);
+        
+        // Categorize model
+        categorizeModel(modelId, config.modelType, config.dataset_ids[0]);
         
         // Cleanup
         activeTrainingSessions.delete(modelId);
@@ -1069,6 +1470,15 @@ async function startRealTraining(modelId: number, model: any, config: any) {
       },
       
       onError: (error: string) => {
+        // Update training session
+        db.prepare(`
+          UPDATE training_sessions 
+          SET end_time = CURRENT_TIMESTAMP, 
+              status = 'failed',
+              result = ?
+          WHERE model_id = ? AND status = 'running'
+        `).run(JSON.stringify({ error }), modelId);
+        
         // Training failed
         db.prepare('UPDATE models SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
           .run('failed', modelId);
@@ -1144,7 +1554,7 @@ async function loadTrainingDatasets(datasetIds: string[]) {
 }
 
 // Save model checkpoint
-async function saveModelCheckpoint(modelId: number, model: any, epoch: number) {
+async function saveModelCheckpoint(modelId: number, model: any, epoch: number, sessionId?: number) {
   try {
     const fs = await import('fs');
     const path = await import('path');
@@ -1163,17 +1573,149 @@ async function saveModelCheckpoint(modelId: number, model: any, epoch: number) {
       epoch,
       timestamp: new Date().toISOString(),
       modelType: 'checkpoint',
+      sessionId,
       // model: await model.save() // Would save actual TensorFlow.js model
     };
     
     fs.writeFileSync(checkpointPath, JSON.stringify(checkpoint, null, 2));
     
+    // Get file size
+    const stats = fs.statSync(checkpointPath);
+    const fileSizeMB = stats.size / (1024 * 1024);
+    
+    // Save checkpoint metadata to database
+    db.prepare(`
+      INSERT INTO checkpoints (model_id, session_id, epoch, file_path, file_size_mb, metadata)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run(
+      modelId,
+      sessionId || null,
+      epoch,
+      checkpointPath,
+      fileSizeMB,
+      JSON.stringify({ modelType: 'checkpoint', timestamp: checkpoint.timestamp })
+    );
+    
     logToDatabase('info', 'training', `Saved checkpoint for model ${modelId} at epoch ${epoch}`, {
-      path: checkpointPath
+      path: checkpointPath,
+      size: fileSizeMB
     });
     
   } catch (error) {
     logToDatabase('error', 'training', `Failed to save checkpoint for model ${modelId}`, {
+      error: error.message
+    });
+  }
+}
+
+// Update model rankings
+function updateModelRankings(modelId: number, accuracy: number, loss: number, datasetId: string) {
+  try {
+    // Overall ranking
+    db.prepare(`
+      INSERT OR REPLACE INTO rankings (model_id, rank_type, score, category, dataset_id)
+      VALUES (?, 'overall', ?, 'Overall Performance', ?)
+    `).run(modelId, accuracy, datasetId);
+    
+    // By accuracy ranking
+    db.prepare(`
+      INSERT OR REPLACE INTO rankings (model_id, rank_type, score, category, dataset_id)
+      VALUES (?, 'by_accuracy', ?, 'Accuracy', ?)
+    `).run(modelId, accuracy, datasetId);
+    
+    // By dataset ranking
+    db.prepare(`
+      INSERT OR REPLACE INTO rankings (model_id, rank_type, score, category, dataset_id)
+      VALUES (?, 'by_dataset', ?, 'Dataset Performance', ?)
+    `).run(modelId, accuracy, datasetId);
+    
+    // Update rank positions
+    updateRankPositions();
+    
+    logToDatabase('info', 'rankings', `Updated rankings for model ${modelId}`, {
+      accuracy,
+      loss,
+      datasetId
+    });
+  } catch (error) {
+    logToDatabase('error', 'rankings', `Failed to update rankings for model ${modelId}`, {
+      error: error.message
+    });
+  }
+}
+
+// Update rank positions
+function updateRankPositions() {
+  try {
+    // Update overall rankings
+    db.prepare(`
+      UPDATE rankings 
+      SET rank_position = (
+        SELECT COUNT(*) + 1 
+        FROM rankings r2 
+        WHERE r2.rank_type = rankings.rank_type 
+        AND r2.score > rankings.score
+      )
+      WHERE rank_type = 'overall'
+    `).run();
+    
+    // Update accuracy rankings
+    db.prepare(`
+      UPDATE rankings 
+      SET rank_position = (
+        SELECT COUNT(*) + 1 
+        FROM rankings r2 
+        WHERE r2.rank_type = rankings.rank_type 
+        AND r2.score > rankings.score
+      )
+      WHERE rank_type = 'by_accuracy'
+    `).run();
+    
+    // Update dataset rankings
+    db.prepare(`
+      UPDATE rankings 
+      SET rank_position = (
+        SELECT COUNT(*) + 1 
+        FROM rankings r2 
+        WHERE r2.rank_type = rankings.rank_type 
+        AND r2.dataset_id = rankings.dataset_id
+        AND r2.score > rankings.score
+      )
+      WHERE rank_type = 'by_dataset'
+    `).run();
+  } catch (error) {
+    logToDatabase('error', 'rankings', 'Failed to update rank positions', {
+      error: error.message
+    });
+  }
+}
+
+// Categorize model
+function categorizeModel(modelId: number, modelType: string, datasetId: string) {
+  try {
+    // Determine category based on dataset and model type
+    let category = 'Classification';
+    
+    if (datasetId.includes('qa') || datasetId.includes('legal-qa')) {
+      category = 'Legal QA';
+    } else if (datasetId.includes('laws') || datasetId.includes('legal')) {
+      category = 'Laws';
+    } else if (datasetId.includes('ner')) {
+      category = 'NER';
+    }
+    
+    // Insert category
+    db.prepare(`
+      INSERT OR REPLACE INTO model_categories (model_id, category, confidence)
+      VALUES (?, ?, ?)
+    `).run(modelId, category, 1.0);
+    
+    logToDatabase('info', 'categorization', `Categorized model ${modelId} as ${category}`, {
+      modelType,
+      datasetId
+    });
+  } catch (error) {
+    logToDatabase('error', 'categorization', `Failed to categorize model ${modelId}`, {
       error: error.message
     });
   }

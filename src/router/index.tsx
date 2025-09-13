@@ -19,6 +19,11 @@ const MonitoringPage = lazy(() => import('../components/MonitoringPage').then(m 
 const LogsPage = lazy(() => import('../components/LogsPage').then(m => ({ default: m.LogsPage })));
 const SettingsPage = lazy(() => import('../components/SettingsPage').then(m => ({ default: m.SettingsPage })));
 
+// Phase 4: New pages
+const LeaderboardPage = lazy(() => import('../components/LeaderboardPage').then(m => ({ default: m.LeaderboardPage })));
+const TrainingHistoryPage = lazy(() => import('../components/TrainingHistoryPage').then(m => ({ default: m.TrainingHistoryPage })));
+const ModelManagementPage = lazy(() => import('../components/ModelManagementPage').then(m => ({ default: m.ModelManagementPage })));
+
 export const routes = [
   {
     path: '/',
@@ -39,6 +44,18 @@ export const routes = [
       {
         path: 'training',
         element: <TrainingPage />,
+      },
+      {
+        path: 'leaderboard',
+        element: <LeaderboardPage />,
+      },
+      {
+        path: 'history',
+        element: <TrainingHistoryPage />,
+      },
+      {
+        path: 'management',
+        element: <ModelManagementPage />,
       },
       {
         path: 'documents',
