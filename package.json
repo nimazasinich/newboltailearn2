@@ -11,8 +11,10 @@
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
     "start": "node start.js",
+    "start:unified": "node start-unified.js",
     "server": "node server/server/index.cjs",
-    "compile-server": "npx tsc server/index.ts --outDir server --target es2020 --module esnext --moduleResolution node --esModuleInterop --allowSyntheticDefaultImports --skipLibCheck"
+    "compile-server": "npx tsc server/index.ts --outDir server --target es2020 --module esnext --moduleResolution node --esModuleInterop --allowSyntheticDefaultImports --skipLibCheck",
+    "test:phase2": "node test-phase2.js"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.8.4",

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { TrainingSession, TrainingProgress, TrainingMetrics, ModelCheckpoint, ModelConfiguration } from '../types/training';
-import { apiClient, onTrainingProgress, onTrainingCompleted, onTrainingFailed, onTrainingPaused, onTrainingResumed } from '../services/api';
+import { apiClient, onTrainingProgress, onTrainingCompleted, onTrainingFailed, onTrainingPaused, onTrainingResumed, onTrainingMetrics } from '../services/api';
 import { useAuth } from './useAuth';
 
 export function useTraining() {
@@ -87,14 +87,14 @@ export function useTraining() {
       const progress: TrainingProgress = {
         currentEpoch: data.epoch,
         totalEpochs: data.totalEpochs,
-        currentStep: 0,
-        totalSteps: 0,
-        trainingLoss: [],
+        currentStep: data.step || 0,
+        totalSteps: data.totalSteps || 0,
+        trainingLoss: data.loss ? [data.loss] : [],
         validationLoss: [],
-        validationAccuracy: [data.accuracy],
+        validationAccuracy: data.accuracy ? [data.accuracy] : [],
         learningRate: [],
-        estimatedTimeRemaining: 0,
-        completionPercentage: (data.epoch / data.totalEpochs) * 100
+        estimatedTimeRemaining: data.estimatedTimeRemaining || 0,
+        completionPercentage: data.completionPercentage || (data.epoch / data.totalEpochs) * 100
       };
       
       setSessionProgress(prev => new Map(prev).set(data.modelId.toString(), progress));
@@ -134,12 +134,28 @@ export function useTraining() {
       ));
     });
 
+    const unsubscribeMetrics = onTrainingMetrics((data) => {
+      const metrics: TrainingMetrics = {
+        trainingSpeed: data.trainingSpeed || 0,
+        memoryUsage: data.memoryUsage || 0,
+        cpuUsage: data.cpuUsage || 0,
+        gpuUsage: data.gpuUsage || 0,
+        batchSize: data.batchSize || 32,
+        throughput: data.throughput || 0,
+        convergenceRate: data.convergenceRate || 0,
+        efficiency: data.efficiency || 0
+      };
+      
+      setSessionMetrics(prev => new Map(prev).set(data.modelId.toString(), metrics));
+    });
+
     return () => {
       unsubscribeProgress();
       unsubscribeCompleted();
       unsubscribeFailed();
       unsubscribePaused();
       unsubscribeResumed();
+      unsubscribeMetrics();
     };
   }, [activeSession]);
 

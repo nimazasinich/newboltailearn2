@@ -7,7 +7,12 @@ import jwt from 'jsonwebtoken';
 import Database from 'better-sqlite3';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { getHFToken, getHFHeaders, testHFConnection, logTokenStatus } from './utils/decode.js';
+
+// ES module __dirname equivalent
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const server = createServer(app);

@@ -5,7 +5,11 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import Database from 'better-sqlite3';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import { getHFHeaders, testHFConnection, logTokenStatus } from './utils/decode.js';
+// ES module __dirname equivalent
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
