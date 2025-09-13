@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../state/store';
-import { useAuth } from '../components/AuthGuard';
+import { useAuth } from '../hooks/useAuth';
 
 export const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('');
