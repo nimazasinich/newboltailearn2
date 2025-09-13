@@ -12,7 +12,7 @@
     "type-check": "tsc --noEmit",
     "start": "node start.js",
     "server": "node server/index.js",
-    "compile-server": "npx tsc server/index.ts --outDir server --target es2020 --module commonjs --esModuleInterop --allowSyntheticDefaultImports --skipLibCheck"
+    "compile-server": "npx tsc server/index.ts --outDir server --target es2020 --module esnext --moduleResolution node --esModuleInterop --allowSyntheticDefaultImports --skipLibCheck"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.8.4",
