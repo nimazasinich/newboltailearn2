@@ -35,7 +35,7 @@ export function getHFToken(): string {
     
     return decoded;
   } catch (error) {
-    throw new Error(`Failed to decode HuggingFace token: ${error.message}`);
+    throw new Error(`Failed to decode HuggingFace token: ${(error as Error).message}`);
   }
 }
 
@@ -99,8 +99,8 @@ export async function testHFConnection(): Promise<boolean> {
     });
     
     return response.ok;
-  } catch (error) {
-    console.error('HuggingFace connection test failed:', error);
+  } catch (_error) {
+    console.error('HuggingFace connection test failed:', _error);
     return false;
   }
 }

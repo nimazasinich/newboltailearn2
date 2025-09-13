@@ -130,6 +130,45 @@ persian-legal-ai/
 └── persian_legal_ai.db    # SQLite database (working)
 ```
 
+## 🧪 Testing & Code Quality
+
+### Test Suite ✅
+- **Jest Testing Framework**: Comprehensive test suite with TypeScript support
+- **API Testing**: Full coverage of all API endpoints with Supertest
+- **Authentication Testing**: JWT authentication and role-based access control tests
+- **Database Testing**: SQLite database operations with test database isolation
+- **Stress Testing**: HuggingFace dataset downloads and training session stress tests
+- **Integration Testing**: End-to-end testing of the complete system
+
+### Code Quality ✅
+- **ESLint Configuration**: Modern flat config with TypeScript support
+- **TypeScript Strict Mode**: Enforced strict typing throughout the codebase
+- **Code Linting**: Automated code quality checks with `npm run lint`
+- **Type Checking**: TypeScript compilation validation with `npm run type-check`
+- **Import/Export Standards**: ES Modules with proper TypeScript support
+
+### Running Tests
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage report
+npm run test:coverage
+
+# Run specific test suites
+npm test -- tests/api/          # API tests only
+npm test -- tests/stress/       # Stress tests only
+
+# Run linting
+npm run lint
+
+# Fix linting issues automatically
+npm run lint -- --fix
+```
+
 ## 🔧 Available Scripts
 
 | Script | Description | Status |
@@ -141,8 +180,10 @@ persian-legal-ai/
 | `npm run lint` | Run ESLint | ✅ Working |
 | `npm run type-check` | Run TypeScript type checking | ✅ Working |
 | `npm run start:unified` | Start unified production server | ✅ Working |
-| `npm run test:integration` | Run integration tests | ✅ Working |
-| `npm run test:performance` | Run performance tests | ✅ Working |
+| `npm test` | Run all tests (Jest) | ✅ Working |
+| `npm run test:watch` | Run tests in watch mode | ✅ Working |
+| `npm run test:coverage` | Run tests with coverage | ✅ Working |
+| `npm run lint` | Run ESLint for code quality | ✅ Working |
 | `npm run docker:build` | Build Docker image | ✅ Working |
 | `npm run docker:run` | Run Docker container | ✅ Working |
 | `npm run docker:compose` | Start with Docker Compose | ✅ Working |
@@ -207,12 +248,35 @@ The system is fully integrated with Persian legal datasets from HuggingFace:
 3. Set `HF_TOKEN_ENC=your_base64_encoded_token` in `.env`
 4. Restart the server
 
-## 🔒 Security
+## 🔒 Security & Authentication
 
-- **Token Security**: HuggingFace tokens are Base64 encoded ✅
-- **Environment Variables**: Sensitive data stored in `.env` ✅
-- **Input Validation**: All inputs validated and sanitized ✅
-- **CORS**: Properly configured for development and production ✅
+### JWT Authentication System ✅
+- **JWT-based Authentication**: Secure token-based authentication for all sensitive routes
+- **Role-based Access Control**: Admin, Trainer, Viewer, and User roles with hierarchical permissions
+- **Protected Routes**: All sensitive operations require authentication:
+  - Model training, pause, resume operations
+  - Dataset downloads
+  - Advanced analytics access
+  - User management
+
+### Security Features ✅
+- **Token Security**: HuggingFace tokens are Base64 encoded
+- **Password Hashing**: bcryptjs with salt rounds for secure password storage
+- **Environment Variables**: Sensitive data stored in `.env` with JWT_SECRET
+- **Input Validation**: All inputs validated and sanitized
+- **CORS**: Properly configured for development and production
+- **SQL Injection Protection**: Parameterized queries throughout the application
+
+### Authentication Setup
+```bash
+# Set JWT secret for authentication
+echo "JWT_SECRET=your-super-secret-jwt-key-here" >> .env
+
+# Default admin user is created automatically on first run:
+# Username: admin
+# Password: admin123
+# Role: admin
+```
 
 ## 📊 Database Schema (Fully Implemented)
 
