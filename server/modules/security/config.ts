@@ -15,6 +15,7 @@ const envSchema = z.object({
   // Security
   JWT_SECRET: z.string().min(32),
   SESSION_SECRET: z.string().min(32).optional(),
+  CSRF_SECRET: z.string().min(32).optional(),
   
   // Rate Limiting
   RATE_LIMIT_GLOBAL: z.string().regex(/^\d+$/).default('100'),
@@ -31,6 +32,7 @@ const envSchema = z.object({
   
   // Hugging Face
   HF_TOKEN_B64: z.string().optional(),
+  HF_TOKEN_ENC: z.string().optional(), // Legacy support
   
   // Features
   USE_FAKE_DATA: z.string().default('false').transform(val => val === 'true'),
@@ -41,6 +43,7 @@ const envSchema = z.object({
   // Dev Identification (non-production only)
   DEV_ADMIN_USER: z.string().optional(),
   DEV_ADMIN_PASS: z.string().optional(),
+  DEFAULT_ADMIN_PASSWORD: z.string().optional(),
   
   // Monitoring
   ENABLE_METRICS: z.string().default('true').transform(val => val === 'true'),
@@ -55,9 +58,12 @@ export const config = (() => {
   try {
     const env = envSchema.parse(process.env);
     
-    // Decode HF token if provided
+    // Decode HF token if provided (support both formats)
     if (env.HF_TOKEN_B64) {
       (env as any).HF_TOKEN = Buffer.from(env.HF_TOKEN_B64, 'base64').toString('utf8');
+    } else if (env.HF_TOKEN_ENC) {
+      // Legacy support
+      (env as any).HF_TOKEN = Buffer.from(env.HF_TOKEN_ENC, 'base64').toString('utf8');
     }
     
     // Validate dev credentials only in non-production

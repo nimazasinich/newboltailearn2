@@ -49,8 +49,9 @@ cd newboltailearn
 # Install dependencies
 npm install
 
-# Set up environment (optional - for HuggingFace integration)
-echo "HF_TOKEN_ENC=your_base64_encoded_token_here" > .env
+# Set up environment configuration
+cp .env.sample .env
+# Edit .env and configure your values (see Environment Configuration section below)
 
 # Compile backend (required for server to work)
 npm run compile-server
@@ -62,6 +63,81 @@ npm run server  # Backend (port 3001)
 # Production Mode (unified server)
 npm run build   # Build frontend
 npm run server  # Unified server (port 3001) - serves both frontend and API
+```
+
+## 🔧 Environment Configuration
+
+### Quick Start Setup
+```bash
+# Copy the sample environment file
+cp .env.sample .env
+
+# For basic functionality, set only the required security variables:
+echo "JWT_SECRET=$(openssl rand -base64 32)" >> .env
+echo "SESSION_SECRET=$(openssl rand -base64 32)" >> .env
+```
+
+### HuggingFace Token Setup (Optional)
+To enable dataset downloads from HuggingFace:
+
+1. **Get your HuggingFace token:**
+   - Go to https://huggingface.co/settings/tokens
+   - Create a new token with read access
+
+2. **Encode the token:**
+   ```bash
+   # Linux/macOS
+   echo -n "hf_your_token_here" | base64
+   
+   # PowerShell (Windows)
+   [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes("hf_your_token_here"))
+   ```
+
+3. **Add to .env:**
+   ```bash
+   echo "HF_TOKEN_B64=your_base64_encoded_token_here" >> .env
+   ```
+
+### Development vs Production Configuration
+
+**Development (.env):**
+```env
+NODE_ENV=development
+JWT_SECRET=your_jwt_secret_here_minimum_32_characters_required
+SESSION_SECRET=your_session_secret_here_minimum_32_characters_required
+HF_TOKEN_B64=your_base64_encoded_huggingface_token_here
+DEMO_MODE=false
+USE_FAKE_DATA=false
+SKIP_CSRF=false
+```
+
+**Production (.env):**
+```env
+NODE_ENV=production
+JWT_SECRET=your_secure_jwt_secret_32_characters_minimum
+SESSION_SECRET=your_secure_session_secret_32_characters_minimum
+CSRF_SECRET=your_secure_csrf_secret_32_characters_minimum
+HF_TOKEN_B64=your_base64_encoded_huggingface_token_here
+CORS_ORIGIN=https://your-production-domain.com
+DEMO_MODE=false
+USE_FAKE_DATA=false
+SKIP_CSRF=false
+```
+
+### Security Requirements for Production
+
+**MANDATORY for production deployment:**
+1. **JWT_SECRET**: Minimum 32 characters, cryptographically secure
+2. **SESSION_SECRET**: Minimum 32 characters, cryptographically secure  
+3. **CSRF_SECRET**: Minimum 32 characters, cryptographically secure
+4. **NODE_ENV**: Set to "production"
+5. **CORS_ORIGIN**: Set to your production domain
+6. **All feature flags**: Set to production values (see .env.sample)
+
+**Generate secure secrets:**
+```bash
+# Generate secure secrets
+openssl rand -base64 32  # Use this for JWT_SECRET, SESSION_SECRET, CSRF_SECRET
 ```
 
 ## ✨ What Actually Works
