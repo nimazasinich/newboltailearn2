@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll } from '@jest/globals';
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { testDb, createTestUser, generateTestToken } from '../setup';
 import { getHFHeaders, testHFConnection } from '../../server/utils/decode';
 

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll } from '@jest/globals';
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { testDb, createTestUser, generateTestToken } from '../setup';
 
 describe('Training Sessions Stress Tests', () => {
