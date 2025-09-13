@@ -16,7 +16,7 @@ export function createModelsRoutes(controller: ModelsController, io: Server): Ro
   // CSRF protection for state-changing methods
   router.use((req, res, next) => {
     if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(req.method)) {
-      return csrfProtection(req, res, next);
+      return csrfProtection.middleware()(req, res, next);
     }
     next();
   });

@@ -14,7 +14,7 @@ export function createAuthRoutes(controller: AuthController): Router {
   // CSRF protection for state-changing methods
   router.use((req, res, next) => {
     if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(req.method)) {
-      return csrfProtection(req, res, next);
+      return csrfProtection.middleware()(req, res, next);
     }
     next();
   });

@@ -53,7 +53,7 @@ export class TrainingService {
     
     // Initialize worker manager if workers are enabled
     if (config.USE_WORKERS) {
-      this.workerManager = new WorkerManager(true, 4);
+      this.workerManager = new WorkerManager(4);
       console.log('✅ Worker threads enabled for training operations');
     } else {
       console.log('⚠️  Worker threads disabled - training will run in main thread');
@@ -252,7 +252,7 @@ export class TrainingService {
     };
 
     // Start training
-    await this.trainingEngine.train(modelId, datasetId, config, progressCallback as any);
+    await this.trainingEngine.train(modelId.toString(), datasetId, config, progressCallback as any);
 
     // Training completed successfully
     this.handleTrainingComplete(modelId, sessionId);
