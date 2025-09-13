@@ -28,7 +28,9 @@
     "db:init": "node server/database/init.js",
     "db:reset": "rm -f persian_legal_ai.db* && npm run db:init",
     "setup": "npm install && npm run db:init && npm run compile-server",
-    "postinstall": "npm run db:init"
+    "postinstall": "npm run db:init",
+    "security:check": "node scripts/security-check.js",
+    "security:validate": "npm run security:check && echo 'Security validation passed'"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.13",

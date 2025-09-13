@@ -186,6 +186,68 @@ The development authentication uses the following default credentials:
 
 **Production Safety:** This endpoint is automatically disabled when `NODE_ENV=production` to ensure security in production deployments.
 
+## 🔒 Security Validation
+
+### Automated Security Checks
+
+The project includes comprehensive security validation tools:
+
+#### 1. Security Check Script
+```bash
+# Run comprehensive security validation
+npm run security:check
+
+# Run security validation with success confirmation
+npm run security:validate
+```
+
+#### 2. CI/CD Security Pipeline
+The project includes GitHub Actions workflow (`.github/workflows/security-check.yml`) that automatically:
+- ✅ Validates environment variables
+- ✅ Checks file permissions
+- ✅ Scans for hardcoded secrets
+- ✅ Validates Docker configuration
+- ✅ Runs dependency vulnerability scans
+- ✅ Ensures security headers are configured
+
+#### 3. Security Checklist
+See `PRODUCTION_SECURITY_CHECKLIST.md` for comprehensive production deployment security requirements.
+
+### Manual Security Validation
+
+Before production deployment, ensure:
+
+1. **Environment Variables:**
+   ```bash
+   # Check all required variables are set
+   npm run security:check
+   ```
+
+2. **File Permissions:**
+   ```bash
+   # Ensure database files are not world-readable
+   chmod 600 persian_legal_ai.db
+   chmod 600 data/persian_legal_ai.db
+   ```
+
+3. **Dependencies:**
+   ```bash
+   # Check for vulnerabilities
+   npm audit --audit-level=moderate
+   
+   # Update outdated packages
+   npm outdated
+   ```
+
+4. **Configuration:**
+   ```bash
+   # Verify .env is in .gitignore
+   grep -q "\.env" .gitignore && echo "✅ .env is in .gitignore"
+   
+   # Verify .env.sample exists
+   test -f .env.sample && echo "✅ .env.sample exists"
+   ```
+
 ## ✨ What Actually Works
 
 ### ✅ **Fully Functional Features**
