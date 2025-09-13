@@ -14,7 +14,15 @@
     "start:unified": "node start-unified.js",
     "server": "node server/server/index.cjs",
     "compile-server": "npx tsc server/index.ts --outDir server --target es2020 --module esnext --moduleResolution node --esModuleInterop --allowSyntheticDefaultImports --skipLibCheck",
-    "test:phase2": "node test-phase2.js"
+    "test:phase2": "node test-phase2.js",
+    "test:integration": "playwright test tests/integration/",
+    "test:performance": "node tests/performance/load-test.js",
+    "docker:build": "docker build -t persian-legal-ai .",
+    "docker:run": "docker run -p 3001:3001 persian-legal-ai",
+    "docker:compose": "docker-compose up -d",
+    "docker:compose:down": "docker-compose down",
+    "deploy:staging": "docker-compose -f docker-compose.staging.yml up -d",
+    "deploy:production": "docker-compose -f docker-compose.prod.yml up -d"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.8.4",
