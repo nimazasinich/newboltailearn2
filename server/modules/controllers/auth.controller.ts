@@ -111,6 +111,34 @@ export class AuthController {
     }
   }
 
+  async getCurrentUser(req: Request, res: Response): Promise<void> {
+    try {
+      const userId = req.user?.id;
+      if (!userId) {
+        res.status(401).json({ error: 'User not authenticated' });
+        return;
+      }
+
+      const user = await this.authService.findUserById(userId);
+      if (!user) {
+        res.status(404).json({ error: 'User not found' });
+        return;
+      }
+
+      res.json({
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        created_at: user.created_at,
+        last_login: user.last_login
+      });
+    } catch (error) {
+      console.error('Get current user error:', error);
+      res.status(500).json({ error: 'Failed to get current user' });
+    }
+  }
+
   async getProfile(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user?.id;
@@ -131,7 +159,7 @@ export class AuthController {
         email: user.email,
         role: user.role,
         created_at: user.created_at,
-        updated_at: user.updated_at
+        last_login: user.last_login
       });
     } catch (error) {
       console.error('Get profile error:', error);

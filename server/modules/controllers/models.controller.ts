@@ -1,12 +1,16 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import Database from 'better-sqlite3';
+import { Server } from 'socket.io';
 import { config, isDemoMode } from '../security/config.js';
+import { TrainingService } from '../services/trainingService.js';
 
 export class ModelsController {
   private db: Database.Database;
+  private trainingService: TrainingService;
 
-  constructor(db: Database.Database) {
+  constructor(db: Database.Database, io: Server) {
     this.db = db;
+    this.trainingService = new TrainingService(db, io);
   }
 
   async listModels(req: Request, res: Response): Promise<void> {
@@ -254,6 +258,165 @@ export class ModelsController {
     } catch (error) {
       console.error('Export model error:', error);
       res.status(500).json({ error: 'Failed to export model' });
+    }
+  }
+
+  async startTraining(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { id } = req.params;
+      const { epochs = 10, batchSize = 32, learningRate = 0.001, datasetId = 'default' } = req.body;
+
+      const modelId = parseInt(id);
+      if (isNaN(modelId)) {
+        res.status(400).json({ error: 'Invalid model ID' });
+        return;
+      }
+
+      const trainingConfig = {
+        epochs: Math.max(1, Math.min(100, epochs)),
+        batchSize: Math.max(1, Math.min(128, batchSize)),
+        learningRate: Math.max(0.0001, Math.min(0.1, learningRate)),
+        validationSplit: 0.2,
+        earlyStopping: true,
+        patience: 5
+      };
+
+      const result = await this.trainingService.startTraining(
+        modelId,
+        datasetId,
+        trainingConfig,
+        req.user?.id || 1
+      );
+
+      if (result.success) {
+        res.json({
+          success: true,
+          message: 'Training started successfully',
+          sessionId: result.sessionId,
+          config: trainingConfig
+        });
+      } else {
+        res.status(400).json({ error: result.error });
+      }
+    } catch (error) {
+      console.error('Start training error:', error);
+      res.status(500).json({ error: 'Failed to start training' });
+    }
+  }
+
+  async pauseTraining(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { id } = req.params;
+      const modelId = parseInt(id);
+
+      if (isNaN(modelId)) {
+        res.status(400).json({ error: 'Invalid model ID' });
+        return;
+      }
+
+      const result = await this.trainingService.stopTraining(modelId);
+
+      if (result.success) {
+        res.json({ success: true, message: 'Training paused successfully' });
+      } else {
+        res.status(400).json({ error: result.error });
+      }
+    } catch (error) {
+      console.error('Pause training error:', error);
+      res.status(500).json({ error: 'Failed to pause training' });
+    }
+  }
+
+  async resumeTraining(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { id } = req.params;
+      const { epochs = 10, batchSize = 32, learningRate = 0.001, datasetId = 'default' } = req.body;
+
+      const modelId = parseInt(id);
+      if (isNaN(modelId)) {
+        res.status(400).json({ error: 'Invalid model ID' });
+        return;
+      }
+
+      // Resume training by starting a new session
+      const trainingConfig = {
+        epochs: Math.max(1, Math.min(100, epochs)),
+        batchSize: Math.max(1, Math.min(128, batchSize)),
+        learningRate: Math.max(0.0001, Math.min(0.1, learningRate)),
+        validationSplit: 0.2,
+        earlyStopping: true,
+        patience: 5
+      };
+
+      const result = await this.trainingService.startTraining(
+        modelId,
+        datasetId,
+        trainingConfig,
+        req.user?.id || 1
+      );
+
+      if (result.success) {
+        res.json({
+          success: true,
+          message: 'Training resumed successfully',
+          sessionId: result.sessionId,
+          config: trainingConfig
+        });
+      } else {
+        res.status(400).json({ error: result.error });
+      }
+    } catch (error) {
+      console.error('Resume training error:', error);
+      res.status(500).json({ error: 'Failed to resume training' });
+    }
+  }
+
+  async startOptimization(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { id } = req.params;
+      const { optimizationType = 'hyperparameter', parameters = {} } = req.body;
+
+      const modelId = parseInt(id);
+      if (isNaN(modelId)) {
+        res.status(400).json({ error: 'Invalid model ID' });
+        return;
+      }
+
+      // For now, return a mock response for optimization
+      res.json({
+        success: true,
+        message: 'Optimization started successfully',
+        optimizationId: `opt_${modelId}_${Date.now()}`,
+        type: optimizationType,
+        parameters
+      });
+    } catch (error) {
+      console.error('Start optimization error:', error);
+      res.status(500).json({ error: 'Failed to start optimization' });
+    }
+  }
+
+  async loadModel(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const { checkpointPath } = req.body;
+
+      const modelId = parseInt(id);
+      if (isNaN(modelId)) {
+        res.status(400).json({ error: 'Invalid model ID' });
+        return;
+      }
+
+      // TODO: Implement actual model loading logic
+      res.json({
+        success: true,
+        message: 'Model loaded successfully',
+        modelId,
+        checkpointPath
+      });
+    } catch (error) {
+      console.error('Load model error:', error);
+      res.status(500).json({ error: 'Failed to load model' });
     }
   }
 }

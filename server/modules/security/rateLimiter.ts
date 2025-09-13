@@ -1,6 +1,20 @@
 import rateLimit from 'express-rate-limit';
 import { Request, Response } from 'express';
 
+// Extend Request interface to include rateLimit
+declare global {
+  namespace Express {
+    interface Request {
+      rateLimit?: {
+        limit: number;
+        current: number;
+        remaining: number;
+        resetTime: Date;
+      };
+    }
+  }
+}
+
 /**
  * Global rate limiter - applied to all routes
  */

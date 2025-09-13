@@ -15,6 +15,9 @@ import {
 } from 'lucide-react';
 import { Sidebar } from './layout/Sidebar';
 import { apiClient, connectSocket, onSystemMetrics, SystemMetrics } from '../services/api';
+import { SocketIntegration } from './SocketIntegration';
+import { SocketStatus } from './SocketStatus';
+import { useAuth } from './AuthGuard';
 
 interface DashboardProps {}
 
@@ -182,6 +185,8 @@ export const Dashboard: React.FC<DashboardProps> = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex" dir="rtl">
+      {/* Socket Integration - handles WebSocket events */}
+      <SocketIntegration />
       {/* Mobile sidebar overlay */}
       <AnimatePresence>
         {isSidebarOpen && (
@@ -250,6 +255,9 @@ export const Dashboard: React.FC<DashboardProps> = () => {
 
             {/* Right Section - System Status, Theme, Notifications & User */}
             <div className="flex items-center gap-3">
+              {/* Socket Status Indicator */}
+              <SocketStatus />
+              
               {/* System Status Indicator */}
               {systemMetrics && (
                 <motion.div

@@ -416,7 +416,9 @@ export class RealTrainingEngineImpl {
    */
   stopTraining(): void {
     this.isTraining = false;
-    this.model?.stopTraining = true;
+    if (this.model) {
+      this.model.stopTraining = true;
+    }
   }
   
   /**

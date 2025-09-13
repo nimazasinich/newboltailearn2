@@ -33,18 +33,18 @@ const envSchema = z.object({
   HF_TOKEN_B64: z.string().optional(),
   
   // Features
-  USE_FAKE_DATA: z.string().transform(val => val === 'true').default('false'),
-  DEMO_MODE: z.string().transform(val => val === 'true').default('false'),
-  USE_WORKERS: z.string().transform(val => val === 'true').default('false'),
-  SKIP_CSRF: z.string().transform(val => val === 'true').default('false'),
+  USE_FAKE_DATA: z.string().default('false').transform(val => val === 'true'),
+  DEMO_MODE: z.string().default('false').transform(val => val === 'true'),
+  USE_WORKERS: z.string().default('false').transform(val => val === 'true'),
+  SKIP_CSRF: z.string().default('false').transform(val => val === 'true'),
   
   // Dev Identification (non-production only)
   DEV_ADMIN_USER: z.string().optional(),
   DEV_ADMIN_PASS: z.string().optional(),
   
   // Monitoring
-  ENABLE_METRICS: z.string().transform(val => val === 'true').default('true'),
-  ENABLE_LOG_SHIPPING: z.string().transform(val => val === 'true').default('false'),
+  ENABLE_METRICS: z.string().default('true').transform(val => val === 'true'),
+  ENABLE_LOG_SHIPPING: z.string().default('false').transform(val => val === 'true'),
   LOG_SHIPPING_URL: z.string().url().optional(),
 });
 
@@ -77,13 +77,13 @@ export const config = (() => {
   } catch (error) {
     if (error instanceof z.ZodError) {
       console.error('Environment configuration validation failed:');
-      error.errors.forEach(err => {
+      error.issues.forEach(err => {
         console.error(`  ${err.path.join('.')}: ${err.message}`);
       });
       
       // Provide helpful message for missing required variables
-      const missing = error.errors
-        .filter(err => err.code === 'invalid_type' && err.received === 'undefined')
+      const missing = error.issues
+        .filter(err => err.code === 'invalid_type')
         .map(err => err.path.join('.'));
       
       if (missing.length > 0) {

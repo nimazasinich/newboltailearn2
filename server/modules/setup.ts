@@ -44,21 +44,21 @@ export function setupModules(app: Application, db: Database.Database, io: Server
   console.log('✅ Socket.IO authentication configured');
 
   // 6. Setup modular routes
-  setupModularRoutes(app, db);
+  setupModularRoutes(app, db, io);
   console.log('✅ Modular routes configured');
 }
 
 /**
  * Setup modular routes
  */
-function setupModularRoutes(app: Application, db: Database.Database): void {
+function setupModularRoutes(app: Application, db: Database.Database, io: any): void {
   // Create controllers
   const authController = new AuthController(db);
-  const modelsController = new ModelsController(db);
+  const modelsController = new ModelsController(db, io);
 
   // Mount routes
   app.use('/api/auth', createAuthRoutes(authController));
-  app.use('/api/models', createModelsRoutes(modelsController));
+  app.use('/api/models', createModelsRoutes(modelsController, io));
   
   // Note: We're not removing existing routes from server/index.ts
   // to maintain backward compatibility. The new routes will coexist
