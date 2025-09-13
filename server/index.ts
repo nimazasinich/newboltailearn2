@@ -295,7 +295,7 @@ const logToDatabase = (level: string, category: string, message: string, metadat
 const userCount = db.prepare('SELECT COUNT(*) as count FROM users').get() as { count: number };
 if (userCount.count === 0) {
   const bcrypt = await import('bcryptjs');
-  const defaultPassword = await bcrypt.hash('admin123', 12);
+  const defaultPassword = await bcrypt.hash('admin', 12);
   
   db.prepare(`
     INSERT INTO users (username, email, password_hash, role, created_at)
@@ -305,8 +305,13 @@ if (userCount.count === 0) {
   logToDatabase('info', 'setup', 'Default admin user created', { 
     username: 'admin', 
     email: 'admin@persian-legal-ai.com',
-    password: 'admin123' // This should be changed in production
+    password: 'admin' // Username: admin, Password: admin
   });
+  
+  console.log('🔐 Default admin credentials created:');
+  console.log('   Username: admin');
+  console.log('   Password: admin');
+  console.log('   Role: admin');
 }
 
 const getSystemMetrics = async () => {

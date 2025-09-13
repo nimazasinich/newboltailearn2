@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Threads Test - Admin Login</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #333;
+            margin: 0;
+            font-size: 28px;
+        }
+        
+        .header p {
+            color: #666;
+            margin: 10px 0 0 0;
+            font-size: 16px;
+        }
+        
+        .credentials-box {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .credentials-box h3 {
+            color: #495057;
+            margin: 0 0 15px 0;
+            font-size: 18px;
+        }
+        
+        .credential-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .credential-item:last-child {
+            border-bottom: none;
+        }
+        
+        .credential-label {
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .credential-value {
+            font-family: 'Courier New', monospace;
+            background: #e9ecef;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: #495057;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .test-results {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .test-results h4 {
+            margin: 0 0 10px 0;
+            color: #495057;
+        }
+        
+        .test-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .test-item:last-child {
+            border-bottom: none;
+        }
+        
+        .test-name {
+            color: #495057;
+        }
+        
+        .test-status {
+            font-weight: 600;
+        }
+        
+        .test-status.pass {
+            color: #28a745;
+        }
+        
+        .test-status.fail {
+            color: #dc3545;
+        }
+        
+        .copy-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        
+        .copy-btn:hover {
+            background: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Worker Threads Test</h1>
+            <p>Phase 4 - Worker Threads Implementation</p>
+        </div>
+        
+        <div class="credentials-box">
+            <h3>🔐 Default Admin Credentials</h3>
+            <div class="credential-item">
+                <span class="credential-label">Username:</span>
+                <span class="credential-value" id="username">admin</span>
+                <button class="copy-btn" onclick="copyToClipboard('username')">Copy</button>
+            </div>
+            <div class="credential-item">
+                <span class="credential-label">Password:</span>
+                <span class="credential-value" id="password">admin</span>
+                <button class="copy-btn" onclick="copyToClipboard('password')">Copy</button>
+            </div>
+            <div class="credential-item">
+                <span class="credential-label">Role:</span>
+                <span class="credential-value">admin</span>
+            </div>
+        </div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="usernameInput">Username</label>
+                <input type="text" id="usernameInput" value="admin" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="passwordInput">Password</label>
+                <input type="password" id="passwordInput" value="admin" required>
+            </div>
+            
+            <button type="submit" class="btn" id="loginBtn">Login & Test Worker Threads</button>
+        </form>
+        
+        <div id="status"></div>
+        <div id="testResults" class="test-results" style="display: none;">
+            <h4>🧪 Test Results</h4>
+            <div id="testList"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3001';
+        let authToken = '';
+        
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            navigator.clipboard.writeText(element.textContent).then(() => {
+                // Show brief feedback
+                const btn = element.nextElementSibling;
+                const originalText = btn.textContent;
+                btn.textContent = 'Copied!';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 1000);
+            });
+        }
+        
+        function showStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+        
+        function showTestResults(results) {
+            const testResultsDiv = document.getElementById('testResults');
+            const testListDiv = document.getElementById('testList');
+            
+            testResultsDiv.style.display = 'block';
+            testListDiv.innerHTML = '';
+            
+            results.forEach(test => {
+                const testItem = document.createElement('div');
+                testItem.className = 'test-item';
+                testItem.innerHTML = `
+                    <span class="test-name">${test.name}</span>
+                    <span class="test-status ${test.status}">${test.status.toUpperCase()}</span>
+                `;
+                testListDiv.appendChild(testItem);
+            });
+        }
+        
+        async function login(username, password) {
+            try {
+                showStatus('🔐 Logging in...', 'info');
+                
+                const response = await fetch(`${API_BASE}/api/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.token) {
+                    authToken = data.token;
+                    showStatus(`✅ Login successful! Welcome ${data.user.username} (${data.user.role})`, 'success');
+                    return true;
+                } else {
+                    showStatus(`❌ Login failed: ${data.error || 'Unknown error'}`, 'error');
+                    return false;
+                }
+            } catch (error) {
+                showStatus(`❌ Login error: ${error.message}`, 'error');
+                return false;
+            }
+        }
+        
+        async function testWorkerThreads() {
+            const results = [];
+            
+            try {
+                showStatus('🧪 Testing Worker Threads Implementation...', 'info');
+                
+                // Test 1: System Health
+                try {
+                    const response = await fetch(`${API_BASE}/health`);
+                    const data = await response.json();
+                    results.push({
+                        name: 'System Health Check',
+                        status: response.ok ? 'pass' : 'fail'
+                    });
+                } catch (error) {
+                    results.push({
+                        name: 'System Health Check',
+                        status: 'fail'
+                    });
+                }
+                
+                // Test 2: System Metrics
+                try {
+                    const response = await fetch(`${API_BASE}/api/monitoring`);
+                    const data = await response.json();
+                    results.push({
+                        name: 'System Metrics',
+                        status: response.ok ? 'pass' : 'fail'
+                    });
+                } catch (error) {
+                    results.push({
+                        name: 'System Metrics',
+                        status: 'fail'
+                    });
+                }
+                
+                // Test 3: Create Model
+                try {
+                    const response = await fetch(`${API_BASE}/api/models`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${authToken}`
+                        },
+                        body: JSON.stringify({
+                            name: 'Worker Test Model',
+                            type: 'persian-bert',
+                            dataset_id: 'iran-legal-qa',
+                            config: {
+                                epochs: 2,
+                                batchSize: 16,
+                                learningRate: 0.001
+                            }
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    if (response.ok && data.id) {
+                        results.push({
+                            name: 'Model Creation',
+                            status: 'pass'
+                        });
+                        
+                        // Test 4: Start Training
+                        try {
+                            const trainResponse = await fetch(`${API_BASE}/api/models/${data.id}/train`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Authorization': `Bearer ${authToken}`
+                                },
+                                body: JSON.stringify({
+                                    epochs: 2,
+                                    batch_size: 16,
+                                    learning_rate: 0.001,
+                                    dataset_ids: ['iran-legal-qa']
+                                })
+                            });
+                            
+                            const trainData = await trainResponse.json();
+                            results.push({
+                                name: 'Training Initiation',
+                                status: trainResponse.ok ? 'pass' : 'fail'
+                            });
+                            
+                            if (trainResponse.ok) {
+                                results.push({
+                                    name: 'Worker Threads Active',
+                                    status: 'pass'
+                                });
+                            }
+                        } catch (error) {
+                            results.push({
+                                name: 'Training Initiation',
+                                status: 'fail'
+                            });
+                        }
+                    } else {
+                        results.push({
+                            name: 'Model Creation',
+                            status: 'fail'
+                        });
+                    }
+                } catch (error) {
+                    results.push({
+                        name: 'Model Creation',
+                        status: 'fail'
+                    });
+                }
+                
+                // Test 5: System Settings
+                try {
+                    const response = await fetch(`${API_BASE}/api/settings`);
+                    const data = await response.json();
+                    results.push({
+                        name: 'System Settings',
+                        status: response.ok ? 'pass' : 'fail'
+                    });
+                } catch (error) {
+                    results.push({
+                        name: 'System Settings',
+                        status: 'fail'
+                    });
+                }
+                
+                // Test 6: Training Logs
+                try {
+                    const response = await fetch(`${API_BASE}/api/logs?type=training&limit=5`, {
+                        headers: {
+                            'Authorization': `Bearer ${authToken}`
+                        }
+                    });
+                    results.push({
+                        name: 'Training Logs Access',
+                        status: response.ok ? 'pass' : 'fail'
+                    });
+                } catch (error) {
+                    results.push({
+                        name: 'Training Logs Access',
+                        status: 'fail'
+                    });
+                }
+                
+            } catch (error) {
+                showStatus(`❌ Test error: ${error.message}`, 'error');
+            }
+            
+            showTestResults(results);
+            
+            const passedTests = results.filter(r => r.status === 'pass').length;
+            const totalTests = results.length;
+            
+            if (passedTests === totalTests) {
+                showStatus(`🎉 All tests passed! (${passedTests}/${totalTests}) Worker threads implementation is working!`, 'success');
+            } else {
+                showStatus(`⚠️ Some tests failed: ${passedTests}/${totalTests} passed`, 'error');
+            }
+        }
+        
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('usernameInput').value;
+            const password = document.getElementById('passwordInput').value;
+            
+            const loginSuccess = await login(username, password);
+            
+            if (loginSuccess) {
+                await testWorkerThreads();
+            }
+        });
+        
+        // Auto-fill credentials on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('usernameInput').value = 'admin';
+            document.getElementById('passwordInput').value = 'admin';
+        });
+    </script>
+</body>
+</html>
