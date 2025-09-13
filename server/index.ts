@@ -10,6 +10,7 @@ import { fileURLToPath } from 'url';
 import { getHFHeaders, testHFConnection, logTokenStatus } from './utils/decode.js';
 import { requireAuth, requireRole } from './middleware/auth.js';
 import { AuthService } from './services/authService.js';
+import { setupModules } from './modules/setup.js';
 
 // ES module __dirname equivalent
 const __filename = fileURLToPath(import.meta.url);
@@ -39,6 +40,9 @@ const db = new Database(dbPath);
 
 // Initialize Auth Service
 const authService = new AuthService(db);
+
+// Setup modular components (security, routes, monitoring, etc.)
+setupModules(app, db, io);
 
 // Create tables
 db.exec(`
@@ -374,6 +378,19 @@ async function getCPUUsage(): Promise<number> {
     }, 100);
   });
 }
+
+// Health check endpoint
+app.get('/health', (_req, res) => {
+  const health = {
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    environment: process.env.NODE_ENV || 'development',
+    database: db.open ? 'connected' : 'disconnected',
+    version: process.env.npm_package_version || '1.0.0'
+  };
+  res.json(health);
+});
 
 // API Routes
 
