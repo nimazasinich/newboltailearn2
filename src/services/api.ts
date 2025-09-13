@@ -2,7 +2,7 @@ import io from 'socket.io-client';
 
 const API_BASE_URL = '/api';
 
-// Socket.IO connection - use relative URL for proper proxy handling
+// Socket.IO connection - connects to current host (unified server)
 export const socket = io({
   autoConnect: false
 });

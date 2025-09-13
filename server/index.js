@@ -10,7 +10,7 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173",
+        origin: ["http://localhost:5173", "http://localhost:3001"],
         methods: ["GET", "POST"]
     }
 });
@@ -18,6 +18,10 @@ const io = new Server(server, {
 app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Serve static frontend build in production
+const frontendPath = path.join(process.cwd(), 'dist');
+app.use(express.static(frontendPath));
 // Initialize SQLite Database
 const dbPath = path.join(process.cwd(), 'persian_legal_ai.db');
 const db = new Database(dbPath);
@@ -1516,11 +1520,17 @@ app.use((error, req, res, next) => {
     logToDatabase('error', 'server', error.message, { stack: error.stack });
     res.status(500).json({ error: 'Internal server error' });
 });
+
+// For any unknown route, return index.html (React Router support)
+app.get('*', (req, res) => {
+    res.sendFile(path.join(frontendPath, 'index.html'));
+});
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, async () => {
     console.log(`🚀 Persian Legal AI Server running on port ${PORT}`);
     console.log(`📊 Database: ${dbPath}`);
     console.log(`🌐 API: http://localhost:${PORT}/api`);
+    console.log(`🎨 Frontend: http://localhost:${PORT}`);
     // Validate HuggingFace token configuration
     await logTokenStatus();
     // Test HuggingFace connection
