@@ -14,6 +14,7 @@ import {
   OptimizationRequest 
 } from '../../../server/modules/workers/types.js';
 import Database from 'better-sqlite3';
+import { testDb } from '../../setup';
 
 // Mock TensorFlow.js
 vi.mock('@tensorflow/tfjs-node', () => ({
@@ -113,16 +114,13 @@ describe('TrainingWorkerPool', () => {
 
 describe('WorkerManager', () => {
   let manager: WorkerManager;
-  let db: Database.Database;
 
   beforeEach(() => {
-    db = new Database(':memory:');
     manager = new WorkerManager(true, 2);
   });
 
   afterEach(async () => {
     await manager.terminate();
-    db.close();
   });
 
   it('should initialize with workers enabled', () => {
@@ -200,15 +198,9 @@ describe('WorkerManager', () => {
 
 describe('WorkerErrorHandler', () => {
   let errorHandler: WorkerErrorHandler;
-  let db: Database.Database;
 
   beforeEach(() => {
-    db = new Database(':memory:');
-    errorHandler = new WorkerErrorHandler(db);
-  });
-
-  afterEach(() => {
-    db.close();
+    errorHandler = new WorkerErrorHandler(testDb);
   });
 
   it('should initialize without errors', () => {
@@ -244,15 +236,9 @@ describe('WorkerErrorHandler', () => {
 
 describe('WorkerPerformanceMonitor', () => {
   let monitor: WorkerPerformanceMonitor;
-  let db: Database.Database;
 
   beforeEach(() => {
-    db = new Database(':memory:');
-    monitor = new WorkerPerformanceMonitor(db);
-  });
-
-  afterEach(() => {
-    db.close();
+    monitor = new WorkerPerformanceMonitor(testDb);
   });
 
   it('should initialize without errors', () => {
@@ -391,15 +377,6 @@ describe('Worker Message Types', () => {
 });
 
 describe('Integration Tests', () => {
-  let db: Database.Database;
-
-  beforeEach(() => {
-    db = new Database(':memory:');
-  });
-
-  afterEach(() => {
-    db.close();
-  });
 
   it('should handle concurrent training sessions', async () => {
     const manager = new WorkerManager(true, 4);
@@ -450,7 +427,7 @@ describe('Integration Tests', () => {
       {
         workerId: 'worker-1',
         cpuUsage: 50,
-        memoryUsage: 256, // Within limit
+        memoryUsage: 400, // Within limit
         activeTasks: 1,
         completedTasks: 10,
         failedTasks: 0,
@@ -460,7 +437,7 @@ describe('Integration Tests', () => {
       {
         workerId: 'worker-2',
         cpuUsage: 80,
-        memoryUsage: 600, // Exceeds limit
+        memoryUsage: 700, // Exceeds limit - average will be 550MB > 512MB
         activeTasks: 1,
         completedTasks: 5,
         failedTasks: 1,
@@ -469,7 +446,7 @@ describe('Integration Tests', () => {
       }
     ];
 
-    const monitor = new WorkerPerformanceMonitor(db);
+    const monitor = new WorkerPerformanceMonitor(testDb);
     monitor.updateWorkerMetrics(mockWorkerMetrics);
     
     const summary = monitor.getPerformanceSummary();

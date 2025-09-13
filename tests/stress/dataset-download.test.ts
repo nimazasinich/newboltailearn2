@@ -61,9 +61,9 @@ describe('Dataset Download Stress Tests', () => {
 
       // Insert test dataset
       testDb.prepare(`
-        INSERT INTO datasets (id, name, source, huggingface_id, samples, size_mb, status)
-        VALUES (?, ?, 'huggingface', ?, ?, ?, 'available')
-      `).run(testDataset.id, testDataset.name, testDataset.huggingface_id, testDataset.samples, testDataset.size_mb);
+        INSERT INTO datasets (name, huggingface_id, samples)
+        VALUES (?, ?, ?)
+      `).run(testDataset.name, testDataset.huggingface_id, testDataset.samples);
 
       // Simulate download process
       const startTime = Date.now();

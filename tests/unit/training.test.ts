@@ -9,13 +9,13 @@ vi.mock('../../server/utils/decode.js', () => ({
 }));
 
 // Import after mocking
-import { RealTrainingEngine } from '../../server/training/RealTrainingEngine';
+import { TrainingEngine } from '../../server/training/TrainingEngine';
 
 describe('RealTrainingEngine', () => {
-  let engine: RealTrainingEngine;
+  let engine: TrainingEngine;
 
   beforeAll(() => {
-    engine = new RealTrainingEngine();
+    engine = new TrainingEngine();
   });
 
   afterAll(() => {
@@ -183,7 +183,7 @@ describe('RealTrainingEngine', () => {
 describe('PersianTokenizer', () => {
   it('should tokenize Persian text correctly', async () => {
     // Since PersianTokenizer is not exported, we test it through the engine
-    const engine = new RealTrainingEngine();
+    const engine = new TrainingEngine();
     const config = {
       modelType: 'persian-bert' as const,
       datasets: ['test-dataset'],
@@ -254,7 +254,7 @@ describe('Training Metrics', () => {
   });
 
   it('should handle checkpoint saving', async () => {
-    const engine = new RealTrainingEngine();
+    const engine = new TrainingEngine();
     
     // Test that checkpoint methods exist
     expect(engine.saveModel).toBeDefined();

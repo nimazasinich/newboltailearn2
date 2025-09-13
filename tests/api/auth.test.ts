@@ -1,6 +1,6 @@
 import request from 'supertest';
 import express from 'express';
-import { beforeAll, afterAll, beforeEach, describe, it, expect } from '@jest/globals';
+import { beforeAll, afterAll, beforeEach, describe, it, expect } from 'vitest';
 import { testDb, createTestUser, generateTestToken } from '../setup';
 import { AuthService } from '../../server/services/authService';
 

@@ -37,7 +37,16 @@ describe('CSRF Integration Tests', () => {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         type TEXT NOT NULL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        status TEXT DEFAULT 'idle',
+        accuracy REAL DEFAULT 0.0,
+        loss REAL DEFAULT 0.0,
+        epochs INTEGER DEFAULT 0,
+        current_epoch INTEGER DEFAULT 0,
+        dataset_id TEXT,
+        config TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        created_by INTEGER
       );
     `);
 
@@ -114,7 +123,8 @@ describe('CSRF Integration Tests', () => {
         .set('Authorization', `Bearer ${authToken}`)
         .expect(200);
       
-      expect(Array.isArray(response.body)).toBe(true);
+      expect(response.body).toHaveProperty('models');
+      expect(Array.isArray(response.body.models)).toBe(true);
     });
 
     test('should allow PUT requests with valid CSRF token', async () => {

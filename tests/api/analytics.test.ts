@@ -1,6 +1,6 @@
 import request from 'supertest';
 import express from 'express';
-import { beforeAll, beforeEach, describe, it, expect } from '@jest/globals';
+import { beforeAll, beforeEach, describe, it, expect } from 'vitest';
 import { testDb, createTestUser, generateTestToken } from '../setup';
 import { requireAuth, requireRole } from '../../server/middleware/auth.js';
 

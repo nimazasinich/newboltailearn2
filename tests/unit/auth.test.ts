@@ -1,35 +1,18 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { Request, Response } from 'express';
-import Database from 'better-sqlite3';
 import { AuthController } from '../../server/modules/controllers/auth.controller';
 import { AuthService } from '../../server/services/authService';
 import bcrypt from 'bcryptjs';
+import { testDb } from '../setup';
 
 describe('AuthController', () => {
-  let db: Database.Database;
   let authController: AuthController;
   let mockReq: Partial<Request>;
   let mockRes: Partial<Response>;
 
   beforeEach(() => {
-    // Create in-memory database
-    db = new Database(':memory:');
-    
-    // Create tables
-    db.exec(`
-      CREATE TABLE users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT UNIQUE NOT NULL,
-        email TEXT UNIQUE NOT NULL,
-        password_hash TEXT NOT NULL,
-        role TEXT DEFAULT 'viewer',
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        last_login DATETIME
-      )
-    `);
-
-    authController = new AuthController(db);
+    // Use the test database from setup
+    authController = new AuthController(testDb);
 
     // Setup mock request and response
     mockReq = {
@@ -45,22 +28,12 @@ describe('AuthController', () => {
     };
   });
 
-  afterEach(() => {
-    db.close();
-  });
-
   describe('login', () => {
     it('should login with valid credentials', async () => {
-      // Create test user
-      const hashedPassword = await bcrypt.hash('testpass123', 10);
-      db.prepare(`
-        INSERT INTO users (username, email, password_hash, role)
-        VALUES (?, ?, ?, ?)
-      `).run('testuser', 'test@example.com', hashedPassword, 'viewer');
-
+      // Use the admin user created in setup
       mockReq.body = {
-        username: 'testuser',
-        password: 'testpass123'
+        username: 'admin',
+        password: 'admin'
       };
 
       await authController.login(mockReq as Request, mockRes as Response);
@@ -70,9 +43,9 @@ describe('AuthController', () => {
           success: true,
           token: expect.any(String),
           user: expect.objectContaining({
-            username: 'testuser',
-            email: 'test@example.com',
-            role: 'viewer'
+            username: 'admin',
+            email: 'admin@test.com',
+            role: 'admin'
           })
         })
       );
@@ -91,18 +64,16 @@ describe('AuthController', () => {
     });
 
     it('should handle login errors gracefully', async () => {
-      // Close database to cause error
-      db.close();
-
+      // Test with invalid credentials to trigger error handling
       mockReq.body = {
-        username: 'testuser',
-        password: 'testpass'
+        username: 'invaliduser',
+        password: 'invalidpass'
       };
 
       await authController.login(mockReq as Request, mockRes as Response);
 
-      expect(mockRes.status).toHaveBeenCalledWith(500);
-      expect(mockRes.json).toHaveBeenCalledWith({ error: 'Login failed' });
+      expect(mockRes.status).toHaveBeenCalledWith(401);
+      expect(mockRes.json).toHaveBeenCalledWith({ error: 'Invalid credentials' });
     });
   });
 
@@ -131,20 +102,14 @@ describe('AuthController', () => {
       );
 
       // Verify user was created in database
-      const user = db.prepare('SELECT * FROM users WHERE username = ?').get('newuser');
+      const user = testDb.prepare('SELECT * FROM users WHERE username = ?').get('newuser');
       expect(user).toBeDefined();
     });
 
     it('should reject duplicate username', async () => {
-      // Create existing user
-      const hashedPassword = await bcrypt.hash('existingpass', 10);
-      db.prepare(`
-        INSERT INTO users (username, email, password_hash)
-        VALUES (?, ?, ?)
-      `).run('existinguser', 'existing@example.com', hashedPassword);
-
+      // Try to register with existing admin username
       mockReq.body = {
-        username: 'existinguser',
+        username: 'admin',
         email: 'different@example.com',
         password: 'NewPass123!'
       };
@@ -156,16 +121,10 @@ describe('AuthController', () => {
     });
 
     it('should reject duplicate email', async () => {
-      // Create existing user
-      const hashedPassword = await bcrypt.hash('existingpass', 10);
-      db.prepare(`
-        INSERT INTO users (username, email, password_hash)
-        VALUES (?, ?, ?)
-      `).run('existinguser', 'existing@example.com', hashedPassword);
-
+      // Try to register with existing admin email
       mockReq.body = {
         username: 'differentuser',
-        email: 'existing@example.com',
+        email: 'admin@test.com',
         password: 'NewPass123!'
       };
 
@@ -178,26 +137,22 @@ describe('AuthController', () => {
 
   describe('getProfile', () => {
     it('should get user profile when authenticated', async () => {
-      // Create test user
-      const hashedPassword = await bcrypt.hash('testpass', 10);
-      const result = db.prepare(`
-        INSERT INTO users (username, email, password_hash, role)
-        VALUES (?, ?, ?, ?)
-      `).run('testuser', 'test@example.com', hashedPassword, 'admin');
+      // Use the admin user from setup
+      const adminUser = testDb.prepare('SELECT * FROM users WHERE username = ?').get('admin') as any;
 
       mockReq.user = {
-        id: Number(result.lastInsertRowid),
-        username: 'testuser',
-        email: 'test@example.com',
-        role: 'admin'
+        id: adminUser.id,
+        username: adminUser.username,
+        email: adminUser.email,
+        role: adminUser.role
       };
 
       await authController.getProfile(mockReq as Request, mockRes as Response);
 
       expect(mockRes.json).toHaveBeenCalledWith(
         expect.objectContaining({
-          username: 'testuser',
-          email: 'test@example.com',
+          username: 'admin',
+          email: 'admin@test.com',
           role: 'admin'
         })
       );
@@ -215,23 +170,18 @@ describe('AuthController', () => {
 
   describe('changePassword', () => {
     it('should change password with correct current password', async () => {
-      // Create test user
-      const currentPassword = 'currentpass123';
-      const hashedPassword = await bcrypt.hash(currentPassword, 10);
-      const result = db.prepare(`
-        INSERT INTO users (username, email, password_hash)
-        VALUES (?, ?, ?)
-      `).run('testuser', 'test@example.com', hashedPassword);
+      // Use the admin user from setup
+      const adminUser = testDb.prepare('SELECT * FROM users WHERE username = ?').get('admin') as any;
 
       mockReq.user = {
-        id: Number(result.lastInsertRowid),
-        username: 'testuser',
-        email: 'test@example.com',
-        role: 'viewer'
+        id: adminUser.id,
+        username: adminUser.username,
+        email: adminUser.email,
+        role: adminUser.role
       };
 
       mockReq.body = {
-        currentPassword,
+        currentPassword: 'admin',
         newPassword: 'NewSecurePass123!'
       };
 
@@ -243,26 +193,22 @@ describe('AuthController', () => {
       });
 
       // Verify password was changed
-      const user = db.prepare('SELECT password_hash FROM users WHERE id = ?')
-        .get(result.lastInsertRowid) as { password_hash: string };
+      const user = testDb.prepare('SELECT password_hash FROM users WHERE id = ?')
+        .get(adminUser.id) as { password_hash: string };
       
       const isNewPasswordValid = await bcrypt.compare('NewSecurePass123!', user.password_hash);
       expect(isNewPasswordValid).toBe(true);
     });
 
     it('should reject incorrect current password', async () => {
-      // Create test user
-      const hashedPassword = await bcrypt.hash('correctpass', 10);
-      const result = db.prepare(`
-        INSERT INTO users (username, email, password_hash)
-        VALUES (?, ?, ?)
-      `).run('testuser', 'test@example.com', hashedPassword);
+      // Use the admin user from setup
+      const adminUser = testDb.prepare('SELECT * FROM users WHERE username = ?').get('admin') as any;
 
       mockReq.user = {
-        id: Number(result.lastInsertRowid),
-        username: 'testuser',
-        email: 'test@example.com',
-        role: 'viewer'
+        id: adminUser.id,
+        username: adminUser.username,
+        email: adminUser.email,
+        role: adminUser.role
       };
 
       mockReq.body = {

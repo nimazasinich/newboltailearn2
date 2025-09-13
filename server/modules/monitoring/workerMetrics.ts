@@ -147,6 +147,9 @@ export class WorkerPerformanceMonitor {
     this.logPerformanceMetric('worker_cpu_usage', totalCpu / workerMetrics.length);
     this.logPerformanceMetric('training_throughput', this.metrics.trainingThroughput);
     this.logPerformanceMetric('error_rate', this.metrics.errorRate);
+    
+    // Check for performance alerts after updating metrics
+    this.checkPerformanceAlerts();
   }
 
   /**

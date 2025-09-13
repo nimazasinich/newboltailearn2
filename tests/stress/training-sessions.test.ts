@@ -30,9 +30,9 @@ describe('Training Sessions Stress Tests', () => {
           
           // Create training session
           const sessionResult = testDb.prepare(`
-            INSERT INTO training_sessions (model_id, dataset_id, parameters, start_time, status)
-            VALUES (?, 'test-dataset-1', ?, CURRENT_TIMESTAMP, 'running')
-          `).run(modelId, JSON.stringify({ epochs: 10, batch_size: 32 }));
+            INSERT INTO training_sessions (model_id, session_id, total_epochs, config, start_time, status)
+            VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, 'running')
+          `).run(modelId, `session_${modelId}`, 10, JSON.stringify({ epochs: 10, batch_size: 32 }));
           
           return { modelId, sessionId: sessionResult.lastInsertRowid, success: true };
         } catch (error) {
@@ -59,9 +59,9 @@ describe('Training Sessions Stress Tests', () => {
       const modelId = modelResult.lastInsertRowid;
 
       const sessionResult = testDb.prepare(`
-        INSERT INTO training_sessions (model_id, dataset_id, parameters, start_time, status)
-        VALUES (?, 'test-dataset-1', ?, CURRENT_TIMESTAMP, 'running')
-      `).run(modelId, JSON.stringify({ epochs: 10, batch_size: 32 }));
+        INSERT INTO training_sessions (model_id, session_id, total_epochs, config, start_time, status)
+        VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, 'running')
+      `).run(modelId, `session_${modelId}`, 10, JSON.stringify({ epochs: 10, batch_size: 32 }));
       const sessionId = sessionResult.lastInsertRowid;
 
       // Simulate rapid training updates
@@ -79,9 +79,9 @@ describe('Training Sessions Stress Tests', () => {
               
               // Log training progress
               testDb.prepare(`
-                INSERT INTO training_logs (model_id, level, message, epoch, loss, accuracy)
-                VALUES (?, 'info', ?, ?, ?, ?)
-              `).run(modelId, `Epoch ${epoch}/10 completed`, epoch, 1.0 - (epoch * 0.08), 0.1 + (epoch * 0.08));
+                INSERT INTO training_logs (model_id, session_id, level, message, metadata)
+                VALUES (?, ?, 'info', ?, ?)
+              `).run(modelId, `session_${modelId}`, `Epoch ${epoch}/10 completed`, JSON.stringify({ epoch, loss: 1.0 - (epoch * 0.08), accuracy: 0.1 + (epoch * 0.08) }));
               
               return { epoch, success: true };
             } catch (error) {
@@ -113,9 +113,9 @@ describe('Training Sessions Stress Tests', () => {
       const modelId = modelResult.lastInsertRowid;
 
       const sessionResult = testDb.prepare(`
-        INSERT INTO training_sessions (model_id, dataset_id, parameters, start_time, status)
-        VALUES (?, 'test-dataset-1', ?, CURRENT_TIMESTAMP, 'running')
-      `).run(modelId, JSON.stringify({ epochs: 10, batch_size: 32 }));
+        INSERT INTO training_sessions (model_id, session_id, total_epochs, config, start_time, status)
+        VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, 'running')
+      `).run(modelId, `session_${modelId}`, 10, JSON.stringify({ epochs: 10, batch_size: 32 }));
       const sessionId = sessionResult.lastInsertRowid;
 
       // Simulate training interruption
@@ -215,9 +215,9 @@ describe('Training Sessions Stress Tests', () => {
         
         // Log progress
         testDb.prepare(`
-          INSERT INTO training_logs (model_id, level, message, epoch, loss, accuracy)
-          VALUES (?, 'info', ?, ?, ?, ?)
-        `).run(modelId, `Epoch ${epoch}/100 completed`, epoch, 1.0 - (epoch * 0.008), 0.1 + (epoch * 0.008));
+          INSERT INTO training_logs (model_id, session_id, level, message, metadata)
+          VALUES (?, ?, 'info', ?, ?)
+        `).run(modelId, `session_${modelId}`, `Epoch ${epoch}/100 completed`, JSON.stringify({ epoch, loss: 1.0 - (epoch * 0.008), accuracy: 0.1 + (epoch * 0.008) }));
         
         // Check memory every 20 epochs
         if (epoch % 20 === 0) {
