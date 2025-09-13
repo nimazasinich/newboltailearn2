@@ -25,6 +25,9 @@ interface SidebarProps {
 const navigationItems = [
   { name: 'داشبورد اصلی', href: '/app/dashboard', icon: BarChart3, description: 'نمای کلی سیستم' },
   { name: 'آموزش مدل‌ها', href: '/app/training', icon: Brain, description: 'مدیریت آموزش AI' },
+  { name: 'جدول رتبه‌بندی', href: '/app/leaderboard', icon: Trophy, description: 'رتبه‌بندی مدل‌ها' },
+  { name: 'تاریخچه آموزش', href: '/app/history', icon: Clock, description: 'سوابق آموزش' },
+  { name: 'مدیریت مدل‌ها', href: '/app/management', icon: HardDrive, description: 'صادرات و بارگذاری' },
   { name: 'نظارت سیستم', href: '/app/monitoring', icon: Activity, description: 'وضعیت سیستم' },
   { name: 'تحلیل‌ها', href: '/app/analytics', icon: TrendingUp, description: 'گزارش‌ها و آمار' },
   { name: 'مدل‌ها', href: '/app/models', icon: Brain, description: 'مدیریت مدل‌های AI' },

@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 import Database from 'better-sqlite3';
 import fs from 'fs';
 import path from 'path';
-import { getHFToken, getHFHeaders, testHFConnection, logTokenStatus } from './utils/decode';
+import { getHFToken, getHFHeaders, testHFConnection, logTokenStatus } from './utils/decode.js';
 
 const app = express();
 const server = createServer(app);
@@ -586,7 +586,11 @@ async function downloadDatasetFromHuggingFace(dataset: any, id: string) {
     }
     
     // Get secure HuggingFace headers
+<<<<<<< HEAD
     const headers = getHFHeaders();
+=======
+    const headers = await getHFHeaders();
+>>>>>>> cursor/implement-ai-training-database-persistence-and-intelligence-1097
     
     // Download dataset using HuggingFace API with authentication
     const baseUrl = 'https://datasets-server.huggingface.co';
@@ -1352,7 +1356,7 @@ const activeTrainingSessions = new Map<number, any>();
 async function startRealTraining(modelId: number, model: any, config: any) {
   try {
     // Import training engine dynamically
-    const { RealTrainingEngine } = await import('../src/services/training/RealTrainingEngine');
+    const { RealTrainingEngine } = await import('./src/services/training/RealTrainingEngine');
     
     const trainingEngine = new RealTrainingEngine();
     activeTrainingSessions.set(modelId, trainingEngine);
@@ -1770,7 +1774,11 @@ server.listen(PORT, async () => {
   console.log(`🌐 API: http://localhost:${PORT}/api`);
   
   // Validate HuggingFace token configuration
+<<<<<<< HEAD
   logTokenStatus();
+=======
+  await logTokenStatus();
+>>>>>>> cursor/implement-ai-training-database-persistence-and-intelligence-1097
   
   // Test HuggingFace connection
   try {
