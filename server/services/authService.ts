@@ -269,4 +269,151 @@ export class AuthService {
       return false;
     }
   }
+
+  /**
+   * Validate user credentials
+   */
+  async validateUser(username: string, password: string): Promise<User | null> {
+    try {
+      const user = this.db.prepare(`
+        SELECT id, username, email, role, password_hash, created_at, last_login
+        FROM users 
+        WHERE username = ? OR email = ?
+      `).get(username, username) as any;
+
+      if (!user) {
+        return null;
+      }
+
+      const isValidPassword = await bcrypt.compare(password, user.password_hash);
+      if (!isValidPassword) {
+        return null;
+      }
+
+      // Update last login
+      this.updateLastLogin(user.id);
+
+      return {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        created_at: user.created_at,
+        last_login: user.last_login
+      };
+    } catch (error) {
+      console.error('Validate user error:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Find user by username
+   */
+  async findUserByUsername(username: string): Promise<User | null> {
+    try {
+      const user = this.db.prepare(`
+        SELECT id, username, email, role, created_at, last_login
+        FROM users 
+        WHERE username = ?
+      `).get(username) as User | undefined;
+
+      return user || null;
+    } catch (error) {
+      console.error('Find user by username error:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Find user by email
+   */
+  async findUserByEmail(email: string): Promise<User | null> {
+    try {
+      const user = this.db.prepare(`
+        SELECT id, username, email, role, created_at, last_login
+        FROM users 
+        WHERE email = ?
+      `).get(email) as User | undefined;
+
+      return user || null;
+    } catch (error) {
+      console.error('Find user by email error:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Find user by ID
+   */
+  async findUserById(id: number): Promise<User | null> {
+    return this.getUserById(id);
+  }
+
+  /**
+   * Create new user
+   */
+  async createUser(userData: RegisterData): Promise<User> {
+    const result = await this.register(userData);
+    if (!result) {
+      throw new Error('Failed to create user');
+    }
+    return result.user;
+  }
+
+  /**
+   * Validate password for user
+   */
+  async validatePassword(username: string, password: string): Promise<boolean> {
+    try {
+      const user = this.db.prepare(`
+        SELECT password_hash
+        FROM users 
+        WHERE username = ? OR email = ?
+      `).get(username, username) as { password_hash: string } | undefined;
+
+      if (!user) {
+        return false;
+      }
+
+      return await bcrypt.compare(password, user.password_hash);
+    } catch (error) {
+      console.error('Validate password error:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Update user password
+   */
+  async updatePassword(userId: number, newPassword: string): Promise<void> {
+    try {
+      const saltRounds = 12;
+      const passwordHash = await bcrypt.hash(newPassword, saltRounds);
+
+      this.db.prepare(`
+        UPDATE users 
+        SET password_hash = ?
+        WHERE id = ?
+      `).run(passwordHash, userId);
+    } catch (error) {
+      console.error('Update password error:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Update last login timestamp
+   */
+  updateLastLogin(userId: number): void {
+    try {
+      this.db.prepare(`
+        UPDATE users 
+        SET last_login = CURRENT_TIMESTAMP 
+        WHERE id = ?
+      `).run(userId);
+    } catch (error) {
+      console.error('Update last login error:', error);
+    }
+  }
 }

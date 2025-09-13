@@ -19,10 +19,11 @@ export interface TokenConfig {
  * @throws Error if token is missing or invalid
  */
 export function getHFToken(): string {
-  const encoded = process.env.HF_TOKEN_ENC;
+  // Support both HF_TOKEN_B64 (new) and HF_TOKEN_ENC (legacy)
+  const encoded = process.env.HF_TOKEN_B64 || process.env.HF_TOKEN_ENC;
   
   if (!encoded) {
-    throw new Error('HuggingFace token not found in environment variables. Please set HF_TOKEN_ENC.');
+    throw new Error('HuggingFace token not found in environment variables. Please set HF_TOKEN_B64.');
   }
 
   try {
@@ -57,7 +58,7 @@ export function encodeHFToken(token: string): string {
  * @returns Token configuration with validation status
  */
 export function validateTokenConfig(): TokenConfig {
-  const encoded = process.env.HF_TOKEN_ENC;
+  const encoded = process.env.HF_TOKEN_B64 || process.env.HF_TOKEN_ENC;
   
   if (!encoded) {
     return {
@@ -131,6 +132,6 @@ export function logTokenStatus(): void {
     console.log(`   Token prefix: ${config.decoded.substring(0, 10)}...`);
   } else {
     console.error('❌ HuggingFace token configuration is invalid');
-    console.error('   Please check HF_TOKEN_ENC environment variable');
+    console.error('   Please check HF_TOKEN_B64 environment variable');
   }
 }

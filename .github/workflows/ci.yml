@@ -1,0 +1,331 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  NODE_VERSION: '18.x'
+  COVERAGE_THRESHOLD: 70
+
+jobs:
+  security-check:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run security audit
+        run: npm audit --audit-level=moderate
+      
+      - name: Check for secrets
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+
+  lint-and-type-check:
+    name: Lint & Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run ESLint
+        run: npm run lint
+      
+      - name: Run TypeScript type check
+        run: npm run type-check
+
+  test-unit:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run unit tests with coverage
+        run: npm run test:coverage
+      
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+      
+      - name: Check coverage thresholds
+        run: |
+          npx nyc check-coverage --branches ${{ env.COVERAGE_THRESHOLD }} \
+            --functions ${{ env.COVERAGE_THRESHOLD }} \
+            --lines ${{ env.COVERAGE_THRESHOLD }} \
+            --statements ${{ env.COVERAGE_THRESHOLD }}
+
+  test-integration:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    services:
+      sqlite:
+        image: nouchka/sqlite3:latest
+        options: >-
+          --health-cmd "sqlite3 --version"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Create test database
+        run: |
+          touch test.db
+          echo "DATABASE_PATH=./test.db" >> .env.test
+      
+      - name: Run integration tests
+        run: npm run test:integration
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test-jwt-secret-for-ci-only
+          HF_TOKEN_B64: ${{ secrets.HF_TOKEN_B64_TEST }}
+
+  test-e2e:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+      
+      - name: Build application
+        run: npm run build
+      
+      - name: Start server
+        run: |
+          npm run start &
+          npx wait-on http://localhost:3001/health -t 30000
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test-jwt-secret-for-ci-only
+          DEV_ADMIN_USER: admin
+          DEV_ADMIN_PASS: admin123
+      
+      - name: Run E2E tests
+        run: npm run test:e2e
+      
+      - name: Upload test artifacts
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+    needs: [security-check, lint-and-type-check, test-unit]
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build frontend
+        run: npm run build
+      
+      - name: Compile server
+        run: npm run compile-server
+      
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: |
+            dist/
+            server/**/*.js
+          retention-days: 7
+
+  database-backup:
+    name: Database Backup
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run database backup
+        run: npm run db:backup
+        env:
+          DATABASE_PATH: ./persian_legal_ai.db
+          BACKUP_DIR: ./backups
+      
+      - name: Upload backup
+        uses: actions/upload-artifact@v3
+        with:
+          name: database-backup-${{ github.sha }}
+          path: backups/
+          retention-days: 30
+
+  docker-build:
+    name: Docker Build & Scan
+    runs-on: ubuntu-latest
+    needs: [build, test-integration, test-e2e]
+    if: github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      
+      - name: Build Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: false
+          tags: persian-legal-ai:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          outputs: type=docker,dest=/tmp/image.tar
+      
+      - name: Load Docker image
+        run: docker load --input /tmp/image.tar
+      
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: persian-legal-ai:${{ github.sha }}
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+      
+      - name: Upload Trivy results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+      
+      - name: Container health check
+        run: |
+          docker run -d -p 3001:3001 --name test-container \
+            -e NODE_ENV=production \
+            -e JWT_SECRET=test-secret \
+            persian-legal-ai:${{ github.sha }}
+          
+          sleep 10
+          curl -f http://localhost:3001/health || exit 1
+          docker stop test-container
+
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [docker-build]
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+    environment:
+      name: staging
+      url: ${{ steps.deploy.outputs.url }}
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Deploy to staging
+        id: deploy
+        run: |
+          echo "Deploying to staging environment..."
+          echo "url=https://staging.persian-legal-ai.example.com" >> $GITHUB_OUTPUT
+      
+      - name: Run smoke tests
+        run: |
+          echo "Running smoke tests on staging..."
+          # Add actual smoke test commands here
+
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [docker-build, database-backup]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment:
+      name: production
+      url: ${{ steps.deploy.outputs.url }}
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Create rollback point
+        run: |
+          echo "Creating rollback point..."
+          echo "ROLLBACK_SHA=${{ github.event.before }}" >> $GITHUB_ENV
+      
+      - name: Deploy to production
+        id: deploy
+        run: |
+          echo "Deploying to production environment..."
+          echo "url=https://persian-legal-ai.example.com" >> $GITHUB_OUTPUT
+      
+      - name: Run health checks
+        run: |
+          echo "Running production health checks..."
+          # Add actual health check commands here
+      
+      - name: Notify deployment
+        if: always()
+        run: |
+          echo "Deployment status: ${{ job.status }}"
+          # Add notification logic (Slack, email, etc.)
