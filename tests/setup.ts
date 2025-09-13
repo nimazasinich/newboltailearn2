@@ -16,8 +16,10 @@ export let testDb: Database.Database;
 beforeAll(async () => {
   // Ensure test environment variables are set
   process.env.NODE_ENV = 'test';
-  process.env.JWT_SECRET = process.env.JWT_SECRET || 'test-jwt-secret-key-for-testing-only';
-  process.env.HF_TOKEN_ENC = process.env.HF_TOKEN_ENC || Buffer.from('hf_test_token_for_testing').toString('base64');
+  process.env.JWT_SECRET = process.env.JWT_SECRET || 'test-jwt-secret-key-for-testing-only-minimum-32-characters-long';
+  process.env.HF_TOKEN_B64 = process.env.HF_TOKEN_B64 || Buffer.from('hf_test_token_for_testing').toString('base64');
+  process.env.DATABASE_URL = process.env.DATABASE_URL || './test-persian-legal-ai.db';
+  process.env.USE_WORKERS = 'true';
   
   // Ensure test database file is deleted
   if (fs.existsSync(TEST_DB_PATH)) {
@@ -99,6 +101,7 @@ beforeAll(async () => {
     CREATE TABLE IF NOT EXISTS training_sessions (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       model_id INTEGER NOT NULL,
+      user_id INTEGER,
       dataset_id TEXT NOT NULL,
       parameters TEXT NOT NULL,
       start_time DATETIME NOT NULL,
@@ -109,6 +112,7 @@ beforeAll(async () => {
       total_epochs INTEGER,
       training_duration_seconds INTEGER,
       result TEXT,
+      error_message TEXT,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY(model_id) REFERENCES models(id),
       FOREIGN KEY(dataset_id) REFERENCES datasets(id)

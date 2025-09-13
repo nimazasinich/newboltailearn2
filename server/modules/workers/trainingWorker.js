@@ -91,23 +91,40 @@ async function handleWorkerExecution() {
             timestamp: new Date().toISOString()
         });
     }, 5000);
-    // Handle process errors
-    process.on('uncaughtException', (error) => {
+    // Handle process errors with proper cleanup
+    const handleUncaughtException = (error) => {
         console.error(`Worker ${workerId} uncaught exception:`, error);
         parentPort.postMessage({
             type: 'ERROR',
             data: { error: error.message, stack: error.stack },
             timestamp: new Date().toISOString()
         });
-    });
-    process.on('unhandledRejection', (reason) => {
+    };
+    
+    const handleUnhandledRejection = (reason) => {
         console.error(`Worker ${workerId} unhandled rejection:`, reason);
         parentPort.postMessage({
             type: 'ERROR',
             data: { error: String(reason) },
             timestamp: new Date().toISOString()
         });
-    });
+    };
+    
+    // Set max listeners to prevent memory leak warnings
+    process.setMaxListeners(20);
+    process.on('uncaughtException', handleUncaughtException);
+    process.on('unhandledRejection', handleUnhandledRejection);
+    
+    // Cleanup function
+    const cleanup = () => {
+        process.off('uncaughtException', handleUncaughtException);
+        process.off('unhandledRejection', handleUnhandledRejection);
+    };
+    
+    // Cleanup on exit
+    process.on('exit', cleanup);
+    process.on('SIGTERM', cleanup);
+    process.on('SIGINT', cleanup);
 }
 /**
  * Perform real TensorFlow.js training
@@ -118,8 +135,13 @@ async function performRealTraining(request, workerId) {
     // Load and preprocess dataset
     const dataset = await loadDataset(datasetId);
     const { trainData, validationData } = await preprocessDataset(dataset, config);
-    // Create model based on type
+    // Create model based on type - ensure fresh model for each training session
     const model = createModel(config.modelType, config);
+    
+    // Ensure model is not being used by another training session
+    if (model.isTraining) {
+        throw new Error('Model is already being trained in another session');
+    }
     // Compile model
     model.compile({
         optimizer: tf.train.adam(config.learningRate),
@@ -207,7 +229,7 @@ function createModel(modelType, config) {
         case 'persian-bert':
             // Persian BERT-like architecture
             model.add(tf.layers.embedding({
-                inputDim: config.vocabSize || 30000,
+                inputDim: config.vocabSize || 1000,
                 outputDim: 128,
                 inputLength: config.maxSequenceLength || 512
             }));
@@ -222,7 +244,7 @@ function createModel(modelType, config) {
         case 'dora':
             // DORA architecture
             model.add(tf.layers.embedding({
-                inputDim: config.vocabSize || 30000,
+                inputDim: config.vocabSize || 1000,
                 outputDim: 256,
                 inputLength: config.maxSequenceLength || 512
             }));
@@ -237,7 +259,7 @@ function createModel(modelType, config) {
         case 'qr-adaptor':
             // QR-Adaptor architecture
             model.add(tf.layers.embedding({
-                inputDim: config.vocabSize || 30000,
+                inputDim: config.vocabSize || 1000,
                 outputDim: 128,
                 inputLength: config.maxSequenceLength || 512
             }));
@@ -263,6 +285,7 @@ async function loadDataset(datasetId) {
         throw new Error(`Dataset ${datasetId} not found at ${datasetPath}`);
     }
     const data = JSON.parse(fs.readFileSync(datasetPath, 'utf8'));
+    console.log(`Worker: Loaded dataset with ${data.length} samples`);
     return data.slice(0, 1000); // Limit for performance
 }
 /**
@@ -273,27 +296,47 @@ async function preprocessDataset(dataset, config) {
     const maxLength = config.maxSequenceLength || 512;
     const sequences = [];
     const labels = [];
+    
     for (const item of dataset) {
         // Simple word-based tokenization
         const text = item.text || item.question || item.content || '';
-        const tokens = text.split(' ').slice(0, maxLength);
-        const sequence = tokens.map((token) => Math.abs(token.split('').reduce((a, b) => a + b.charCodeAt(0), 0)) % (config.vocabSize || 30000));
-        // Pad sequence
-        while (sequence.length < maxLength) {
-            sequence.push(0);
+        const tokens = text.split(' ');
+        
+        // Create sequence of exactly maxLength tokens
+        const sequence = [];
+        for (let i = 0; i < maxLength; i++) {
+            if (i < tokens.length) {
+                // Use actual token
+                const token = tokens[i];
+                // Use a smaller vocabulary size to match the tokenizer
+                const vocabSize = config.vocabSize || 1000;
+                const tokenId = Math.abs(token.split('').reduce((a, b) => a + b.charCodeAt(0), 0)) % vocabSize;
+                sequence.push(tokenId);
+            } else {
+                // Pad with zeros
+                sequence.push(0);
+            }
         }
+        
         sequences.push(sequence);
-        // Simple label assignment based on content
-        let label = 0; // Default
-        if (text.includes('قانون') || text.includes('حقوق'))
-            label = 1;
-        if (text.includes('دادگاه') || text.includes('قضایی'))
-            label = 2;
+        
+        // Use provided label or assign based on content
+        let label = item.label !== undefined ? item.label : 0;
+        if (label === undefined) {
+            if (text.includes('قانون') || text.includes('حقوق'))
+                label = 1;
+            else if (text.includes('دادگاه') || text.includes('قضایی'))
+                label = 2;
+            else
+                label = 0;
+        }
         labels.push(label);
     }
     // Convert to tensors
+    console.log(`Worker: Creating tensors with ${sequences.length} sequences, each of length ${sequences[0]?.length || 0}`);
     const x = tf.tensor2d(sequences);
     const y = tf.oneHot(tf.tensor1d(labels, 'int32'), 3);
+    console.log(`Worker: Tensor shapes - x: [${x.shape}], y: [${y.shape}]`);
     // Split into train/validation
     const splitIndex = Math.floor(sequences.length * (1 - (config.validationSplit || 0.2)));
     const trainX = x.slice([0, 0], [splitIndex, maxLength]);

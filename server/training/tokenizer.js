@@ -5,7 +5,7 @@ export class PersianTokenizer {
     constructor(opts) {
         this.vocab = new Map();
         this.invVocab = [];
-        this.maxLen = opts?.maxLen ?? 128;
+        this.maxLen = opts?.maxLen ?? 512;
         this.vocabFile = opts?.vocabFile ?? path.join(process.cwd(), "checkpoints", "tokenizer_vocab.json");
         this.allowGrowth = opts?.allowGrowth ?? true;
         // حداقل واژگان ویژه
@@ -80,7 +80,8 @@ export class PersianTokenizer {
                 ids.push(this.vocab.get(t));
             }
             else if (this.allowGrowth) {
-                ids.push(this.ensureToken(t));
+                // Don't grow vocabulary during encoding to avoid model mismatch
+                ids.push(this.vocab.get("<unk>"));
             }
             else {
                 ids.push(this.vocab.get("<unk>"));

@@ -228,6 +228,11 @@ export class WorkerPerformanceMonitor {
    */
   private logPerformanceMetric(metric: string, value: number): void {
     try {
+      // Check if database connection is still open
+      if (!this.db || this.db.open === false) {
+        return; // Silently skip if database is closed
+      }
+      
       this.db.prepare(`
         INSERT INTO system_logs (level, category, message, metadata, timestamp)
         VALUES ('info', 'performance', ?, ?, CURRENT_TIMESTAMP)
@@ -236,7 +241,10 @@ export class WorkerPerformanceMonitor {
         JSON.stringify({ metric, value, timestamp: new Date().toISOString() })
       );
     } catch (error) {
-      console.error('Failed to log performance metric:', error);
+      // Only log error if it's not a connection closed error
+      if (!error.message.includes('database connection is not open')) {
+        console.error('Failed to log performance metric:', error);
+      }
     }
   }
 

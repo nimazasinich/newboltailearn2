@@ -31,6 +31,10 @@ export class WorkerErrorHandler {
   private db: Database.Database;
   private errors: Map<string, WorkerError> = new Map();
   private recoveryStrategies: Map<string, RecoveryStrategy> = new Map();
+  private errorHandlers?: {
+    uncaughtException: (error: Error) => void;
+    unhandledRejection: (reason: any) => void;
+  };
   private defaultStrategy: RecoveryStrategy = {
     maxRetries: 3,
     retryDelay: 1000,
@@ -44,15 +48,34 @@ export class WorkerErrorHandler {
     this.setupErrorHandling();
   }
 
-  private setupErrorHandling(): void {
-    // Handle uncaught exceptions in main thread
-    process.on('uncaughtException', (error) => {
-      this.handleMainThreadError(error);
-    });
+  cleanup(): void {
+    if (this.errorHandlers) {
+      process.off('uncaughtException', this.errorHandlers.uncaughtException);
+      process.off('unhandledRejection', this.errorHandlers.unhandledRejection);
+    }
+  }
 
-    process.on('unhandledRejection', (reason) => {
+  private setupErrorHandling(): void {
+    // Set max listeners to prevent memory leak warnings
+    process.setMaxListeners(20);
+    
+    // Handle uncaught exceptions in main thread
+    const handleUncaughtException = (error: Error) => {
+      this.handleMainThreadError(error);
+    };
+
+    const handleUnhandledRejection = (reason: any) => {
       this.handleMainThreadError(new Error(String(reason)));
-    });
+    };
+    
+    process.on('uncaughtException', handleUncaughtException);
+    process.on('unhandledRejection', handleUnhandledRejection);
+    
+    // Store handlers for cleanup
+    this.errorHandlers = {
+      uncaughtException: handleUncaughtException,
+      unhandledRejection: handleUnhandledRejection
+    };
 
     // Cleanup old errors periodically
     setInterval(() => {

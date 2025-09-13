@@ -3,7 +3,7 @@
  * Phase 4 - Worker Threads Implementation
  */
 
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { TrainingService } from '../../server/modules/services/trainingService.js';
 import { WorkerManager } from '../../server/modules/workers/trainingWorker.js';
 import { WorkerErrorHandler } from '../../server/modules/workers/errorHandler.js';
@@ -48,6 +48,7 @@ describe('Worker Integration Tests', () => {
       CREATE TABLE IF NOT EXISTS training_sessions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         model_id INTEGER NOT NULL,
+        user_id INTEGER,
         dataset_id TEXT NOT NULL,
         parameters TEXT NOT NULL,
         start_time DATETIME NOT NULL,
@@ -58,6 +59,7 @@ describe('Worker Integration Tests', () => {
         total_epochs INTEGER,
         training_duration_seconds INTEGER,
         result TEXT,
+        error_message TEXT,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP
       );
 
@@ -80,6 +82,19 @@ describe('Worker Integration Tests', () => {
         metadata TEXT,
         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
       );
+
+      CREATE TABLE IF NOT EXISTS datasets (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        source TEXT NOT NULL,
+        huggingface_id TEXT,
+        samples INTEGER DEFAULT 0,
+        size_mb REAL DEFAULT 0,
+        status TEXT DEFAULT 'available',
+        local_path TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      );
     `);
 
     // Initialize services
@@ -90,8 +105,13 @@ describe('Worker Integration Tests', () => {
   });
 
   afterEach(async () => {
+    // Cleanup in proper order to prevent database connection issues
     await trainingService.cleanup();
     await workerManager.terminate();
+    
+    // Give performance monitor time to finish logging
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
     db.close();
   });
 
