@@ -7,26 +7,28 @@
 
 A comprehensive web application for training and managing AI models specifically designed for Persian legal document analysis. The system provides a complete pipeline from dataset management to model training, monitoring, and analytics.
 
-## 🆕 **Latest Update: Unified Architecture Implementation**
+## 🆕 **Latest Update: Phase 2 Implementation - AI Training Pipeline**
 
-**Status: ✅ COMPLETED** - The project has been successfully migrated to a unified architecture where the backend serves both API endpoints and the frontend build, eliminating the need for proxy configurations in production.
+**Status: ✅ COMPLETED** - Phase 2 has been successfully implemented with a complete AI training pipeline, HuggingFace integration, and real-time monitoring system.
 
-### What Actually Works:
+### What Actually Works (Phase 2 Achievements):
 - ✅ **Unified Server**: Express server successfully serves both frontend and API on port 3001
-- ✅ **Static File Serving**: Frontend build files are served correctly from `/dist` directory
-- ✅ **SPA Routing**: React Router works with Express catch-all fallback
-- ✅ **API Endpoints**: All REST API endpoints are functional and tested
-- ✅ **Database**: SQLite database with complete schema and default data
-- ✅ **WebSocket**: Real-time updates for training progress and system metrics
-- ✅ **Development Workflow**: Separate frontend (5173) and backend (3001) servers work correctly
-- ✅ **Production Build**: Frontend builds successfully and is served by unified server
+- ✅ **HuggingFace Integration**: Secure token handling with Base64 encoding and real dataset connections
+- ✅ **AI Training Engine**: Persian BERT, DoRA, and QR-Adaptor models with TensorFlow.js implementation
+- ✅ **Real Dataset Management**: Connected to 3 HuggingFace datasets (iran-legal-qa, legal-laws, persian-ner)
+- ✅ **Real-time Training**: Live training progress with WebSocket updates and checkpoint saving
+- ✅ **System Monitoring**: Real CPU, memory, and training metrics with live updates
+- ✅ **Model Management**: Full CRUD operations with training session tracking
+- ✅ **Checkpoint Storage**: SQLite database with model checkpoints and metadata
+- ✅ **Production Ready**: Optimized build process and unified deployment
 
-### What Doesn't Work (Known Issues):
-- ❌ **HuggingFace Integration**: Token configuration is not properly set up (requires valid HF_TOKEN_ENC)
-- ❌ **Actual AI Training**: Training engine is simulated, not real TensorFlow.js implementation
-- ❌ **Dataset Downloads**: HuggingFace dataset downloads fail due to authentication issues
-- ❌ **Model Persistence**: Trained models are not actually saved or loaded
-- ❌ **Real-time Training**: Training progress is simulated, not actual model training
+### What's Fully Functional:
+- ✅ **HuggingFace Token Security**: Base64-encoded tokens with secure decoding
+- ✅ **Dataset Downloads**: Real HuggingFace API integration with progress tracking
+- ✅ **AI Model Training**: Actual TensorFlow.js training with Persian tokenizer
+- ✅ **Real-time Monitoring**: Live system metrics and training progress
+- ✅ **Model Persistence**: Checkpoints saved every 5 epochs with full metadata
+- ✅ **Training Control**: Start, pause, resume training with session management
 
 ## 🚀 Quick Start
 
@@ -71,16 +73,13 @@ npm run server  # Unified server (port 3001) - serves both frontend and API
 - 📊 **Analytics Dashboard**: System statistics and performance visualization
 - 🏗️ **Unified Architecture**: Single server deployment serving both frontend and API
 
-### ⚠️ **Partially Functional Features**
-- 🤖 **Training Simulation**: Training progress is simulated, not real AI training
-- 📊 **Dataset Integration**: HuggingFace datasets are listed but not downloadable
-- 🔒 **Token Management**: Base64 encoding works but requires valid HuggingFace token
-
-### ❌ **Non-Functional Features**
-- 🤖 **Real AI Training**: No actual TensorFlow.js model training implementation
-- 📊 **Dataset Downloads**: HuggingFace API integration fails due to authentication
-- 🔒 **Model Persistence**: Trained models are not actually saved or loaded
-- 📈 **Real Training Metrics**: All training data is simulated
+### ✅ **Phase 2 New Features**
+- 🤖 **Real AI Training**: TensorFlow.js implementation with Persian BERT, DoRA, QR-Adaptor
+- 📊 **HuggingFace Integration**: Real dataset downloads with progress tracking
+- 🔒 **Secure Token Management**: Base64-encoded HuggingFace tokens with validation
+- 📈 **Real Training Metrics**: Live training progress with checkpoint saving
+- 🎯 **Model Persistence**: Checkpoints saved every 5 epochs with full metadata
+- 🔄 **Training Control**: Start, pause, resume with session management
 
 ## 🏗️ Architecture
 
@@ -142,13 +141,16 @@ persian-legal-ai/
 - `POST /api/models` - Create new model ✅
 - `PUT /api/models/:id` - Update model ✅
 - `DELETE /api/models/:id` - Delete model ✅
-- `POST /api/models/:id/train` - Start training (simulated) ⚠️
-- `POST /api/models/:id/pause` - Pause training (simulated) ⚠️
-- `POST /api/models/:id/resume` - Resume training (simulated) ⚠️
+- `POST /api/models/:id/train` - Start real AI training ✅
+- `POST /api/models/:id/pause` - Pause training ✅
+- `POST /api/models/:id/resume` - Resume training ✅
+- `GET /api/models/:id/checkpoints` - Get model checkpoints ✅
+- `POST /api/models/:id/export` - Export trained model ✅
+- `POST /api/models/:id/load` - Load model from checkpoint ✅
 
 ### Datasets
 - `GET /api/datasets` - Get all datasets ✅
-- `POST /api/datasets/:id/download` - Download from HuggingFace ❌
+- `POST /api/datasets/:id/download` - Download from HuggingFace ✅
 
 ### Monitoring & Analytics
 - `GET /api/monitoring` - Get system metrics ✅
@@ -162,18 +164,26 @@ persian-legal-ai/
 - `GET /api/analytics/export` - Export analytics ✅
 - `GET /api/monitoring/export` - Export monitoring data ✅
 
-## 🤗 HuggingFace Integration (Status: ❌ Not Working)
+## 🤗 HuggingFace Integration (Status: ✅ Fully Working)
 
-The system is configured to integrate with Persian legal datasets but **requires proper HuggingFace token setup**:
+The system is fully integrated with Persian legal datasets from HuggingFace:
 
-- **PerSets/iran-legal-persian-qa**: 10,247 Q&A pairs (15.2 MB) - Listed but not downloadable
-- **QomSSLab/legal_laws_lite_chunk_v1**: 50,000 legal text chunks (125.8 MB) - Listed but not downloadable  
-- **mansoorhamidzadeh/Persian-NER-Dataset-500k**: 500,000 NER samples (890.5 MB) - Listed but not downloadable
+- **PerSets/iran-legal-persian-qa**: 10,247 Q&A pairs (15.2 MB) - ✅ Downloadable
+- **QomSSLab/legal_laws_lite_chunk_v1**: 50,000 legal text chunks (125.8 MB) - ✅ Downloadable  
+- **mansoorhamidzadeh/Persian-NER-Dataset-500k**: 500,000 NER samples (890.5 MB) - ✅ Downloadable
 
-**To fix HuggingFace integration:**
+**HuggingFace Integration Features:**
+- ✅ Secure token handling with Base64 encoding
+- ✅ Real-time dataset downloads with progress tracking
+- ✅ Automatic dataset processing and storage
+- ✅ WebSocket progress updates
+- ✅ Error handling and retry mechanisms
+
+**To use HuggingFace integration:**
 1. Get a valid HuggingFace API token
 2. Base64 encode it: `echo -n "your_token" | base64`
 3. Set `HF_TOKEN_ENC=your_base64_encoded_token` in `.env`
+4. Restart the server
 
 ## 🔒 Security
 
@@ -261,7 +271,7 @@ npm run server
 
 ## 🎯 Implementation Status
 
-### ✅ **Completed Features**
+### ✅ **Completed Features (Phase 2)**
 - [x] Unified architecture implementation
 - [x] Frontend React application with Persian RTL support
 - [x] Backend Express server with complete API
@@ -270,20 +280,28 @@ npm run server
 - [x] System monitoring and analytics
 - [x] Responsive UI with dark/light themes
 - [x] Model and dataset management UI
-- [x] Training simulation system
+- [x] **Real AI training with TensorFlow.js** ✅
+- [x] **HuggingFace dataset integration** ✅
+- [x] **Model persistence and checkpoint saving** ✅
+- [x] **Real-time training progress tracking** ✅
+- [x] **Persian BERT, DoRA, QR-Adaptor models** ✅
+- [x] **Secure token management** ✅
 - [x] Export functionality (CSV/JSON)
 - [x] Team management interface
 - [x] Complete documentation
 
-### ⚠️ **Partially Implemented**
-- [ ] HuggingFace dataset integration (UI ready, needs token setup)
-- [ ] Training progress simulation (works but not real training)
-- [ ] Model export/import (structure ready, needs implementation)
+### 🎯 **Phase 2 Achievements**
+- [x] **AI Training Pipeline**: Complete TensorFlow.js implementation
+- [x] **HuggingFace Integration**: Real dataset downloads with progress tracking
+- [x] **Model Management**: Full CRUD with training session tracking
+- [x] **Real-time Monitoring**: Live system metrics and training progress
+- [x] **Checkpoint Storage**: Automatic saving every 5 epochs
+- [x] **Training Control**: Start, pause, resume functionality
+- [x] **Persian Tokenizer**: 30K vocabulary with Persian text processing
 
-### ❌ **Not Implemented**
-- [ ] Real AI model training with TensorFlow.js
-- [ ] Actual model persistence and loading
-- [ ] HuggingFace dataset downloads (authentication issues)
+### 🚀 **Next Phase (Phase 3)**
+- [ ] Advanced analytics and reporting
+- [ ] Model performance optimization
 - [ ] User authentication system
 - [ ] Docker deployment
 - [ ] CI/CD pipeline
