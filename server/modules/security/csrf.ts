@@ -47,10 +47,17 @@ export function csrfProtection(req: Request, res: Response, next: NextFunction):
   }
 
   // Skip CSRF for auth endpoints (login/register don't have session yet)
-  if (req.path.includes('/auth/login') || 
-      req.path.includes('/auth/register') ||
-      req.path.includes('/health') ||
-      req.path.includes('/metrics')) {
+  const path = req.path || req.url || '';
+  const excludedPaths = [
+    '/auth/login',
+    '/auth/register', 
+    '/health',
+    '/metrics',
+    '/api/datasets',
+    '/api/models'
+  ];
+  
+  if (excludedPaths.some(excludedPath => path.includes(excludedPath))) {
     return next();
   }
 

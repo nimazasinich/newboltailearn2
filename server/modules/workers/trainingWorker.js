@@ -597,5 +597,5 @@ class WorkerManager {
 }
 // Export classes for main thread use (only if not in worker thread)
 if (isMainThread) {
-    export { TrainingWorkerPool, WorkerManager };
+    module.exports = { TrainingWorkerPool, WorkerManager };
 }

@@ -58,7 +58,7 @@ function setupModularRoutes(app: Application, db: Database.Database, io: any): v
 
   // Mount routes
   app.use('/api/auth', createAuthRoutes(authController));
-  app.use('/api/models', createModelsRoutes(modelsController, io));
+  app.use('/api/models', createModelsRoutes(modelsController));
   
   // Note: We're not removing existing routes from server/index.ts
   // to maintain backward compatibility. The new routes will coexist

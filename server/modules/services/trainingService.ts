@@ -5,7 +5,7 @@ import { config, isDemoMode } from '../security/config.js';
 import { WorkerManager } from '../workers/trainingWorker.js';
 import { 
   TrainingRequest, 
-  TrainingProgress, 
+  TrainingProgress as WorkerTrainingProgress, 
   TrainingResult,
   EvaluationRequest,
   EvaluationResult,
@@ -130,7 +130,7 @@ export class TrainingService {
     
     try {
       // Use worker threads if enabled, otherwise fallback to main thread
-      if (this.workerManager && config.USE_WORKERS) {
+      if (this.workerManager && (config as any).USE_WORKERS) {
         await this.runTrainingWithWorkers(modelId, datasetId, config, sessionId);
       } else {
         await this.runTrainingInMainThread(modelId, datasetId, config, sessionId);
@@ -252,7 +252,7 @@ export class TrainingService {
     };
 
     // Start training
-    await this.trainingEngine.train(modelId, datasetId, config, progressCallback);
+    await this.trainingEngine.train(modelId, datasetId, config, progressCallback as any);
 
     // Training completed successfully
     this.handleTrainingComplete(modelId, sessionId);
@@ -375,7 +375,7 @@ export class TrainingService {
       const loss = Math.max(0.1, 2.0 - (epoch / config.epochs) * 1.8);
       const accuracy = Math.min(0.95, (epoch / config.epochs) * 0.9);
 
-      const progress: TrainingProgress = {
+      const progress: any = {
         epoch,
         loss,
         accuracy,

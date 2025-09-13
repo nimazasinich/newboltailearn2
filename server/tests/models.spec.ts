@@ -337,7 +337,7 @@ describe('Models API', () => {
     // Verify training session was created
     const sessions = db.prepare('SELECT * FROM training_sessions WHERE model_id = ?').all(modelId);
     expect(sessions.length).toBe(1);
-    expect(sessions[0].status).toBe('running');
+    expect((sessions[0] as any).status).toBe('running');
 
     // Verify model status was updated
     const model = db.prepare('SELECT * FROM models WHERE id = ?').get(modelId) as any;
@@ -347,7 +347,7 @@ describe('Models API', () => {
     // Verify training log was created
     const logs = db.prepare('SELECT * FROM training_logs WHERE model_id = ?').all(modelId);
     expect(logs.length).toBe(1);
-    expect(logs[0].message).toBe('Training started');
+    expect((logs[0] as any).message).toBe('Training started');
   });
 
   it('should pause training', async () => {

@@ -226,7 +226,7 @@ async function performRealTraining(request: TrainingRequest, workerId: string): 
   const predictedClasses = predictions.argMax(-1).dataSync();
   const trueClasses = validationData.y.argMax(-1).dataSync();
   
-  const metrics = calculateMetrics(predictedClasses as Int32Array, trueClasses);
+  const metrics = calculateMetrics(predictedClasses as any, trueClasses as any);
   
   // Cleanup
   model.dispose();
@@ -744,3 +744,6 @@ class WorkerManager {
 
 // Export classes for main thread use
 export { TrainingWorkerPool, WorkerManager };
+
+// Default export
+export default { TrainingWorkerPool, WorkerManager };

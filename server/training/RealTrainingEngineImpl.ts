@@ -50,6 +50,9 @@ export class RealTrainingEngineImpl {
    */
   async initializeModel(config?: { numClasses?: number; modelType?: string }): Promise<void> {
     const numClasses = config?.numClasses || 3;
+    const modelType = config?.modelType || 'persian-bert';
+    
+    console.log(`Initializing ${modelType} model with ${numClasses} classes`);
     const vocabSize = this.tokenizer.getVocabSize();
     const embeddingDim = 128;
     const maxLength = 512;
@@ -266,7 +269,7 @@ export class RealTrainingEngineImpl {
       };
       
       // Train the model
-      await this.model.fit(trainX, trainY, {
+      await this.model!.fit(trainX, trainY, {
         epochs: config.epochs,
         batchSize: config.batchSize,
         validationData: valX && valY ? [valX, valY] : undefined,

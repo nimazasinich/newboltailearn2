@@ -717,7 +717,7 @@ app.post('/api/models/:id/pause', requireAuth, requireRole('trainer'), (req, res
     // Stop the active training session
     const trainingEngine = activeTrainingSessions.get(modelId);
     if (trainingEngine) {
-      trainingEngine.stopTraining();
+      (trainingEngine as any).stopTraining();
     }
     
     db.prepare('UPDATE models SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
@@ -763,7 +763,7 @@ app.post('/api/models/:id/resume', requireAuth, requireRole('trainer'), async (r
     logToDatabase('info', 'training', `Resumed training model ${id}`);
     
     // Restart training from current epoch
-    const config = JSON.parse(model.config || '{}');
+    const config = JSON.parse((model.config as string) || '{}');
     startRealTraining(parseInt(id), model, {
       epochs: model.epochs,
       batch_size: config.batchSize || 32,
@@ -883,19 +883,19 @@ async function downloadDatasetFromHuggingFace(dataset: Record<string, unknown>, 
         
         const data = await response.json();
         
-        if (!data.rows || data.rows.length === 0) {
+        if (!(data as any).rows || (data as any).rows.length === 0) {
           hasMore = false;
           break;
         }
         
-        allData.push(...data.rows);
+        allData.push(...(data as any).rows);
         offset += batchSize;
         
         // Update progress
         io.emit('dataset_download_progress', {
           id,
           downloaded: allData.length,
-          total: data.num_rows_total || dataset.samples
+          total: (data as any).num_rows_total || dataset.samples
         });
         
         // Limit total samples to prevent excessive downloads
@@ -928,7 +928,7 @@ async function downloadDatasetFromHuggingFace(dataset: Record<string, unknown>, 
       huggingface_id: dataset.huggingface_id,
       samples: allData.length,
       downloadedAt: new Date().toISOString(),
-      structure: allData.length > 0 ? Object.keys(allData[0].row || {}) : []
+      structure: allData.length > 0 ? Object.keys((allData[0] as any).row || {}) : []
     };
     fs.writeFileSync(metadataFile, JSON.stringify(metadata, null, 2));
     
@@ -1211,7 +1211,7 @@ app.get('/api/analytics/advanced', requireAuth, requireRole('viewer'), async (re
     
     // Get models by type
     const modelsByType = modelPerformance.reduce((acc: Record<string, number>, model: Record<string, unknown>) => {
-      acc[model.modelType] = (acc[model.modelType] || 0) + 1;
+      acc[(model as any).modelType] = (acc[(model as any).modelType] || 0) + 1;
       return acc;
     }, {});
     
@@ -1545,7 +1545,7 @@ app.post('/api/models/:id/export', async (req, res) => {
       loss: model.loss,
       epochs: model.epochs,
       dataset_id: model.dataset_id,
-      config: JSON.parse(model.config || '{}'),
+      config: JSON.parse((model.config as string) || '{}'),
       exportedAt: new Date().toISOString(),
       exportType,
       format
@@ -1621,11 +1621,11 @@ app.post('/api/models/:id/load', async (req, res) => {
         return res.status(404).json({ error: 'No checkpoint found for session' });
       }
       
-      if (!fs.existsSync(checkpoint.file_path)) {
+      if (!fs.existsSync(checkpoint.file_path as any)) {
         return res.status(404).json({ error: 'Checkpoint file not found' });
       }
       
-      checkpointData = JSON.parse(fs.readFileSync(checkpoint.file_path, 'utf8'));
+      checkpointData = JSON.parse(fs.readFileSync(checkpoint.file_path as any, 'utf8'));
     } else {
       return res.status(400).json({ error: 'Either checkpointPath or sessionId must be provided' });
     }
@@ -1995,7 +1995,7 @@ async function startRealTraining(modelId: number, model: Record<string, unknown>
     activeTrainingSessions.set(modelId, trainingEngine);
     
     // Load datasets
-    const datasets = await loadTrainingDatasets(config.dataset_ids);
+    const datasets = await loadTrainingDatasets((config.dataset_ids as string[]) || []);
     
     if (!datasets || datasets.length === 0) {
       throw new Error('No datasets available for training');
@@ -2022,8 +2022,8 @@ async function startRealTraining(modelId: number, model: Record<string, unknown>
           SET current_epoch = ?, loss = ?, accuracy = ?, updated_at = CURRENT_TIMESTAMP
           WHERE id = ?
         `).run(progress.currentEpoch, 
-               progress.trainingLoss[progress.trainingLoss.length - 1] || 0,
-               progress.validationAccuracy[progress.validationAccuracy.length - 1] || 0,
+                (progress.trainingLoss as any)[(progress.trainingLoss as any).length - 1] || 0,
+                (progress.validationAccuracy as any)[(progress.validationAccuracy as any).length - 1] || 0,
                modelId);
         
         // Log progress
@@ -2033,12 +2033,12 @@ async function startRealTraining(modelId: number, model: Record<string, unknown>
         `).run(modelId, 
                `Epoch ${progress.currentEpoch}/${progress.totalEpochs} completed`,
                progress.currentEpoch,
-               progress.trainingLoss[progress.trainingLoss.length - 1] || 0,
-               progress.validationAccuracy[progress.validationAccuracy.length - 1] || 0);
+                (progress.trainingLoss as any)[(progress.trainingLoss as any).length - 1] || 0,
+               (progress.validationAccuracy as any)[(progress.validationAccuracy as any).length - 1] || 0);
         
         // Save checkpoint every 5 epochs
-        if (progress.currentEpoch % 5 === 0) {
-          saveModelCheckpoint(modelId, null, progress.currentEpoch, config.sessionId);
+        if ((progress.currentEpoch as any) % 5 === 0) {
+          saveModelCheckpoint(modelId, null, progress.currentEpoch as any, (config as any).sessionId);
         }
         
         // Emit progress via WebSocket
@@ -2046,8 +2046,8 @@ async function startRealTraining(modelId: number, model: Record<string, unknown>
           modelId,
           epoch: progress.currentEpoch,
           totalEpochs: progress.totalEpochs,
-          loss: progress.trainingLoss[progress.trainingLoss.length - 1] || 0,
-          accuracy: progress.validationAccuracy[progress.validationAccuracy.length - 1] || 0,
+          loss: (progress.trainingLoss as any)[(progress.trainingLoss as any).length - 1] || 0,
+          accuracy: (progress.validationAccuracy as any)[(progress.validationAccuracy as any).length - 1] || 0,
           step: progress.currentStep,
           totalSteps: progress.totalSteps,
           completionPercentage: progress.completionPercentage,
