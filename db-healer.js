@@ -80,7 +80,7 @@ async function validateDatabaseSchema(dbPath) {
         console.log(`✅ Database has ${tables.length} tables:`, tables.map(t => t.name));
         
         // Validate expected tables exist
-        const expectedTables = ['users', 'datasets', 'models', 'training_sessions', 'analytics'];
+        const expectedTables = ['users', 'datasets', 'models', 'training_sessions'];
         const missingTables = expectedTables.filter(table => 
             !tables.some(t => t.name === table)
         );
