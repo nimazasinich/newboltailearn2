@@ -76,15 +76,29 @@ class HuggingFaceAPI {
         try {
             const url = `${this.baseUrl}/rows?dataset=${dataset.id}&config=default&split=train&offset=${offset}&length=${length}`;
             console.log(`Fetching real data from: ${url}`);
+            
+            // Get secure HuggingFace headers
+            const { getHFHeaders } = await import('../../utils/decode.js');
+            const headers = getHFHeaders();
+            
             const response = await fetch(url, {
                 headers: {
+                    ...headers,
                     'Accept': 'application/json',
                     'User-Agent': 'Persian-Legal-AI/1.0'
                 }
             });
+            
             if (!response.ok) {
+                if (response.status === 401) {
+                    throw new Error('Invalid HuggingFace token. Please check HF_TOKEN_B64.');
+                }
+                if (response.status === 429) {
+                    throw new Error('Rate limited by HuggingFace. Please try again later.');
+                }
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
+            
             const data = await response.json();
             // Validate response structure
             if (!data.rows || !Array.isArray(data.rows)) {
@@ -102,7 +116,8 @@ class HuggingFaceAPI {
                 rows: [],
                 num_rows_total: 0,
                 num_rows_per_page: length,
-                partial: true
+                partial: true,
+                error: error.message
             };
         }
     }
@@ -144,6 +159,104 @@ class HuggingFaceAPI {
     }
     getCacheSize() {
         return this.cache.size;
+    }
+    
+    // Download dataset with progress reporting
+    async downloadDataset(datasetKey, onProgress = null) {
+        const dataset = exports.REAL_DATASETS[datasetKey];
+        if (!dataset) {
+            throw new Error(`Dataset ${datasetKey} not found`);
+        }
+        
+        try {
+            const { getHFHeaders } = await import('../../utils/decode.js');
+            const headers = getHFHeaders();
+            
+            const allData = [];
+            let offset = 0;
+            const batchSize = 1000;
+            let hasMore = true;
+            
+            console.log(`Starting download of ${dataset.name}...`);
+            
+            while (hasMore) {
+                try {
+                    const url = `${this.baseUrl}/rows?dataset=${dataset.id}&config=default&split=train&offset=${offset}&length=${batchSize}`;
+                    
+                    const response = await fetch(url, {
+                        headers: {
+                            ...headers,
+                            'Accept': 'application/json',
+                            'User-Agent': 'Persian-Legal-AI/1.0'
+                        }
+                    });
+                    
+                    if (!response.ok) {
+                        if (response.status === 401) {
+                            throw new Error('Invalid HuggingFace token. Please check HF_TOKEN_B64.');
+                        }
+                        if (response.status === 429) {
+                            throw new Error('Rate limited by HuggingFace. Please try again later.');
+                        }
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    if (!data.rows || data.rows.length === 0) {
+                        hasMore = false;
+                        break;
+                    }
+                    
+                    allData.push(...data.rows);
+                    offset += batchSize;
+                    
+                    // Report progress
+                    if (onProgress) {
+                        const percentage = Math.min(100, (allData.length / dataset.samples) * 100);
+                        onProgress({
+                            datasetKey,
+                            downloaded: allData.length,
+                            total: dataset.samples,
+                            percentage: Math.round(percentage),
+                            currentBatch: data.rows.length
+                        });
+                    }
+                    
+                    // Limit total samples to prevent excessive downloads
+                    if (allData.length >= 10000) {
+                        hasMore = false;
+                    }
+                    
+                    // Add delay to respect rate limits
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                    
+                } catch (fetchError) {
+                    console.error(`Error fetching batch at offset ${offset}:`, fetchError);
+                    hasMore = false;
+                }
+            }
+            
+            if (allData.length === 0) {
+                throw new Error('No data downloaded');
+            }
+            
+            console.log(`Successfully downloaded ${allData.length} samples from ${dataset.name}`);
+            return {
+                datasetKey,
+                samples: allData.length,
+                data: allData,
+                metadata: {
+                    downloadedAt: new Date().toISOString(),
+                    totalSamples: allData.length,
+                    datasetInfo: dataset
+                }
+            };
+            
+        } catch (error) {
+            console.error(`Dataset download failed for ${datasetKey}:`, error);
+            throw error;
+        }
     }
     // Process real Persian text data
     processRealPersianText(data) {
