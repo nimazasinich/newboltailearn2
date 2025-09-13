@@ -8,6 +8,7 @@ export default defineConfig({
   server: {
     port: 5173,
     host: true,
+    // ❌ No proxy in production - frontend will be served by Express backend
   },
   build: {
     outDir: 'dist',

@@ -5,13 +5,13 @@
   "type": "module",
   "description": "Persian Legal Document Archive System with AI Classification and Web Scraping",
   "scripts": {
-    "dev": "vite --config vite.config.cjs",
-    "build": "tsc && vite build --config vite.config.cjs",
+    "dev": "vite",
+    "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview --config vite.config.cjs",
+    "preview": "vite preview",
     "type-check": "tsc --noEmit",
     "start": "node start.js",
-    "server": "node server/index.js",
+    "server": "node server/server/index.cjs",
     "compile-server": "npx tsc server/index.ts --outDir server --target es2020 --module esnext --moduleResolution node --esModuleInterop --allowSyntheticDefaultImports --skipLibCheck"
   },
   "dependencies": {

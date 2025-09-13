@@ -23,6 +23,10 @@ app.use(cors());
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// ✅ Serve React build (production)
+const distPath = path.join(__dirname, "../dist");
+app.use(express.static(distPath));
+
 // Initialize SQLite Database
 const dbPath = path.join(process.cwd(), 'persian_legal_ai.db');
 const db = new Database(dbPath);
@@ -586,11 +590,7 @@ async function downloadDatasetFromHuggingFace(dataset: any, id: string) {
     }
     
     // Get secure HuggingFace headers
-<<<<<<< HEAD
-    const headers = getHFHeaders();
-=======
     const headers = await getHFHeaders();
->>>>>>> cursor/implement-ai-training-database-persistence-and-intelligence-1097
     
     // Download dataset using HuggingFace API with authentication
     const baseUrl = 'https://datasets-server.huggingface.co';
@@ -1760,6 +1760,11 @@ setInterval(async () => {
   }
 }, 5000);
 
+// ✅ SPA fallback - serve index.html for all non-API routes
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'));
+});
+
 // Error handling middleware
 app.use((error: any, req: any, res: any, next: any) => {
   logToDatabase('error', 'server', error.message, { stack: error.stack });
@@ -1774,11 +1779,7 @@ server.listen(PORT, async () => {
   console.log(`🌐 API: http://localhost:${PORT}/api`);
   
   // Validate HuggingFace token configuration
-<<<<<<< HEAD
-  logTokenStatus();
-=======
   await logTokenStatus();
->>>>>>> cursor/implement-ai-training-database-persistence-and-intelligence-1097
   
   // Test HuggingFace connection
   try {

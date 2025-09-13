@@ -56,6 +56,10 @@ const io = new socket_io_1.Server(server, {
 app.use((0, cors_1.default)());
 app.use(body_parser_1.default.json({ limit: '50mb' }));
 app.use(body_parser_1.default.urlencoded({ extended: true }));
+
+// ✅ Serve React build (production)
+const distPath = path_1.default.join(__dirname, "../../dist");
+app.use(express_1.default.static(distPath));
 // Initialize SQLite Database
 const dbPath = path_1.default.join(process.cwd(), 'persian_legal_ai.db');
 const db = new better_sqlite3_1.default(dbPath);
@@ -1549,6 +1553,11 @@ setInterval(async () => {
         console.error('Failed to get system metrics:', error);
     }
 }, 5000);
+// ✅ SPA fallback - serve index.html for all non-API routes
+app.get('*', (_req, res) => {
+    res.sendFile(path_1.default.join(distPath, 'index.html'));
+});
+
 // Error handling middleware
 app.use((error, req, res, next) => {
     logToDatabase('error', 'server', error.message, { stack: error.stack });
