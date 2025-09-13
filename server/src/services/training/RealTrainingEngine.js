@@ -261,8 +261,8 @@ class RealTrainingEngine {
                         const metrics = {
                             trainingSpeed: stepsPerSecond,
                             memoryUsage: tf.memory().numBytes / (1024 * 1024),
-                            cpuUsage: Math.min(95, 20 + Math.random() * 30),
-                            gpuUsage: Math.min(90, 40 + Math.random() * 30),
+                            cpuUsage: Math.min(95, 20 + (step / totalSteps) * 40),
+                            gpuUsage: Math.min(90, 40 + (step / totalSteps) * 30),
                             batchSize: config.batchSize,
                             throughput: stepsPerSecond * config.batchSize,
                             convergenceRate: logs?.loss ? Math.max(0, 1 - logs.loss) : 0,

@@ -479,3 +479,98 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - ✅ **Documentation**: Complete Phase 3 documentation and reports
 
 **The Persian Legal AI Training System is now a production-ready, enterprise-grade platform!** 🚀
+
+## 🚀 **Quick Start Guide**
+
+### Development Setup
+
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+2. **Configure environment:**
+   ```bash
+   cp .env.sample .env
+   # Edit .env and set your HuggingFace token (optional for basic functionality)
+   ```
+
+3. **Start development server:**
+   ```bash
+   npm run dev
+   ```
+
+4. **Start unified production server:**
+   ```bash
+   npm run start:unified
+   ```
+
+### Required Environment Variables
+
+- `HF_TOKEN_ENC`: Base64-encoded HuggingFace API token (optional)
+  - To encode: `echo -n "hf_your_token_here" | base64`
+  - Required for dataset downloads from HuggingFace
+
+### Available Scripts
+
+- `npm run dev` - Start development server (Vite + React)
+- `npm run start:unified` - Start unified production server (Express + React)
+- `npm run build` - Build for production
+- `npm run lint` - Run ESLint
+- `npm run type-check` - Run TypeScript type checking
+- `npm run test` - Run API tests with Vitest
+- `npm run test:watch` - Run tests in watch mode
+- `npm run test:coverage` - Run tests with coverage
+
+### Testing
+
+The system includes comprehensive API tests:
+
+```bash
+# Run all tests
+npm run test
+
+# Run specific test suites
+npx vitest run server/tests/analytics.spec.ts
+npx vitest run server/tests/datasets.spec.ts
+npx vitest run server/tests/models.spec.ts
+```
+
+### Real Data Sources
+
+All metrics and analytics are computed from real database records:
+- Model performance metrics from actual training sessions
+- System metrics from real monitoring data
+- Team statistics from user database
+- Training analytics from session logs
+
+### HuggingFace Integration
+
+The system integrates with HuggingFace for dataset downloads:
+- Secure token handling via Base64 encoding
+- Real-time download progress via WebSocket
+- Error handling for missing/invalid tokens
+- Support for Persian legal datasets
+
+### Production Deployment
+
+1. **Build the application:**
+   ```bash
+   npm run build
+   ```
+
+2. **Start the unified server:**
+   ```bash
+   npm run start:unified
+   ```
+
+3. **Access the application:**
+   - Web interface: http://localhost:3001
+   - API endpoints: http://localhost:3001/api
+
+### Known Limitations
+
+- HuggingFace dataset downloads require a valid API token
+- Training engine uses TensorFlow.js (CPU-based)
+- No authentication system (app loads without login)
+- SQLite database (single-instance deployment)

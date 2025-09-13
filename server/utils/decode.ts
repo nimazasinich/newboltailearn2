@@ -74,7 +74,7 @@ export function validateTokenConfig(): TokenConfig {
       decoded,
       isValid: true
     };
-  } catch (error) {
+  } catch (_error) {
     return {
       encoded,
       decoded: '',
