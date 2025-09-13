@@ -29,9 +29,6 @@ if (!isMainThread) {
   handleWorkerExecution();
 }
 
-// Main thread exports
-export { TrainingWorkerPool, WorkerManager };
-
 /**
  * Handle worker thread execution
  */
@@ -743,4 +740,9 @@ class WorkerManager {
   async terminate(): Promise<void> {
     await this.pool.terminate();
   }
+}
+
+// Export classes for main thread use (only if not in worker thread)
+if (isMainThread) {
+  export { TrainingWorkerPool, WorkerManager };
 }

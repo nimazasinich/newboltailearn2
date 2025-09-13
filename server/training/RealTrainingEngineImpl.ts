@@ -472,6 +472,29 @@ export class RealTrainingEngineImpl {
     }
     await this.model.save(`file://${filePath}`);
   }
+
+  /**
+   * Stop training
+   */
+  stopTraining(): void {
+    this.isTraining = false;
+    if (this.model) {
+      // TensorFlow.js doesn't have a direct stop method, but we can set a flag
+      (this.model as any).stopTraining = true;
+    }
+  }
+
+  /**
+   * Dispose of resources
+   */
+  dispose(): void {
+    if (this.model) {
+      this.model.dispose();
+      this.model = null;
+    }
+    this.isTraining = false;
+    this.trainingHistory = [];
+  }
 }
 
 // Export singleton instance

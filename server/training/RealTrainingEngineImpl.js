@@ -129,6 +129,20 @@ export class RealTrainingEngineImpl {
         return { texts, labels };
     }
     /**
+     * Start training with real TensorFlow.js
+     */
+    async startTraining(config, callbacks) {
+        const modelId = config.modelId || 1;
+        const datasetId = config.datasetId || 'default';
+        const trainingConfig = {
+            epochs: config.epochs || 10,
+            batchSize: config.batchSize || 32,
+            learningRate: config.learningRate || 0.001,
+            validationSplit: config.validationSplit || 0.2
+        };
+        await this.train(modelId, datasetId, trainingConfig, callbacks.onProgress);
+    }
+    /**
      * Train the model with real TensorFlow.js
      */
     async train(modelId, datasetId, config, progressCallback) {
@@ -335,6 +349,17 @@ export class RealTrainingEngineImpl {
             throw new Error('No model to save');
         }
         await this.model.save(`file://${filePath}`);
+    }
+    /**
+     * Dispose of resources
+     */
+    dispose() {
+        if (this.model) {
+            this.model.dispose();
+            this.model = null;
+        }
+        this.isTraining = false;
+        this.trainingHistory = [];
     }
 }
 // Export singleton instance

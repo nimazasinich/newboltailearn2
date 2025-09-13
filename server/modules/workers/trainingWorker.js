@@ -11,8 +11,6 @@ import * as tf from '@tensorflow/tfjs-node';
 if (!isMainThread) {
     handleWorkerExecution();
 }
-// Main thread exports
-export { TrainingWorkerPool, WorkerManager };
 /**
  * Handle worker thread execution
  */
@@ -596,4 +594,9 @@ class WorkerManager {
     async terminate() {
         await this.pool.terminate();
     }
+}
+
+// Export classes for main thread use (only if not in worker thread)
+if (isMainThread) {
+    export { TrainingWorkerPool, WorkerManager };
 }
