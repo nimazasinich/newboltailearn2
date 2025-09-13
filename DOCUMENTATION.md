@@ -22,16 +22,30 @@
 
 The **Persian Legal AI Training System** is a comprehensive web application designed for training and managing AI models specifically for Persian legal document analysis. The system provides a complete pipeline from dataset management to model training, monitoring, and analytics.
 
-### Key Features
+### ✅ **What Actually Works**
 
-- **🤖 AI Model Training**: Support for various AI models (DoRA, QR-Adaptor, Persian BERT)
-- **📊 Dataset Management**: Integration with HuggingFace datasets for Persian legal documents
-- **🔒 Secure Token Management**: Base64 encoded HuggingFace API tokens
-- **📈 Real-time Monitoring**: Live training progress and system metrics
+- **🤖 Model Management**: Complete CRUD operations for AI model definitions
+- **📊 Dataset Management**: View and manage dataset metadata (HuggingFace integration UI ready)
+- **🔒 Database Operations**: Full SQLite database with complete schema
+- **📈 System Monitoring**: Real-time system metrics and performance data
 - **🌐 Persian RTL UI**: Right-to-left interface optimized for Persian language
 - **📱 Responsive Design**: Works on desktop, tablet, and mobile devices
-- **🔌 WebSocket Integration**: Real-time updates for training progress
-- **📊 Analytics Dashboard**: Comprehensive reporting and visualization
+- **🔌 WebSocket Integration**: Real-time updates for system metrics
+- **📊 Analytics Dashboard**: System statistics and performance visualization
+- **🏗️ Unified Architecture**: Single server deployment serving both frontend and API
+
+### ⚠️ **What's Partially Working**
+
+- **🤖 Training Simulation**: Training progress is simulated, not real AI training
+- **📊 HuggingFace Integration**: UI is ready but requires valid API token setup
+- **🔒 Token Management**: Base64 encoding works but needs proper HuggingFace token
+
+### ❌ **What Doesn't Work**
+
+- **🤖 Real AI Training**: No actual TensorFlow.js model training implementation
+- **📊 Dataset Downloads**: HuggingFace API integration fails due to authentication
+- **🔒 Model Persistence**: Trained models are not actually saved or loaded
+- **📈 Real Training Metrics**: All training data is simulated
 
 ### Technology Stack
 
