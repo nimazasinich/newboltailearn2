@@ -7,6 +7,17 @@
 
 A comprehensive web application for training and managing AI models specifically designed for Persian legal document analysis. The system provides a complete pipeline from dataset management to model training, monitoring, and analytics.
 
+## 🆕 **Latest Update: Unified Architecture Migration**
+
+**Status: ✅ COMPLETED** - The project has been successfully migrated to a unified architecture where the backend serves both API endpoints and the frontend build, eliminating the need for proxy configurations in production.
+
+### What Changed:
+- **Backend Enhancement**: Express server now serves static frontend files from `/dist` directory
+- **SPA Routing**: Implemented catch-all routing for React Router compatibility
+- **Proxy Removal**: Eliminated Vite proxy configuration for cleaner development setup
+- **Production Ready**: Single server deployment on port 3001
+- **Development Preserved**: Development workflow remains unchanged with separate servers
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -25,12 +36,16 @@ npm install
 # Set up environment
 echo "HF_TOKEN_ENC=aGZfWk5MekFqY2FHYkJQQldFUlBhVHhpbklVZlFhWUFwd2JlZA==" > .env
 
-# Compile backend
+# Compile backend (optional - server/index.js is already compiled)
 npm run compile-server
 
-# Start development servers
-npm run server  # Backend (port 3001)
+# Development Mode (separate servers)
 npm run dev     # Frontend (port 5173)
+npm run server  # Backend (port 3001) - optional for dev
+
+# Production Mode (unified server)
+npm run build   # Build frontend
+npm run server  # Unified server (port 3001) - serves both frontend and API
 ```
 
 ## ✨ Key Features
@@ -46,12 +61,26 @@ npm run dev     # Frontend (port 5173)
 
 ## 🏗️ Architecture
 
+### Development Mode
 ```
 Frontend (React + TypeScript)  ←→  Backend (Node.js + Express)  ←→  Database (SQLite)
      ↓                                    ↓                              ↓
 Dashboard Components              API Routes & WebSocket         Models, Datasets,
 Training Management              HuggingFace Integration         Training Sessions,
 Monitoring & Analytics          Real-time Updates               System Logs
+     ↓                                    ↓
+Port 5173 (Vite Dev)            Port 3001 (Express API)
+```
+
+### Production Mode (Unified)
+```
+Unified Server (Node.js + Express)  ←→  Database (SQLite)
+     ↓                                        ↓
+Frontend (Static Files) + API Routes    Models, Datasets,
+SPA Routing + WebSocket                Training Sessions,
+Real-time Updates                      System Logs
+     ↓
+Port 3001 (Everything)
 ```
 
 ## 📁 Project Structure
@@ -132,10 +161,21 @@ The system uses SQLite with the following main tables:
 
 ## 🚀 Deployment
 
-### Production Build
+### Production Build (Unified Server)
 ```bash
+# Build frontend
 npm run build
-npm run compile-server
+
+# Start unified server (serves both frontend and API)
+npm run server
+```
+
+### Development Build
+```bash
+# Start frontend dev server
+npm run dev
+
+# Start backend server (optional for dev)
 npm run server
 ```
 
@@ -145,6 +185,13 @@ HF_TOKEN_ENC=your_base64_encoded_token
 NODE_ENV=production
 PORT=3001
 ```
+
+### Migration Notes
+- **PostCSS Config**: Updated to ES module syntax for compatibility
+- **Proxy Removed**: Vite proxy configuration eliminated for cleaner setup
+- **SPA Routing**: Backend now handles React Router routes with catch-all handler
+- **Static Assets**: Frontend build served from `/dist` directory
+- **CORS Updated**: Supports both development and production origins
 
 ## 📚 Documentation
 
