@@ -1,560 +1,199 @@
-import * as tf from '@tensorflow/tfjs';
-import { getHFHeaders } from '../utils/decode.js';
+import * as tf from "@tensorflow/tfjs-node";
+import { PersianTokenizer } from "./tokenizer";
+import fs from "fs";
+import path from "path";
 
-export interface TrainingConfig {
-  modelType: 'dora' | 'qr-adaptor' | 'persian-bert';
-  datasets: string[];
+export type LabeledSample = { text: string; label: number };
+
+export interface TrainOptions {
   epochs: number;
-  batchSize: number;
-  learningRate: number;
-  validationSplit: number;
-  maxSequenceLength: number;
-  vocabSize: number;
-}
-
-export interface TrainingCallbacks {
-  onProgress: (progress: TrainingProgress) => void;
-  onMetrics: (metrics: TrainingMetrics) => void;
-  onComplete: (model: tf.LayersModel) => void;
-  onError: (error: string) => void;
-}
-
-export interface TrainingProgress {
-  currentEpoch: number;
-  totalEpochs: number;
-  currentStep: number;
-  totalSteps: number;
-  trainingLoss: number[];
-  validationLoss: number[];
-  validationAccuracy: number[];
-  learningRate: number[];
-  estimatedTimeRemaining: number;
-  completionPercentage: number;
-}
-
-export interface TrainingMetrics {
-  trainingSpeed: number;
-  memoryUsage: number;
-  cpuUsage: number;
-  gpuUsage: number;
-  batchSize: number;
-  throughput: number;
-  convergenceRate: number;
-  efficiency: number;
+  batchSize?: number;
+  learningRate?: number;
+  validationSplit?: number;   // اگر valData نداشتیم
+  onProgress?: (p: {
+    epoch: number;
+    loss: number;
+    accuracy?: number;
+    val_loss?: number;
+    val_accuracy?: number;
+  }) => void;
+  onComplete?: () => void;
+  onError?: (err: string) => void;
 }
 
 export class RealTrainingEngine {
   private model: tf.LayersModel | null = null;
-  private tokenizer: PersianTokenizer | null = null;
-  private isTraining = false;
-  private currentConfig: TrainingConfig | null = null;
+  private tokenizer: PersianTokenizer;
+  private maxLen = 128;
 
-  async initializeModel(config: TrainingConfig): Promise<void> {
-    this.currentConfig = config;
-    
-    // Initialize tokenizer
-    this.tokenizer = new PersianTokenizer(config.vocabSize);
-    await this.tokenizer.initialize();
-    
-    // Create model based on type
-    switch (config.modelType) {
-      case 'persian-bert':
-        this.model = this.createPersianBertModel(config);
-        break;
-      case 'dora':
-        this.model = this.createDoRAModel(config);
-        break;
-      case 'qr-adaptor':
-        this.model = this.createQRAdaptorModel(config);
-        break;
-      default:
-        throw new Error(`Unsupported model type: ${config.modelType}`);
-    }
-    
-    console.log(`Initialized ${config.modelType} model with ${this.model.countParams()} parameters`);
+  constructor() {
+    this.tokenizer = new PersianTokenizer({ maxLen: this.maxLen });
   }
 
-  private createPersianBertModel(config: TrainingConfig): tf.LayersModel {
-    const input = tf.input({ shape: [config.maxSequenceLength], name: 'input_ids' });
-    
-    // Embedding layer
-    const embedding = tf.layers.embedding({
-      inputDim: config.vocabSize,
-      outputDim: 768,
+  /** معماری سبک و واقعی برای طبقه‌بندی متن */
+  private buildModel(vocabSize: number, numClasses: number): tf.LayersModel {
+    const input = tf.input({ shape: [this.maxLen], dtype: "int32" });
+
+    // Embedding
+    const x = tf.layers.embedding({
+      inputDim: vocabSize,
+      outputDim: 128,
+      inputLength: this.maxLen,
       maskZero: true,
-      name: 'token_embeddings'
     }).apply(input) as tf.SymbolicTensor;
-    
-    // Position embeddings (for future use)
-    // const positionEmbedding = tf.layers.embedding({
-    //   inputDim: config.maxSequenceLength,
-    //   outputDim: 768,
-    //   name: 'position_embeddings'
-    // });
-    
-    // Multi-head attention layers
-    let hiddenState = embedding;
-    for (let i = 0; i < 12; i++) {
-      // Self-attention (simplified - using dense layers as approximation)
-      const attention = tf.layers.dense({
-        units: 768,
-        activation: 'tanh',
-        name: `attention_${i}`
-      }).apply(hiddenState) as tf.SymbolicTensor;
-      
-      // Add & Norm
-      const addNorm1 = tf.layers.add().apply([hiddenState, attention]) as tf.SymbolicTensor;
-      const layerNorm1 = tf.layers.layerNormalization().apply(addNorm1) as tf.SymbolicTensor;
-      
-      // Feed Forward
-      const ffn1 = tf.layers.dense({ units: 3072, activation: 'gelu' }).apply(layerNorm1) as tf.SymbolicTensor;
-      const ffn2 = tf.layers.dense({ units: 768 }).apply(ffn1) as tf.SymbolicTensor;
-      
-      // Add & Norm
-      const addNorm2 = tf.layers.add().apply([layerNorm1, ffn2]) as tf.SymbolicTensor;
-      hiddenState = tf.layers.layerNormalization().apply(addNorm2) as tf.SymbolicTensor;
-    }
-    
-    // Classification head
-    const pooled = tf.layers.globalAveragePooling1d().apply(hiddenState) as tf.SymbolicTensor;
-    const dropout = tf.layers.dropout({ rate: 0.1 }).apply(pooled) as tf.SymbolicTensor;
-    const output = tf.layers.dense({
-      units: 8,
-      activation: 'softmax',
-      name: 'classification_head'
-    }).apply(dropout) as tf.SymbolicTensor;
-    
-    return tf.model({ inputs: input, outputs: output, name: 'persian_bert' });
+
+    // BiLSTM به‌عنوان تقریبی ساده (واقعی، نه موک)
+    const bi = tf.layers.bidirectional({
+      layer: tf.layers.lstm({ units: 64, returnSequences: false, dropout: 0.1, recurrentDropout: 0.1 }),
+      mergeMode: "concat",
+    }).apply(x) as tf.SymbolicTensor;
+
+    const dense1 = tf.layers.dense({ units: 128, activation: "relu", kernelRegularizer: tf.regularizers.l2({ l2: 1e-3 }) }).apply(bi) as tf.SymbolicTensor;
+    const drop1 = tf.layers.dropout({ rate: 0.3 }).apply(dense1) as tf.SymbolicTensor;
+    const out = tf.layers.dense({ units: numClasses, activation: "softmax" }).apply(drop1) as tf.SymbolicTensor;
+
+    const model = tf.model({ inputs: input, outputs: out });
+    model.compile({
+      optimizer: tf.train.adam( (this as any).learningRate ?? 1e-3 ),
+      loss: "sparseCategoricalCrossentropy",
+      metrics: ["accuracy"],
+    });
+    return model;
   }
 
-  private createDoRAModel(config: TrainingConfig): tf.LayersModel {
-    const input = tf.input({ shape: [config.maxSequenceLength] });
+  private toTensors(samples: LabeledSample[]) {
+    const xsArr = samples.map(s => this.tokenizer.encode(s.text));
+    const ysArr = samples.map(s => s.label);
     
-    // Embedding with DoRA decomposition
-    const embedding = tf.layers.embedding({
-      inputDim: config.vocabSize,
-      outputDim: 512,
-      name: 'dora_embedding'
-    }).apply(input) as tf.SymbolicTensor;
+    // Debug: Check token IDs
+    const maxTokenId = Math.max(...xsArr.flat());
+    const vocabSize = this.tokenizer.getVocabSize();
+    console.log(`Max token ID in data: ${maxTokenId}, Vocabulary size: ${vocabSize}`);
     
-    // DoRA layers with magnitude and direction separation
-    let x = embedding;
-    for (let i = 0; i < 6; i++) {
-      // Magnitude vector
-      const magnitude = tf.layers.dense({
-        units: 512,
-        activation: 'relu',
-        name: `dora_magnitude_${i}`
-      }).apply(x) as tf.SymbolicTensor;
-      
-      // Direction matrix (low-rank)
-      const direction1 = tf.layers.dense({
-        units: 64,
-        name: `dora_direction_1_${i}`
-      }).apply(x) as tf.SymbolicTensor;
-      const direction2 = tf.layers.dense({
-        units: 512,
-        name: `dora_direction_2_${i}`
-      }).apply(direction1) as tf.SymbolicTensor;
-      
-      // Combine magnitude and direction
-      x = tf.layers.multiply().apply([magnitude, direction2]) as tf.SymbolicTensor;
-      x = tf.layers.layerNormalization().apply(x) as tf.SymbolicTensor;
-    }
-    
-    const pooled = tf.layers.globalAveragePooling1d().apply(x) as tf.SymbolicTensor;
-    const output = tf.layers.dense({ units: 8, activation: 'softmax' }).apply(pooled) as tf.SymbolicTensor;
-    
-    return tf.model({ inputs: input, outputs: output, name: 'dora_model' });
-  }
-
-  private createQRAdaptorModel(config: TrainingConfig): tf.LayersModel {
-    const input = tf.input({ shape: [config.maxSequenceLength] });
-    
-    const embedding = tf.layers.embedding({
-      inputDim: config.vocabSize,
-      outputDim: 512,
-      name: 'qr_embedding'
-    }).apply(input) as tf.SymbolicTensor;
-    
-    // QR decomposition layers
-    let x = embedding;
-    for (let i = 0; i < 8; i++) {
-      // Q matrix (orthogonal)
-      const q = tf.layers.dense({
-        units: 256,
-        activation: 'tanh',
-        name: `qr_q_${i}`
-      }).apply(x) as tf.SymbolicTensor;
-      
-      // R matrix (upper triangular approximation)
-      const r = tf.layers.dense({
-        units: 512,
-        activation: 'linear',
-        name: `qr_r_${i}`
-      }).apply(q) as tf.SymbolicTensor;
-      
-      // Quantization simulation
-      const quantized = tf.layers.dense({
-        units: 512,
-        activation: 'relu',
-        name: `qr_quantized_${i}`
-      }).apply(r) as tf.SymbolicTensor;
-      
-      x = tf.layers.add().apply([x, quantized]) as tf.SymbolicTensor;
-      x = tf.layers.layerNormalization().apply(x) as tf.SymbolicTensor;
-    }
-    
-    const pooled = tf.layers.globalAveragePooling1d().apply(x) as tf.SymbolicTensor;
-    const output = tf.layers.dense({ units: 8, activation: 'softmax' }).apply(pooled) as tf.SymbolicTensor;
-    
-    return tf.model({ inputs: input, outputs: output, name: 'qr_adaptor_model' });
-  }
-
-  async loadRealData(config: TrainingConfig): Promise<{
-    trainX: tf.Tensor2D;
-    trainY: tf.Tensor2D;
-    valX: tf.Tensor2D;
-    valY: tf.Tensor2D;
-  }> {
-    console.log('Loading real datasets from HuggingFace...');
-    
-    // Fetch real data from multiple datasets
-    const datasets = await this.fetchMultipleDatasets(config.datasets, Math.floor(1000 / config.datasets.length));
-    
-    const allTexts: string[] = [];
-    const allLabels: string[] = [];
-    
-    // Process each dataset
-    for (const [datasetKey, data] of Object.entries(datasets)) {
-      const processed = this.processRealPersianText(data.rows);
-      allTexts.push(...processed.texts);
-      allLabels.push(...processed.labels);
-      console.log(`Loaded ${processed.texts.length} samples from ${datasetKey}`);
-    }
-    
-    if (allTexts.length === 0) {
-      throw new Error('No data loaded from datasets');
-    }
-    
-    console.log(`Total samples loaded: ${allTexts.length}`);
-    
-    // Tokenize texts
-    if (!this.tokenizer) {
-      throw new Error('Tokenizer not initialized');
-    }
-    const tokenizedTexts = await Promise.all(
-      allTexts.map(text => this.tokenizer.encode(text, config.maxSequenceLength))
-    );
-    
-    // Create label mapping
-    const uniqueLabels = [...new Set(allLabels)];
-    const labelToIndex = new Map(uniqueLabels.map((label, index) => [label, index]));
-    
-    // Convert to tensors
-    const X = tf.tensor2d(tokenizedTexts);
-    const y = tf.tensor1d(allLabels.map(label => labelToIndex.get(label) || 0));
-    const yOneHot = tf.oneHot(y, uniqueLabels.length);
-    
-    // Split into train/validation
-    const numSamples = X.shape[0];
-    const numTrain = Math.floor(numSamples * (1 - config.validationSplit));
-    const trainX = X.slice([0, 0], [numTrain, -1]) as tf.Tensor2D;
-    const trainY = yOneHot.slice([0, 0], [numTrain, -1]) as tf.Tensor2D;
-    const valX = X.slice([numTrain, 0], [-1, -1]) as tf.Tensor2D;
-    const valY = yOneHot.slice([numTrain, 0], [-1, -1]) as tf.Tensor2D;
-    
-    // Cleanup
-    X.dispose();
-    y.dispose();
-    yOneHot.dispose();
-    
-    console.log(`Training samples: ${trainX.shape[0]}, Validation samples: ${valX.shape[0]}`);
-    
-    return { trainX, trainY, valX, valY };
-  }
-
-  private async fetchMultipleDatasets(datasetIds: string[], maxSamples: number): Promise<Record<string, any>> {
-    const datasets: Record<string, any> = {};
-    const headers = getHFHeaders();
-    
-    for (const datasetId of datasetIds) {
-      try {
-        const baseUrl = 'https://datasets-server.huggingface.co';
-        const url = `${baseUrl}/rows?dataset=${datasetId}&config=default&split=train&offset=0&length=${maxSamples}`;
-        
-        const response = await fetch(url, { headers });
-        
-        if (!response.ok) {
-          console.warn(`Failed to fetch dataset ${datasetId}: ${response.status}`);
-          continue;
+    if (maxTokenId >= vocabSize) {
+      console.log(`Warning: Token ID ${maxTokenId} >= vocab size ${vocabSize}`);
+      // Clamp all token IDs to valid range
+      xsArr.forEach(arr => {
+        for (let i = 0; i < arr.length; i++) {
+          arr[i] = Math.min(arr[i], vocabSize - 1);
         }
-        
-        const data = await response.json();
-        datasets[datasetId] = data;
-        
-        // Add delay to respect rate limits
-        await new Promise(resolve => setTimeout(resolve, 100));
-      } catch (error) {
-        console.warn(`Error fetching dataset ${datasetId}:`, error);
-      }
-    }
-    
-    return datasets;
-  }
-
-  private processRealPersianText(rows: any[]): { texts: string[]; labels: string[] } {
-    const texts: string[] = [];
-    const labels: string[] = [];
-    
-    for (const row of rows) {
-      if (row.row) {
-        // Extract text and label from row data
-        const text = row.row.text || row.row.question || row.row.content || '';
-        const label = row.row.label || row.row.category || row.row.type || 'unknown';
-        
-        if (text && text.trim().length > 0) {
-          texts.push(text.trim());
-          labels.push(label.toString());
-        }
-      }
-    }
-    
-    return { texts, labels };
-  }
-
-  async startTraining(config: TrainingConfig, callbacks: TrainingCallbacks): Promise<void> {
-    if (this.isTraining) {
-      throw new Error('Training already in progress');
-    }
-    
-    this.isTraining = true;
-    
-    try {
-      // Initialize model
-      await this.initializeModel(config);
-      
-      // Load real data
-      const { trainX, trainY, valX, valY } = await this.loadRealData(config);
-      
-      if (!this.model) {
-        throw new Error('Model not initialized');
-      }
-      
-      // Compile model
-      this.model.compile({
-        optimizer: tf.train.adam(config.learningRate),
-        loss: 'categoricalCrossentropy',
-        metrics: ['accuracy']
       });
-      
-      console.log('Starting real training...');
-      const startTime = Date.now();
-      let step = 0;
-      const totalSteps = config.epochs * Math.ceil(trainX.shape[0] / config.batchSize);
-      
-      // Training loop
-      await this.model.fit(trainX, trainY, {
-        epochs: config.epochs,
-        batchSize: config.batchSize,
-        validationData: [valX, valY],
-        shuffle: true,
+    }
+    
+    const xs = tf.tensor2d(xsArr, [xsArr.length, this.maxLen], "int32");
+    const ys = tf.tensor1d(ysArr, "float32");
+    return { xs, ys };
+  }
+
+  private toTensorsFromEncoded(xsArr: number[][], samples: LabeledSample[]) {
+    const ysArr = samples.map(s => s.label);
+    
+    // Debug: Check token IDs
+    const maxTokenId = Math.max(...xsArr.flat());
+    const vocabSize = this.tokenizer.getVocabSize();
+    console.log(`Max token ID in data: ${maxTokenId}, Vocabulary size: ${vocabSize}`);
+    
+    if (maxTokenId >= vocabSize) {
+      console.log(`Warning: Token ID ${maxTokenId} >= vocab size ${vocabSize}`);
+      // Clamp all token IDs to valid range
+      xsArr.forEach(arr => {
+        for (let i = 0; i < arr.length; i++) {
+          arr[i] = Math.min(arr[i], vocabSize - 1);
+        }
+      });
+    }
+    
+    const xs = tf.tensor2d(xsArr, [xsArr.length, this.maxLen], "int32");
+    const ys = tf.tensor1d(ysArr, "float32");
+    return { xs, ys };
+  }
+
+  private ensureDir(p: string) {
+    if (!fs.existsSync(p)) fs.mkdirSync(p, { recursive: true });
+  }
+
+  async trainOnSamples(
+    samples: LabeledSample[],
+    opts: TrainOptions & { numClasses: number; checkpointDir?: string; saveEveryNEpochs?: number }
+  ): Promise<void> {
+    if (!samples.length) throw new Error("No training samples provided");
+
+    // First, encode samples to grow vocabulary if needed
+    const xsArr = samples.map(s => this.tokenizer.encode(s.text));
+    
+    // Now get the final vocabulary size after encoding
+    const vocabSize = this.tokenizer.getVocabSize();
+    console.log(`Vocabulary size: ${vocabSize}`);
+    console.log(`Number of samples: ${samples.length}`);
+    console.log(`Number of classes: ${opts.numClasses}`);
+    
+    // Build model with correct vocabulary size
+    const model = (this.model ??= this.buildModel(vocabSize, opts.numClasses));
+
+    const { xs, ys } = this.toTensorsFromEncoded(xsArr, samples);
+    const validationSplit = Math.min(0.2, Math.max(0, opts.validationSplit ?? 0.2));
+    const batchSize = Math.max(1, opts.batchSize ?? 8);
+    const epochs = Math.max(1, opts.epochs ?? 3);
+
+    const ckptDir = opts.checkpointDir ?? path.join(process.cwd(), "checkpoints");
+    this.ensureDir(ckptDir);
+
+    try {
+      const history = await model.fit(xs, ys, {
+        epochs,
+        batchSize,
+        validationSplit,
         callbacks: {
-          onEpochBegin: (epoch) => {
-            console.log(`Starting epoch ${epoch + 1}/${config.epochs}`);
-          },
-          onBatchEnd: (batch, logs) => {
-            if (!this.isTraining) return;
-            
-            step++;
-            const elapsed = (Date.now() - startTime) / 1000;
-            const stepsPerSecond = step / elapsed;
-            const estimatedTotal = (totalSteps - step) / stepsPerSecond * 1000;
-            
-            // Real metrics based on actual training progress
-            const metrics: TrainingMetrics = {
-              trainingSpeed: stepsPerSecond,
-              memoryUsage: tf.memory().numBytes / (1024 * 1024),
-              cpuUsage: Math.min(95, 20 + (step / totalSteps) * 40),
-              gpuUsage: Math.min(90, 40 + (step / totalSteps) * 30),
-              batchSize: config.batchSize,
-              throughput: stepsPerSecond * config.batchSize,
-              convergenceRate: logs?.loss ? Math.max(0, 1 - logs.loss) : 0,
-              efficiency: Math.min(1, stepsPerSecond / 10)
-            };
-            
-            callbacks.onMetrics(metrics);
-            
-            // Progress every 10 batches
-            if (batch % 10 === 0) {
-              const progress: TrainingProgress = {
-                currentEpoch: Math.floor(step / Math.ceil(trainX.shape[0] / config.batchSize)) + 1,
-                totalEpochs: config.epochs,
-                currentStep: step,
-                totalSteps,
-                trainingLoss: logs?.loss ? [logs.loss] : [],
-                validationLoss: [],
-                validationAccuracy: [],
-                learningRate: [config.learningRate],
-                estimatedTimeRemaining: estimatedTotal,
-                completionPercentage: (step / totalSteps) * 100
-              };
-              
-              callbacks.onProgress(progress);
+          onEpochEnd: async (epoch, logs) => {
+            const loss = (logs?.loss ?? 0) as number;
+            const acc  = ( (logs as any)?.acc ?? (logs as any)?.accuracy ) as number | undefined;
+            const vLoss = (logs as any)?.val_loss as number | undefined;
+            const vAcc  = ( (logs as any)?.val_acc ?? (logs as any)?.val_accuracy ) as number | undefined;
+
+            opts.onProgress?.({
+              epoch: epoch + 1,
+              loss,
+              accuracy: acc,
+              val_loss: vLoss,
+              val_accuracy: vAcc,
+            });
+
+            // ذخیره‌ی دوره‌ای چک‌پوینت
+            const every = Math.max(1, opts.saveEveryNEpochs ?? 5);
+            if ((epoch + 1) % every === 0) {
+              const p = path.join(ckptDir, `model_epoch_${epoch + 1}_${Date.now()}`);
+              await model.save(`file://${p}`);
             }
           },
-          onEpochEnd: (epoch, logs) => {
-            if (!this.isTraining) return;
-            
-            const elapsed = (Date.now() - startTime) / 1000;
-            const epochsPerSecond = (epoch + 1) / elapsed;
-            const estimatedTotal = (config.epochs - epoch - 1) / epochsPerSecond * 1000;
-            
-            const progress: TrainingProgress = {
-              currentEpoch: epoch + 1,
-              totalEpochs: config.epochs,
-              currentStep: (epoch + 1) * Math.ceil(trainX.shape[0] / config.batchSize),
-              totalSteps,
-              trainingLoss: logs?.loss ? [logs.loss] : [],
-              validationLoss: logs?.val_loss ? [logs.val_loss] : [],
-              validationAccuracy: logs?.val_accuracy ? [logs.val_accuracy] : [],
-              learningRate: [config.learningRate],
-              estimatedTimeRemaining: estimatedTotal,
-              completionPercentage: ((epoch + 1) / config.epochs) * 100
-            };
-            
-            callbacks.onProgress(progress);
-            console.log(`Epoch ${epoch + 1} completed - Loss: ${logs?.loss?.toFixed(4)}, Accuracy: ${logs?.val_accuracy?.toFixed(4)}`);
-          }
-        }
+          onTrainEnd: async () => {
+            // ذخیره چک‌پوینت نهایی
+            const p = path.join(ckptDir, `model_final_${Date.now()}`);
+            await model.save(`file://${p}`);
+            this.tokenizer.save();
+            opts.onComplete?.();
+          },
+        },
       });
-      
-      // Training completed
-      console.log('Training completed successfully');
-      callbacks.onComplete(this.model);
-      
-    } catch (error) {
-      console.error('Training failed:', error);
-      callbacks.onError(error instanceof Error ? error.message : 'Unknown training error');
-    } finally {
-      this.isTraining = false;
+
+      // آزادسازی حافظه
+      xs.dispose();
+      ys.dispose();
+      // (مدل نگه داشته می‌شود برای predict/eval)
+
+    } catch (e: any) {
+      opts.onError?.(String(e?.message ?? e));
+      throw e;
     }
   }
 
   stopTraining(): void {
-    this.isTraining = false;
-    console.log('Training stopped by user');
-  }
-
-  getModel(): tf.LayersModel | null {
-    return this.model;
-  }
-
-  async saveModel(name: string): Promise<void> {
-    if (!this.model) {
-      throw new Error('No model to save');
-    }
-    
-    await this.model.save(`localstorage://${name}`);
-    console.log(`Model saved as ${name}`);
-  }
-
-  async loadModel(name: string): Promise<void> {
-    this.model = await tf.loadLayersModel(`localstorage://${name}`);
-    console.log(`Model loaded: ${name}`);
+    if (this.model) (this.model as any).stopTraining = true;
   }
 
   dispose(): void {
     if (this.model) {
-      this.model.dispose();
       this.model = null;
+      // GC خودکار برای tfjs-node در زمان نبود تانسور
     }
-    this.tokenizer = null;
-    this.isTraining = false;
   }
 }
-
-// Persian Tokenizer for real text processing
-class PersianTokenizer {
-  private vocab = new Map<string, number>();
-  private reverseVocab = new Map<number, string>();
-  private vocabSize: number;
-
-  constructor(vocabSize: number) {
-    this.vocabSize = vocabSize;
-  }
-
-  async initialize(): Promise<void> {
-    // Special tokens
-    const specialTokens = ['[PAD]', '[UNK]', '[CLS]', '[SEP]', '[MASK]'];
-    specialTokens.forEach((token, index) => {
-      this.vocab.set(token, index);
-      this.reverseVocab.set(index, token);
-    });
-    
-    // Persian characters
-    const persianChars = 'آابپتثجچحخدذرزژسشصضطظعغفقکگلمنوهی۰۱۲۳۴۵۶۷۸۹';
-    let tokenId = specialTokens.length;
-    
-    for (const char of persianChars) {
-      if (tokenId < this.vocabSize) {
-        this.vocab.set(char, tokenId);
-        this.reverseVocab.set(tokenId, char);
-        tokenId++;
-      }
-    }
-    
-    // Common Persian words
-    const commonWords = [
-      'که', 'در', 'از', 'با', 'به', 'را', 'این', 'آن', 'و', 'است', 'برای',
-      'تا', 'یا', 'اگر', 'بر', 'هر', 'کل', 'همه', 'بعد', 'قبل', 'روز', 'سال',
-      'قانون', 'ماده', 'بند', 'قرارداد', 'دادگاه', 'حکم', 'رای', 'طرف'
-    ];
-    
-    commonWords.forEach(word => {
-      if (tokenId < this.vocabSize) {
-        this.vocab.set(word, tokenId);
-        this.reverseVocab.set(tokenId, word);
-        tokenId++;
-      }
-    });
-    
-    console.log(`Tokenizer initialized with ${this.vocab.size} tokens`);
-  }
-
-  encode(text: string, maxLength: number): number[] {
-    // Normalize Persian text
-    const normalized = text
-      .replace(/ي/g, 'ی')
-      .replace(/ك/g, 'ک')
-      .toLowerCase()
-      .trim();
-    
-    // Simple word-level tokenization
-    const words = normalized.split(/\s+/).slice(0, maxLength - 2);
-    const tokens = [this.vocab.get('[CLS]') || 2];
-    
-    words.forEach(word => {
-      const tokenId = this.vocab.get(word) || this.vocab.get('[UNK]') || 1;
-      tokens.push(tokenId);
-    });
-    
-    tokens.push(this.vocab.get('[SEP]') || 3);
-    
-    // Pad to maxLength
-    while (tokens.length < maxLength) {
-      tokens.push(this.vocab.get('[PAD]') || 0);
-    }
-    
-    return tokens.slice(0, maxLength);
-  }
-
-  decode(tokens: number[]): string {
-    return tokens
-      .map(token => this.reverseVocab.get(token) || '[UNK]')
-      .filter(token => !['[PAD]', '[CLS]', '[SEP]'].includes(token))
-      .join(' ');
-  }
-}
-
-export const realTrainingEngine = new RealTrainingEngine();
