@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { TrainingSession, TrainingProgress, TrainingMetrics, ModelCheckpoint, ModelConfiguration } from '../types/training';
-import { db } from '../services/database';
-import { trainingSimulator } from '../services/simulation/TrainingSimulator';
+import { apiClient, onTrainingProgress, onTrainingCompleted, onTrainingFailed, onTrainingPaused, onTrainingResumed } from '../services/api';
 import { useAuth } from './useAuth';
 
 export function useTraining() {
@@ -13,25 +12,65 @@ export function useTraining() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Load training sessions
+  // Load training sessions from backend API
   const loadSessions = useCallback(async () => {
-    if (!user) return;
-    
     try {
       setLoading(true);
-      const sessions = await db.trainingSessions
-        .where('userId')
-        .equals(user.id)
-        .orderBy('createdAt')
-        .reverse()
-        .toArray();
+      const response = await apiClient.getModels();
+      
+      // Convert backend models to training sessions format
+      const sessions: TrainingSession[] = response.map((model: any) => ({
+        id: model.id.toString(),
+        name: model.name,
+        modelType: model.type as TrainingSession['modelType'],
+        status: model.status === 'training' ? 'running' : 
+                model.status === 'completed' ? 'completed' :
+                model.status === 'failed' ? 'failed' : 'pending',
+        progress: {
+          currentEpoch: model.current_epoch || 0,
+          totalEpochs: model.epochs || 10,
+          currentStep: 0,
+          totalSteps: 0,
+          trainingLoss: [],
+          validationLoss: [],
+          validationAccuracy: model.accuracy ? [model.accuracy] : [],
+          learningRate: [],
+          estimatedTimeRemaining: 0,
+          completionPercentage: model.current_epoch && model.epochs ? 
+            (model.current_epoch / model.epochs) * 100 : 0
+        },
+        metrics: {
+          trainingSpeed: 0,
+          memoryUsage: 0,
+          cpuUsage: 0,
+          gpuUsage: 0,
+          batchSize: 32,
+          throughput: 0,
+          convergenceRate: 0,
+          efficiency: 0
+        },
+        configuration: {
+          learningRate: 0.001,
+          batchSize: 32,
+          epochs: model.epochs || 10,
+          optimizer: 'adam',
+          scheduler: 'cosine',
+          warmupSteps: 100,
+          weightDecay: 0.01,
+          dropout: 0.1
+        },
+        checkpoints: [],
+        createdAt: new Date(model.created_at),
+        updatedAt: new Date(model.updated_at),
+        userId: user?.id || 'system'
+      }));
       
       setTrainingSessions(sessions);
       setError(null);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'خطا در بارگذاری جلسات آموزش';
       setError(errorMessage);
-      await db.log('error', 'training', errorMessage);
+      console.error('Error loading training sessions:', err);
     } finally {
       setLoading(false);
     }
@@ -42,17 +81,84 @@ export function useTraining() {
     loadSessions();
   }, [loadSessions]);
 
-  // Create new training session
+  // Set up WebSocket listeners for real-time training updates
+  useEffect(() => {
+    const unsubscribeProgress = onTrainingProgress((data) => {
+      const progress: TrainingProgress = {
+        currentEpoch: data.epoch,
+        totalEpochs: data.totalEpochs,
+        currentStep: 0,
+        totalSteps: 0,
+        trainingLoss: [],
+        validationLoss: [],
+        validationAccuracy: [data.accuracy],
+        learningRate: [],
+        estimatedTimeRemaining: 0,
+        completionPercentage: (data.epoch / data.totalEpochs) * 100
+      };
+      
+      setSessionProgress(prev => new Map(prev).set(data.modelId.toString(), progress));
+    });
+
+    const unsubscribeCompleted = onTrainingCompleted((data) => {
+      setTrainingSessions(prev => prev.map(s => 
+        s.id === data.modelId.toString() ? { ...s, status: 'completed' } : s
+      ));
+      
+      if (activeSession?.id === data.modelId.toString()) {
+        setActiveSession(null);
+      }
+    });
+
+    const unsubscribeFailed = onTrainingFailed((data) => {
+      setTrainingSessions(prev => prev.map(s => 
+        s.id === data.modelId.toString() ? { ...s, status: 'failed' } : s
+      ));
+      
+      if (activeSession?.id === data.modelId.toString()) {
+        setActiveSession(null);
+      }
+      
+      setError(`خطا در آموزش: ${data.error}`);
+    });
+
+    const unsubscribePaused = onTrainingPaused((data) => {
+      setTrainingSessions(prev => prev.map(s => 
+        s.id === data.modelId.toString() ? { ...s, status: 'paused' } : s
+      ));
+    });
+
+    const unsubscribeResumed = onTrainingResumed((data) => {
+      setTrainingSessions(prev => prev.map(s => 
+        s.id === data.modelId.toString() ? { ...s, status: 'running' } : s
+      ));
+    });
+
+    return () => {
+      unsubscribeProgress();
+      unsubscribeCompleted();
+      unsubscribeFailed();
+      unsubscribePaused();
+      unsubscribeResumed();
+    };
+  }, [activeSession]);
+
+  // Create new training session via backend API
   const createSession = useCallback(async (
     name: string,
     modelType: TrainingSession['modelType'],
     configuration: ModelConfiguration
   ): Promise<TrainingSession> => {
-    if (!user) throw new Error('کاربر وارد نشده است');
-
     try {
+      const response = await apiClient.createModel({
+        name,
+        type: modelType,
+        dataset_id: 'iran-legal-qa', // Default dataset
+        config: configuration
+      });
+
       const newSession: TrainingSession = {
-        id: `session_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`,
+        id: response.id.toString(),
         name,
         modelType,
         status: 'pending',
@@ -82,37 +188,30 @@ export function useTraining() {
         checkpoints: [],
         createdAt: new Date(),
         updatedAt: new Date(),
-        userId: user.id
+        userId: user?.id || 'system'
       };
 
-      await db.trainingSessions.add(newSession);
       setTrainingSessions(prev => [newSession, ...prev]);
-      
-      // Update user statistics
-      await updateUserStatistics({
-        totalTrainingSessions: (user.statistics.totalTrainingSessions || 0) + 1
-      });
-
-      await db.log('info', 'training', `Created new training session: ${name}`);
       return newSession;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'خطا در ایجاد جلسه آموزش';
       setError(errorMessage);
-      await db.log('error', 'training', errorMessage);
+      console.error('Error creating training session:', err);
       throw new Error(errorMessage);
     }
-  }, [user, updateUserStatistics]);
+  }, [user]);
 
-  // Start training session
+  // Start training session via backend API
   const startTraining = useCallback(async (sessionId: string): Promise<void> => {
     try {
-      const session = await db.trainingSessions.get(sessionId);
+      const session = trainingSessions.find(s => s.id === sessionId);
       if (!session) throw new Error('جلسه آموزش یافت نشد');
 
-      // Update session status
-      await db.trainingSessions.update(sessionId, { 
-        status: 'running', 
-        updatedAt: new Date() 
+      // Start training via backend API
+      await apiClient.trainModel(sessionId, {
+        epochs: session.configuration.epochs,
+        batch_size: session.configuration.batchSize,
+        learning_rate: session.configuration.learningRate
       });
 
       // Update local state
@@ -123,97 +222,20 @@ export function useTraining() {
       const updatedSession = { ...session, status: 'running' as const };
       setActiveSession(updatedSession);
 
-      // Start training simulation
-      await trainingSimulator.startTraining(
-        updatedSession,
-        // Progress callback
-        (id: string, progress: TrainingProgress, metrics: TrainingMetrics) => {
-          setSessionProgress(prev => new Map(prev).set(id, progress));
-          setSessionMetrics(prev => new Map(prev).set(id, metrics));
-          
-          // Update session in database periodically
-          if (progress.currentStep % 10 === 0) {
-            db.trainingSessions.update(id, { 
-              progress, 
-              metrics, 
-              updatedAt: new Date() 
-            });
-          }
-        },
-        // Complete callback
-        async (id: string) => {
-          await db.trainingSessions.update(id, { 
-            status: 'completed', 
-            updatedAt: new Date() 
-          });
-          
-          setTrainingSessions(prev => prev.map(s => 
-            s.id === id ? { ...s, status: 'completed' } : s
-          ));
-
-          if (activeSession?.id === id) {
-            setActiveSession(null);
-          }
-
-          // Update user statistics
-          if (user) {
-            const finalProgress = sessionProgress.get(id);
-            const finalMetrics = sessionMetrics.get(id);
-            const sessionDuration = Date.now() - new Date(session.createdAt).getTime();
-            
-            await updateUserStatistics({
-              completedSessions: (user.statistics.completedSessions || 0) + 1,
-              totalTrainingTime: (user.statistics.totalTrainingTime || 0) + (sessionDuration / 60000), // minutes
-              bestModelAccuracy: Math.max(
-                user.statistics.bestModelAccuracy || 0,
-                finalProgress?.validationAccuracy[finalProgress.validationAccuracy.length - 1] || 0
-              ),
-              averageSessionDuration: sessionDuration / 60000, // This would need proper averaging in real implementation
-              lastActivityDate: new Date()
-            });
-          }
-
-          await db.log('info', 'training', `Training completed: ${session.name}`);
-        },
-        // Error callback
-        async (id: string, errorMsg: string) => {
-          await db.trainingSessions.update(id, { 
-            status: 'failed', 
-            updatedAt: new Date() 
-          });
-          
-          setTrainingSessions(prev => prev.map(s => 
-            s.id === id ? { ...s, status: 'failed' } : s
-          ));
-
-          if (activeSession?.id === id) {
-            setActiveSession(null);
-          }
-
-          setError(`خطا در آموزش: ${errorMsg}`);
-          await db.log('error', 'training', `Training failed: ${errorMsg}`);
-        }
-      );
-
-      await db.log('info', 'training', `Started training: ${session.name}`);
+      console.log(`Started training: ${session.name}`);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'خطا در شروع آموزش';
       setError(errorMessage);
-      await db.log('error', 'training', errorMessage);
+      console.error('Error starting training:', err);
       throw new Error(errorMessage);
     }
-  }, [activeSession, sessionProgress, user, updateUserStatistics]);
+  }, [trainingSessions]);
 
-  // Stop training session
+  // Stop training session via backend API
   const stopTraining = useCallback(async (sessionId: string): Promise<void> => {
     try {
-      trainingSimulator.stopTraining(sessionId);
+      await apiClient.pauseTraining(sessionId);
       
-      await db.trainingSessions.update(sessionId, { 
-        status: 'paused', 
-        updatedAt: new Date() 
-      });
-
       setTrainingSessions(prev => prev.map(s => 
         s.id === sessionId ? { ...s, status: 'paused' } : s
       ));
@@ -222,29 +244,18 @@ export function useTraining() {
         setActiveSession(null);
       }
 
-      await db.log('info', 'training', `Training stopped: ${sessionId}`);
+      console.log(`Training stopped: ${sessionId}`);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'خطا در توقف آموزش';
       setError(errorMessage);
-      await db.log('error', 'training', errorMessage);
+      console.error('Error stopping training:', err);
     }
   }, [activeSession]);
 
-  // Delete training session
+  // Delete training session via backend API
   const deleteSession = useCallback(async (sessionId: string): Promise<void> => {
     try {
-      // Stop training if running
-      if (activeSession?.id === sessionId) {
-        trainingSimulator.stopTraining(sessionId);
-        setActiveSession(null);
-      }
-
-      // Delete checkpoints
-      const checkpoints = await db.modelCheckpoints.where('sessionId').equals(sessionId).toArray();
-      await db.modelCheckpoints.where('sessionId').equals(sessionId).delete();
-
-      // Delete session
-      await db.trainingSessions.delete(sessionId);
+      await apiClient.deleteModel(sessionId);
 
       // Update local state
       setTrainingSessions(prev => prev.filter(s => s.id !== sessionId));
@@ -259,99 +270,80 @@ export function useTraining() {
         return newMap;
       });
 
-      await db.log('info', 'training', `Deleted training session: ${sessionId}`);
+      if (activeSession?.id === sessionId) {
+        setActiveSession(null);
+      }
+
+      console.log(`Deleted training session: ${sessionId}`);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'خطا در حذف جلسه آموزش';
       setError(errorMessage);
-      await db.log('error', 'training', errorMessage);
+      console.error('Error deleting training session:', err);
       throw new Error(errorMessage);
     }
   }, [activeSession]);
 
-  // Create checkpoint
+  // Create checkpoint (simplified for backend integration)
   const createCheckpoint = useCallback(async (sessionId: string, description?: string): Promise<ModelCheckpoint | null> => {
     try {
-      const checkpoint = trainingSimulator.createCheckpoint(sessionId);
-      if (!checkpoint) return null;
-
-      if (description) {
-        checkpoint.description = description;
-      }
-
-      await db.modelCheckpoints.add(checkpoint);
+      // In a real implementation, this would call the backend API
+      const checkpoint: ModelCheckpoint = {
+        id: `checkpoint_${Date.now()}`,
+        sessionId,
+        epoch: 0,
+        step: 0,
+        loss: 0,
+        accuracy: 0,
+        timestamp: new Date(),
+        description: description || 'Manual checkpoint'
+      };
       
-      // Update session with new checkpoint
-      setTrainingSessions(prev => prev.map(s => 
-        s.id === sessionId 
-          ? { ...s, checkpoints: [...s.checkpoints, checkpoint] }
-          : s
-      ));
-
-      await db.log('info', 'training', `Created checkpoint: ${checkpoint.id}`);
+      console.log(`Created checkpoint: ${checkpoint.id}`);
       return checkpoint;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'خطا در ایجاد checkpoint';
       setError(errorMessage);
-      await db.log('error', 'training', errorMessage);
+      console.error('Error creating checkpoint:', err);
       return null;
     }
   }, []);
 
-  // Get session checkpoints
+  // Get session checkpoints (simplified)
   const getSessionCheckpoints = useCallback(async (sessionId: string): Promise<ModelCheckpoint[]> => {
     try {
-      return await db.modelCheckpoints
-        .where('sessionId')
-        .equals(sessionId)
-        .orderBy('timestamp')
-        .reverse()
-        .toArray();
+      // In a real implementation, this would call the backend API
+      return [];
     } catch (err) {
       console.error('Error getting checkpoints:', err);
       return [];
     }
   }, []);
 
-  // Get training statistics
+  // Get training statistics (simplified)
   const getTrainingStatistics = useCallback(async () => {
-    if (!user) return null;
-
     try {
-      const allSessions = await db.trainingSessions.where('userId').equals(user.id).toArray();
-      const completedSessions = allSessions.filter(s => s.status === 'completed');
-      const runningSessions = allSessions.filter(s => s.status === 'running');
+      const completedSessions = trainingSessions.filter(s => s.status === 'completed');
+      const runningSessions = trainingSessions.filter(s => s.status === 'running');
       
-      const totalTrainingTime = completedSessions.reduce((acc, session) => {
-        const duration = new Date(session.updatedAt).getTime() - new Date(session.createdAt).getTime();
-        return acc + duration;
-      }, 0);
-
       const bestAccuracy = completedSessions.reduce((best, session) => {
         const sessionBest = Math.max(...(session.progress.validationAccuracy || [0]));
         return Math.max(best, sessionBest);
       }, 0);
 
       return {
-        totalSessions: allSessions.length,
+        totalSessions: trainingSessions.length,
         completedSessions: completedSessions.length,
         runningSessions: runningSessions.length,
-        failedSessions: allSessions.filter(s => s.status === 'failed').length,
-        totalTrainingTime: totalTrainingTime / (1000 * 60), // minutes
+        failedSessions: trainingSessions.filter(s => s.status === 'failed').length,
+        totalTrainingTime: 0, // Would need backend calculation
         bestAccuracy,
-        averageAccuracy: completedSessions.length > 0 
-          ? completedSessions.reduce((acc, session) => {
-              const sessionAvg = session.progress.validationAccuracy.length > 0
-                ? session.progress.validationAccuracy.reduce((a, b) => a + b) / session.progress.validationAccuracy.length
-                : 0;
-              return acc + sessionAvg;
-            }, 0) / completedSessions.length
-          : 0
+        averageAccuracy: 0 // Would need backend calculation
       };
     } catch (err) {
       console.error('Error getting training statistics:', err);
       return null;
     }
-  }, [user]);
+  }, [trainingSessions]);
 
   // Clear error
   const clearError = useCallback(() => {

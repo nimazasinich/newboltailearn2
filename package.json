@@ -11,7 +11,7 @@
     "preview": "vite preview --config vite.config.cjs",
     "type-check": "tsc --noEmit",
     "start": "node start.js",
-    "server": "node server/index.js",
+    "server": "node start-server.js",
     "compile-server": "npx tsc server/index.ts --outDir server --target es2020 --module commonjs --esModuleInterop --allowSyntheticDefaultImports --skipLibCheck"
   },
   "dependencies": {

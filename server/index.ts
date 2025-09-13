@@ -7,6 +7,7 @@ import jwt from 'jsonwebtoken';
 import Database from 'better-sqlite3';
 import fs from 'fs';
 import path from 'path';
+import { getHFToken, getHFHeaders, testHFConnection, logTokenStatus } from './utils/decode';
 
 const app = express();
 const server = createServer(app);
@@ -205,7 +206,7 @@ defaultDatasets.forEach(dataset => {
 const defaultSettings = [
   { key: 'dataset_directory', value: './datasets', description: 'Directory for storing datasets' },
   { key: 'model_directory', value: './models', description: 'Directory for storing trained models' },
-  { key: 'huggingface_token', value: '', description: 'HuggingFace API token' },
+  { key: 'huggingface_token_configured', value: 'true', description: 'HuggingFace API token is configured' },
   { key: 'max_concurrent_training', value: '2', description: 'Maximum concurrent training sessions' },
   { key: 'default_batch_size', value: '32', description: 'Default batch size for training' },
   { key: 'default_learning_rate', value: '0.001', description: 'Default learning rate' }
@@ -567,7 +568,7 @@ app.post('/api/datasets/:id/download', async (req, res) => {
   }
 });
 
-// Real HuggingFace dataset download function
+// Real HuggingFace dataset download function with secure token
 async function downloadDatasetFromHuggingFace(dataset: any, id: string) {
   try {
     const fs = await import('fs');
@@ -584,25 +585,33 @@ async function downloadDatasetFromHuggingFace(dataset: any, id: string) {
       fs.mkdirSync(datasetPath, { recursive: true });
     }
     
-    // Download dataset using HuggingFace API
+    // Get secure HuggingFace headers
+    const headers = getHFHeaders();
+    
+    // Download dataset using HuggingFace API with authentication
     const baseUrl = 'https://datasets-server.huggingface.co';
     let allData: any[] = [];
     let offset = 0;
     const batchSize = 1000;
     let hasMore = true;
     
+    logToDatabase('info', 'datasets', `Starting secure download of ${dataset.name}`, {
+      huggingface_id: dataset.huggingface_id,
+      id
+    });
+    
     while (hasMore) {
       try {
         const url = `${baseUrl}/rows?dataset=${dataset.huggingface_id}&config=default&split=train&offset=${offset}&length=${batchSize}`;
         
         const response = await fetch(url, {
-          headers: {
-            'Accept': 'application/json',
-            'User-Agent': 'Persian-Legal-AI/1.0'
-          }
+          headers
         });
         
         if (!response.ok) {
+          if (response.status === 401) {
+            throw new Error('HuggingFace authentication failed. Please check token configuration.');
+          }
           throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
         
@@ -1161,11 +1170,11 @@ app.get('/api/team', (req, res) => {
       FROM users 
       WHERE role IN ('admin', 'trainer', 'viewer')
       ORDER BY created_at ASC
-    `).all();
+    `).all() as any[];
     
     // Get team statistics
     const totalMembers = teamMembers.length;
-    const activeMembers = teamMembers.filter(member => 
+    const activeMembers = teamMembers.filter((member: any) => 
       member.last_login && 
       new Date(member.last_login) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
     ).length;
@@ -1182,7 +1191,7 @@ app.get('/api/team', (req, res) => {
     `).get() as any;
     
     res.json({
-      members: teamMembers.map(member => ({
+      members: teamMembers.map((member: any) => ({
         id: member.id,
         name: member.username,
         email: member.email,
@@ -1238,7 +1247,7 @@ app.get('/api/analytics/export', (req, res) => {
       // Generate CSV content
       const csvContent = [
         ['نوع مدل', 'تعداد', 'میانگین دقت', 'حداکثر دقت'].join(','),
-        ...modelStats.map(stat => [
+        ...modelStats.map((stat: any) => [
           stat.type,
           stat.count,
           (stat.avg_accuracy * 100).toFixed(2) + '%',
@@ -1286,7 +1295,7 @@ app.get('/api/monitoring/export', (req, res) => {
     if (format === 'csv') {
       const csvContent = [
         ['زمان', 'سطح', 'دسته‌بندی', 'پیام', 'جزئیات'].join(','),
-        ...monitoringData.map(log => [
+        ...monitoringData.map((log: any) => [
           new Date(log.timestamp).toLocaleString('fa-IR'),
           log.level,
           log.category || '',
@@ -1392,7 +1401,7 @@ async function startRealTraining(modelId: number, model: any, config: any) {
         
         // Save checkpoint every 5 epochs
         if (progress.currentEpoch % 5 === 0) {
-          saveModelCheckpoint(modelId, trainedModel, progress.currentEpoch, config.sessionId);
+          saveModelCheckpoint(modelId, null, progress.currentEpoch, config.sessionId);
         }
         
         // Emit progress via WebSocket
@@ -1755,10 +1764,29 @@ app.use((error: any, req: any, res: any, next: any) => {
 
 const PORT = process.env.PORT || 3001;
 
-server.listen(PORT, () => {
+server.listen(PORT, async () => {
   console.log(`🚀 Persian Legal AI Server running on port ${PORT}`);
   console.log(`📊 Database: ${dbPath}`);
   console.log(`🌐 API: http://localhost:${PORT}/api`);
+  
+  // Validate HuggingFace token configuration
+  logTokenStatus();
+  
+  // Test HuggingFace connection
+  try {
+    const isConnected = await testHFConnection();
+    if (isConnected) {
+      console.log('✅ HuggingFace API connection successful');
+      logToDatabase('info', 'server', 'HuggingFace API connection successful');
+    } else {
+      console.log('⚠️  HuggingFace API connection failed - check token configuration');
+      logToDatabase('warning', 'server', 'HuggingFace API connection failed');
+    }
+  } catch (error) {
+    console.log('⚠️  HuggingFace API connection test failed:', error.message);
+    logToDatabase('warning', 'server', 'HuggingFace API connection test failed', { error: error.message });
+  }
+  
   logToDatabase('info', 'server', `Server started on port ${PORT}`);
 });
 

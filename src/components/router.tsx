@@ -16,7 +16,7 @@ export function AppRoutes() {
       {/* Redirect root to dashboard */}
       <Route path="/" element={<Navigate to="/app/dashboard" replace />} />
       
-      {/* Dashboard Hub - Main Layout */}
+      {/* Dashboard Hub - Main Layout with Header + Sidebar + Outlet */}
       <Route path="/app" element={<Dashboard />}>
         <Route index element={<Navigate to="/app/dashboard" replace />} />
         <Route path="dashboard" element={<Overview />} />

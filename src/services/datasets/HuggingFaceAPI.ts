@@ -7,53 +7,61 @@ export interface HuggingFaceDataset {
   samples: number;
   language: string;
   domain: string;
+  status?: 'available' | 'downloading' | 'processing' | 'error';
+  local_path?: string;
+  size_mb?: number;
 }
 
 export const REAL_DATASETS: Record<string, HuggingFaceDataset> = {
-  iranLegalQA: {
+  'iran-legal-qa': {
     id: 'PerSets/iran-legal-persian-qa',
     name: 'پرسش و پاسخ حقوقی ایران',
     description: 'مجموعه داده پرسش و پاسخ حقوقی به زبان فارسی',
     api: 'https://datasets-server.huggingface.co/rows?dataset=PerSets/iran-legal-persian-qa&config=default&split=train&offset=0&length=100',
     samples: 10247,
     language: 'persian',
-    domain: 'legal'
+    domain: 'legal',
+    size_mb: 15.2
   },
-  legalLaws: {
+  'legal-laws': {
     id: 'QomSSLab/legal_laws_lite_chunk_v1',
     name: 'متون قوانین ایران',
     description: 'مجموعه قوانین و مقررات جمهوری اسلامی ایران',
     api: 'https://datasets-server.huggingface.co/rows?dataset=QomSSLab/legal_laws_lite_chunk_v1&config=default&split=train&offset=0&length=100',
     samples: 50000,
     language: 'persian',
-    domain: 'legal'
+    domain: 'legal',
+    size_mb: 125.8
   },
-  persianNER: {
+  'persian-ner': {
     id: 'mansoorhamidzadeh/Persian-NER-Dataset-500k',
     name: 'تشخیص موجودیت فارسی',
     description: 'مجموعه داده تشخیص موجودیت‌های نامدار فارسی',
     api: 'https://datasets-server.huggingface.co/rows?dataset=mansoorhamidzadeh/Persian-NER-Dataset-500k&config=default&split=train&offset=0&length=100',
     samples: 500000,
     language: 'persian',
-    domain: 'ner'
+    domain: 'ner',
+    size_mb: 890.5
   },
-  persianSentiment: {
+  'persian-sentiment': {
     id: 'HooshvareLab/sentiment-fa',
     name: 'تحلیل احساسات فارسی',
     description: 'مجموعه داده تحلیل احساسات متون فارسی',
     api: 'https://datasets-server.huggingface.co/rows?dataset=HooshvareLab/sentiment-fa&config=default&split=train&offset=0&length=100',
     samples: 25000,
     language: 'persian',
-    domain: 'sentiment'
+    domain: 'sentiment',
+    size_mb: 45.3
   },
-  persianSummarization: {
+  'persian-summarization': {
     id: 'HooshvareLab/pn-summary',
     name: 'خلاصه‌سازی متون فارسی',
     description: 'مجموعه داده خلاصه‌سازی اخبار فارسی',
     api: 'https://datasets-server.huggingface.co/rows?dataset=HooshvareLab/pn-summary&config=default&split=train&offset=0&length=100',
     samples: 93207,
     language: 'persian',
-    domain: 'summarization'
+    domain: 'summarization',
+    size_mb: 78.9
   }
 };
 
