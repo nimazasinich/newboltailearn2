@@ -136,7 +136,7 @@ export class TrainingService {
      */
     async runTrainingInMainThread(modelId, datasetId, config, sessionId) {
         // Initialize model
-        await this.trainingEngine.initializeModel(3); // 3 classes for legal text
+        await this.trainingEngine.initializeModel({ numClasses: 3, modelType: 'bert' }); // 3 classes for legal text
         // Progress callback
         const progressCallback = (progress) => {
             // Update database

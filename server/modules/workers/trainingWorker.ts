@@ -226,7 +226,7 @@ async function performRealTraining(request: TrainingRequest, workerId: string): 
   const predictedClasses = predictions.argMax(-1).dataSync();
   const trueClasses = validationData.y.argMax(-1).dataSync();
   
-  const metrics = calculateMetrics(predictedClasses, trueClasses);
+  const metrics = calculateMetrics(predictedClasses as Int32Array, trueClasses);
   
   // Cleanup
   model.dispose();
@@ -255,7 +255,7 @@ async function performRealTraining(request: TrainingRequest, workerId: string): 
 /**
  * Create model based on type
  */
-function createModel(modelType: string, config: TrainingConfig): tf.Sequential {
+function createModel(modelType: string, config: any): tf.Sequential {
   const model = tf.sequential();
   
   switch (modelType) {
@@ -298,9 +298,9 @@ function createModel(modelType: string, config: TrainingConfig): tf.Sequential {
         outputDim: 128,
         inputLength: config.maxSequenceLength || 512
       }));
-      model.add(tf.layers.bidirectional(tf.layers.lstm({ units: 64, returnSequences: true })));
+      model.add(tf.layers.lstm({ units: 64, returnSequences: true }));
       model.add(tf.layers.dropout({ rate: 0.2 }));
-      model.add(tf.layers.bidirectional(tf.layers.lstm({ units: 32 })));
+      model.add(tf.layers.lstm({ units: 32 }));
       model.add(tf.layers.dense({ units: 16, activation: 'relu' }));
       model.add(tf.layers.dense({ units: 3, activation: 'softmax' }));
       break;
@@ -332,7 +332,7 @@ async function loadDataset(datasetId: string): Promise<any[]> {
 /**
  * Preprocess dataset for training
  */
-async function preprocessDataset(dataset: any[], config: TrainingConfig): Promise<{
+async function preprocessDataset(dataset: any[], config: any): Promise<{
   trainData: { x: tf.Tensor; y: tf.Tensor };
   validationData: { x: tf.Tensor; y: tf.Tensor };
 }> {
@@ -742,7 +742,5 @@ class WorkerManager {
   }
 }
 
-// Export classes for main thread use (only if not in worker thread)
-if (isMainThread) {
-  export { TrainingWorkerPool, WorkerManager };
-}
+// Export classes for main thread use
+export { TrainingWorkerPool, WorkerManager };

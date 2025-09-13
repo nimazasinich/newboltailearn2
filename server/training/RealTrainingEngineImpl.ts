@@ -431,15 +431,6 @@ export class RealTrainingEngineImpl {
     };
   }
   
-  /**
-   * Stop training
-   */
-  stopTraining(): void {
-    this.isTraining = false;
-    if (this.model) {
-      this.model.stopTraining = true;
-    }
-  }
   
   /**
    * Get training status
