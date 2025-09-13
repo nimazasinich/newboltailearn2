@@ -16,7 +16,11 @@ services:
       - MODEL_DIRECTORY=/app/models
       - CHECKPOINT_DIRECTORY=/app/checkpoints
       - EXPORT_DIRECTORY=/app/exports
+      - HF_TOKEN_B64=${HF_TOKEN_B64:-}
       - HF_TOKEN_ENC=${HF_TOKEN_ENC:-}
+      - JWT_SECRET=${JWT_SECRET:-}
+      - SESSION_SECRET=${SESSION_SECRET:-}
+      - CSRF_SECRET=${CSRF_SECRET:-}
     volumes:
       - ./data:/app/data
       - ./datasets:/app/datasets
@@ -26,7 +30,7 @@ services:
       - ./logs:/app/logs
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3001/api/monitoring"]
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
       interval: 30s
       timeout: 10s
       retries: 3

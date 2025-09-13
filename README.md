@@ -49,8 +49,9 @@ cd newboltailearn
 # Install dependencies
 npm install
 
-# Set up environment (optional - for HuggingFace integration)
-echo "HF_TOKEN_ENC=your_base64_encoded_token_here" > .env
+# Set up environment configuration
+cp .env.sample .env
+# Edit .env and configure your values (see Environment Configuration section below)
 
 # Compile backend (required for server to work)
 npm run compile-server
@@ -63,6 +64,189 @@ npm run server  # Backend (port 3001)
 npm run build   # Build frontend
 npm run server  # Unified server (port 3001) - serves both frontend and API
 ```
+
+## 🔧 Environment Configuration
+
+### Quick Start Setup
+```bash
+# Copy the sample environment file
+cp .env.sample .env
+
+# For basic functionality, set only the required security variables:
+echo "JWT_SECRET=$(openssl rand -base64 32)" >> .env
+echo "SESSION_SECRET=$(openssl rand -base64 32)" >> .env
+```
+
+### HuggingFace Token Setup (Optional)
+To enable dataset downloads from HuggingFace:
+
+1. **Get your HuggingFace token:**
+   - Go to https://huggingface.co/settings/tokens
+   - Create a new token with read access
+
+2. **Encode the token:**
+   ```bash
+   # Linux/macOS
+   echo -n "hf_your_token_here" | base64
+   
+   # PowerShell (Windows)
+   [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes("hf_your_token_here"))
+   ```
+
+3. **Add to .env:**
+   ```bash
+   echo "HF_TOKEN_B64=your_base64_encoded_token_here" >> .env
+   ```
+
+### Development vs Production Configuration
+
+**Development (.env):**
+```env
+NODE_ENV=development
+JWT_SECRET=your_jwt_secret_here_minimum_32_characters_required
+SESSION_SECRET=your_session_secret_here_minimum_32_characters_required
+HF_TOKEN_B64=your_base64_encoded_huggingface_token_here
+DEMO_MODE=false
+USE_FAKE_DATA=false
+SKIP_CSRF=false
+```
+
+**Production (.env):**
+```env
+NODE_ENV=production
+JWT_SECRET=your_secure_jwt_secret_32_characters_minimum
+SESSION_SECRET=your_secure_session_secret_32_characters_minimum
+CSRF_SECRET=your_secure_csrf_secret_32_characters_minimum
+HF_TOKEN_B64=your_base64_encoded_huggingface_token_here
+CORS_ORIGIN=https://your-production-domain.com
+DEMO_MODE=false
+USE_FAKE_DATA=false
+SKIP_CSRF=false
+```
+
+### Security Requirements for Production
+
+**MANDATORY for production deployment:**
+1. **JWT_SECRET**: Minimum 32 characters, cryptographically secure
+2. **SESSION_SECRET**: Minimum 32 characters, cryptographically secure  
+3. **CSRF_SECRET**: Minimum 32 characters, cryptographically secure
+4. **NODE_ENV**: Set to "production"
+5. **CORS_ORIGIN**: Set to your production domain
+6. **All feature flags**: Set to production values (see .env.sample)
+
+**Generate secure secrets:**
+```bash
+# Generate secure secrets
+openssl rand -base64 32  # Use this for JWT_SECRET, SESSION_SECRET, CSRF_SECRET
+```
+
+## 🔐 Development Authentication
+
+For development convenience, you can bypass frontend login using the development authentication endpoint:
+
+### Development Authentication Endpoint
+
+```bash
+# POST to dev identify endpoint (only works in development)
+curl -X POST http://localhost:3001/api/dev/identify \
+  -H "Content-Type: application/json" \
+  -d '{"username": "admin", "password": "Admin123!@#"}'
+```
+
+This returns a JWT token that can be used for API testing without frontend login flow.
+
+**⚠️ SECURITY NOTE:** This endpoint is automatically disabled in production (`NODE_ENV=production`).
+
+### Development Credentials
+
+The development authentication uses the following default credentials:
+- **Username:** `admin`
+- **Password:** `Admin123!@#` (or value from `DEFAULT_ADMIN_PASSWORD` env var)
+
+### Using Development Authentication
+
+1. **Set development credentials in .env:**
+   ```env
+   DEV_ADMIN_USER=admin
+   DEV_ADMIN_PASS=Admin123!@#
+   ```
+
+2. **Test the endpoint:**
+   ```bash
+   curl -X POST http://localhost:3001/api/dev/identify \
+     -H "Content-Type: application/json" \
+     -d '{"username": "admin", "password": "Admin123!@#"}'
+   ```
+
+3. **Use the returned token for API calls:**
+   ```bash
+   curl -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+     http://localhost:3001/api/models
+   ```
+
+**Production Safety:** This endpoint is automatically disabled when `NODE_ENV=production` to ensure security in production deployments.
+
+## 🔒 Security Validation
+
+### Automated Security Checks
+
+The project includes comprehensive security validation tools:
+
+#### 1. Security Check Script
+```bash
+# Run comprehensive security validation
+npm run security:check
+
+# Run security validation with success confirmation
+npm run security:validate
+```
+
+#### 2. CI/CD Security Pipeline
+The project includes GitHub Actions workflow (`.github/workflows/security-check.yml`) that automatically:
+- ✅ Validates environment variables
+- ✅ Checks file permissions
+- ✅ Scans for hardcoded secrets
+- ✅ Validates Docker configuration
+- ✅ Runs dependency vulnerability scans
+- ✅ Ensures security headers are configured
+
+#### 3. Security Checklist
+See `PRODUCTION_SECURITY_CHECKLIST.md` for comprehensive production deployment security requirements.
+
+### Manual Security Validation
+
+Before production deployment, ensure:
+
+1. **Environment Variables:**
+   ```bash
+   # Check all required variables are set
+   npm run security:check
+   ```
+
+2. **File Permissions:**
+   ```bash
+   # Ensure database files are not world-readable
+   chmod 600 persian_legal_ai.db
+   chmod 600 data/persian_legal_ai.db
+   ```
+
+3. **Dependencies:**
+   ```bash
+   # Check for vulnerabilities
+   npm audit --audit-level=moderate
+   
+   # Update outdated packages
+   npm outdated
+   ```
+
+4. **Configuration:**
+   ```bash
+   # Verify .env is in .gitignore
+   grep -q "\.env" .gitignore && echo "✅ .env is in .gitignore"
+   
+   # Verify .env.sample exists
+   test -f .env.sample && echo "✅ .env.sample exists"
+   ```
 
 ## ✨ What Actually Works
 

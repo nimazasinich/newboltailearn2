@@ -295,23 +295,25 @@ const logToDatabase = (level: string, category: string, message: string, metadat
 const userCount = db.prepare('SELECT COUNT(*) as count FROM users').get() as { count: number };
 if (userCount.count === 0) {
   const bcrypt = await import('bcryptjs');
-  const defaultPassword = await bcrypt.hash('admin', 12);
+  const defaultPassword = process.env.DEFAULT_ADMIN_PASSWORD || 'Admin123!@#';
+  const hashedPassword = bcrypt.hashSync(defaultPassword, 10);
   
-  db.prepare(`
-    INSERT INTO users (username, email, password_hash, role, created_at)
-    VALUES ('admin', 'admin@persian-legal-ai.com', ?, 'admin', CURRENT_TIMESTAMP)
-  `).run(defaultPassword);
+  const insertAdmin = db.prepare(`
+    INSERT INTO users (username, email, password_hash, role, created_at, updated_at)
+    VALUES (?, ?, ?, ?, datetime('now'), datetime('now'))
+  `);
+  
+  insertAdmin.run('admin', 'admin@persian-legal-ai.com', hashedPassword, 'admin');
+  console.log('✅ Default admin user created');
+  console.log(`   Username: admin`);
+  console.log(`   Password: ${defaultPassword}`);
+  console.log('   ⚠️  Change this password after first login!');
   
   logToDatabase('info', 'setup', 'Default admin user created', { 
     username: 'admin', 
     email: 'admin@persian-legal-ai.com',
-    password: 'admin' // Username: admin, Password: admin
+    password: defaultPassword
   });
-  
-  console.log('🔐 Default admin credentials created:');
-  console.log('   Username: admin');
-  console.log('   Password: admin');
-  console.log('   Role: admin');
 }
 
 const getSystemMetrics = async () => {
@@ -892,7 +894,7 @@ async function downloadDatasetFromHuggingFace(dataset: Record<string, unknown>, 
         offset += batchSize;
         
         // Update progress
-        io.emit('dataset_download_progress', {
+        io.emit('dataset:download:progress', {
           id,
           downloaded: allData.length,
           total: (data as any).num_rows_total || dataset.samples
@@ -948,7 +950,7 @@ async function downloadDatasetFromHuggingFace(dataset: Record<string, unknown>, 
     });
     
     // Emit completion via WebSocket
-    io.emit('dataset_updated', { id, status: 'available', samples: allData.length });
+    io.emit('dataset:updated', { id, status: 'available', samples: allData.length });
     
   } catch (error) {
     console.error(`Dataset download failed for ${id}:`, error);
@@ -962,7 +964,7 @@ async function downloadDatasetFromHuggingFace(dataset: Record<string, unknown>, 
     });
     
     // Emit error via WebSocket
-    io.emit('dataset_updated', { id, status: 'error', error: error.message });
+    io.emit('dataset:updated', { id, status: 'error', error: error.message });
   }
 }
 
@@ -2042,7 +2044,7 @@ async function startRealTraining(modelId: number, model: Record<string, unknown>
         }
         
         // Emit progress via WebSocket
-        io.emit('training_progress', {
+        io.emit('training:progress', {
           modelId,
           epoch: progress.currentEpoch,
           totalEpochs: progress.totalEpochs,
@@ -2057,7 +2059,7 @@ async function startRealTraining(modelId: number, model: Record<string, unknown>
       
       onMetrics: (metrics: Record<string, unknown>) => {
         // Emit real-time metrics
-        io.emit('training_metrics', {
+        io.emit('training:metrics', {
           modelId,
           ...metrics
         });
@@ -2112,7 +2114,7 @@ async function startRealTraining(modelId: number, model: Record<string, unknown>
         activeTrainingSessions.delete(modelId);
         trainingEngine.dispose();
         
-        io.emit('training_completed', { modelId });
+        io.emit('training:completed', { modelId });
       },
       
       onError: (error: string) => {
@@ -2140,7 +2142,7 @@ async function startRealTraining(modelId: number, model: Record<string, unknown>
         activeTrainingSessions.delete(modelId);
         trainingEngine.dispose();
         
-        io.emit('training_failed', { modelId, error });
+        io.emit('training:failed', { modelId, error });
       }
     };
     
@@ -2161,7 +2163,7 @@ async function startRealTraining(modelId: number, model: Record<string, unknown>
     // Cleanup
     activeTrainingSessions.delete(modelId);
     
-    io.emit('training_failed', { modelId, error: error.message });
+    io.emit('training:failed', { modelId, error: error.message });
   }
 }
 

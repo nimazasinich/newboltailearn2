@@ -7,32 +7,73 @@ export const socket = io({
   autoConnect: false
 });
 
+// CSRF token management
+let csrfToken: string | null = null;
+
+async function fetchCsrfToken(): Promise<string> {
+  const response = await fetch('/api/csrf-token', { 
+    credentials: 'include' 
+  });
+  if (!response.ok) {
+    throw new Error(`CSRF token fetch failed: ${response.status}`);
+  }
+  const data = await response.json();
+  csrfToken = data.csrfToken;
+  return csrfToken;
+}
+
+async function ensureCsrfToken(): Promise<void> {
+  if (!csrfToken) {
+    await fetchCsrfToken();
+  }
+}
+
 // API client class
 class ApiClient {
   private async request(endpoint: string, options: RequestInit = {}) {
-    const url = `${API_BASE_URL}${endpoint}`;
+    const method = (options.method || 'GET').toUpperCase();
+    const isMutatingRequest = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(method);
     
+    if (isMutatingRequest) {
+      await ensureCsrfToken();
+    }
+
     const config: RequestInit = {
+      ...options,
       headers: {
         'Content-Type': 'application/json',
-        ...options.headers,
+        ...(options.headers || {}),
+        ...(isMutatingRequest && csrfToken ? { 'x-csrf-token': csrfToken } : {})
       },
-      ...options,
+      credentials: 'include'
     };
 
-    try {
-      const response = await fetch(url, config);
-      
-      if (!response.ok) {
-        const error = await response.json().catch(() => ({ error: 'Network error' }));
-        throw new Error(error.error || `HTTP ${response.status}`);
+    let response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+    
+    // Handle CSRF token expiration
+    if (response.status === 403 && isMutatingRequest) {
+      try {
+        await fetchCsrfToken();
+        config.headers = {
+          ...config.headers,
+          'x-csrf-token': csrfToken
+        };
+        response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+      } catch (retryError) {
+        console.error('CSRF token refresh failed:', retryError);
       }
-
-      return await response.json();
-    } catch (error) {
-      console.error(`API Error (${endpoint}):`, error);
-      throw error;
     }
+
+    if (!response.ok) {
+      let errorMessage = `HTTP ${response.status}`;
+      try {
+        const errorData = await response.json();
+        errorMessage = errorData.message || errorData.error || errorMessage;
+      } catch {}
+      throw new Error(errorMessage);
+    }
+
+    return response.json();
   }
 
   // Models API

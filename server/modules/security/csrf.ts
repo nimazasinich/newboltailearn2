@@ -35,7 +35,8 @@ export class CSRFProtection {
             '/api/models',
             '/websocket',
             '/socket.io',
-            '/api/csrf-token'
+            '/api/csrf-token',
+            '/api/dev/identify'
         ];
         this.tokenHeader = config.tokenHeader || 'x-csrf-token';
         this.tokenField = config.tokenField || '_csrf';
@@ -194,7 +195,8 @@ export const csrfProtection = new CSRFProtection({
         '/api/models/*/resume',
         '/websocket',
         '/socket.io',
-        '/api/csrf-token'
+        '/api/csrf-token',
+        '/api/dev/identify'
     ]
 });
 
