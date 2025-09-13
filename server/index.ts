@@ -295,23 +295,25 @@ const logToDatabase = (level: string, category: string, message: string, metadat
 const userCount = db.prepare('SELECT COUNT(*) as count FROM users').get() as { count: number };
 if (userCount.count === 0) {
   const bcrypt = await import('bcryptjs');
-  const defaultPassword = await bcrypt.hash('admin', 12);
+  const defaultPassword = process.env.DEFAULT_ADMIN_PASSWORD || 'Admin123!@#';
+  const hashedPassword = bcrypt.hashSync(defaultPassword, 10);
   
-  db.prepare(`
-    INSERT INTO users (username, email, password_hash, role, created_at)
-    VALUES ('admin', 'admin@persian-legal-ai.com', ?, 'admin', CURRENT_TIMESTAMP)
-  `).run(defaultPassword);
+  const insertAdmin = db.prepare(`
+    INSERT INTO users (username, email, password_hash, role, created_at, updated_at)
+    VALUES (?, ?, ?, ?, datetime('now'), datetime('now'))
+  `);
+  
+  insertAdmin.run('admin', 'admin@persian-legal-ai.com', hashedPassword, 'admin');
+  console.log('✅ Default admin user created');
+  console.log(`   Username: admin`);
+  console.log(`   Password: ${defaultPassword}`);
+  console.log('   ⚠️  Change this password after first login!');
   
   logToDatabase('info', 'setup', 'Default admin user created', { 
     username: 'admin', 
     email: 'admin@persian-legal-ai.com',
-    password: 'admin' // Username: admin, Password: admin
+    password: defaultPassword
   });
-  
-  console.log('🔐 Default admin credentials created:');
-  console.log('   Username: admin');
-  console.log('   Password: admin');
-  console.log('   Role: admin');
 }
 
 const getSystemMetrics = async () => {
