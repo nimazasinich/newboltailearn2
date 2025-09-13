@@ -894,7 +894,7 @@ async function downloadDatasetFromHuggingFace(dataset: Record<string, unknown>, 
         offset += batchSize;
         
         // Update progress
-        io.emit('dataset_download_progress', {
+        io.emit('dataset:download:progress', {
           id,
           downloaded: allData.length,
           total: (data as any).num_rows_total || dataset.samples
@@ -950,7 +950,7 @@ async function downloadDatasetFromHuggingFace(dataset: Record<string, unknown>, 
     });
     
     // Emit completion via WebSocket
-    io.emit('dataset_updated', { id, status: 'available', samples: allData.length });
+    io.emit('dataset:updated', { id, status: 'available', samples: allData.length });
     
   } catch (error) {
     console.error(`Dataset download failed for ${id}:`, error);
@@ -964,7 +964,7 @@ async function downloadDatasetFromHuggingFace(dataset: Record<string, unknown>, 
     });
     
     // Emit error via WebSocket
-    io.emit('dataset_updated', { id, status: 'error', error: error.message });
+    io.emit('dataset:updated', { id, status: 'error', error: error.message });
   }
 }
 
@@ -2044,7 +2044,7 @@ async function startRealTraining(modelId: number, model: Record<string, unknown>
         }
         
         // Emit progress via WebSocket
-        io.emit('training_progress', {
+        io.emit('training:progress', {
           modelId,
           epoch: progress.currentEpoch,
           totalEpochs: progress.totalEpochs,
@@ -2059,7 +2059,7 @@ async function startRealTraining(modelId: number, model: Record<string, unknown>
       
       onMetrics: (metrics: Record<string, unknown>) => {
         // Emit real-time metrics
-        io.emit('training_metrics', {
+        io.emit('training:metrics', {
           modelId,
           ...metrics
         });
@@ -2114,7 +2114,7 @@ async function startRealTraining(modelId: number, model: Record<string, unknown>
         activeTrainingSessions.delete(modelId);
         trainingEngine.dispose();
         
-        io.emit('training_completed', { modelId });
+        io.emit('training:completed', { modelId });
       },
       
       onError: (error: string) => {
@@ -2142,7 +2142,7 @@ async function startRealTraining(modelId: number, model: Record<string, unknown>
         activeTrainingSessions.delete(modelId);
         trainingEngine.dispose();
         
-        io.emit('training_failed', { modelId, error });
+        io.emit('training:failed', { modelId, error });
       }
     };
     
@@ -2163,7 +2163,7 @@ async function startRealTraining(modelId: number, model: Record<string, unknown>
     // Cleanup
     activeTrainingSessions.delete(modelId);
     
-    io.emit('training_failed', { modelId, error: error.message });
+    io.emit('training:failed', { modelId, error: error.message });
   }
 }
 

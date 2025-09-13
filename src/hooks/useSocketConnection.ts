@@ -63,7 +63,7 @@ export const useSocketConnection = (options: SocketOptions = {}) => {
 
     // Connection established
     socketRef.current.on('connect', () => {
-      console.log('Socket connected');
+      console.log('🔗 Socket connected');
       setState({
         connected: true,
         connecting: false,
@@ -76,7 +76,7 @@ export const useSocketConnection = (options: SocketOptions = {}) => {
 
     // Connection lost
     socketRef.current.on('disconnect', (reason) => {
-      console.log('Socket disconnected:', reason);
+      console.log('🔌 Socket disconnected:', reason);
       setState(prev => ({
         ...prev,
         connected: false,
@@ -88,6 +88,20 @@ export const useSocketConnection = (options: SocketOptions = {}) => {
       if (reason !== 'io client disconnect') {
         attemptReconnect();
       }
+    });
+
+    // Reconnection successful
+    socketRef.current.on('reconnect', (attemptNumber) => {
+      console.log('🔄 Socket reconnected after', attemptNumber, 'attempts');
+      setState(prev => ({
+        ...prev,
+        connected: true,
+        connecting: false,
+        error: null,
+        reconnectAttempt: 0
+      }));
+      reconnectAttemptsRef.current = 0;
+      onReconnect?.(attemptNumber);
     });
 
     // Connection error
@@ -112,6 +126,37 @@ export const useSocketConnection = (options: SocketOptions = {}) => {
     socketRef.current.on('auth:failed', (error) => {
       console.error('Socket authentication failed:', error);
       disconnect();
+    });
+
+    // Standardized training events
+    socketRef.current.on('training:progress', (data) => {
+      console.log('📈 Training progress:', data);
+    });
+
+    socketRef.current.on('training:completed', (data) => {
+      console.log('✅ Training completed:', data);
+    });
+
+    socketRef.current.on('training:failed', (data) => {
+      console.error('❌ Training failed:', data);
+    });
+
+    socketRef.current.on('training:metrics', (data) => {
+      console.log('📊 Training metrics:', data);
+    });
+
+    // Standardized dataset events
+    socketRef.current.on('dataset:download:progress', (data) => {
+      console.log('📥 Dataset download progress:', data);
+    });
+
+    socketRef.current.on('dataset:updated', (data) => {
+      console.log('📁 Dataset updated:', data);
+    });
+
+    // System metrics
+    socketRef.current.on('system_metrics', (data) => {
+      console.log('🖥️ System metrics updated');
     });
 
     return socketRef.current;
