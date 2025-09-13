@@ -15,7 +15,7 @@ export function applyRouteProtection(app: Application): void {
   // State-changing model operations need CSRF
   app.use('/api/models', (req, res, next) => {
     if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(req.method)) {
-      return csrfProtection(req, res, next);
+      return csrfProtection.middleware()(req, res, next);
     }
     next();
   });
@@ -42,7 +42,7 @@ export function applyRouteProtection(app: Application): void {
     if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(req.method) && 
         !req.path.includes('/auth/login') && 
         !req.path.includes('/auth/register')) {
-      return csrfProtection(req, res, next);
+      return csrfProtection.middleware()(req, res, next);
     }
     next();
   });

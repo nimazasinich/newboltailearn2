@@ -1991,7 +1991,7 @@ async function startRealTraining(modelId: number, model: Record<string, unknown>
     // Import real training engine implementation
     const { getRealTrainingEngine } = await import('./training/RealTrainingEngineImpl.js');
     
-    const trainingEngine = getRealTrainingEngine(db);
+    const trainingEngine = getRealTrainingEngine();
     activeTrainingSessions.set(modelId, trainingEngine);
     
     // Load datasets

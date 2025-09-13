@@ -28,7 +28,7 @@ export function createModelsRoutes(modelsController: ModelsController): Router {
   router.post('/',
     requireAuth,
     requireRole('trainer'),
-    csrfProtection,
+    csrfProtection.middleware(),
     validate(schemas.createModel),
     modelsController.createModel.bind(modelsController)
   );
@@ -37,7 +37,7 @@ export function createModelsRoutes(modelsController: ModelsController): Router {
   router.put('/:id',
     requireAuth,
     requireRole('trainer'),
-    csrfProtection,
+    csrfProtection.middleware(),
     validate(schemas.updateModel),
     modelsController.updateModel.bind(modelsController)
   );
@@ -46,7 +46,7 @@ export function createModelsRoutes(modelsController: ModelsController): Router {
   router.delete('/:id',
     requireAuth,
     requireRole('admin'),
-    csrfProtection,
+    csrfProtection.middleware(),
     modelsController.deleteModel.bind(modelsController)
   );
 
@@ -67,7 +67,7 @@ export function createModelsRoutes(modelsController: ModelsController): Router {
   router.post('/:id/export',
     requireAuth,
     requireRole('trainer'),
-    csrfProtection,
+    csrfProtection.middleware(),
     modelsController.exportModel.bind(modelsController)
   );
 

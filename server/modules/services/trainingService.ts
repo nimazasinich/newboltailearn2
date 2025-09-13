@@ -49,7 +49,7 @@ export class TrainingService {
   constructor(db: Database.Database, io: Server) {
     this.db = db;
     this.io = io;
-    this.trainingEngine = getRealTrainingEngine(db);
+    this.trainingEngine = getRealTrainingEngine();
     
     // Initialize worker manager if workers are enabled
     if (config.USE_WORKERS) {
@@ -217,7 +217,7 @@ export class TrainingService {
     sessionId: number
   ): Promise<void> {
     // Initialize model
-    await this.trainingEngine.initializeModel({ numClasses: 3, modelType: 'bert' }); // 3 classes for legal text
+    await this.trainingEngine.initializeModel({ numClasses: 3, modelType: 'persian-bert' }); // 3 classes for legal text
 
     // Progress callback
     const progressCallback = (progress: TrainingProgress) => {
