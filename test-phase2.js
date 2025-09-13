@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-const axios = require('axios');
-const WebSocket = require('ws');
+import axios from 'axios';
+import WebSocket from 'ws';
 
 const API_BASE = 'http://localhost:3001/api';
 const WS_URL = 'ws://localhost:3001';
@@ -261,8 +261,6 @@ async function testSystemMonitoring() {
 }
 
 // Run the test
-if (require.main === module) {
-  testPhase2Integration().catch(console.error);
-}
+testPhase2Integration().catch(console.error);
 
-module.exports = { testPhase2Integration };
+export { testPhase2Integration };
