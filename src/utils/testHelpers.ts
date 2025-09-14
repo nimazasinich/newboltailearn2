@@ -1,6 +1,6 @@
 export const validateApiConnection = async (): Promise<boolean> => {
   try {
-    const response = await fetch('http://localhost:3001/api/health');
+    const response = await fetch(`${import.meta.env.VITE_API_BASE || 'http://localhost:3001/api'}/health`);
     return response.ok;
   } catch {
     return false;
@@ -10,7 +10,7 @@ export const validateApiConnection = async (): Promise<boolean> => {
 export const validateWebSocketConnection = (): Promise<boolean> => {
   return new Promise((resolve) => {
     try {
-      const wsUrl = location.origin.replace(/^http/, 'ws') + '/ws';
+      const wsUrl = import.meta.env.VITE_WS_BASE || location.origin.replace(/^http/, 'ws');
       const ws = new WebSocket(wsUrl);
       
       ws.onopen = () => {

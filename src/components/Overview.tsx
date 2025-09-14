@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/Card';
 import { Badge } from './ui/Badge';
 import { Progress } from './ui/Progress';
-import { apiService } from '../services/api';
+import { API } from '../services/api';
 import { websocketService } from '../services/websocket';
 import { 
   Activity, 
@@ -84,11 +84,11 @@ export function Overview() {
         setError(null);
 
         // Fetch system metrics
-        const metrics = await apiService.getSystemMetrics();
+        const metrics = await API.getSystemMetrics();
         setSystemMetrics(metrics);
 
         // Fetch models data for training stats
-        const models = await apiService.getModels();
+        const models = await API.getModels();
         if (models) {
           setTrainingStats({
             totalSessions: models.length || 0,
@@ -102,7 +102,7 @@ export function Overview() {
         }
 
         // Fetch datasets for document stats
-        const datasets = await apiService.getDatasets();
+        const datasets = await API.getDatasets();
         if (datasets) {
           setDocumentStats({
             totalWords: datasets.reduce((acc: number, d: any) => acc + (d.wordCount || 0), 0),

@@ -1,0 +1,34 @@
+{
+  "created": "2025-09-14T21:01:00Z",
+  "backup_zip": "project-backup.zip",
+  "backup_size_bytes": 1942430,
+  "excluded_patterns": [
+    "node_modules/*",
+    "dist/*",
+    ".turbo/*",
+    ".next/*",
+    ".cache/*",
+    ".git/*",
+    "*.log",
+    "test-results/*",
+    "playwright-report/*"
+  ],
+  "included_top_level": [
+    "src/",
+    "server/",
+    "public/",
+    "tests/",
+    "scripts/",
+    "checkpoints/",
+    "datasets/",
+    "archive/",
+    "package.json",
+    "tsconfig.json",
+    "vite.config.ts",
+    "index.html",
+    "README.md"
+  ],
+  "git_tag": "pre-rtl-refactor-backup",
+  "git_branch": "cursor/refactor-dashboard-with-backups-and-archiving-523c",
+  "notes": "Complete project backup before RTL dashboard refactor with API unification"
+}

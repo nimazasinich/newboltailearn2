@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/Card';
-import { apiService } from '../services/api';
+import { API } from '../services/api';
 import { createWS } from '../lib/ws';
 import { BarChart, LineChart, PieChart, TrendingUp, Brain, Activity } from 'lucide-react';
 
@@ -14,8 +14,8 @@ export default function Dashboard() {
     const loadDashboardData = async () => {
       try {
         const [models, analytics] = await Promise.all([
-          apiService.getModels(),
-          apiService.getAnalytics()
+          API.getModels(),
+          API.getAnalytics()
         ]);
         setData({ models, analytics });
       } catch (err) {

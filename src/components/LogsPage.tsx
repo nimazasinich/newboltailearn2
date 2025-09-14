@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/Card';
 import { Badge } from './ui/Badge';
-import { apiService } from '../services/api';
+import { API } from '../services/api';
 import { websocketService } from '../services/websocket';
 import { FileText, Filter, Search, AlertTriangle, Info, AlertCircle } from 'lucide-react';
 
@@ -15,7 +15,7 @@ export default function LogsPage() {
     const loadLogs = async () => {
       try {
         setLoading(true);
-        const data = await apiService.getLogs({ limit: 100 });
+        const data = await API.getLogs({ limit: 100 });
         setLogs(data || []);
       } catch (err) {
         console.error('Failed to load logs:', err);

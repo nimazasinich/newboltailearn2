@@ -1,0 +1,27 @@
+{
+  "moved": [
+    { "from": "src/components/analytics/", "to": "archive/2025-09-14_21-01/components-legacy/analytics/", "reason": "duplicate - analytics functionality consolidated" },
+    { "from": "src/components/dashboard/", "to": "archive/2025-09-14_21-01/components-legacy/dashboard/", "reason": "duplicate - dashboard components consolidated" },
+    { "from": "src/components/AuthGuard.tsx", "to": "archive/2025-09-14_21-01/components-legacy/AuthGuard.tsx", "reason": "legacy - auth handling simplified" },
+    { "from": "src/components/Dashboard.backup.tsx", "to": "archive/2025-09-14_21-01/components-legacy/Dashboard.backup.tsx", "reason": "backup file - no longer needed" },
+    { "from": "src/components/LeaderboardPage.tsx", "to": "archive/2025-09-14_21-01/components-legacy/LeaderboardPage.tsx", "reason": "unused - feature not in target layout" },
+    { "from": "src/components/Loading.tsx", "to": "archive/2025-09-14_21-01/components-legacy/Loading.tsx", "reason": "duplicate - LoadingSpinner.tsx used instead" },
+    { "from": "src/components/ModelManagementPage.tsx", "to": "archive/2025-09-14_21-01/components-legacy/ModelManagementPage.tsx", "reason": "duplicate - ModelsPage.tsx used instead" },
+    { "from": "src/components/router.tsx", "to": "archive/2025-09-14_21-01/components-legacy/router.tsx", "reason": "legacy - routing handled in App.tsx" },
+    { "from": "src/components/Sidebar.tsx", "to": "archive/2025-09-14_21-01/components-legacy/Sidebar.tsx", "reason": "duplicate - layout/Sidebar.tsx used instead" },
+    { "from": "src/components/SocketIntegration.tsx", "to": "archive/2025-09-14_21-01/components-legacy/SocketIntegration.tsx", "reason": "legacy - WebSocket handling centralized" },
+    { "from": "src/components/SocketStatus.tsx", "to": "archive/2025-09-14_21-01/components-legacy/SocketStatus.tsx", "reason": "legacy - status handling simplified" },
+    { "from": "src/components/TrainingControlPanel.tsx", "to": "archive/2025-09-14_21-01/components-legacy/TrainingControlPanel.tsx", "reason": "duplicate - TrainingManagement.tsx used instead" },
+    { "from": "src/components/TrainingHistoryPage.tsx", "to": "archive/2025-09-14_21-01/components-legacy/TrainingHistoryPage.tsx", "reason": "unused - feature consolidated" },
+    { "from": "src/hooks/", "to": "archive/2025-09-14_21-01/components-legacy/hooks/", "reason": "legacy - hooks consolidated or removed" },
+    { "from": "src/lib/", "to": "archive/2025-09-14_21-01/components-legacy/lib/", "reason": "legacy - functionality moved to services/" },
+    { "from": "src/pages/", "to": "archive/2025-09-14_21-01/components-legacy/pages/", "reason": "legacy - pages moved to components/" },
+    { "from": "src/router/", "to": "archive/2025-09-14_21-01/components-legacy/router/", "reason": "legacy - routing handled in App.tsx" },
+    { "from": "src/state/", "to": "archive/2025-09-14_21-01/components-legacy/state/", "reason": "legacy - state management simplified" },
+    { "from": "src/stores/", "to": "archive/2025-09-14_21-01/components-legacy/stores/", "reason": "legacy - store pattern not used" },
+    { "from": "src/App.tsx", "to": "archive/2025-09-14_21-01/App-legacy.tsx", "reason": "legacy - replaced with new routing structure" },
+    { "from": "index.css", "to": "archive/2025-09-14_21-01/root-legacy/index.css", "reason": "duplicate - src/index.css used instead" }
+  ],
+  "backupZip": "archive/2025-09-14_21-01/project-backup.zip",
+  "notes": "All moves are non-destructive; original structure preserved in zip. Files labeled with archive headers indicating reason for move."
+}

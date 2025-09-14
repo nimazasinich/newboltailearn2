@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/Card';
-import { apiService } from '../services/api';
+import { API } from '../services/api';
 import { BarChart3, TrendingUp, PieChart, Activity, AlertTriangle } from 'lucide-react';
 
 export default function AnalyticsPage() {
@@ -12,7 +12,7 @@ export default function AnalyticsPage() {
     const loadAnalytics = async () => {
       try {
         setLoading(true);
-        const data = await apiService.getAnalytics();
+        const data = await API.getAnalytics();
         setAnalytics(data);
       } catch (err) {
         console.error('Failed to load analytics:', err);

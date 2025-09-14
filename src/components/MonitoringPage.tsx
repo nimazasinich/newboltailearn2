@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/Card';
 import { Progress } from './ui/Progress';
-import { apiService } from '../services/api';
+import { API } from '../services/api';
 import { websocketService } from '../services/websocket';
 import { Monitor, Cpu, HardDrive, Wifi, AlertTriangle, Activity } from 'lucide-react';
 
@@ -19,7 +19,7 @@ export default function MonitoringPage() {
     const loadMetrics = async () => {
       try {
         setLoading(true);
-        const data = await apiService.getSystemMetrics();
+        const data = await API.getSystemMetrics();
         setMetrics(data);
       } catch (err) {
         console.error('Failed to load system metrics:', err);
