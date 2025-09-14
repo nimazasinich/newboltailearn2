@@ -38,7 +38,7 @@ export function LandingPage(): JSX.Element {
         <motion.div
           initial={{ scale: 0.5, opacity: 0, rotate: -10 }}
           animate={{ scale: 1, opacity: 1, rotate: 0 }}
-          transition={{ duration: 0.8, ease: "easeOutBack" }}
+          transition={{ type: 'spring', stiffness: 400, damping: 17 }}
           className="mb-12"
         >
           <div className="relative">

@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/Card';
 import { apiService } from '../services/api';
+import { createWS } from '../lib/ws';
 import { BarChart, LineChart, PieChart, TrendingUp, Brain, Activity } from 'lucide-react';
 
 export default function Dashboard() {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [wsStatus, setWsStatus] = useState<'connecting' | 'connected' | 'disconnected'>('connecting');
+  const [wsData, setWsData] = useState<any>(null);
 
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -26,6 +29,38 @@ export default function Dashboard() {
     loadDashboardData();
   }, []);
 
+  useEffect(() => {
+    const ws = createWS('/ws');
+    
+    ws.onopen = () => {
+      setWsStatus('connected');
+      console.log('WebSocket connected');
+    };
+    
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        setWsData(data);
+      } catch (error) {
+        console.error('Failed to parse WebSocket message:', error);
+      }
+    };
+    
+    ws.onclose = () => {
+      setWsStatus('disconnected');
+      console.log('WebSocket disconnected');
+    };
+    
+    ws.onerror = (error) => {
+      setWsStatus('disconnected');
+      console.error('WebSocket error:', error);
+    };
+    
+    return () => {
+      ws.close();
+    };
+  }, []);
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64" dir="rtl">
@@ -41,6 +76,16 @@ export default function Dashboard() {
         <p className="text-gray-600 dark:text-gray-400 mt-1">
           نمای جامع از عملکرد سیستم و مدل‌های آموزشی
         </p>
+        <div className="mt-2 flex items-center gap-2">
+          <span className="text-sm text-gray-500">وضعیت اتصال:</span>
+          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+            wsStatus === 'connected' ? 'bg-green-100 text-green-800' :
+            wsStatus === 'connecting' ? 'bg-yellow-100 text-yellow-800' :
+            'bg-red-100 text-red-800'
+          }`}>
+            {wsStatus === 'connected' ? 'متصل' : wsStatus === 'connecting' ? 'در حال اتصال' : 'قطع شده'}
+          </span>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
