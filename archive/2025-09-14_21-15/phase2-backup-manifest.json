@@ -1,0 +1,39 @@
+{
+  "backup_date": "2025-09-14T21:15:00Z",
+  "backup_type": "Phase 2 Full Functionality Backup",
+  "included_paths": [
+    "src/**",
+    "server/**", 
+    "tests/**",
+    "public/**",
+    "*.ts",
+    "*.js",
+    "*.json",
+    "*.md",
+    "*.css",
+    "*.html",
+    "*.sql",
+    "*.db",
+    "archive/**"
+  ],
+  "excluded_paths": [
+    "node_modules/*",
+    "dist/*", 
+    ".git/*",
+    "*.log",
+    "test-results/*",
+    "playwright-report/*"
+  ],
+  "zip_file": "project-backup-phase2.zip",
+  "git_branch": "feat/phase-2-full-functionality",
+  "git_commit": "initial backup before phase 2 implementation",
+  "notes": "Complete project backup before implementing Phase 2 full functionality, styling, routing and database stabilization",
+  "archived_files": [
+    {
+      "file": "components-legacy/Overview.old.tsx",
+      "reason": "Replaced by simplified Overview component with proper API integration",
+      "original_size_lines": 500,
+      "moved_date": "2025-09-14"
+    }
+  ]
+}

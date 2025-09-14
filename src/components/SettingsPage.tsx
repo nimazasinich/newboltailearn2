@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/Card';
 import { Button } from './ui/Button';
 import { API } from '../services/api';
+import { useTheme } from '../hooks/useTheme';
 import { Settings, Save, Moon, Sun, Globe, Bell, AlertTriangle } from 'lucide-react';
 
 export default function SettingsPage() {
+  const { theme, setTheme } = useTheme();
   const [settings, setSettings] = useState({
-    theme: 'dark',
     language: 'fa',
     notifications: true,
     autoRefresh: true,
@@ -92,8 +93,8 @@ export default function SettingsPage() {
                     type="radio"
                     name="theme"
                     value="light"
-                    checked={settings.theme === 'light'}
-                    onChange={(e) => setSettings(prev => ({ ...prev, theme: e.target.value }))}
+                    checked={theme === 'light'}
+                    onChange={() => setTheme('light')}
                     className="text-blue-600"
                   />
                   <Sun className="h-4 w-4" />
@@ -104,8 +105,8 @@ export default function SettingsPage() {
                     type="radio"
                     name="theme"
                     value="dark"
-                    checked={settings.theme === 'dark'}
-                    onChange={(e) => setSettings(prev => ({ ...prev, theme: e.target.value }))}
+                    checked={theme === 'dark'}
+                    onChange={() => setTheme('dark')}
                     className="text-blue-600"
                   />
                   <Moon className="h-4 w-4" />

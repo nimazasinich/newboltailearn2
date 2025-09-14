@@ -13,7 +13,9 @@ import {
   X,
   Trophy,
   Clock,
-  HardDrive
+  HardDrive,
+  Layout,
+  Monitor
 } from 'lucide-react';
 import { cn } from '../../utils/cn';
 
@@ -23,17 +25,17 @@ interface SidebarProps {
 }
 
 const navigationItems = [
-  { name: 'داشبورد اصلی', href: '/app/dashboard', icon: BarChart3, description: 'نمای کلی سیستم' },
-  { name: 'آموزش مدل‌ها', href: '/app/training', icon: Brain, description: 'مدیریت آموزش AI' },
-  { name: 'جدول رتبه‌بندی', href: '/app/leaderboard', icon: Trophy, description: 'رتبه‌بندی مدل‌ها' },
-  { name: 'تاریخچه آموزش', href: '/app/history', icon: Clock, description: 'سوابق آموزش' },
-  { name: 'مدیریت مدل‌ها', href: '/app/management', icon: HardDrive, description: 'صادرات و بارگذاری' },
-  { name: 'نظارت سیستم', href: '/app/monitoring', icon: Activity, description: 'وضعیت سیستم' },
-  { name: 'تحلیل‌ها', href: '/app/analytics', icon: TrendingUp, description: 'گزارش‌ها و آمار' },
-  { name: 'مدل‌ها', href: '/app/models', icon: Brain, description: 'مدیریت مدل‌های AI' },
-  { name: 'دیتاست‌ها', href: '/app/data', icon: Database, description: 'مدیریت داده‌ها' },
-  { name: 'لاگ‌ها', href: '/app/logs', icon: FileText, description: 'سوابق سیستم' },
-  { name: 'تیم', href: '/app/team', icon: Users, description: 'اعضای تیم' },
+  { name: 'نمای کلی', href: '/overview', icon: Layout, description: 'نمای کلی سیستم' },
+  { name: 'داشبورد پیشرفته', href: '/dashboard-advanced', icon: BarChart3, description: 'داشبورد تعاملی' },
+  { name: 'تحلیل‌ها', href: '/analytics', icon: TrendingUp, description: 'گزارش‌ها و آمار' },
+  { name: 'دیتاست‌ها', href: '/data', icon: Database, description: 'مدیریت داده‌ها' },
+  { name: 'لاگ‌ها', href: '/logs', icon: FileText, description: 'سوابق سیستم' },
+  { name: 'مدل‌ها', href: '/models', icon: Brain, description: 'مدیریت مدل‌های AI' },
+  { name: 'نظارت سیستم', href: '/monitoring', icon: Monitor, description: 'وضعیت سیستم' },
+  { name: 'آموزش مدل‌ها', href: '/training', icon: Activity, description: 'مدیریت آموزش AI' },
+  { name: 'تیم', href: '/team', icon: Users, description: 'اعضای تیم' },
+  { name: 'تنظیمات', href: '/settings', icon: Settings, description: 'تنظیمات سیستم' },
+  { name: 'دانلود پروژه', href: '/download', icon: Download, description: 'دانلود فایل‌ها' },
 ];
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
@@ -65,7 +67,8 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           <nav className="flex-1 px-4 py-6 space-y-2">
             {navigationItems.map((item) => {
               const Icon = item.icon;
-              const isActive = location.pathname === item.href;
+              const isActive = location.pathname === item.href || 
+                (item.href === '/dashboard-advanced' && location.pathname === '/dashboard');
               
               return (
                 <NavLink
@@ -129,7 +132,8 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           <nav className="flex-1 px-4 py-6 space-y-2">
             {navigationItems.map((item) => {
               const Icon = item.icon;
-              const isActive = location.pathname === item.href;
+              const isActive = location.pathname === item.href || 
+                (item.href === '/dashboard-advanced' && location.pathname === '/dashboard');
               
               return (
                 <NavLink

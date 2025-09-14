@@ -1,26 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/Card';
-import { API } from '../services/api';
-import { createWS } from '../lib/ws';
-import { BarChart, LineChart, PieChart, TrendingUp, Brain, Activity } from 'lucide-react';
+import { API, TrainingSession, SystemMetrics } from '../services/api';
+import { wsClient } from '../services/wsClient';
+import { BarChart, LineChart, PieChart, TrendingUp, Brain, Activity, Loader2 } from 'lucide-react';
 
 export default function Dashboard() {
-  const [data, setData] = useState<any>(null);
+  const [models, setModels] = useState<TrainingSession[]>([]);
+  const [metrics, setMetrics] = useState<SystemMetrics | null>(null);
   const [loading, setLoading] = useState(true);
-  const [wsStatus, setWsStatus] = useState<'connecting' | 'connected' | 'disconnected'>('connecting');
-  const [wsData, setWsData] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadDashboardData = async () => {
       try {
-        const [models, analytics] = await Promise.all([
-          API.getModels(),
-          API.getAnalytics()
+        setLoading(true);
+        setError(null);
+        
+        const [modelsResult, metricsResult] = await Promise.allSettled([
+          API.models(),
+          API.monitoring()
         ]);
-        setData({ models, analytics });
+
+        if (modelsResult.status === 'fulfilled') {
+          setModels(modelsResult.value);
+        }
+
+        if (metricsResult.status === 'fulfilled') {
+          setMetrics(metricsResult.value);
+        }
+
+        if (modelsResult.status === 'rejected' && metricsResult.status === 'rejected') {
+          setError('خطا در بارگذاری داده‌ها');
+        }
       } catch (err) {
         console.error('Failed to load dashboard data:', err);
-        setData({ models: [], analytics: {} });
+        setError('خطا در بارگذاری داده‌ها');
       } finally {
         setLoading(false);
       }

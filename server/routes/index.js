@@ -27,9 +27,51 @@ export default function createApiRouter(io, db) {
     router.use('/datasets', createDatasetsRoutes(datasetsController, io));
     router.use('/analytics', createAnalyticsRoutes(analyticsController));
     router.use('/monitoring', createMonitoringRoutes(monitoringController));
-    // Health check endpoint (moved from index.ts)
-    router.get('/health', (_req, res) => {
-        res.json({ status: 'healthy', message: 'API is up and running' });
+    // Health check endpoint with database connectivity
+    router.get('/health', async (req, res) => {
+        try {
+            // Check database connectivity and get table counts
+            const tables = {};
+            
+            const queries = [
+                'SELECT COUNT(*) as count FROM models',
+                'SELECT COUNT(*) as count FROM datasets', 
+                'SELECT COUNT(*) as count FROM metrics_history',
+                'SELECT COUNT(*) as count FROM users'
+            ];
+            
+            const tableNames = ['models', 'datasets', 'metrics_history', 'users'];
+            
+            for (let i = 0; i < queries.length; i++) {
+                try {
+                    const result = await new Promise((resolve, reject) => {
+                        db.get(queries[i], (err, row) => {
+                            if (err) reject(err);
+                            else resolve(row);
+                        });
+                    });
+                    tables[tableNames[i]] = result.count;
+                } catch (err) {
+                    console.error(`Error checking table ${tableNames[i]}:`, err);
+                    tables[tableNames[i]] = -1;
+                }
+            }
+            
+            res.json({ 
+                ok: true,
+                database: true,
+                tables,
+                timestamp: new Date().toISOString()
+            });
+        } catch (error) {
+            console.error('Health check error:', error);
+            res.status(500).json({ 
+                ok: false,
+                database: false,
+                error: error.message,
+                timestamp: new Date().toISOString()
+            });
+        }
     });
     return router;
 }

@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import Sidebar from '../Sidebar';
-import { useConnectionStatus } from '../../hooks/useConnectionStatus';
+import { Sidebar } from './Sidebar';
 import { API } from '../../services/api';
 
 export function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [systemStatus, setSystemStatus] = useState<'online' | 'offline'>('offline');
-  const { isConnected } = useConnectionStatus();
+  const [systemStatus, setSystemStatus] = useState<'online' | 'offline'>('online');
   
   useEffect(() => {
     const checkHealth = async () => {
       try {
-        await API.checkHealth();
+        await API.health();
         setSystemStatus('online');
       } catch {
         setSystemStatus('offline');
