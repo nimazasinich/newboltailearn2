@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/Card';
 import { Button } from './ui/Button';
-import { apiService } from '../services/api';
+import { API } from '../services/api';
 import { Settings, Save, Moon, Sun, Globe, Bell, AlertTriangle } from 'lucide-react';
 
 export default function SettingsPage() {
@@ -20,7 +20,7 @@ export default function SettingsPage() {
     const loadSettings = async () => {
       try {
         setLoading(true);
-        const data = await apiService.getSettings();
+        const data = await API.getSettings();
         setSettings(data || settings);
       } catch (err) {
         console.error('Failed to load settings:', err);
@@ -36,7 +36,7 @@ export default function SettingsPage() {
   const handleSave = async () => {
     try {
       setSaving(true);
-      await apiService.updateSettings(settings);
+      await API.updateSettings(settings);
       alert('تنظیمات با موفقیت ذخیره شد');
     } catch (err) {
       console.error('Failed to save settings:', err);

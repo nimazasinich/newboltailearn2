@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Sidebar from '../Sidebar';
 import { useConnectionStatus } from '../../hooks/useConnectionStatus';
-import { apiService } from '../../services/api';
+import { API } from '../../services/api';
 
 export function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -13,7 +13,7 @@ export function AppLayout() {
   useEffect(() => {
     const checkHealth = async () => {
       try {
-        await apiService.checkHealth();
+        await API.checkHealth();
         setSystemStatus('online');
       } catch {
         setSystemStatus('offline');

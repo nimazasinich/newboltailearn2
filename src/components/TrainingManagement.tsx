@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/Card';
 import { Button } from './ui/Button';
 import { Progress } from './ui/Progress';
 import { Badge } from './ui/Badge';
-import { apiService } from '../services/api';
+import { API } from '../services/api';
 import { websocketService } from '../services/websocket';
 import { 
   Play, 
@@ -39,7 +39,7 @@ export default function TrainingManagement() {
     const loadSessions = async () => {
       try {
         setLoading(true);
-        const models = await apiService.getModels();
+        const models = await API.getModels();
         
         if (models) {
           setSessions(models.map((model: any, index: number) => ({
@@ -140,7 +140,7 @@ export default function TrainingManagement() {
 
   const handleStartTraining = async (sessionId: number) => {
     try {
-      await apiService.startTraining(sessionId);
+      await API.startTraining(sessionId);
       setSessions(prev => prev.map(session => 
         session.id === sessionId ? { ...session, status: 'training' } : session
       ));
@@ -151,7 +151,7 @@ export default function TrainingManagement() {
 
   const handlePauseTraining = async (sessionId: number) => {
     try {
-      await apiService.pauseTraining(sessionId);
+      await API.pauseTraining(sessionId);
       setSessions(prev => prev.map(session => 
         session.id === sessionId ? { ...session, status: 'paused' } : session
       ));
@@ -162,7 +162,7 @@ export default function TrainingManagement() {
 
   const handleResumeTraining = async (sessionId: number) => {
     try {
-      await apiService.resumeTraining(sessionId);
+      await API.resumeTraining(sessionId);
       setSessions(prev => prev.map(session => 
         session.id === sessionId ? { ...session, status: 'training' } : session
       ));

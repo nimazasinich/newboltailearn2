@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Play, Pause, Square, Trash2, Settings, Brain, TrendingUp, Clock, Database } from 'lucide-react';
-import { apiService } from '../services/api';
+import { API } from '../services/api';
 import { websocketService } from '../services/websocket';
 
 interface Model {
@@ -82,8 +82,8 @@ export function ModelsPage() {
       setLoading(true);
       setError(null);
       const [modelsData, datasetsData] = await Promise.all([
-        apiService.getModels(),
-        apiService.getDatasets()
+        API.getModels(),
+        API.getDatasets()
       ]);
       setModels(modelsData || []);
       setDatasets(datasetsData || []);
@@ -144,7 +144,7 @@ export function ModelsPage() {
 
   const loadModels = async () => {
     try {
-      const modelsData = await apiService.getModels();
+      const modelsData = await API.getModels();
       setModels(modelsData || []);
     } catch (error) {
       console.error('Failed to load models:', error);
@@ -154,7 +154,7 @@ export function ModelsPage() {
   const handleCreateModel = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await apiService.createModel({
+      await API.createModel({
         name: newModel.name,
         type: newModel.type,
         dataset_id: newModel.dataset_id,
@@ -183,7 +183,7 @@ export function ModelsPage() {
 
   const handleTrainModel = async (id: number) => {
     try {
-      await apiService.startTraining(id);
+      await API.startTraining(id);
       loadModels();
     } catch (error) {
       console.error('Failed to start training:', error);
@@ -193,7 +193,7 @@ export function ModelsPage() {
 
   const handlePauseTraining = async (id: number) => {
     try {
-      await apiService.pauseTraining(id);
+      await API.pauseTraining(id);
       loadModels();
     } catch (error) {
       console.error('Failed to pause training:', error);
@@ -203,7 +203,7 @@ export function ModelsPage() {
 
   const handleResumeTraining = async (id: number) => {
     try {
-      await apiService.resumeTraining(id);
+      await API.resumeTraining(id);
       loadModels();
     } catch (error) {
       console.error('Failed to resume training:', error);

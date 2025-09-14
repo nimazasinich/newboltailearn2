@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/Card';
 import { Button } from './ui/Button';
-import { apiService } from '../services/api';
+import { API } from '../services/api';
 import { Database, Download, Upload, FileText, AlertTriangle } from 'lucide-react';
 
 export default function DataPage() {
@@ -13,7 +13,7 @@ export default function DataPage() {
     const loadDatasets = async () => {
       try {
         setLoading(true);
-        const data = await apiService.getDatasets();
+        const data = await API.getDatasets();
         setDatasets(data || []);
       } catch (err) {
         console.error('Failed to load datasets:', err);
@@ -55,7 +55,7 @@ export default function DataPage() {
 
   const handleDownload = async (datasetId: string) => {
     try {
-      await apiService.downloadDataset(datasetId);
+      await API.downloadDataset(datasetId);
       alert('دانلود شروع شد');
     } catch (err) {
       console.error('Download failed:', err);
