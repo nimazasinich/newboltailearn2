@@ -1,5 +1,77 @@
+import { z } from 'zod'
+
 const BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3001/api'
 let csrf = ''
+
+// Zod schemas for API responses
+export const SystemMetricsSchema = z.object({
+  cpu: z.number(),
+  memory: z.object({
+    used: z.number(),
+    total: z.number(),
+    percentage: z.number(),
+  }),
+  disk: z.object({
+    used: z.number(),
+    total: z.number(),
+    percentage: z.number(),
+  }),
+  network: z.object({
+    download: z.number(),
+    upload: z.number(),
+  }),
+  uptime: z.number(),
+  temperature: z.number().optional(),
+  timestamp: z.string(),
+})
+
+export const TrainingSessionSchema = z.object({
+  id: z.union([z.string(), z.number()]),
+  name: z.string(),
+  type: z.string(),
+  status: z.string(),
+  accuracy: z.number(),
+  loss: z.number(),
+  epochs: z.number(),
+  current_epoch: z.number(),
+  progress: z.number(),
+  dataset_id: z.union([z.string(), z.number()]),
+  estimated_time: z.number(),
+  learning_rate: z.number(),
+  batch_size: z.number(),
+  created_at: z.string(),
+  updated_at: z.string(),
+  metrics_history: z.array(z.object({
+    epoch: z.number(),
+    accuracy: z.number(),
+    loss: z.number(),
+    timestamp: z.string(),
+  })),
+})
+
+export const DatasetSchema = z.object({
+  id: z.union([z.string(), z.number()]),
+  name: z.string(),
+  source: z.string(),
+  samples: z.number(),
+  size_mb: z.number(),
+  status: z.string(),
+  type: z.string(),
+  created_at: z.string(),
+  last_used: z.string().optional(),
+})
+
+export const HealthSchema = z.object({
+  ok: z.boolean(),
+  database: z.boolean().optional(),
+  tables: z.record(z.number()).optional(),
+  timestamp: z.string().optional(),
+})
+
+export type SystemMetrics = z.infer<typeof SystemMetricsSchema>
+export type TrainingSession = z.infer<typeof TrainingSessionSchema>
+export type Dataset = z.infer<typeof DatasetSchema>
+export type Health = z.infer<typeof HealthSchema>
 
 async function getCsrf() {
   try {
@@ -31,15 +103,47 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   return res.json()
 }
 
+async function requestWithSchema<T>(
+  path: string, 
+  schema: z.ZodSchema<T>, 
+  init: RequestInit = {}
+): Promise<T> {
+  try {
+    const data = await request(path, init)
+    return schema.parse(data)
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      console.error(`API Schema validation error for ${path}:`, error.errors)
+      throw new Error(`Invalid API response format for ${path}`)
+    }
+    throw error
+  }
+}
+
 export const API = {
-  health: () => request('/health'),
-  monitoring: () => request('/monitoring'),
-  systemStats: () => request('/system-stats'),
-  models: () => request('/models'),
-  datasets: () => request('/datasets'),
-  startTraining: (id: number, body: any) => request(`/models/${id}/start`, { method: 'POST', body: JSON.stringify(body) }),
-  pauseTraining: (id: number) => request(`/models/${id}/pause`, { method: 'POST' }),
-  stopTraining: (id: number) => request(`/models/${id}/stop`, { method: 'POST' }),
+  // Health check
+  health: (): Promise<Health> => requestWithSchema('/health', HealthSchema),
+  
+  // System monitoring
+  monitoring: (): Promise<SystemMetrics> => requestWithSchema('/monitoring', SystemMetricsSchema),
+  systemStats: (): Promise<SystemMetrics> => requestWithSchema('/system-stats', SystemMetricsSchema),
+  
+  // Models and training
+  models: (): Promise<TrainingSession[]> => requestWithSchema('/models', z.array(TrainingSessionSchema)),
+  getModel: (id: string | number): Promise<TrainingSession> => requestWithSchema(`/models/${id}`, TrainingSessionSchema),
+  startTraining: (id: string | number, body: any) => request(`/models/${id}/start`, { method: 'POST', body: JSON.stringify(body) }),
+  pauseTraining: (id: string | number) => request(`/models/${id}/pause`, { method: 'POST' }),
+  stopTraining: (id: string | number) => request(`/models/${id}/stop`, { method: 'POST' }),
+  
+  // Datasets
+  datasets: (): Promise<Dataset[]> => requestWithSchema('/datasets', z.array(DatasetSchema)),
+  getDataset: (id: string | number): Promise<Dataset> => requestWithSchema(`/datasets/${id}`, DatasetSchema),
+  
+  // Logs (fallback to raw request since schema varies)
+  logs: (params?: { page?: number; limit?: number }) => {
+    const query = params ? `?${new URLSearchParams(params as any).toString()}` : ''
+    return request(`/logs${query}`)
+  },
 }
 
 export async function bootstrapClient() {
