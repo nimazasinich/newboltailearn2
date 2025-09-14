@@ -1,45 +1,16 @@
 import React from 'react';
 
-// src/components/ui/LoadingSpinner.tsx
-export function LoadingSpinner() {
+export default function LoadingSpinner() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-      <div className="flex flex-col items-center space-y-4">
-        {/* Animated spinner */}
-        <div className="relative">
-          <div className="w-12 h-12 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
-          <div className="absolute inset-0 w-12 h-12 border-4 border-transparent border-r-purple-600 rounded-full animate-spin animation-delay-75"></div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900" dir="rtl">
+      <div className="relative">
+        <div className="w-16 h-16 mx-auto bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-xl">
+          <div className="w-8 h-8 rounded-full border-2 border-white border-t-transparent animate-spin" />
         </div>
-        
-        {/* Loading text */}
-        <div className="text-center">
-          <h2 className="text-lg font-medium text-gray-900 dark:text-white mb-1">
-            در حال بارگذاری...
-          </h2>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            لطفاً صبر کنید
-          </p>
-        </div>
-        
-        {/* Pulsing dots */}
-        <div className="flex space-x-1">
-          <div className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></div>
-          <div className="w-2 h-2 bg-purple-600 rounded-full animate-pulse animation-delay-200"></div>
-          <div className="w-2 h-2 bg-indigo-600 rounded-full animate-pulse animation-delay-400"></div>
-        </div>
+        <p className="mt-4 text-center text-gray-600 dark:text-gray-400">
+          در حال بارگذاری...
+        </p>
       </div>
-      
-      <style jsx>{`
-        .animation-delay-75 {
-          animation-delay: 75ms;
-        }
-        .animation-delay-200 {
-          animation-delay: 200ms;
-        }
-        .animation-delay-400 {
-          animation-delay: 400ms;
-        }
-      `}</style>
     </div>
   );
 }

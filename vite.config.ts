@@ -1,14 +1,29 @@
-// vite.config.ts
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   server: {
-    port: 5173,
     host: true,
-    // ❌ No proxy in production - frontend will be served by Express backend
+    port: 5137,
+    strictPort: true,
+    open: false,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        secure: false
+      },
+      '/ws': {
+        target: 'ws://localhost:3001',
+        ws: true,
+        changeOrigin: true
+      }
+    }
+  },
+  preview: {
+    port: 5137,
+    strictPort: true
   },
   build: {
     outDir: 'dist',
@@ -31,4 +46,4 @@ export default defineConfig({
   define: {
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
   },
-})
+});

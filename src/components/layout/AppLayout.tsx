@@ -1,26 +1,23 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
-import { Brain, Home, BarChart3, FileText, Download, Menu, X, Database, Settings, Monitor, FileX } from 'lucide-react';
-import { Button } from '../ui/Button';
-import { useAuth } from '../../hooks/useAuth';
-import { PageSkeleton } from '../ui/PageSkeleton';
+import { Brain, Home, BarChart3, FileText, Menu, X, Database, Settings, Monitor, FileX, Users } from 'lucide-react';
+import LoadingSpinner from '../LoadingSpinner';
 
 const navigation = [
-  { name: 'داشبورد', href: '/app/dashboard', icon: Home },
-  { name: 'آموزش مدل‌ها', href: '/app/training', icon: Brain },
-  { name: 'تحلیل‌ها', href: '/app/analytics', icon: BarChart3 },
-  { name: 'مدیریت داده', href: '/app/data', icon: Database },
-  { name: 'مدیریت مدل‌ها', href: '/app/models', icon: Brain },
-  { name: 'نظارت سیستم', href: '/app/monitoring', icon: Monitor },
-  { name: 'لاگ‌ها', href: '/app/logs', icon: FileX },
-  { name: 'مدیریت اسناد', href: '/app/documents', icon: FileText },
-  { name: 'تنظیمات', href: '/app/settings', icon: Settings },
-  { name: 'دانلود پروژه', href: '/app/download', icon: Download },
+  { name: 'نمای کلی', href: '/overview', icon: Home },
+  { name: 'داشبورد پیشرفته', href: '/dashboard-advanced', icon: BarChart3 },
+  { name: 'تحلیل‌ها', href: '/analytics', icon: BarChart3 },
+  { name: 'مدیریت داده', href: '/data', icon: Database },
+  { name: 'مدیریت مدل‌ها', href: '/models', icon: Brain },
+  { name: 'آموزش مدل‌ها', href: '/training', icon: Brain },
+  { name: 'نظارت سیستم', href: '/monitoring', icon: Monitor },
+  { name: 'لاگ‌ها', href: '/logs', icon: FileX },
+  { name: 'تیم', href: '/team', icon: Users },
+  { name: 'تنظیمات', href: '/settings', icon: Settings },
 ];
 
 export function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { user } = useAuth();
   const location = useLocation();
 
   // Close sidebar on route change (mobile)
@@ -119,16 +116,14 @@ export function AppLayout() {
             </button>
           </div>
 
-          {/* User info */}
-          {user && (
-            <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-              <div className="px-3 py-2 bg-blue-50 dark:bg-blue-950 rounded-lg">
-                <p className="text-sm text-blue-800 dark:text-blue-200">
-                  خوش آمدید، {user.name}
-                </p>
-              </div>
+          {/* Connection status */}
+          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="px-3 py-2 bg-green-50 dark:bg-green-950 rounded-lg">
+              <p className="text-sm text-green-800 dark:text-green-200">
+                متصل به سرور
+              </p>
             </div>
-          )}
+          </div>
 
           {/* Navigation */}
           <nav className="flex-1 p-4 space-y-1">
@@ -203,7 +198,7 @@ export function AppLayout() {
           role="main"
           aria-label="محتوای اصلی"
         >
-          <Suspense fallback={<PageSkeleton />}>
+          <Suspense fallback={<LoadingSpinner />}>
             <Outlet />
           </Suspense>
         </main>

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
-import { Badge } from '../ui/Badge';
-import { Progress } from '../ui/Progress';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/Card';
+import { Badge } from './ui/Badge';
+import { Progress } from './ui/Progress';
+import { apiService } from '../services/api';
+import { websocketService } from '../services/websocket';
 import { 
   Activity, 
   Brain, 
@@ -45,58 +47,141 @@ interface DocumentStats {
 
 export function Overview() {
   const [systemMetrics, setSystemMetrics] = useState<SystemMetrics>({
-    cpuUsage: 45,
-    memoryUsage: 62,
-    storageUsage: 35,
-    networkUsage: 12,
-    activeTrainingSessions: 3,
-    totalDocuments: 1247,
+    cpuUsage: 0,
+    memoryUsage: 0,
+    storageUsage: 0,
+    networkUsage: 0,
+    activeTrainingSessions: 0,
+    totalDocuments: 0,
     systemHealth: 'good',
-    uptime: 86400000, // 1 day in milliseconds
+    uptime: 0,
     lastUpdate: new Date().toISOString()
   });
 
-  const [trainingStats] = useState<TrainingStats>({
-    totalSessions: 156,
-    completedSessions: 142,
-    runningSessions: 3,
-    failedSessions: 11,
-    bestAccuracy: 0.94,
-    averageAccuracy: 0.87,
-    totalTrainingTime: 2847
+  const [trainingStats, setTrainingStats] = useState<TrainingStats>({
+    totalSessions: 0,
+    completedSessions: 0,
+    runningSessions: 0,
+    failedSessions: 0,
+    bestAccuracy: 0,
+    averageAccuracy: 0,
+    totalTrainingTime: 0
   });
 
-  const [documentStats] = useState<DocumentStats>({
-    totalWords: 2450000,
-    categoryStats: {
-      'قوانین مدنی': 450,
-      'قوانین جزایی': 380,
-      'قوانین تجاری': 290,
-      'آیین دادرسی': 127
-    }
+  const [documentStats, setDocumentStats] = useState<DocumentStats>({
+    totalWords: 0,
+    categoryStats: {}
   });
 
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Simulate loading
+  // Load initial data from API
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1000);
-    return () => clearTimeout(timer);
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Fetch system metrics
+        const metrics = await apiService.getSystemMetrics();
+        setSystemMetrics(metrics);
+
+        // Fetch models data for training stats
+        const models = await apiService.getModels();
+        if (models) {
+          setTrainingStats({
+            totalSessions: models.length || 0,
+            completedSessions: models.filter((m: any) => m.status === 'completed').length || 0,
+            runningSessions: models.filter((m: any) => m.status === 'training').length || 0,
+            failedSessions: models.filter((m: any) => m.status === 'failed').length || 0,
+            bestAccuracy: Math.max(...models.map((m: any) => m.accuracy || 0), 0),
+            averageAccuracy: models.reduce((acc: number, m: any) => acc + (m.accuracy || 0), 0) / (models.length || 1),
+            totalTrainingTime: models.reduce((acc: number, m: any) => acc + (m.trainingTime || 0), 0)
+          });
+        }
+
+        // Fetch datasets for document stats
+        const datasets = await apiService.getDatasets();
+        if (datasets) {
+          setDocumentStats({
+            totalWords: datasets.reduce((acc: number, d: any) => acc + (d.wordCount || 0), 0),
+            categoryStats: datasets.reduce((acc: any, d: any) => {
+              acc[d.category || 'نامشخص'] = (acc[d.category || 'نامشخص'] || 0) + 1;
+              return acc;
+            }, {})
+          });
+        }
+
+      } catch (err) {
+        console.error('Failed to load overview data:', err);
+        setError('خطا در بارگذاری داده‌ها');
+        // Set fallback data
+        setSystemMetrics(prev => ({
+          ...prev,
+          cpuUsage: 45,
+          memoryUsage: 62,
+          storageUsage: 35,
+          networkUsage: 12,
+          activeTrainingSessions: 3,
+          totalDocuments: 1247,
+          systemHealth: 'good',
+          uptime: 86400000,
+        }));
+        setTrainingStats({
+          totalSessions: 156,
+          completedSessions: 142,
+          runningSessions: 3,
+          failedSessions: 11,
+          bestAccuracy: 0.94,
+          averageAccuracy: 0.87,
+          totalTrainingTime: 2847
+        });
+        setDocumentStats({
+          totalWords: 2450000,
+          categoryStats: {
+            'قوانین مدنی': 450,
+            'قوانین جزایی': 380,
+            'قوانین تجاری': 290,
+            'آیین دادرسی': 127
+          }
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
   }, []);
 
-  // Simulate real-time updates
+  // Setup WebSocket for real-time updates
   useEffect(() => {
-    const interval = setInterval(() => {
+    websocketService.connect();
+
+    const handleSystemMetrics = (data: any) => {
       setSystemMetrics(prev => ({
         ...prev,
-        cpuUsage: Math.max(10, Math.min(95, prev.cpuUsage + (Math.random() - 0.5) * 10)),
-        memoryUsage: Math.max(15, Math.min(90, prev.memoryUsage + (Math.random() - 0.5) * 8)),
-        networkUsage: Math.max(2, Math.min(30, Math.random() * 15 + 5)),
+        ...data,
         lastUpdate: new Date().toISOString()
       }));
-    }, 5000);
+    };
 
-    return () => clearInterval(interval);
+    const handleTrainingProgress = (data: any) => {
+      // Update training stats based on progress updates
+      setTrainingStats(prev => ({
+        ...prev,
+        runningSessions: data.activeSessions || prev.runningSessions
+      }));
+    };
+
+    websocketService.on('system_metrics', handleSystemMetrics);
+    websocketService.on('training_progress', handleTrainingProgress);
+
+    return () => {
+      websocketService.off('system_metrics', handleSystemMetrics);
+      websocketService.off('training_progress', handleTrainingProgress);
+      websocketService.disconnect();
+    };
   }, []);
 
   // Utility functions
@@ -164,11 +249,22 @@ export function Overview() {
       {/* Welcome Section */}
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-          خوش آمدید، کاربر گرامی
+          نمای کلی سیستم
         </h1>
         <p className="text-gray-600 dark:text-gray-400">
           آخرین بروزرسانی: {formatPersianDate(systemMetrics.lastUpdate)}
         </p>
+        {error && (
+          <div className="mt-4 p-4 bg-yellow-50 dark:bg-yellow-950 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="h-5 w-5 text-yellow-600" />
+              <p className="text-yellow-800 dark:text-yellow-200">{error}</p>
+            </div>
+            <p className="text-sm text-yellow-600 dark:text-yellow-400 mt-1">
+              در حال نمایش داده‌های نمونه
+            </p>
+          </div>
+        )}
       </div>
 
       {/* System Health Cards */}

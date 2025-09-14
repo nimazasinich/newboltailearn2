@@ -1,79 +1,42 @@
-import io from 'socket.io-client';
+class ApiService {
+  private baseURL = 'http://localhost:3001/api';
+  private token: string | null = null;
 
-const API_BASE_URL = '/api';
-
-// Socket.IO connection - connects to current host (unified server)
-export const socket = io({
-  autoConnect: false
-});
-
-// CSRF token management
-let csrfToken: string | null = null;
-
-async function fetchCsrfToken(): Promise<string> {
-  const response = await fetch('/api/csrf-token', { 
-    credentials: 'include' 
-  });
-  if (!response.ok) {
-    throw new Error(`CSRF token fetch failed: ${response.status}`);
+  constructor() {
+    this.token = localStorage.getItem('auth_token');
   }
-  const data = await response.json();
-  csrfToken = data.csrfToken;
-  return csrfToken;
-}
 
-async function ensureCsrfToken(): Promise<void> {
-  if (!csrfToken) {
-    await fetchCsrfToken();
-  }
-}
-
-// API client class
-class ApiClient {
-  private async request(endpoint: string, options: RequestInit = {}) {
-    const method = (options.method || 'GET').toUpperCase();
-    const isMutatingRequest = ['POST', 'PUT', 'PATCH', 'DELETE'].includes(method);
-    
-    if (isMutatingRequest) {
-      await ensureCsrfToken();
-    }
-
-    const config: RequestInit = {
-      ...options,
-      headers: {
-        'Content-Type': 'application/json',
-        ...(options.headers || {}),
-        ...(isMutatingRequest && csrfToken ? { 'x-csrf-token': csrfToken } : {})
-      },
-      credentials: 'include'
+  private async request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
+    const url = `${this.baseURL}${endpoint}`;
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+      ...options.headers,
     };
 
-    let response = await fetch(`${API_BASE_URL}${endpoint}`, config);
-    
-    // Handle CSRF token expiration
-    if (response.status === 403 && isMutatingRequest) {
-      try {
-        await fetchCsrfToken();
-        config.headers = {
-          ...config.headers,
-          'x-csrf-token': csrfToken
-        };
-        response = await fetch(`${API_BASE_URL}${endpoint}`, config);
-      } catch (retryError) {
-        console.error('CSRF token refresh failed:', retryError);
+    if (this.token) {
+      headers.Authorization = `Bearer ${this.token}`;
+    }
+
+    try {
+      const response = await fetch(url, {
+        ...options,
+        headers,
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          this.token = null;
+          localStorage.removeItem('auth_token');
+          // Handle unauthorized access
+        }
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    }
 
-    if (!response.ok) {
-      let errorMessage = `HTTP ${response.status}`;
-      try {
-        const errorData = await response.json();
-        errorMessage = errorData.message || errorData.error || errorMessage;
-      } catch {}
-      throw new Error(errorMessage);
+      return await response.json();
+    } catch (error) {
+      console.error('API request failed:', error);
+      throw error;
     }
-
-    return response.json();
   }
 
   // Models API
@@ -81,41 +44,27 @@ class ApiClient {
     return this.request('/models');
   }
 
-  async createModel(data: { name: string; type: string; dataset_id: string; config?: any }) {
+  async createModel(data: any) {
     return this.request('/models', {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
 
-  async updateModel(id: string, data: any) {
-    return this.request(`/models/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    });
-  }
-
-  async deleteModel(id: string) {
-    return this.request(`/models/${id}`, {
-      method: 'DELETE',
-    });
-  }
-
-  async trainModel(id: string, config: { epochs?: number; batch_size?: number; learning_rate?: number }) {
-    return this.request(`/models/${id}/train`, {
-      method: 'POST',
-      body: JSON.stringify(config),
-    });
-  }
-
-  async pauseTraining(id: string) {
-    return this.request(`/models/${id}/pause`, {
+  async startTraining(modelId: number) {
+    return this.request(`/models/${modelId}/train`, {
       method: 'POST',
     });
   }
 
-  async resumeTraining(id: string) {
-    return this.request(`/models/${id}/resume`, {
+  async pauseTraining(modelId: number) {
+    return this.request(`/models/${modelId}/pause`, {
+      method: 'POST',
+    });
+  }
+
+  async resumeTraining(modelId: number) {
+    return this.request(`/models/${modelId}/resume`, {
       method: 'POST',
     });
   }
@@ -125,21 +74,21 @@ class ApiClient {
     return this.request('/datasets');
   }
 
-  async downloadDataset(id: string) {
-    return this.request(`/datasets/${id}/download`, {
+  async downloadDataset(datasetId: string) {
+    return this.request(`/datasets/${datasetId}/download`, {
       method: 'POST',
     });
   }
 
-  // Logs API
-  async getLogs(params: { type?: string; level?: string; limit?: number } = {}) {
-    const queryString = new URLSearchParams(params as any).toString();
-    return this.request(`/logs?${queryString}`);
+  // Monitoring API
+  async getSystemMetrics() {
+    return this.request('/monitoring');
   }
 
-  // Monitoring API
-  async getMonitoring() {
-    return this.request('/monitoring');
+  // Logs API
+  async getLogs(params?: { type?: string; level?: string; limit?: number }) {
+    const queryString = params ? '?' + new URLSearchParams(params as any).toString() : '';
+    return this.request(`/logs${queryString}`);
   }
 
   // Settings API
@@ -147,7 +96,7 @@ class ApiClient {
     return this.request('/settings');
   }
 
-  async updateSettings(settings: Record<string, string>) {
+  async updateSettings(settings: any) {
     return this.request('/settings', {
       method: 'PUT',
       body: JSON.stringify(settings),
@@ -158,131 +107,6 @@ class ApiClient {
   async getAnalytics() {
     return this.request('/analytics');
   }
-
-  async exportAnalytics(format: 'csv' | 'json' = 'csv', timeRange: string = '30d') {
-    const response = await fetch(`${API_BASE_URL}/analytics/export?format=${format}&timeRange=${timeRange}`);
-    
-    if (format === 'csv') {
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `analytics_${new Date().toISOString().split('T')[0]}.csv`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } else {
-      return response.json();
-    }
-  }
-
-  // Team API
-  async getTeam() {
-    return this.request('/team');
-  }
-
-  // Monitoring Export API
-  async exportMonitoring(format: 'csv' | 'json' = 'csv', timeRange: string = '24h') {
-    const response = await fetch(`${API_BASE_URL}/monitoring/export?format=${format}&timeRange=${timeRange}`);
-    
-    if (format === 'csv') {
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `monitoring_${new Date().toISOString().split('T')[0]}.csv`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } else {
-      return response.json();
-    }
-  }
 }
 
-export const apiClient = new ApiClient();
-
-// Socket event types
-export interface TrainingProgress {
-  modelId: number;
-  epoch: number;
-  totalEpochs: number;
-  loss: number;
-  accuracy: number;
-}
-
-export interface SystemMetrics {
-  cpu: number;
-  memory: {
-    used: number;
-    total: number;
-    percentage: number;
-  };
-  uptime: number;
-  timestamp: string;
-  training: {
-    active: number;
-    total: number;
-  };
-}
-
-// Socket connection management
-export const connectSocket = () => {
-  if (!socket.connected) {
-    socket.connect();
-  }
-};
-
-export const disconnectSocket = () => {
-  if (socket.connected) {
-    socket.disconnect();
-  }
-};
-
-// Socket event listeners
-export const onTrainingProgress = (callback: (data: TrainingProgress) => void) => {
-  socket.on('training_progress', callback);
-  return () => socket.off('training_progress', callback);
-};
-
-export const onTrainingCompleted = (callback: (data: { modelId: number }) => void) => {
-  socket.on('training_completed', callback);
-  return () => socket.off('training_completed', callback);
-};
-
-export const onSystemMetrics = (callback: (data: SystemMetrics) => void) => {
-  socket.on('system_metrics', callback);
-  return () => socket.off('system_metrics', callback);
-};
-
-export const onDatasetUpdated = (callback: (data: { id: string; status: string }) => void) => {
-  socket.on('dataset_updated', callback);
-  return () => socket.off('dataset_updated', callback);
-};
-
-export const onDatasetDownloadProgress = (callback: (data: { id: string; downloaded: number; total: number }) => void) => {
-  socket.on('dataset_download_progress', callback);
-  return () => socket.off('dataset_download_progress', callback);
-};
-
-export const onTrainingMetrics = (callback: (data: { modelId: number; [key: string]: any }) => void) => {
-  socket.on('training_metrics', callback);
-  return () => socket.off('training_metrics', callback);
-};
-
-export const onTrainingPaused = (callback: (data: { modelId: number }) => void) => {
-  socket.on('training_paused', callback);
-  return () => socket.off('training_paused', callback);
-};
-
-export const onTrainingResumed = (callback: (data: { modelId: number }) => void) => {
-  socket.on('training_resumed', callback);
-  return () => socket.off('training_resumed', callback);
-};
-
-export const onTrainingFailed = (callback: (data: { modelId: number; error: string }) => void) => {
-  socket.on('training_failed', callback);
-  return () => socket.off('training_failed', callback);
-};
+export const apiService = new ApiService();
