@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, RefreshCw, Download, AlertCircle, Info, AlertTriangle, Bug } from 'lucide-react';
-import { apiClient, connectSocket } from '../services/api';
+import { apiClient } from '../services/api';
 
 interface LogEntry {
   id: number;
@@ -25,7 +25,6 @@ export function LogsPage() {
 
   useEffect(() => {
     loadLogs();
-    connectSocket(); // Ensure WebSocket connection
     
     let interval: NodeJS.Timeout;
     if (autoRefresh) {
