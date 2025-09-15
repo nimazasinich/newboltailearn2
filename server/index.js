@@ -1,3 +1,4 @@
+import { config } from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
@@ -7,6 +8,22 @@ import { Server } from 'socket.io';
 import Database from 'better-sqlite3';
 import path from 'path';
 import { fileURLToPath } from 'url';
+
+// Load environment configuration
+const nodeEnv = process.env.NODE_ENV || 'development';
+const envFile = nodeEnv === 'production' ? '.env.production' : '.env.development';
+
+const result = config({ path: envFile });
+if (result.error) {
+  console.warn(`⚠️  Warning: Could not load ${envFile}:`, result.error.message);
+  // Try to load default .env as fallback
+  const fallbackResult = config();
+  if (fallbackResult.error) {
+    console.warn(`⚠️  Warning: Could not load default .env file:`, fallbackResult.error.message);
+  }
+} else {
+  console.log(`✅ Loaded environment from ${envFile}`);
+}
 import { getHFHeaders, testHFConnection, logTokenStatus } from './utils/decode.js';
 import { requireAuth, requireRole } from './middleware/auth.js';
 import { AuthService } from './services/authService.js';

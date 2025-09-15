@@ -3,6 +3,7 @@
 // Production server entry point for Render deployment
 // This file starts the backend server using the existing server infrastructure
 
+import { config } from 'dotenv';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
@@ -12,6 +13,23 @@ const __dirname = path.dirname(__filename);
 
 // Set production environment
 process.env.NODE_ENV = process.env.NODE_ENV || 'production';
+
+// Load environment configuration
+const nodeEnv = process.env.NODE_ENV;
+const envFile = nodeEnv === 'production' ? '.env.production' : '.env.development';
+const envPath = path.resolve(__dirname, envFile);
+
+const result = config({ path: envPath });
+if (result.error) {
+  console.warn(`⚠️  Warning: Could not load ${envFile}:`, result.error.message);
+  // Try to load default .env as fallback
+  const fallbackResult = config();
+  if (fallbackResult.error) {
+    console.warn(`⚠️  Warning: Could not load default .env file:`, fallbackResult.error.message);
+  }
+} else {
+  console.log(`✅ Loaded environment from ${envFile}`);
+}
 
 console.log('🚀 Starting Persian Legal AI Server for Render deployment...');
 console.log(`📍 Environment: ${process.env.NODE_ENV}`);
