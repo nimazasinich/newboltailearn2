@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react'
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AppLayout } from './components/layout/AppLayout'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { LandingPage } from './components/LandingPage'
@@ -28,8 +28,10 @@ function AppLoading() {
 }
 
 export default function App() {
+  const RouterImpl = import.meta.env.PROD ? HashRouter : BrowserRouter
+  
   return (
-    <Router>
+    <RouterImpl>
       <ErrorBoundary>
         <Suspense fallback={<AppLoading />}>
           <Routes>
@@ -52,6 +54,6 @@ export default function App() {
           </Routes>
         </Suspense>
       </ErrorBoundary>
-    </Router>
+    </RouterImpl>
   )
 }

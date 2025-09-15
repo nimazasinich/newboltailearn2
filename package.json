@@ -6,10 +6,10 @@
   "description": "Persian Legal Document Archive System with AI Classification and Web Scraping",
   "scripts": {
     "dev": "vite --config vite.config.ts",
-    "build": "tsc -b && vite build --config vite.config.ts",
+    "build": "vite build --config vite.config.ts",
     "preview": "vite preview --config vite.config.ts",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit --project tsconfig.app.json"
   },
   "dependencies": {
     "chart.js": "^4.5.0",

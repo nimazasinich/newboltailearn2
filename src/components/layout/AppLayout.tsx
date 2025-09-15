@@ -31,7 +31,6 @@ export function AppLayout() {
       <Sidebar 
         isOpen={sidebarOpen} 
         onClose={() => setSidebarOpen(false)}
-        isConnected={isConnected}
       />
       
       <div className="flex-1 lg:mr-80">
