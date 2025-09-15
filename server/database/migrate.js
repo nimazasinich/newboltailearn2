@@ -1,103 +1,277 @@
-#!/usr/bin/env node
-
+import Database from 'better-sqlite3';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import sqlite3 from 'sqlite3';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const DB_PATH = path.join(__dirname, '../../persian_legal_ai.db');
-const MIGRATIONS_DIR = path.join(__dirname, 'migrations');
-
-console.log('🔄 Starting database migration...');
-console.log(`Database path: ${DB_PATH}`);
-
-// Ensure database exists
-if (!fs.existsSync(DB_PATH)) {
-  console.log('❌ Database file not found. Please run the server first to create the database.');
-  process.exit(1);
-}
-
-const db = new (sqlite3.verbose()).Database(DB_PATH);
-
-// Create migrations table if it doesn't exist
-db.serialize(() => {
-  db.run(`
-    CREATE TABLE IF NOT EXISTS migrations (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      filename VARCHAR(255) NOT NULL UNIQUE,
-      applied_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    )
-  `);
-
-  // Get list of applied migrations
-  db.all('SELECT filename FROM migrations', (err, rows) => {
-    if (err) {
-      console.error('❌ Error reading migrations table:', err);
-      process.exit(1);
+/**
+ * Database migration system for Persian Legal AI
+ * Handles schema updates and data migrations automatically
+ */
+export class DatabaseMigrator {
+    constructor(dbPath) {
+        this.dbPath = dbPath || path.join(__dirname, '../../persian_legal_ai.db');
+        this.schemaPath = path.join(__dirname, 'schema.sql');
+        this.seedPath = path.join(__dirname, 'seed.sql');
+        this.migrationsDir = path.join(__dirname, 'migrations');
+        this.db = null;
     }
 
-    const appliedMigrations = rows.map(row => row.filename);
-    console.log(`✅ Found ${appliedMigrations.length} applied migrations`);
-
-    // Get all migration files
-    if (!fs.existsSync(MIGRATIONS_DIR)) {
-      console.log('📁 No migrations directory found, creating...');
-      fs.mkdirSync(MIGRATIONS_DIR, { recursive: true });
-      console.log('✅ Migrations directory created');
-      db.close();
-      return;
+    /**
+     * Initialize database connection with proper settings
+     */
+    connect() {
+        try {
+            this.db = new Database(this.dbPath);
+            
+            // Apply SQLite optimizations
+            this.db.pragma('journal_mode = WAL');
+            this.db.pragma('cache_size = -64000');
+            this.db.pragma('synchronous = NORMAL');
+            this.db.pragma('foreign_keys = ON');
+            this.db.pragma('temp_store = memory');
+            
+            console.log('✅ Database connection established');
+            return true;
+        } catch (error) {
+            console.error('❌ Failed to connect to database:', error);
+            return false;
+        }
     }
 
-    const migrationFiles = fs.readdirSync(MIGRATIONS_DIR)
-      .filter(file => file.endsWith('.sql'))
-      .sort();
-
-    console.log(`📁 Found ${migrationFiles.length} migration files`);
-
-    // Apply pending migrations
-    const pendingMigrations = migrationFiles.filter(file => !appliedMigrations.includes(file));
-    
-    if (pendingMigrations.length === 0) {
-      console.log('✅ No pending migrations');
-      db.close();
-      return;
+    /**
+     * Create migrations tracking table
+     */
+    createMigrationsTable() {
+        try {
+            this.db.exec(`
+                CREATE TABLE IF NOT EXISTS schema_migrations (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    filename TEXT NOT NULL UNIQUE,
+                    applied_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    checksum TEXT
+                )
+            `);
+            console.log('✅ Migrations table ready');
+            return true;
+        } catch (error) {
+            console.error('❌ Failed to create migrations table:', error);
+            return false;
+        }
     }
 
-    console.log(`🔄 Applying ${pendingMigrations.length} pending migrations...`);
+    /**
+     * Run initial schema setup
+     */
+    runSchemaSetup() {
+        try {
+            console.log('🔄 Setting up database schema...');
+            
+            if (!fs.existsSync(this.schemaPath)) {
+                console.error('❌ Schema file not found:', this.schemaPath);
+                return false;
+            }
 
-    let completed = 0;
-    
-    pendingMigrations.forEach((filename, index) => {
-      const filePath = path.join(MIGRATIONS_DIR, filename);
-      const sql = fs.readFileSync(filePath, 'utf8');
+            const schema = fs.readFileSync(this.schemaPath, 'utf8');
+            this.db.exec(schema);
+            
+            console.log('✅ Database schema applied');
+            return true;
+        } catch (error) {
+            console.error('❌ Failed to apply schema:', error);
+            return false;
+        }
+    }
 
-      console.log(`🔄 Applying migration: ${filename}`);
+    /**
+     * Run seed data
+     */
+    runSeedData() {
+        try {
+            console.log('🔄 Applying seed data...');
+            
+            if (!fs.existsSync(this.seedPath)) {
+                console.log('⚠️ No seed file found, skipping seed data');
+                return true;
+            }
 
-      db.exec(sql, (err) => {
-        if (err) {
-          console.error(`❌ Error applying migration ${filename}:`, err);
-          process.exit(1);
+            const seedData = fs.readFileSync(this.seedPath, 'utf8');
+            this.db.exec(seedData);
+            
+            console.log('✅ Seed data applied');
+            return true;
+        } catch (error) {
+            console.error('❌ Failed to apply seed data:', error);
+            return false;
+        }
+    }
+
+    /**
+     * Run individual migration files
+     */
+    runMigrations() {
+        try {
+            console.log('🔄 Checking for pending migrations...');
+            
+            if (!fs.existsSync(this.migrationsDir)) {
+                console.log('📁 Creating migrations directory...');
+                fs.mkdirSync(this.migrationsDir, { recursive: true });
+                return true;
+            }
+
+            const migrationFiles = fs.readdirSync(this.migrationsDir)
+                .filter(file => file.endsWith('.sql'))
+                .sort();
+
+            if (migrationFiles.length === 0) {
+                console.log('✅ No migration files found');
+                return true;
+            }
+
+            // Get applied migrations
+            const appliedMigrations = this.db.prepare('SELECT filename FROM schema_migrations').all();
+            const appliedSet = new Set(appliedMigrations.map(m => m.filename));
+
+            const pendingMigrations = migrationFiles.filter(file => !appliedSet.has(file));
+
+            if (pendingMigrations.length === 0) {
+                console.log('✅ All migrations already applied');
+                return true;
+            }
+
+            console.log(`🔄 Applying ${pendingMigrations.length} pending migrations...`);
+
+            for (const filename of pendingMigrations) {
+                const filePath = path.join(this.migrationsDir, filename);
+                const sql = fs.readFileSync(filePath, 'utf8');
+                
+                console.log(`🔄 Applying migration: ${filename}`);
+                
+                // Run migration in transaction
+                const transaction = this.db.transaction(() => {
+                    this.db.exec(sql);
+                    this.db.prepare('INSERT INTO schema_migrations (filename) VALUES (?)').run(filename);
+                });
+                
+                transaction();
+                console.log(`✅ Applied migration: ${filename}`);
+            }
+
+            return true;
+        } catch (error) {
+            console.error('❌ Failed to run migrations:', error);
+            return false;
+        }
+    }
+
+    /**
+     * Validate database integrity
+     */
+    validateDatabase() {
+        try {
+            console.log('🔍 Validating database integrity...');
+            
+            // Check required tables exist
+            const requiredTables = ['users', 'models', 'datasets', 'training_sessions', 'training_logs', 'settings'];
+            
+            for (const tableName of requiredTables) {
+                const result = this.db.prepare(`
+                    SELECT name FROM sqlite_master 
+                    WHERE type='table' AND name=?
+                `).get(tableName);
+                
+                if (!result) {
+                    console.error(`❌ Required table missing: ${tableName}`);
+                    return false;
+                }
+            }
+
+            // Test basic operations
+            const userCount = this.db.prepare('SELECT COUNT(*) as count FROM users').get();
+            const datasetCount = this.db.prepare('SELECT COUNT(*) as count FROM datasets').get();
+            const settingCount = this.db.prepare('SELECT COUNT(*) as count FROM settings').get();
+
+            console.log('📊 Database validation results:');
+            console.log(`  Users: ${userCount.count}`);
+            console.log(`  Datasets: ${datasetCount.count}`);
+            console.log(`  Settings: ${settingCount.count}`);
+
+            console.log('✅ Database validation passed');
+            return true;
+        } catch (error) {
+            console.error('❌ Database validation failed:', error);
+            return false;
+        }
+    }
+
+    /**
+     * Run complete migration process
+     */
+    async migrate() {
+        console.log('🚀 Starting database migration...');
+        console.log(`📍 Database path: ${this.dbPath}`);
+
+        if (!this.connect()) {
+            return false;
         }
 
-        // Record migration as applied
-        db.run('INSERT INTO migrations (filename) VALUES (?)', [filename], (err) => {
-          if (err) {
-            console.error(`❌ Error recording migration ${filename}:`, err);
-            process.exit(1);
-          }
+        try {
+            // Step 1: Create migrations table
+            if (!this.createMigrationsTable()) {
+                return false;
+            }
 
-          console.log(`✅ Applied migration: ${filename}`);
-          completed++;
+            // Step 2: Apply base schema
+            if (!this.runSchemaSetup()) {
+                return false;
+            }
 
-          if (completed === pendingMigrations.length) {
-            console.log('🎉 All migrations applied successfully!');
-            db.close();
-          }
-        });
-      });
+            // Step 3: Run migrations
+            if (!this.runMigrations()) {
+                return false;
+            }
+
+            // Step 4: Apply seed data
+            if (!this.runSeedData()) {
+                return false;
+            }
+
+            // Step 5: Validate database
+            if (!this.validateDatabase()) {
+                return false;
+            }
+
+            console.log('🎉 Database migration completed successfully!');
+            return true;
+        } catch (error) {
+            console.error('❌ Migration failed:', error);
+            return false;
+        } finally {
+            if (this.db) {
+                this.db.close();
+            }
+        }
+    }
+
+    /**
+     * Close database connection
+     */
+    close() {
+        if (this.db) {
+            this.db.close();
+            this.db = null;
+        }
+    }
+}
+
+// CLI usage
+if (import.meta.url === `file://${process.argv[1]}`) {
+    const migrator = new DatabaseMigrator();
+    migrator.migrate().then(success => {
+        process.exit(success ? 0 : 1);
     });
-  });
-});
+}
+
+export default DatabaseMigrator;
