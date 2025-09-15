@@ -1,4 +1,5 @@
 import { SystemMetrics } from './api'
+import { WS_URL } from '../lib/config'
 
 export type WSEventType = 'system_metrics' | 'training_progress' | 'training_complete'
 
@@ -21,7 +22,7 @@ class WSClient {
   private shouldReconnect = true
 
   constructor(url?: string) {
-    this.url = url || import.meta.env.VITE_WS_BASE || 'ws://localhost:3001'
+    this.url = url || WS_URL
   }
 
   connect(): Promise<void> {
