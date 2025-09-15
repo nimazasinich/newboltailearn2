@@ -1,79 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/Card';
-import { API, TrainingSession, SystemMetrics } from '../services/api';
-import { wsClient } from '../services/wsClient';
+import { useApi } from '../hooks/useApi';
+import { useWebSocket } from '../hooks/useWebSocket';
+import { monitoring, models } from '../lib/api';
 import { BarChart, LineChart, PieChart, TrendingUp, Brain, Activity, Loader2 } from 'lucide-react';
 
 export default function Dashboard() {
-  const [models, setModels] = useState<TrainingSession[]>([]);
-  const [metrics, setMetrics] = useState<SystemMetrics | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: modelsData, loading: modelsLoading, error: modelsError } = useApi('/models');
+  const { data: metricsData, loading: metricsLoading, error: metricsError } = useApi('/monitoring');
+  const { connected, subscribe } = useWebSocket();
 
   useEffect(() => {
-    const loadDashboardData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        
-        const [modelsResult, metricsResult] = await Promise.allSettled([
-          API.models(),
-          API.monitoring()
-        ]);
-
-        if (modelsResult.status === 'fulfilled') {
-          setModels(modelsResult.value);
-        }
-
-        if (metricsResult.status === 'fulfilled') {
-          setMetrics(metricsResult.value);
-        }
-
-        if (modelsResult.status === 'rejected' && metricsResult.status === 'rejected') {
-          setError('خطا در بارگذاری داده‌ها');
-        }
-      } catch (err) {
-        console.error('Failed to load dashboard data:', err);
-        setError('خطا در بارگذاری داده‌ها');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadDashboardData();
-  }, []);
-
-  useEffect(() => {
-    const ws = createWS('/ws');
+    // Subscribe to WebSocket updates
+    const unsubscribe = subscribe('system:metrics', (data: any) => {
+      console.log('Received system metrics:', data);
+    });
     
-    ws.onopen = () => {
-      setWsStatus('connected');
-      console.log('WebSocket connected');
-    };
-    
-    ws.onmessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        setWsData(data);
-      } catch (error) {
-        console.error('Failed to parse WebSocket message:', error);
-      }
-    };
-    
-    ws.onclose = () => {
-      setWsStatus('disconnected');
-      console.log('WebSocket disconnected');
-    };
-    
-    ws.onerror = (error) => {
-      setWsStatus('disconnected');
-      console.error('WebSocket error:', error);
-    };
-    
+    const unsubscribeTraining = subscribe('training:progress', (data: any) => {
+      console.log('Received training progress:', data);
+    });
+
     return () => {
-      ws.close();
+      unsubscribe();
+      unsubscribeTraining();
     };
-  }, []);
+  }, [subscribe]);
+
+  const loading = modelsLoading || metricsLoading;
+  const error = modelsError || metricsError;
 
   if (loading) {
     return (
@@ -93,11 +47,9 @@ export default function Dashboard() {
         <div className="mt-2 flex items-center gap-2">
           <span className="text-sm text-gray-500">وضعیت اتصال:</span>
           <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-            wsStatus === 'connected' ? 'bg-green-100 text-green-800' :
-            wsStatus === 'connecting' ? 'bg-yellow-100 text-yellow-800' :
-            'bg-red-100 text-red-800'
+            connected ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
           }`}>
-            {wsStatus === 'connected' ? 'متصل' : wsStatus === 'connecting' ? 'در حال اتصال' : 'قطع شده'}
+            {connected ? 'متصل' : 'قطع شده'}
           </span>
         </div>
       </div>
@@ -109,7 +61,7 @@ export default function Dashboard() {
             <Brain className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{data?.models?.length || 0}</div>
+            <div className="text-2xl font-bold">{modelsData?.length || 0}</div>
           </CardContent>
         </Card>
 
@@ -119,7 +71,7 @@ export default function Dashboard() {
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">3</div>
+            <div className="text-2xl font-bold">{modelsData?.filter((m: any) => m.status === 'training').length || 0}</div>
           </CardContent>
         </Card>
 
