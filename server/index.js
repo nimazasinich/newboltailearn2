@@ -11,6 +11,7 @@ import { getHFHeaders, testHFConnection, logTokenStatus } from './utils/decode.j
 import { requireAuth, requireRole } from './middleware/auth.js';
 import { AuthService } from './services/authService.js';
 import { setupModules } from './modules/setup.js';
+import { initializeDatabase, getDatabaseManager } from './database/index.js';
 // ES module __dirname equivalent
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,25 +27,8 @@ const io = new Server(server, {
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
-// Initialize SQLite Database
-const dbPath = path.join(process.cwd(), 'persian_legal_ai.db');
-const db = new Database(dbPath);
-// Apply database optimizations
-db.pragma('journal_mode = WAL');
-db.pragma('cache_size = -64000');
-db.pragma('synchronous = NORMAL');
-db.pragma('foreign_keys = ON');
-console.log('✅ Database optimizations applied');
-// Initialize Auth Service
-const authService = new AuthService(db);
-// STEP 2-6: Setup modular components (session, security, CSRF, routes, monitoring)
-setupModules(app, db, io);
-// ✅ Serve React build (production) - AFTER security middleware
-const distPath = path.join(__dirname, "../dist");
-app.use(express.static(distPath));
-// Create tables
-db.exec(`
-  CREATE TABLE IF NOT EXISTS models (
+// Database and services will be initialized in async startup function
+let db, authService, dbManager;
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     type TEXT NOT NULL CHECK(type IN ('dora', 'qr-adaptor', 'persian-bert')),
