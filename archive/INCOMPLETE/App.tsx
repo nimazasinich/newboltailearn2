@@ -1,3 +1,4 @@
+/* ARCHIVED: INCOMPLETE_OR_REDUNDANT – kept for reference */
 import React, { Suspense, lazy } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { ErrorBoundary } from './ErrorBoundary'

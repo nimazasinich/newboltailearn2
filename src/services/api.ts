@@ -1,6 +1,7 @@
 import { z } from 'zod'
+import { API_URL } from '../lib/config'
 
-const BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3001/api'
+const BASE = `${API_URL}/api`
 let csrf = ''
 
 // Zod schemas for API responses
