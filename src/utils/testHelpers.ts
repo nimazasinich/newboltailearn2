@@ -1,6 +1,6 @@
 export const validateApiConnection = async (): Promise<boolean> => {
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_BASE || 'http://localhost:3001/api'}/health`);
+    const response = await fetch(`${import.meta.env.VITE_API_BASE || '/api'}/health`);
     return response.ok;
   } catch {
     return false;

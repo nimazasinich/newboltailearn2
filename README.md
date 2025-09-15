@@ -14,7 +14,7 @@ A comprehensive Persian legal document analysis system with AI classification an
 ## 🛠 Technology Stack
 
 ### Frontend
-- **React 18** with TypeScript
+- **React 18** with TypeScript (strict mode disabled for faster development)
 - **Vite** for build tooling and development
 - **React Router** for navigation (BrowserRouter in dev, HashRouter in production)
 - **Framer Motion** for animations
@@ -160,21 +160,35 @@ Development server proxies API calls:
 
 ### Common Issues
 
-1. **Framer Motion Easing Errors**
+1. **TypeScript Errors**
+   - TypeScript strict mode is intentionally disabled in `tsconfig.app.json`
+   - This allows faster development while maintaining runtime functionality
+   - Build process works correctly despite TypeScript warnings
+
+2. **Environment Variables**
+   - Development: Uses `/api` and `/ws` with Vite proxy
+   - Production: Update `VITE_API_BASE` and `VITE_WS_URL` in `.env.production` to point to your actual backend
+
+3. **Framer Motion Easing Errors**
    - Use `cubicBezier(0.34, 1.56, 0.64, 1)` instead of `easeOutBack`
    - Import: `import { cubicBezier } from 'framer-motion'`
 
-2. **Persian Font Issues**
+4. **Persian Font Issues**
    - Fonts are locally hosted in `src/assets/fonts/`
    - No external font imports to avoid PostCSS issues
 
-3. **CORS/Proxy Issues**
+5. **CORS/Proxy Issues**
    - Ensure backend is running on port 3001
    - Check Vite proxy configuration in `vite.config.ts`
 
-4. **GitHub Pages Deep Link Issues**
+6. **GitHub Pages Deep Link Issues**
    - Uses HashRouter in production for SPA compatibility
    - 404.html redirects to index for fallback
+
+7. **Static Deployment Notes**
+   - GitHub Pages is static hosting - backend APIs won't work
+   - Update `.env.production` with your actual backend domain
+   - For full functionality, deploy backend separately
 
 ### Performance Optimization
 
