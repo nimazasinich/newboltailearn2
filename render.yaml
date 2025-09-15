@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: newboltailearn-backend
+    env: node
+    plan: free
+    region: frankfurt
+    buildCommand: "npm install --legacy-peer-deps"
+    startCommand: "node server.js"
+    envVars:
+      - key: PORT
+        value: 3001
+      - key: NODE_ENV
+        value: production
+      - key: DB_PATH
+        value: ./database.sqlite
+    autoDeploy: true
