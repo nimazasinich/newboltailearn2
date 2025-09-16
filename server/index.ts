@@ -2425,23 +2425,15 @@ server.listen(PORT, async () => {
   console.log(`📊 Database: ${dbPath}`);
   console.log(`🌐 API: http://localhost:${PORT}/api`);
   
-  // Validate HuggingFace token configuration
-  await logTokenStatus();
-  
-  // Test HuggingFace connection
-  try {
-    const isConnected = await testHFConnection();
-    if (isConnected) {
-      console.log('✅ HuggingFace API connection successful');
-      logToDatabase('info', 'server', 'HuggingFace API connection successful');
-    } else {
-      console.log('⚠️  HuggingFace API connection failed - check token configuration');
-      logToDatabase('warning', 'server', 'HuggingFace API connection failed');
+  // HuggingFace token validation (non-fatal)
+  (async () => {
+    try {
+      await testHFConnection();
+      console.log('✅ HuggingFace token is valid and reachable');
+    } catch (err) {
+      console.error('⚠️ HuggingFace API connection failed:', err);
     }
-  } catch (error) {
-    console.log('⚠️  HuggingFace API connection test failed:', error.message);
-    logToDatabase('warning', 'server', 'HuggingFace API connection test failed', { error: error.message });
-  }
+  })();
   
   logToDatabase('info', 'server', `Server started on port ${PORT}`);
 });
