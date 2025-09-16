@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Persian Legal Document Archive System with AI Classification and Web Scraping",
   "engines": {
-    "node": "20.x"
+    "node": ">=20"
   },
   "scripts": {
     "dev": "vite --config vite.config.ts",
@@ -22,7 +22,8 @@
     "test:e2e": "playwright test",
     "test:coverage": "vitest run --coverage",
     "db:backup": "node scripts/backup-db.js",
-    "security:check": "npm audit --omit=dev --audit-level=high || true"
+    "security:check": "npm audit --omit=dev --audit-level=high || true",
+    "security:check:strict": "npm audit --omit=dev --audit-level=moderate"
   },
   "dependencies": {
     "@tensorflow/tfjs-node": "^4.10.0",
