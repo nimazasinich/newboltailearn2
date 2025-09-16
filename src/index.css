@@ -1,39 +1,16 @@
-@font-face {
-  font-family: Vazirmatn;
-  src: url('/src/assets/fonts/Vazirmatn-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: Vazirmatn;
-  src: url('/src/assets/fonts/Vazirmatn-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
-  --bg: #0b1120;
-  --panel: #0f1628;
-  --card: #162033;
-  --text: #e2e8f0;
-  --muted: #94a3b8;
-  --border: #1e293b;
-  --primary: #3b82f6;
-  --success: #10b981;
-  --warning: #f59e0b;
-  --danger: #ef4444;
+  --bg-primary: #0b1120;
+  --bg-secondary: #0f1628;
+  --text-primary: #e2e8f0;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { direction: rtl; }
+
 body {
-  font-family: Vazirmatn, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family: 'Vazirmatn', sans-serif;
+  direction: rtl;
 }
-#root { min-height: 100vh; }
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--panel); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }

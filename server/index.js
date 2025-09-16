@@ -36,17 +36,32 @@ const __dirname = path.dirname(__filename);
 // Create Express app and server
 const app = express();
 const server = createServer(app);
+// CORS configuration
+const corsOptions = {
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'https://nimazasinich.github.io',
+    'https://nimazasinich.github.io/newboltailearn',
+    'https://newboltailearn-2.onrender.com' // Include your actual Render URL
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
 const io = new Server(server, {
     cors: {
-        origin: process.env.CORS_ORIGIN || "http://localhost:5173",
-        methods: ["GET", "POST"]
+        origin: corsOptions.origin,
+        credentials: true,
+        methods: ['GET', 'POST']
     }
 });
 
 // STEP 1: Body parser & basic middleware (MUST BE FIRST)
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors(corsOptions));
 
 // Database and services - will be initialized in async startup
 let db, authService, dbManager;
@@ -148,7 +163,30 @@ function setupDatabaseOperations() {
 
 // Setup API routes with proper error handling
 function setupAPIRoutes() {
-    // Health check endpoint
+    // Simple health check endpoint (for Render)
+    app.get('/health', (req, res) => {
+        const healthData = {
+            status: 'healthy',
+            timestamp: new Date().toISOString(),
+            uptime: Math.floor(process.uptime()),
+            memory: {
+                used: Math.round(process.memoryUsage().heapUsed / 1024 / 1024),
+                total: Math.round(process.memoryUsage().heapTotal / 1024 / 1024),
+                rss: Math.round(process.memoryUsage().rss / 1024 / 1024)
+            },
+            database: typeof dbManager !== 'undefined' && dbManager ? 'connected' : 'disconnected',
+            port: PORT
+        };
+        
+        res.status(200).json(healthData);
+    });
+
+    // Simple ping endpoint
+    app.get('/ping', (req, res) => {
+        res.status(200).send('pong');
+    });
+
+    // Detailed API health check endpoint
     app.get('/api/health', (req, res) => {
         try {
             const stats = dbManager.getStats();
@@ -265,11 +303,13 @@ function setupErrorHandling() {
 }
 
 // Start the server
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 10000;
+const HOST = process.env.HOST || '0.0.0.0';
 
 startServer().then(() => {
-    server.listen(PORT, async () => {
+    server.listen(PORT, HOST, async () => {
         console.log(`🚀 Persian Legal AI Server running on port ${PORT}`);
+        console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
         console.log(`📊 Database: ${process.env.DB_PATH || './persian_legal_ai.db'}`);
         console.log(`🌐 API: http://localhost:${PORT}/api`);
         
@@ -294,6 +334,102 @@ startServer().then(() => {
 }).catch(error => {
     console.error('❌ Server startup failed:', error);
     process.exit(1);
+});
+
+// Keep-alive ping for Render free tier
+if (process.env.NODE_ENV === 'production' && process.env.RENDER_EXTERNAL_URL) {
+    const keepAliveInterval = setInterval(async () => {
+        try {
+            const response = await fetch(`${process.env.RENDER_EXTERNAL_URL}/ping`);
+            if (response.ok) {
+                console.log('🔄 Keep-alive ping successful');
+            } else {
+                console.log('⚠️ Keep-alive ping failed with status:', response.status);
+            }
+        } catch (error) {
+            console.log('⚠️ Keep-alive ping error:', error.message);
+        }
+    }, 14 * 60 * 1000); // Every 14 minutes
+
+    // Clear interval on shutdown
+    const clearKeepAlive = () => {
+        if (keepAliveInterval) {
+            clearInterval(keepAliveInterval);
+            console.log('✅ Keep-alive interval cleared');
+        }
+    };
+
+    process.on('SIGTERM', clearKeepAlive);
+    process.on('SIGINT', clearKeepAlive);
+}
+
+// Graceful shutdown handler
+let isShuttingDown = false;
+
+const gracefulShutdown = async (signal) => {
+    if (isShuttingDown) {
+        console.log('⚠️ Shutdown already in progress');
+        return;
+    }
+    
+    isShuttingDown = true;
+    console.log(`🛑 Received ${signal}, initiating graceful shutdown...`);
+    
+    // Set a timeout for forced exit
+    const forceExitTimer = setTimeout(() => {
+        console.log('⚠️ Forced exit after 10 seconds timeout');
+        process.exit(1);
+    }, 10000);
+
+    try {
+        // Stop accepting new connections
+        if (typeof server !== 'undefined' && server) {
+            server.close(() => {
+                console.log('✅ HTTP server closed');
+            });
+        }
+
+        // Close Socket.IO if exists
+        if (typeof io !== 'undefined' && io) {
+            io.close();
+            console.log('✅ Socket.IO connections closed');
+        }
+
+        // Close database connections
+        if (typeof dbManager !== 'undefined' && dbManager) {
+            try {
+                await dbManager.close();
+                console.log('✅ Database connections closed');
+            } catch (dbError) {
+                console.log('⚠️ Error closing database:', dbError.message);
+            }
+        }
+
+        clearTimeout(forceExitTimer);
+        console.log('✅ Graceful shutdown completed');
+        process.exit(0);
+
+    } catch (error) {
+        console.error('❌ Error during graceful shutdown:', error);
+        clearTimeout(forceExitTimer);
+        process.exit(1);
+    }
+};
+
+// Register shutdown handlers
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
+process.on('SIGUSR2', () => gracefulShutdown('SIGUSR2')); // For nodemon
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (error) => {
+    console.error('❌ Uncaught Exception:', error);
+    gracefulShutdown('uncaughtException');
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+    gracefulShutdown('unhandledRejection');
 });
 
 export default app;

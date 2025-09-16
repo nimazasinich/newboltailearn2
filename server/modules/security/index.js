@@ -1,4 +1,5 @@
 import session from 'express-session';
+import SQLiteStore from 'connect-sqlite3';
 import { configureHelmet } from './helmet.js';
 import { globalRateLimiter } from './rateLimiter.js';
 import { injectCSRFToken, getCSRFToken } from './csrf.js';
@@ -6,23 +7,31 @@ import { sanitizeResponse } from './validators.js';
 import { config } from './config.js';
 import compression from 'compression';
 import mongoSanitize from 'express-mongo-sanitize';
+
+const SQLiteSessionStore = SQLiteStore(session);
 /**
  * Apply all security middleware to the application
  */
 export function applySecurity(app) {
     // Compression
     app.use(compression());
-    // Session configuration (required for CSRF)
+    // Session configuration with SQLite store (required for CSRF)
     app.use(session({
-        secret: config.SESSION_SECRET || config.JWT_SECRET,
+        store: new SQLiteSessionStore({
+            db: 'sessions.db',
+            dir: './database/',
+            table: 'sessions'
+        }),
+        secret: config.SESSION_SECRET || config.JWT_SECRET || 'your-secure-secret-key-change-in-production',
         resave: false,
         saveUninitialized: false,
         cookie: {
             secure: config.NODE_ENV === 'production',
             httpOnly: true,
-            maxAge: 3600000, // 1 hour
+            maxAge: 24 * 60 * 60 * 1000, // 24 hours
             sameSite: 'strict'
-        }
+        },
+        name: 'persian-legal-ai-session'
     }));
     // Helmet security headers
     configureHelmet(app);
