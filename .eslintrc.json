@@ -1,0 +1,48 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": { "jsx": true },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": ["react", "@typescript-eslint"],
+  "rules": {
+    "no-console": "warn",
+    "no-unused-vars": "warn",
+    "no-empty": "off",
+    "no-fallthrough": "off",
+    "no-control-regex": "off",
+    "no-misleading-character-class": "off",
+    "no-unreachable": "error",
+    "valid-typeof": "error"
+  },
+  "globals": {
+    "NodeJS": "readonly",
+    "RequestInit": "readonly",
+    "__REACT_DEVTOOLS_GLOBAL_HOOK__": "readonly",
+    "logToDatabase": "readonly"
+  },
+  "ignorePatterns": [
+    "archive/**",
+    "docs/**",
+    "server/index_backup.js",
+    "*.test.js",
+    "*.spec.js",
+    "test*.js",
+    "validate*.js",
+    "stress-test*.js",
+    "e2e-test-runner.js",
+    "integration-test-runner.js",
+    "server.js"
+  ]
+}
