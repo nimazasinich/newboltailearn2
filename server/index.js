@@ -1,3 +1,6 @@
+// Silence TensorFlow info messages (AVX2 FMA optimization logs) - MUST BE FIRST
+process.env.TF_CPP_MIN_LOG_LEVEL = '2';
+
 import { config } from 'dotenv';
 import express from 'express';
 import cors from 'cors';

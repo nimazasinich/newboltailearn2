@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+// Silence TensorFlow info messages (AVX2 FMA optimization logs) - MUST BE FIRST
+process.env.TF_CPP_MIN_LOG_LEVEL = '2';
+
 // Production server entry point for Render deployment
 // This file starts the backend server using the existing server infrastructure
 

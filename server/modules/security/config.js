@@ -27,7 +27,7 @@ const envSchema = z.object({
     // Features
     USE_FAKE_DATA: z.string().default('false').transform(val => val === 'true'),
     DEMO_MODE: z.string().default('false').transform(val => val === 'true'),
-    USE_WORKERS: z.string().default('false').transform(val => val === 'true'),
+    ENABLE_WORKERS: z.string().default('false').transform(val => val === 'true'),
     SKIP_CSRF: z.string().default('false').transform(val => val === 'true'),
     // Dev Identification (non-production only)
     DEV_ADMIN_USER: z.string().optional(),

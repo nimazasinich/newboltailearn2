@@ -5,6 +5,10 @@
  * This worker executes actual TensorFlow.js training operations in a separate thread
  * to prevent blocking the main event loop during intensive training operations.
  */
+
+// Silence TensorFlow info messages (AVX2 FMA optimization logs)
+process.env.TF_CPP_MIN_LOG_LEVEL = '2';
+
 import { Worker, isMainThread, parentPort } from 'worker_threads';
 import * as tf from '@tensorflow/tfjs-node';
 // Worker thread execution
