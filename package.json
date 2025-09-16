@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Persian Legal Document Archive System with AI Classification and Web Scraping",
   "engines": {
-    "node": ">=20"
+    "node": ">=20 <21"
   },
   "scripts": {
     "dev": "vite --config vite.config.ts",
@@ -13,6 +13,7 @@
     "build:gh": "cross-env VITE_BASE_PATH=/newboltailearn/ vite build --config vite.config.ts && node scripts/make-404.js",
     "preview": "vite preview --config vite.config.ts",
     "start": "NODE_ENV=production node server.js",
+    "postinstall": "node -e \"try{require('better-sqlite3');process.exit(0)}catch(e){process.exit(1)}\" || npm rebuild better-sqlite3 --build-from-source",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "type-check": "tsc --noEmit --project tsconfig.app.json",
     "compile-server": "echo 'Server compilation not needed - using JS files directly'",
