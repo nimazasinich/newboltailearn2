@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 env:
-  NODE_VERSION: '20.x'
+  NODE_VERSION: '20'
   COVERAGE_THRESHOLD: 70
 
 jobs:
@@ -26,7 +26,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
-      - name: Security Check
+      - name: Security Check (prod deps only)
         run: npm run security:check
       
       - name: Check for secrets
@@ -270,7 +270,8 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       
-      - name: Build and Push Docker Image
+      - name: Build & Push Image
+        id: docker
         if: ${{ secrets.DOCKERHUB_USERNAME != '' && secrets.DOCKERHUB_TOKEN != '' }}
         uses: docker/build-push-action@v6
         with:
@@ -279,8 +280,6 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ secrets.DOCKER_IMAGE || format('{0}/newboltailearn:latest', secrets.DOCKERHUB_USERNAME) }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
       
       - name: Build Docker image (local test)
         if: ${{ secrets.DOCKERHUB_USERNAME == '' || secrets.DOCKERHUB_TOKEN == '' }}
@@ -297,7 +296,15 @@ jobs:
         if: ${{ secrets.DOCKERHUB_USERNAME == '' || secrets.DOCKERHUB_TOKEN == '' }}
         run: docker load --input /tmp/image.tar
       
+      - name: SBOM (Syft)
+        if: steps.docker.outcome == 'success'
+        uses: anchore/syft-action@v1
+        with:
+          image: ${{ secrets.DOCKER_IMAGE || format('{0}/newboltailearn:latest', secrets.DOCKERHUB_USERNAME) }}
+          output: spdx-json
+
       - name: Run Trivy vulnerability scanner
+        if: steps.docker.outcome == 'success'
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: persian-legal-ai:${{ github.sha }}
