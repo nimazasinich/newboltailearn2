@@ -1,3 +1,6 @@
+// Silence TensorFlow info messages (AVX2 FMA optimization logs)
+process.env.TF_CPP_MIN_LOG_LEVEL = '2';
+
 import * as tf from "@tensorflow/tfjs-node";
 import { PersianTokenizer } from "./tokenizer.js";
 import fs from "fs";

@@ -15,12 +15,23 @@ export class TrainingService {
         this.io = io;
         this.trainingEngine = getRealTrainingEngine(db);
         // Initialize worker manager if workers are enabled
-        if (config.USE_WORKERS) {
-            this.workerManager = new WorkerManager(true, 4);
-            console.log('✅ Worker threads enabled for training operations');
+        const enableWorkers = config.ENABLE_WORKERS === true;
+        if (enableWorkers) {
+            try {
+                // Check if worker_threads is available (synchronous check)
+                const workerThreads = eval('require')('worker_threads');
+                if (workerThreads) {
+                    this.workerManager = new WorkerManager(true, 4);
+                    console.log('✅ Worker threads enabled for training operations');
+                } else {
+                    console.warn('⚠️  Worker threads not available - training will run in main thread');
+                }
+            } catch (error) {
+                console.warn('⚠️  Worker threads not available - training will run in main thread');
+            }
         }
         else {
-            console.log('⚠️  Worker threads disabled - training will run in main thread');
+            console.warn('⚠️  Worker threads disabled - training will run in main thread');
         }
     }
     /**
