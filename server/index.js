@@ -26,11 +26,11 @@ if (result.error) {
 } else {
   console.log(`✅ Loaded environment from ${envFile}`);
 }
-import { getHFHeaders, testHFConnection, logTokenStatus } from './utils/decode.js';
-import { requireAuth, requireRole } from './middleware/auth.js';
+import { testHFConnection } from './utils/decode.js'; // getHFHeaders, logTokenStatus unused
+import { requireAuth } from './middleware/auth.js'; // requireRole unused
 import { AuthService } from './services/authService.js';
 import { setupModules } from './modules/setup.js';
-import { initializeDatabase, getDatabaseManager } from './database/index.js';
+import { initializeDatabase } from './database/index.js'; // getDatabaseManager unused
 
 // ES module __dirname equivalent
 const __filename = fileURLToPath(import.meta.url);
@@ -171,7 +171,7 @@ function setupDatabaseOperations() {
             return dbManager.insertDataset(datasetData);
         } catch (error) {
             console.error('❌ Failed to insert dataset:', error);
-            logToDatabase('error', 'database', 'Dataset insertion failed', { error: error.message, data: datasetData });
+            global.logToDatabase('error', 'database', 'Dataset insertion failed', { error: error.message, data: datasetData });
         }
     };
     
@@ -181,7 +181,7 @@ function setupDatabaseOperations() {
             return dbManager.insertModel(modelData);
         } catch (error) {
             console.error('❌ Failed to insert model:', error);
-            logToDatabase('error', 'database', 'Model insertion failed', { error: error.message, data: modelData });
+            global.logToDatabase('error', 'database', 'Model insertion failed', { error: error.message, data: modelData });
         }
     };
 }
@@ -299,7 +299,7 @@ function setupAPIRoutes() {
 // Setup comprehensive error handling
 function setupErrorHandling() {
     // Catch 404 errors and handle SPA fallback
-    app.use((req, res, next) => {
+    app.use((req, res, _next) => {
         if (req.path.startsWith('/api/')) {
             res.status(404).json({ error: 'API endpoint not found' });
         } else {
@@ -318,12 +318,12 @@ function setupErrorHandling() {
     });
     
     // Global error handler
-    app.use((error, req, res, next) => {
+    app.use((error, req, res, _next) => {
         console.error('❌ Unhandled error:', error);
         
         // Log to database if possible
-        if (typeof logToDatabase === 'function') {
-            logToDatabase('error', 'server', 'Unhandled error', {
+        if (typeof global.logToDatabase === 'function') {
+            global.logToDatabase('error', 'server', 'Unhandled error', {
                 message: error.message,
                 stack: error.stack,
                 url: req.url,
@@ -366,7 +366,7 @@ startServer().then(() => {
             console.log('ℹ️  Skipping HF startup check.');
         }
         
-        logToDatabase('info', 'server', `Server started on port ${PORT}`);
+        global.logToDatabase('info', 'server', `Server started on port ${PORT}`);
         console.log('🎉 Server startup completed successfully!');
     });
 }).catch(error => {

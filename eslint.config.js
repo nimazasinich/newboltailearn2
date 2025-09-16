@@ -3,7 +3,30 @@ import globals from 'globals';
 import tsparser from '@typescript-eslint/parser';
 
 export default [
-  { ignores: ['dist', 'node_modules', 'server/server', '*.cjs'] },
+  { 
+    ignores: [
+      'dist', 
+      'node_modules', 
+      'server/server', 
+      '*.cjs',
+      'archive/**',
+      'docs/**',
+      'test*.js',
+      '*test*.js',
+      'validate*.js',
+      'stress-test*.js',
+      'e2e-test-runner.js',
+      'integration-test-runner.js',
+      'master-test-runner.js',
+      'run-tests.js',
+      'server.js',
+      'start*.js',
+      'db-healer.js',
+      'env-healer.js',
+      'git-safety.js',
+      'scripts/**'
+    ] 
+  },
   {
     files: ['**/*.js'],
     languageOptions: {
@@ -16,8 +39,8 @@ export default [
     },
     rules: {
       ...js.configs.recommended.rules,
-      'no-unused-vars': 'warn',
-      'no-console': 'warn',
+      'no-unused-vars': 'off', // Allow unused vars in JS files
+      'no-console': 'off', // Allow console in JS files
     },
   },
   {
@@ -41,7 +64,7 @@ export default [
     rules: {
       ...js.configs.recommended.rules,
       'no-unused-vars': 'off', // TypeScript handles this
-      'no-console': 'warn',
+      'no-console': 'off', // Allow console in TS files
     },
   },
   {

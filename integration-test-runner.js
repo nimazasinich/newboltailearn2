@@ -217,7 +217,9 @@ export { runIntegrationTests, runIntegrationTestsWithHealing, healIntegrationIss
 
 // Run if called directly
 if (import.meta.url === `file://${process.argv[1]}`) {
-    const result = await runIntegrationTestsWithHealing();
-    console.log('Integration test result:', result);
-    process.exit(result.success !== false ? 0 : 1);
+    (async () => {
+        const result = await runIntegrationTestsWithHealing();
+        console.log('Integration test result:', result);
+        process.exit(result.success !== false ? 0 : 1);
+    })();
 }

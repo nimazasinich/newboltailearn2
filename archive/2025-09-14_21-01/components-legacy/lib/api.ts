@@ -5,7 +5,7 @@
 
 const API_BASE = '/api';
 
-interface ApiOptions extends RequestInit {
+interface ApiOptions extends globalThis.RequestInit {
   timeout?: number;
 }
 

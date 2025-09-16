@@ -14,7 +14,7 @@ export class ApiError extends Error {
   }
 }
 
-export async function api<T>(endpoint: string, init?: RequestInit): Promise<T> {
+export async function api<T>(endpoint: string, init?: globalThis.RequestInit): Promise<T> {
   const response = await fetch(`${API_BASE}${endpoint}`, {
     headers: {
       'Content-Type': 'application/json',

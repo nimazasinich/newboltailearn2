@@ -39,6 +39,7 @@ console.log(`📍 Environment: ${process.env.NODE_ENV}`);
 console.log(`🌐 Port: ${process.env.PORT || 3001}`);
 
 // Import and start the main server
+(async () => {
 try {
   // Use dynamic import to load the main server
   const { default: app } = await import('./server/index.js');
@@ -52,6 +53,7 @@ try {
   console.error('❌ Failed to start server:', error);
   process.exit(1);
 }
+})();
 
 // Handle graceful shutdown
 process.on('SIGINT', () => {
