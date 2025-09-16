@@ -1,2 +1,0 @@
-import{j as r,e as s}from"./index-B6t0c70J.js";function n({className:a,...e}){return r.jsx("div",{className:s("rounded-lg border bg-card text-card-foreground shadow-sm",a),...e})}function o({className:a,...e}){return r.jsx("div",{className:s("flex flex-col space-y-1.5 p-6",a),...e})}function d({className:a,...e}){return r.jsx("h3",{className:s("text-2xl font-semibold leading-none tracking-tight",a),...e})}function c({className:a,...e}){return r.jsx("div",{className:s("p-6 pt-0",a),...e})}export{n as C,o as a,d as b,c};
-//# sourceMappingURL=Card-CDS4LrTn.js.map
