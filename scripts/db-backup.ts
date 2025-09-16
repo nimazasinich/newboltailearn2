@@ -183,20 +183,22 @@ if (require.main === module) {
         });
       break;
       
-    case 'list':
+    case 'list': {
       const backups = backup.listBackups();
       console.log('Available backups:');
       backups.forEach((b, i) => {
         console.log(`  ${i + 1}. ${b}`);
       });
       break;
+    }
       
-    case 'clean':
+    case 'clean': {
       const keepCount = parseInt(args[1]) || 10;
       backup.cleanOldBackups(keepCount);
       break;
+    }
       
-    case 'restore':
+    case 'restore': {
       const backupFile = args[1];
       if (!backupFile) {
         console.error('Please specify backup filename to restore');
@@ -210,6 +212,7 @@ if (require.main === module) {
         process.exit(1);
       }
       break;
+    }
       
     default:
       console.log('Database Backup Utility');

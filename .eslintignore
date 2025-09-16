@@ -1,0 +1,18 @@
+# Ignore archive and docs directories
+archive/
+docs/
+
+# Ignore backup files
+server/index_backup.js
+
+# Ignore test files
+*.test.js
+*.spec.js
+test*.js
+validate*.js
+stress-test*.js
+e2e-test-runner.js
+integration-test-runner.js
+
+# Ignore problematic server files
+server.js

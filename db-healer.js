@@ -128,9 +128,17 @@ async function validateDatabaseSchema(dbPath) {
 // Export for use in other modules
 export { healDatabase, validateDatabaseSchema };
 
-// Run if called directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Main function for direct execution
+async function main() {
     const result = await healDatabase();
     console.log('Database healing result:', result);
     process.exit(result.success ? 0 : 1);
+}
+
+// Run if called directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+    main().catch(err => {
+        console.error("DB Healer Error:", err);
+        process.exit(1);
+    });
 }
