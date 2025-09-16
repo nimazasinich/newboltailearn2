@@ -188,6 +188,17 @@ function setupDatabaseOperations() {
 
 // Setup API routes with proper error handling
 function setupAPIRoutes() {
+    // Root info endpoint (non-API) - shows service status instead of blank page
+    app.get('/', (req, res) => {
+        res.status(200).json({
+            service: 'Persian Legal AI',
+            status: 'ok',
+            api: '/api',
+            health: '/health',
+            time: new Date().toISOString()
+        });
+    });
+
     // Simple health check endpoint (for Render)
     app.get('/health', (req, res) => {
         const healthData = {
