@@ -1,0 +1,1091 @@
+npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+npm warn deprecated npmlog@5.0.1: This package is no longer supported.
+npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+npm warn deprecated gauge@3.0.2: This package is no longer supported.
+npm warn deprecated are-we-there-yet@2.0.0: This package is no longer supported.
+npm warn deprecated @npmcli/move-file@1.1.2: This functionality has been moved to @npmcli/fs
+npm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+npm warn deprecated npmlog@6.0.2: This package is no longer supported.
+npm warn deprecated are-we-there-yet@3.0.1: This package is no longer supported.
+npm warn deprecated gauge@4.0.4: This package is no longer supported.
+npm warn deprecated rimraf@2.7.1: Rimraf versions prior to v4 are no longer supported
+npm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+
+added 701 packages, and audited 702 packages in 7s
+
+117 packages are looking for funding
+  run `npm fund` for details
+
+2 moderate severity vulnerabilities
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+=== LINT ===
+
+> iranian-legal-archive@1.0.0 lint
+> eslint . --report-unused-disable-directives --max-warnings 0
+
+=== TYPE-CHECK ===
+
+> iranian-legal-archive@1.0.0 type-check
+> tsc --noEmit --project tsconfig.app.json
+
+=== BUILD ===
+
+> iranian-legal-archive@1.0.0 build
+> vite build --config vite.config.ts
+
+NODE_ENV=production is not supported in the .env file. Only NODE_ENV=development is supported to create a development build of your project. If you need to set process.env.NODE_ENV, you can set it in the Vite config instead.
+vite v5.4.20 building for production...
+transforming...
+✓ 2145 modules transformed.
+rendering chunks...
+computing gzip size...
+docs/index.html                               0.63 kB │ gzip:   0.35 kB
+docs/assets/index-Dyu9ewEQ.css               41.13 kB │ gzip:   6.89 kB
+docs/assets/websocket-DIWvKaHZ.js             0.26 kB │ gzip:   0.20 kB │ map:     1.32 kB
+docs/assets/circle-alert-CymC3yXi.js          0.47 kB │ gzip:   0.33 kB │ map:     1.21 kB
+docs/assets/triangle-alert-iSFeDP9P.js        0.49 kB │ gzip:   0.35 kB │ map:     1.16 kB
+docs/assets/chart-pie-CPSD6b5z.js             0.49 kB │ gzip:   0.36 kB │ map:     1.08 kB
+docs/assets/refresh-cw-B3KIKqdt.js            0.54 kB │ gzip:   0.37 kB │ map:     1.22 kB
+docs/assets/Card-DBaNymRE.js                  0.57 kB │ gzip:   0.30 kB │ map:     2.42 kB
+docs/assets/Progress-5ARiHOqa.js              0.58 kB │ gzip:   0.41 kB │ map:     1.86 kB
+docs/assets/play-CD7myJTP.js                  0.74 kB │ gzip:   0.40 kB │ map:     1.82 kB
+docs/assets/Badge-DRp2k7rR.js                 0.80 kB │ gzip:   0.44 kB │ map:     1.56 kB
+docs/assets/Button-RkYzQZhY.js                1.35 kB │ gzip:   0.69 kB │ map:     3.12 kB
+docs/assets/hard-drive-yOI35g01.js            1.38 kB │ gzip:   0.59 kB │ map:     3.53 kB
+docs/assets/wsClient-BvJiXHHm.js              2.90 kB │ gzip:   1.15 kB │ map:     7.61 kB
+docs/assets/AnalyticsPage-CNrljPFK.js         3.30 kB │ gzip:   1.20 kB │ map:     7.33 kB
+docs/assets/DataPage-B1MZsjQs.js              4.01 kB │ gzip:   1.80 kB │ map:     9.74 kB
+docs/assets/MonitoringPage-DDmnKtI8.js        5.64 kB │ gzip:   1.99 kB │ map:    13.40 kB
+docs/assets/LogsPage-IUUB2B6w.js              5.99 kB │ gzip:   2.26 kB │ map:    14.91 kB
+docs/assets/Dashboard-e5MgC2hp.js             6.28 kB │ gzip:   2.50 kB │ map:    18.10 kB
+docs/assets/SettingsPage-ByHxVUcL.js          7.19 kB │ gzip:   2.43 kB │ map:    18.02 kB
+docs/assets/Overview-CzRR6SAt.js              8.50 kB │ gzip:   2.71 kB │ map:    21.30 kB
+docs/assets/TrainingManagement-B_JEu6FA.js    8.75 kB │ gzip:   2.99 kB │ map:    24.05 kB
+docs/assets/TeamPage-lxfZD5ot.js              9.76 kB │ gzip:   2.65 kB │ map:    22.28 kB
+docs/assets/ModelsPage-s6_IuXxE.js           13.39 kB │ gzip:   3.73 kB │ map:    33.61 kB
+docs/assets/ProjectDownloader-BWRGw6iz.js   125.27 kB │ gzip:  40.62 kB │ map:   270.92 kB
+docs/assets/index-C8gKYOKK.js               414.43 kB │ gzip: 130.07 kB │ map: 2,250.11 kB
+✓ built in 3.08s
+=== TEST ===
+
+> iranian-legal-archive@1.0.0 test
+> vitest run
+
+
+ RUN  v3.2.4 /workspace
+
+2025-09-16 08:29:38.282010: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-09-16 08:29:38.309857: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI AVX512_BF16 AVX_VNNI AMX_TILE AMX_INT8 AMX_BF16 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+stdout | tests/unit/workers/trainingWorker.test.ts > TrainingWorkerPool > should initialize with correct number of workers
+Worker pool initialized with 2 workers
+
+stdout | tests/unit/workers/trainingWorker.test.ts > TrainingWorkerPool > should initialize with correct number of workers
+Worker pool terminated
+
+stdout | tests/unit/workers/trainingWorker.test.ts > TrainingWorkerPool > should execute training task
+Worker pool initialized with 2 workers
+
+stdout | tests/unit/workers/trainingWorker.test.ts > TrainingWorkerPool > should execute training task
+Worker pool terminated
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Training Service Integration > should start training with workers enabled
+Worker pool initialized with 2 workers
+
+stderr | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Training Service Integration > should start training with workers enabled
+⚠️  Worker threads disabled - training will run in main thread
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Training Service Integration > should start training with workers enabled
+Worker pool terminated
+
+stdout | tests/unit/workers/trainingWorker.test.ts > TrainingWorkerPool > should handle worker errors gracefully
+Worker pool initialized with 2 workers
+
+stdout | tests/unit/workers/trainingWorker.test.ts > TrainingWorkerPool > should handle worker errors gracefully
+Worker pool terminated
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Training Service Integration > should handle training errors gracefully
+Worker pool initialized with 2 workers
+
+stderr | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Training Service Integration > should handle training errors gracefully
+⚠️  Worker threads disabled - training will run in main thread
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Training Service Integration > should handle training errors gracefully
+Worker pool terminated
+
+stdout | tests/unit/workers/trainingWorker.test.ts > WorkerManager > should initialize with workers enabled
+Worker pool initialized with 2 workers
+
+stdout | tests/unit/workers/trainingWorker.test.ts > WorkerManager > should initialize with workers enabled
+Worker pool terminated
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Training Service Integration > should provide performance metrics
+Worker pool initialized with 2 workers
+
+stderr | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Training Service Integration > should provide performance metrics
+⚠️  Worker threads disabled - training will run in main thread
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Training Service Integration > should provide performance metrics
+Worker pool terminated
+
+stdout | tests/unit/workers/trainingWorker.test.ts > WorkerManager > should provide worker metrics
+Worker pool initialized with 2 workers
+
+stdout | tests/unit/workers/trainingWorker.test.ts > WorkerManager > should provide worker metrics
+Worker pool terminated
+
+stdout | tests/unit/workers/trainingWorker.test.ts > WorkerManager > should handle training requests
+Worker pool initialized with 2 workers
+
+stdout | tests/unit/workers/trainingWorker.test.ts > WorkerManager > should handle training requests
+Worker pool terminated
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Training Service Integration > should get active training sessions
+Worker pool initialized with 2 workers
+
+stderr | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Training Service Integration > should get active training sessions
+⚠️  Worker threads disabled - training will run in main thread
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Training Service Integration > should get active training sessions
+Worker pool terminated
+
+stdout | tests/unit/workers/trainingWorker.test.ts > WorkerManager > should handle evaluation requests
+Worker pool initialized with 2 workers
+
+stdout | tests/unit/workers/trainingWorker.test.ts > WorkerManager > should handle evaluation requests
+Worker pool terminated
+
+ ❯ tests/stress/training-sessions.test.ts (5 tests | 2 failed) 1624ms
+   ✓ Training Sessions Stress Tests > Concurrent Training Sessions > should handle multiple training sessions without conflicts 276ms
+   ✓ Training Sessions Stress Tests > Concurrent Training Sessions > should handle training session updates under load 260ms
+   × Training Sessions Stress Tests > Training Session Recovery > should handle training session interruptions gracefully 259ms
+     → table training_sessions has no column named dataset_id
+   × Training Sessions Stress Tests > Training Session Recovery > should handle database connection issues during training 260ms
+     → expected 14 to be greater than 15
+   ✓ Training Sessions Stress Tests > Memory and Performance > should maintain performance during long training sessions 250ms
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Worker Manager Integration > should handle multiple concurrent requests
+Worker pool initialized with 2 workers
+
+stderr | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Worker Manager Integration > should handle multiple concurrent requests
+⚠️  Worker threads disabled - training will run in main thread
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Worker Manager Integration > should handle multiple concurrent requests
+Worker pool terminated
+
+stdout | tests/unit/workers/trainingWorker.test.ts > WorkerManager > should handle preprocessing requests
+Worker pool initialized with 2 workers
+
+stdout | tests/unit/workers/trainingWorker.test.ts > WorkerManager > should handle preprocessing requests
+Worker pool terminated
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Worker Manager Integration > should provide worker metrics
+Worker pool initialized with 2 workers
+
+stderr | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Worker Manager Integration > should provide worker metrics
+⚠️  Worker threads disabled - training will run in main thread
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Worker Manager Integration > should provide worker metrics
+Worker pool terminated
+
+stdout | tests/unit/workers/trainingWorker.test.ts > WorkerManager > should handle optimization requests
+Worker pool initialized with 2 workers
+
+stdout | tests/unit/workers/trainingWorker.test.ts > WorkerManager > should handle optimization requests
+Worker pool terminated
+
+stderr | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Worker Manager Integration > should provide worker metrics
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Error Handling Integration > should track and recover from worker errors
+Worker pool initialized with 2 workers
+
+stderr | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Error Handling Integration > should track and recover from worker errors
+⚠️  Worker threads disabled - training will run in main thread
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Error Handling Integration > should track and recover from worker errors
+Worker pool terminated
+
+2025-09-16 08:29:41.106098: I tensorflow/core/util/util.cc:169] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-09-16 08:29:41.142128: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F AVX512_VNNI AVX512_BF16 AVX_VNNI AMX_TILE AMX_INT8 AMX_BF16 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Error Handling Integration > should provide system health summary
+Worker pool initialized with 2 workers
+
+stderr | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Error Handling Integration > should provide system health summary
+⚠️  Worker threads disabled - training will run in main thread
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Error Handling Integration > should provide system health summary
+Worker pool terminated
+
+stdout | tests/unit/training.test.ts > RealTrainingEngine > Model Initialization > should initialize Persian BERT model
+Initialized mock persian-bert model for testing
+
+stderr | tests/unit/training.test.ts > RealTrainingEngine > Model Initialization > should initialize Persian BERT model
+Orthogonal initializer is being called on a matrix with more than 2000 (16384) elements: Slowness may result.
+
+(node:2670) [DEP0051] DeprecationWarning: The `util.isNullOrUndefined` API is deprecated. Please use `arg === null || arg === undefined` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:2670) [DEP0044] DeprecationWarning: The `util.isArray` API is deprecated. Please use `Array.isArray()` instead.
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Error Handling Integration > should handle worker health status
+Worker pool initialized with 2 workers
+
+stderr | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Error Handling Integration > should handle worker health status
+⚠️  Worker threads disabled - training will run in main thread
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Error Handling Integration > should handle worker health status
+Worker pool terminated
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Performance Monitoring Integration > should monitor system performance
+Worker pool initialized with 2 workers
+
+stderr | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Performance Monitoring Integration > should monitor system performance
+⚠️  Worker threads disabled - training will run in main thread
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Performance Monitoring Integration > should monitor system performance
+Worker pool terminated
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Performance Monitoring Integration > should track performance alerts
+Worker pool initialized with 2 workers
+
+stderr | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Performance Monitoring Integration > should track performance alerts
+⚠️  Worker threads disabled - training will run in main thread
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Performance Monitoring Integration > should track performance alerts
+Worker pool terminated
+
+stdout | tests/unit/training.test.ts > RealTrainingEngine > Model Initialization > should initialize DoRA model
+Initialized mock dora model for testing
+
+stderr | tests/unit/training.test.ts > RealTrainingEngine > Model Initialization > should initialize DoRA model
+Orthogonal initializer is being called on a matrix with more than 2000 (65536) elements: Slowness may result.
+Orthogonal initializer is being called on a matrix with more than 2000 (65536) elements: Slowness may result.
+
+stdout | tests/unit/training.test.ts > RealTrainingEngine > Model Initialization > should initialize QR-Adaptor model
+Initialized mock qr-adaptor model for testing
+
+stderr | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Performance Monitoring Integration > should provide performance summary
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Performance Monitoring Integration > should provide performance summary
+Worker pool initialized with 2 workers
+
+stderr | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Performance Monitoring Integration > should provide performance summary
+⚠️  Worker threads disabled - training will run in main thread
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Performance Monitoring Integration > should provide performance summary
+Worker pool terminated
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Performance Monitoring Integration > should update worker metrics
+Worker pool initialized with 2 workers
+
+stderr | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Performance Monitoring Integration > should update worker metrics
+⚠️  Worker threads disabled - training will run in main thread
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Performance Monitoring Integration > should update worker metrics
+Worker pool terminated
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > End-to-End Training Flow > should complete full training workflow
+Worker pool initialized with 2 workers
+
+stderr | tests/integration/workerIntegration.test.ts > Worker Integration Tests > End-to-End Training Flow > should complete full training workflow
+⚠️  Worker threads disabled - training will run in main thread
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > End-to-End Training Flow > should complete full training workflow
+Worker pool terminated
+
+stdout | tests/unit/training.test.ts > RealTrainingEngine > Model Operations > should save and load model
+Initialized mock dora model for testing
+
+stderr | tests/unit/training.test.ts > RealTrainingEngine > Model Operations > should save and load model
+Orthogonal initializer is being called on a matrix with more than 2000 (65536) elements: Slowness may result.
+Orthogonal initializer is being called on a matrix with more than 2000 (65536) elements: Slowness may result.
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > End-to-End Training Flow > should handle training completion
+Worker pool initialized with 2 workers
+
+stderr | tests/integration/workerIntegration.test.ts > Worker Integration Tests > End-to-End Training Flow > should handle training completion
+⚠️  Worker threads disabled - training will run in main thread
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > End-to-End Training Flow > should handle training completion
+Worker pool terminated
+
+stdout | tests/unit/training.test.ts > RealTrainingEngine > Model Operations > should dispose resources properly
+Initialized mock persian-bert model for testing
+
+stderr | tests/unit/training.test.ts > RealTrainingEngine > Model Operations > should dispose resources properly
+Orthogonal initializer is being called on a matrix with more than 2000 (16384) elements: Slowness may result.
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Concurrent Training Sessions > should handle multiple training sessions
+Worker pool initialized with 2 workers
+
+stderr | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Concurrent Training Sessions > should handle multiple training sessions
+⚠️  Worker threads disabled - training will run in main thread
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Concurrent Training Sessions > should handle multiple training sessions
+Worker pool terminated
+
+stdout | tests/unit/workers/trainingWorker.test.ts > Integration Tests > should handle concurrent training sessions
+Worker pool initialized with 4 workers
+
+stdout | tests/unit/training.test.ts > PersianTokenizer > should tokenize Persian text correctly
+Initialized mock persian-bert model for testing
+
+stderr | tests/unit/training.test.ts > PersianTokenizer > should tokenize Persian text correctly
+Orthogonal initializer is being called on a matrix with more than 2000 (16384) elements: Slowness may result.
+
+stderr | tests/unit/workers/trainingWorker.test.ts > Integration Tests > should handle concurrent training sessions
+Worker exited with code 1
+
+stdout | tests/unit/workers/trainingWorker.test.ts > Integration Tests > should handle concurrent training sessions
+Worker pool terminated
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Performance and Responsiveness > should maintain main thread responsiveness
+Worker pool initialized with 2 workers
+
+stderr | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Performance and Responsiveness > should maintain main thread responsiveness
+⚠️  Worker threads disabled - training will run in main thread
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Performance and Responsiveness > should maintain main thread responsiveness
+Worker pool terminated
+
+stderr | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Performance and Responsiveness > should maintain main thread responsiveness
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Failed to log worker error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at WorkerErrorHandler.logError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:206:15[90m)[39m
+    at WorkerErrorHandler.handleMainThreadError [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:143:10[90m)[39m
+    at process.handleUncaughtException [90m(/workspace/[39mserver/modules/workers/errorHandler.ts:64:12[90m)[39m
+[90m    at process.emit (node:events:530:35)[39m
+[90m    at process._fatalException (node:internal/process/execution:154:25)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+Main thread error: TypeError: The database connection is not open
+    at Database.prepare [90m(/workspace/[39mnode_modules/[4mbetter-sqlite3[24m/lib/methods/wrappers.js:5:21[90m)[39m
+    at Timeout._onTimeout [90m(/workspace/[39mserver/modules/services/trainingService.js:281:21[90m)[39m
+[90m    at listOnTimeout (node:internal/timers:588:17)[39m
+[90m    at processTimers (node:internal/timers:523:7)[39m
+
+Worker worker_2385_1758011384786 started
+ ✓ tests/unit/training.test.ts (9 tests) 3742ms
+   ✓ RealTrainingEngine > Model Initialization > should initialize Persian BERT model  437ms
+   ✓ RealTrainingEngine > Model Initialization > should initialize DoRA model  825ms
+   ✓ RealTrainingEngine > Training Process > should start and stop training  352ms
+   ✓ RealTrainingEngine > Model Operations > should save and load model  694ms
+   ✓ RealTrainingEngine > Model Operations > should dispose resources properly  303ms
+   ✓ PersianTokenizer > should tokenize Persian text correctly  320ms
+   ✓ Training Metrics > should calculate loss reduction over epochs  301ms
+ ✓ tests/unit/workers/trainingWorker.test.ts (26 tests) 6909ms
+   ✓ WorkerManager > should provide worker metrics  338ms
+   ✓ Integration Tests > should handle concurrent training sessions  321ms
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Performance and Responsiveness > should handle memory constraints
+Worker pool initialized with 2 workers
+
+stderr | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Performance and Responsiveness > should handle memory constraints
+⚠️  Worker threads disabled - training will run in main thread
+
+stdout | tests/integration/workerIntegration.test.ts > Worker Integration Tests > Performance and Responsiveness > should handle memory constraints
+Worker pool terminated
+
+ ↓ tests/integration/environment-validation.test.ts (20 tests | 20 skipped)
+ ❯ tests/integration/workerIntegration.test.ts (18 tests | 3 failed) 6742ms
+   ✓ Worker Integration Tests > Training Service Integration > should start training with workers enabled  398ms
+   ✓ Worker Integration Tests > Training Service Integration > should handle training errors gracefully  382ms
+   ✓ Worker Integration Tests > Training Service Integration > should provide performance metrics  443ms
+   ✓ Worker Integration Tests > Training Service Integration > should get active training sessions  373ms
+   ✓ Worker Integration Tests > Worker Manager Integration > should handle multiple concurrent requests  356ms
+   ✓ Worker Integration Tests > Worker Manager Integration > should provide worker metrics  360ms
+   ✓ Worker Integration Tests > Error Handling Integration > should track and recover from worker errors  378ms
+   ✓ Worker Integration Tests > Error Handling Integration > should provide system health summary  368ms
+   ✓ Worker Integration Tests > Error Handling Integration > should handle worker health status  362ms
+   ✓ Worker Integration Tests > Performance Monitoring Integration > should monitor system performance  364ms
+   ✓ Worker Integration Tests > Performance Monitoring Integration > should track performance alerts  368ms
+   ✓ Worker Integration Tests > Performance Monitoring Integration > should provide performance summary  388ms
+   ✓ Worker Integration Tests > Performance Monitoring Integration > should update worker metrics  362ms
+   × Worker Integration Tests > End-to-End Training Flow > should complete full training workflow 361ms
+     → expected false to be true // Object.is equality
+   × Worker Integration Tests > End-to-End Training Flow > should handle training completion 359ms
+     → expected 'idle' to be 'training' // Object.is equality
+   × Worker Integration Tests > Concurrent Training Sessions > should handle multiple training sessions 360ms
+     → expected 0 to be greater than 0
+   ✓ Worker Integration Tests > Performance and Responsiveness > should maintain main thread responsiveness  375ms
+   ✓ Worker Integration Tests > Performance and Responsiveness > should handle memory constraints  380ms
+stdout | tests/stress/dataset-download.test.ts > Dataset Download Stress Tests > Dataset Download Performance > should download large dataset without crashing
+Expected error during stress test: AssertionError: expected 0 to be greater than 0
+    at [90m/workspace/[39mtests/stress/dataset-download.test.ts:109:35
+[90m    at processTicksAndRejections (node:internal/process/task_queues:105:5)[39m
+    at [90mfile:///workspace/[39mnode_modules/[4m@vitest[24m/runner/dist/chunk-hooks.js:752:20 {
+  actual: [33m0[39m,
+  expected: [33m0[39m,
+  showDiff: [33mfalse[39m,
+  operator: [32m'strictEqual'[39m
+}
+
+ ❯ tests/stress/dataset-download.test.ts (5 tests | 3 failed) 1954ms
+   × Dataset Download Stress Tests > HuggingFace API Connection > should maintain connection under load 315ms
+     → HF whoami failed: HTTP 401 {"error":"Invalid credentials in Authorization header"}
+   × Dataset Download Stress Tests > HuggingFace API Connection > should handle rate limiting gracefully 394ms
+     → expected 0 to be greater than 0
+   ✓ Dataset Download Stress Tests > Dataset Download Performance > should download large dataset without crashing  363ms
+   × Dataset Download Stress Tests > Dataset Download Performance > should handle concurrent downloads 332ms
+     → expected 0 to be greater than 0
+   ✓ Dataset Download Stress Tests > Memory Usage During Downloads > should not exceed memory limits during large downloads 254ms
+ ✓ tests/unit/security.test.ts (14 tests) 3525ms
+ ✓ tests/unit/auth.test.ts (10 tests) 4062ms
+   ✓ AuthController > login > should login with valid credentials  514ms
+   ✓ AuthController > register > should register new user  497ms
+   ✓ AuthController > changePassword > should change password with correct current password  1045ms
+   ✓ AuthController > changePassword > should reject incorrect current password  501ms
+ ✓ tests/unit/api.test.ts (10 tests) 2576ms
+ ✓ tests/integration/basic-security.test.ts (11 tests) 2787ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 11 ⎯⎯⎯⎯⎯⎯
+
+ FAIL  server/tests/analytics.spec.ts [ server/tests/analytics.spec.ts ]
+Error: Cannot find package 'supertest' imported from '/workspace/server/tests/analytics.spec.ts'
+ ❯ server/tests/analytics.spec.ts:2:31
+      1| import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+      2| import request from 'supertest';
+       |                               ^
+      3| import express from 'express';
+      4| import Database from 'better-sqlite3';
+
+Caused by: Error: Failed to load url supertest (resolved id: supertest) in /workspace/server/tests/models.spec.ts. Does the file exist?
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/dep-D_zLpgQd.js:51968:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/19]⎯
+
+ FAIL  server/tests/datasets.spec.ts [ server/tests/datasets.spec.ts ]
+Error: Cannot find package 'supertest' imported from '/workspace/server/tests/datasets.spec.ts'
+ ❯ server/tests/datasets.spec.ts:2:31
+      1| import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+      2| import request from 'supertest';
+       |                               ^
+      3| import express from 'express';
+      4| import Database from 'better-sqlite3';
+
+Caused by: Error: Failed to load url supertest (resolved id: supertest) in /workspace/server/tests/models.spec.ts. Does the file exist?
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/dep-D_zLpgQd.js:51968:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/19]⎯
+
+ FAIL  server/tests/models.spec.ts [ server/tests/models.spec.ts ]
+Error: Cannot find package 'supertest' imported from '/workspace/server/tests/models.spec.ts'
+ ❯ server/tests/models.spec.ts:2:31
+      1| import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+      2| import request from 'supertest';
+       |                               ^
+      3| import express from 'express';
+      4| import Database from 'better-sqlite3';
+
+Caused by: Error: Failed to load url supertest (resolved id: supertest) in /workspace/server/tests/models.spec.ts. Does the file exist?
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/dep-D_zLpgQd.js:51968:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/19]⎯
+
+ FAIL  tests/api/analytics.test.ts [ tests/api/analytics.test.ts ]
+Error: Cannot find package 'supertest' imported from '/workspace/tests/api/analytics.test.ts'
+ ❯ tests/api/analytics.test.ts:1:1
+      1| import request from 'supertest';
+       | ^
+      2| import express from 'express';
+      3| import { beforeAll, beforeEach, describe, it, expect } from 'vitest';
+
+Caused by: Error: Failed to load url supertest (resolved id: supertest) in /workspace/server/tests/models.spec.ts. Does the file exist?
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/dep-D_zLpgQd.js:51968:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/19]⎯
+
+ FAIL  tests/api/auth.test.ts [ tests/api/auth.test.ts ]
+Error: Cannot find package 'supertest' imported from '/workspace/tests/api/auth.test.ts'
+ ❯ tests/api/auth.test.ts:1:1
+      1| import request from 'supertest';
+       | ^
+      2| import express from 'express';
+      3| import { beforeAll, afterAll, beforeEach, describe, it, expect } from …
+
+Caused by: Error: Failed to load url supertest (resolved id: supertest) in /workspace/server/tests/models.spec.ts. Does the file exist?
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/dep-D_zLpgQd.js:51968:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/19]⎯
+
+ FAIL  tests/api/datasets.test.ts [ tests/api/datasets.test.ts ]
+Error: Cannot find package 'supertest' imported from '/workspace/tests/api/datasets.test.ts'
+ ❯ tests/api/datasets.test.ts:1:1
+      1| import request from 'supertest';
+       | ^
+      2| import express from 'express';
+      3| import { beforeAll, beforeEach, describe, it, expect } from 'vitest';
+
+Caused by: Error: Failed to load url supertest (resolved id: supertest) in /workspace/server/tests/models.spec.ts. Does the file exist?
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/dep-D_zLpgQd.js:51968:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/19]⎯
+
+ FAIL  tests/api/models.test.ts [ tests/api/models.test.ts ]
+Error: Cannot find package 'supertest' imported from '/workspace/tests/api/models.test.ts'
+ ❯ tests/api/models.test.ts:1:1
+      1| import request from 'supertest';
+       | ^
+      2| import express from 'express';
+      3| import { beforeAll, beforeEach, describe, it, expect } from 'vitest';
+
+Caused by: Error: Failed to load url supertest (resolved id: supertest) in /workspace/server/tests/models.spec.ts. Does the file exist?
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/dep-D_zLpgQd.js:51968:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/19]⎯
+
+ FAIL  tests/integration/csrf-integration.test.ts [ tests/integration/csrf-integration.test.ts ]
+Error: Cannot find package 'supertest' imported from '/workspace/tests/integration/csrf-integration.test.ts'
+ ❯ tests/integration/csrf-integration.test.ts:1:1
+      1| import request from 'supertest';
+       | ^
+      2| import { Application } from 'express';
+      3| import { createServer } from 'http';
+
+Caused by: Error: Failed to load url supertest (resolved id: supertest) in /workspace/server/tests/models.spec.ts. Does the file exist?
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/dep-D_zLpgQd.js:51968:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/19]⎯
+
+ FAIL  tests/integration/security-simple.test.ts [ tests/integration/security-simple.test.ts ]
+Error: Cannot find package 'supertest' imported from '/workspace/tests/integration/security-simple.test.ts'
+ ❯ tests/integration/security-simple.test.ts:1:1
+      1| import request from 'supertest';
+       | ^
+      2| import { Application } from 'express';
+      3| import { createServer } from 'http';
+
+Caused by: Error: Failed to load url supertest (resolved id: supertest) in /workspace/server/tests/models.spec.ts. Does the file exist?
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/dep-D_zLpgQd.js:51968:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/19]⎯
+
+ FAIL  tests/integration/security.test.ts [ tests/integration/security.test.ts ]
+Error: Cannot find package 'supertest' imported from '/workspace/tests/integration/security.test.ts'
+ ❯ tests/integration/security.test.ts:1:1
+      1| import request from 'supertest';
+       | ^
+      2| import { Application } from 'express';
+      3| import { createServer } from 'http';
+
+Caused by: Error: Failed to load url supertest (resolved id: supertest) in /workspace/server/tests/models.spec.ts. Does the file exist?
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/dep-D_zLpgQd.js:51968:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/19]⎯
+
+ FAIL  tests/integration/training.test.ts [ tests/integration/training.test.ts ]
+Error: Cannot find package 'supertest' imported from '/workspace/tests/integration/training.test.ts'
+ ❯ tests/integration/training.test.ts:2:31
+      1| import { describe, it, expect, beforeAll, afterAll, beforeEach } from …
+      2| import request from 'supertest';
+       |                               ^
+      3| import Database from 'better-sqlite3';
+      4| import path from 'path';
+
+Caused by: Error: Failed to load url supertest (resolved id: supertest) in /workspace/server/tests/models.spec.ts. Does the file exist?
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/dep-D_zLpgQd.js:51968:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/19]⎯
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/stress/dataset-download.test.ts > Dataset Download Stress Tests > HuggingFace API Connection > should maintain connection under load
+Error: HF whoami failed: HTTP 401 {"error":"Invalid credentials in Authorization header"}
+ ❯ Module.testHFConnection server/utils/decode.js:27:11
+     25|   if (!resp.ok) {
+     26|     const text = await resp.text().catch(() => '');
+     27|     throw new Error(`HF whoami failed: HTTP ${resp.status} ${text}`);
+       |           ^
+     28|   }
+     29|   return resp.json();
+ ❯ tests/stress/dataset-download.test.ts:22:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/19]⎯
+
+ FAIL  tests/stress/dataset-download.test.ts > Dataset Download Stress Tests > HuggingFace API Connection > should handle rate limiting gracefully
+AssertionError: expected 0 to be greater than 0
+ ❯ tests/stress/dataset-download.test.ts:46:28
+     44|       
+     45|       // Should have some successes and handle rate limiting
+     46|       expect(successCount).toBeGreaterThan(0);
+       |                            ^
+     47|       expect(rateLimitedCount).toBeLessThan(20); // Not all should be …
+     48|     }, 60000);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/19]⎯
+
+ FAIL  tests/stress/dataset-download.test.ts > Dataset Download Stress Tests > Dataset Download Performance > should handle concurrent downloads
+AssertionError: expected 0 to be greater than 0
+ ❯ tests/stress/dataset-download.test.ts:142:28
+    140|       
+    141|       // At least one should succeed
+    142|       expect(successCount).toBeGreaterThan(0);
+       |                            ^
+    143|     }, 30000);
+    144|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/19]⎯
+
+ FAIL  tests/stress/training-sessions.test.ts > Training Sessions Stress Tests > Training Session Recovery > should handle training session interruptions gracefully
+SqliteError: table training_sessions has no column named dataset_id
+ ❯ Database.prepare node_modules/better-sqlite3/lib/methods/wrappers.js:5:21
+ ❯ tests/stress/training-sessions.test.ts:143:39
+    141|         .run('training', modelId);
+    142|       
+    143|       const newSessionResult = testDb.prepare(`
+       |                                       ^
+    144|         INSERT INTO training_sessions (model_id, dataset_id, parameter…
+    145|         VALUES (?, 'test-dataset-1', ?, CURRENT_TIMESTAMP, 'running')
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/19]⎯
+
+ FAIL  tests/stress/training-sessions.test.ts > Training Sessions Stress Tests > Training Session Recovery > should handle database connection issues during training
+AssertionError: expected 14 to be greater than 15
+ ❯ tests/stress/training-sessions.test.ts:190:28
+    188|       
+    189|       // Should handle some failures gracefully
+    190|       expect(successCount).toBeGreaterThan(15); // Most should succeed
+       |                            ^
+    191|       expect(failureCount).toBeLessThan(5); // Some failures are expec…
+    192|     }, 30000);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/19]⎯
+
+ FAIL  tests/integration/workerIntegration.test.ts > Worker Integration Tests > End-to-End Training Flow > should complete full training workflow
+AssertionError: expected false to be true // Object.is equality
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+ ❯ tests/integration/workerIntegration.test.ts:323:33
+    321|       // Check training status
+    322|       const status = trainingService.getTrainingStatus(modelId);
+    323|       expect(status.isTraining).toBe(true);
+       |                                 ^
+    324| 
+    325|       // Get performance metrics
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/19]⎯
+
+ FAIL  tests/integration/workerIntegration.test.ts > Worker Integration Tests > End-to-End Training Flow > should handle training completion
+AssertionError: expected 'idle' to be 'training' // Object.is equality
+
+Expected: [32m"training"[39m
+Received: [31m"idle"[39m
+
+ ❯ tests/integration/workerIntegration.test.ts:361:28
+    359|       const model = db.prepare('SELECT * FROM models WHERE id = ?').ge…
+    360|       expect(model).toBeDefined();
+    361|       expect(model.status).toBe('training');
+       |                            ^
+    362|     });
+    363|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/19]⎯
+
+ FAIL  tests/integration/workerIntegration.test.ts > Worker Integration Tests > Concurrent Training Sessions > should handle multiple training sessions
+AssertionError: expected 0 to be greater than 0
+ ❯ tests/integration/workerIntegration.test.ts:402:37
+    400|       // Check active sessions
+    401|       const activeSessions = trainingService.getActiveSessions();
+    402|       expect(activeSessions.length).toBeGreaterThan(0);
+       |                                     ^
+    403|     });
+    404|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[19/19]⎯
+
+
+ Test Files  14 failed | 6 passed | 1 skipped (21)
+      Tests  8 failed | 100 passed | 20 skipped (128)
+   Start at  08:29:37
+   Duration  14.30s (transform 382ms, setup 357ms, collect 1.34s, tests 33.92s, environment 2ms, prepare 1.24s)
+
+Tests soft-fail allowed (report only).
