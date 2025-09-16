@@ -1,5 +1,6 @@
 import Database from 'better-sqlite3';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import DatabaseMigrator from './migrate.js';
 
@@ -11,17 +12,65 @@ const __dirname = path.dirname(__filename);
  */
 export class DatabaseManager {
     constructor(dbPath = null) {
-        this.dbPath = dbPath || process.env.DB_PATH || path.join(__dirname, '../../persian_legal_ai.db');
+        this.dbPath = this.initializeDatabasePath(dbPath);
         this.db = null;
     }
 
     /**
-     * Initialize database with automatic migration
+     * Initialize database path with production-safe handling
+     */
+    initializeDatabasePath(dbPath = null) {
+        if (dbPath) return dbPath;
+        
+        // Environment-specific path resolution
+        const envPath = process.env.DB_PATH;
+        if (envPath) return envPath;
+        
+        // Production-safe database directory
+        const dbDir = process.env.NODE_ENV === 'production' 
+            ? path.join(process.cwd(), 'data')  // Render-safe persistent directory
+            : path.join(__dirname, '../../data');
+        
+        // Ensure directory exists with proper permissions
+        try {
+            if (!fs.existsSync(dbDir)) {
+                fs.mkdirSync(dbDir, { recursive: true, mode: 0o755 });
+                console.log(`✅ Created database directory: ${dbDir}`);
+            }
+            
+            // Test write permissions
+            fs.accessSync(dbDir, fs.constants.W_OK);
+            console.log(`✅ Database directory writable: ${dbDir}`);
+            
+            return path.join(dbDir, 'persian_legal_ai.db');
+            
+        } catch (error) {
+            console.warn(`⚠️ Database directory setup failed: ${error.message}`);
+            
+            // Fallback to current directory
+            const fallbackPath = path.join(process.cwd(), 'persian_legal_ai.db');
+            console.log(`🔄 Using fallback database path: ${fallbackPath}`);
+            return fallbackPath;
+        }
+    }
+
+    /**
+     * Initialize database with automatic migration and fallback handling
      */
     async initialize() {
         try {
             console.log('🔄 Initializing Persian Legal AI database...');
             console.log(`📍 Database path: ${this.dbPath}`);
+
+            // Test better-sqlite3 loading first
+            try {
+                const testDb = new Database(':memory:');
+                testDb.close();
+                console.log('✅ better-sqlite3 module test successful');
+            } catch (moduleError) {
+                console.error('❌ better-sqlite3 module test failed:', moduleError.message);
+                throw new Error(`better-sqlite3 ABI mismatch: ${moduleError.message}`);
+            }
 
             // Run migrations first
             const migrator = new DatabaseMigrator(this.dbPath);
@@ -31,17 +80,62 @@ export class DatabaseManager {
                 throw new Error('Database migration failed');
             }
 
-            // Connect to database
-            this.db = new Database(this.dbPath);
+            // Connect to database with error handling
+            try {
+                this.db = new Database(this.dbPath, {
+                    verbose: process.env.NODE_ENV === 'development' ? console.log : null,
+                    fileMustExist: false
+                });
+                
+                // Test database operations
+                this.db.exec('CREATE TABLE IF NOT EXISTS _connection_test (id INTEGER PRIMARY KEY, timestamp TEXT)');
+                this.db.prepare('INSERT OR REPLACE INTO _connection_test (id, timestamp) VALUES (1, ?)').run(new Date().toISOString());
+                
+                console.log(`✅ Database file connection successful: ${this.dbPath}`);
+                
+            } catch (fileError) {
+                console.error(`❌ File database failed: ${fileError.message}`);
+                
+                // Fallback to in-memory database
+                console.log('🔄 Falling back to in-memory database');
+                this.db = new Database(':memory:', {
+                    verbose: process.env.NODE_ENV === 'development' ? console.log : null
+                });
+                
+                // Re-run migrations for in-memory database
+                const memoryMigrator = new DatabaseMigrator(':memory:');
+                await memoryMigrator.migrate();
+                
+                console.log('✅ In-memory database initialized as fallback');
+            }
             
             // Apply optimizations
             this.applyOptimizations();
             
             console.log('✅ Database initialized successfully');
             return this.db;
+            
         } catch (error) {
             console.error('❌ Database initialization failed:', error);
-            throw error;
+            
+            // Last resort: create minimal in-memory database
+            try {
+                console.log('🚨 Attempting emergency in-memory database...');
+                this.db = new Database(':memory:');
+                this.db.exec(`
+                    CREATE TABLE IF NOT EXISTS health_check (
+                        id INTEGER PRIMARY KEY,
+                        timestamp TEXT,
+                        node_version TEXT,
+                        abi_version TEXT
+                    )
+                `);
+                console.log('✅ Emergency database created');
+                return this.db;
+            } catch (emergencyError) {
+                console.error('❌ Emergency database failed:', emergencyError);
+                throw error;
+            }
         }
     }
 

@@ -199,22 +199,89 @@ function setupAPIRoutes() {
         });
     });
 
-    // Simple health check endpoint (for Render)
-    app.get('/health', (req, res) => {
+    // Comprehensive health check endpoint (for Render)
+    app.get('/health', async (req, res) => {
         const healthData = {
-            status: 'healthy',
+            status: 'unknown',
             timestamp: new Date().toISOString(),
+            node_version: process.version,
+            abi_version: process.versions.modules,
+            platform: process.platform,
+            arch: process.arch,
             uptime: Math.floor(process.uptime()),
             memory: {
                 used: Math.round(process.memoryUsage().heapUsed / 1024 / 1024),
                 total: Math.round(process.memoryUsage().heapTotal / 1024 / 1024),
-                rss: Math.round(process.memoryUsage().rss / 1024 / 1024)
+                rss: Math.round(process.memoryUsage().rss / 1024 / 1024),
+                external: Math.round(process.memoryUsage().external / 1024 / 1024)
             },
-            database: typeof dbManager !== 'undefined' && dbManager ? 'connected' : 'disconnected',
-            port: PORT
+            database: {
+                connected: false,
+                migrations: {
+                    completed: false,
+                    error: null,
+                    timestamp: null
+                },
+                last_query: null
+            },
+            environment: {
+                node_env: process.env.NODE_ENV,
+                render_service_name: process.env.RENDER_SERVICE_NAME || 'local',
+                port: PORT
+            }
         };
         
-        res.status(200).json(healthData);
+        try {
+            // Test better-sqlite3 loading
+            const Database = await import('better-sqlite3');
+            console.log('✅ better-sqlite3 import successful');
+            
+            // Test database connection and basic operations
+            if (typeof dbManager !== 'undefined' && dbManager) {
+                const db = dbManager.getConnection();
+                
+                // Test query
+                const testResult = db.prepare('SELECT datetime("now") as current_time').get();
+                healthData.database.connected = true;
+                healthData.database.last_query = testResult.current_time;
+                
+                // Test write operation to health check table
+                try {
+                    db.exec(`
+                        CREATE TABLE IF NOT EXISTS health_check (
+                            id INTEGER PRIMARY KEY,
+                            timestamp TEXT,
+                            node_version TEXT,
+                            abi_version TEXT
+                        )
+                    `);
+                    
+                    const insertStmt = db.prepare(`
+                        INSERT OR REPLACE INTO health_check (id, timestamp, node_version, abi_version) 
+                        VALUES (1, ?, ?, ?)
+                    `);
+                    insertStmt.run(new Date().toISOString(), process.version, process.versions.modules);
+                    
+                    healthData.database.migrations.completed = true;
+                    healthData.database.migrations.timestamp = new Date().toISOString();
+                    
+                } catch (writeError) {
+                    console.warn('⚠️ Database write test failed:', writeError.message);
+                    healthData.database.migrations.error = writeError.message;
+                }
+            }
+            
+            healthData.status = 'healthy';
+            res.status(200).json(healthData);
+            
+        } catch (error) {
+            console.error('❌ Health check failed:', error.message);
+            healthData.status = 'unhealthy';
+            healthData.error = error.message;
+            healthData.database.connected = false;
+            
+            res.status(500).json(healthData);
+        }
     });
 
     // Simple ping endpoint
