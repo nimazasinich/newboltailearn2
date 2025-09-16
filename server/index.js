@@ -36,15 +36,25 @@ const __dirname = path.dirname(__filename);
 // Create Express app and server
 const app = express();
 const server = createServer(app);
-// CORS configuration
+
+// Trust proxy for Render's reverse proxy (MUST BE FIRST)
+app.set('trust proxy', 1);
+
+// CORS configuration with strict origin checking
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'https://nimazasinich.github.io',           // parent domain
+  'https://nimazasinich.github.io/newboltailearn', // SPA base
+  'https://newboltailearn-2.onrender.com'    // Render service URL
+];
+
 const corsOptions = {
-  origin: [
-    'http://localhost:5173',
-    'http://localhost:5174',
-    'https://nimazasinich.github.io',
-    'https://nimazasinich.github.io/newboltailearn',
-    'https://newboltailearn-2.onrender.com' // Include your actual Render URL
-  ],
+  origin(origin, cb) {
+    // Allow tools/no-origin (curl, health checks) and exact matches
+    if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+    return cb(new Error('CORS blocked: ' + origin));
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -52,16 +62,28 @@ const corsOptions = {
 
 const io = new Server(server, {
     cors: {
-        origin: corsOptions.origin,
+        origin: allowedOrigins,
         credentials: true,
         methods: ['GET', 'POST']
     }
 });
 
-// STEP 1: Body parser & basic middleware (MUST BE FIRST)
+// STEP 1: Body parser & basic middleware
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
+
+// Always answer preflight requests
+app.options('*', cors({ origin: allowedOrigins, credentials: true }));
+
+// Production security headers (optional, non-breaking)
+if (process.env.NODE_ENV === 'production') {
+    app.use((req, res, next) => {
+        res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+        res.setHeader('X-Content-Type-Options', 'nosniff');
+        next();
+    });
+}
 
 // Database and services - will be initialized in async startup
 let db, authService, dbManager;
@@ -312,6 +334,8 @@ startServer().then(() => {
         console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
         console.log(`📊 Database: ${process.env.DB_PATH || './persian_legal_ai.db'}`);
         console.log(`🌐 API: http://localhost:${PORT}/api`);
+        console.log(`📦 Frontend base: ${process.env.VITE_BASE_PATH || '/'}`);
+        console.log(`🔗 CORS origins: ${allowedOrigins.join(', ')}`);
         
         // Optional HuggingFace startup check
         const ENABLE_HF_STARTUP_CHECK = (process.env.ENABLE_HF_STARTUP_CHECK || 'false').toLowerCase() === 'true';

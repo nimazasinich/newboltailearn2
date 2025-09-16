@@ -26,10 +26,10 @@ export function applySecurity(app) {
         resave: false,
         saveUninitialized: false,
         cookie: {
-            secure: config.NODE_ENV === 'production',
+            secure: config.NODE_ENV === 'production', // HTTPS only in production
             httpOnly: true,
-            maxAge: 24 * 60 * 60 * 1000, // 24 hours
-            sameSite: 'strict'
+            sameSite: 'none', // Cross-site cookie for Pages -> Render
+            maxAge: 24 * 60 * 60 * 1000 // 24 hours
         },
         name: 'persian-legal-ai-session'
     }));
