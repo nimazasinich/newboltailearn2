@@ -15,4 +15,6 @@ services:
         value: production
       - key: DB_PATH
         value: ./persian_legal_ai.db
+      - key: NODE_VERSION
+        value: 20.17.0
     autoDeploy: true
