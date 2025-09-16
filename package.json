@@ -8,11 +8,10 @@
     "node": "20.x"
   },
   "scripts": {
-    "dev": "NODE_ENV=development vite --config vite.config.ts",
-    "build": "NODE_ENV=production vite build --config vite.config.ts",
-    "build:pages": "cross-env VITE_BASE_PATH=/newboltailearn/ vite build",
-    "pages:prepare": "node scripts/copy-to-docs.mjs",
-    "preview": "NODE_ENV=production vite preview --config vite.config.ts",
+    "dev": "vite --config vite.config.ts",
+    "build": "vite build --config vite.config.ts",
+    "build:gh": "cross-env GITHUB_PAGES=true vite build --config vite.config.ts && node scripts/make-404.js",
+    "preview": "vite preview --config vite.config.ts",
     "start": "NODE_ENV=production node server.js",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
     "type-check": "tsc --noEmit --project tsconfig.app.json"

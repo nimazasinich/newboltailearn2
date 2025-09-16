@@ -1,39 +1,28 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
-import { config } from 'dotenv';
 
-// Load environment configuration
-const nodeEnv = process.env.NODE_ENV || 'development';
-const envFile = nodeEnv === 'production' ? '.env.production' : '.env.development';
+export default ({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '');
+  const isGh = env.GITHUB_PAGES === 'true' || process.env.GITHUB_PAGES === 'true';
 
-const result = config({ path: envFile });
-if (result.error) {
-  console.warn(`⚠️  Warning: Could not load ${envFile}:`, result.error.message);
-  // Try to load default .env as fallback
-  config();
-}
-
-const base = process.env.VITE_BASE_PATH || '/';
-
-export default defineConfig({
-  plugins: [react()],
-  base, // ✅ critical for GitHub Pages asset URLs
-  server: {
-    port: 5173,
-    strictPort: true,
-    host: true,
-    proxy: {
-      '/api': { target: process.env.VITE_API_BASE?.replace('/api', '') || 'http://localhost:3001', changeOrigin: true },
-      '/ws':  { target: process.env.VITE_WS_BASE || 'ws://localhost:3001', ws: true, changeOrigin: true }
+  return defineConfig({
+    plugins: [react()],
+    // IMPORTANT: correct asset base for GitHub Pages
+    base: isGh ? '/newboltailearn/' : '/',
+    server: {
+      port: 5173,
+      strictPort: true,
+      host: true,
+      proxy: {
+        '/api': { target: 'http://localhost:3001', changeOrigin: true },
+        '/ws': { target: 'ws://localhost:3001', ws: true, changeOrigin: true }
+      }
+    },
+    // build directly to docs/ to avoid copy steps going stale
+    build: {
+      outDir: 'docs',
+      sourcemap: true,
+      emptyOutDir: true
     }
-  },
-  preview: {
-    port: 5173,
-    strictPort: true,
-    host: true,
-  },
-  build: {
-    outDir: 'dist',
-    sourcemap: false,
-  },
-});
+  });
+};

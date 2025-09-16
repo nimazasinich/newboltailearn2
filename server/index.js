@@ -52,9 +52,8 @@ app.use(cors());
 let db, authService, dbManager;
 
 // Static serving configuration
-const SERVE_STATIC = (process.env.SERVE_STATIC || 'false').toLowerCase() === 'true';
-const STATIC_DIR = process.env.STATIC_DIR || 'dist';
-const staticRoot = path.resolve(__dirname, '..', STATIC_DIR);
+const SERVE_FRONTEND = (process.env.SERVE_FRONTEND || 'false').toLowerCase() === 'true';
+const clientDir = path.resolve(__dirname, '..', 'docs');
 
 // Async startup function
 async function startServer() {
@@ -72,16 +71,16 @@ async function startServer() {
         // Setup modular components (session, security, CSRF, routes, monitoring)
         setupModules(app, db, io);
         
-        // Optional static serving for Render deployment
-        if (SERVE_STATIC) {
-            if (fs.existsSync(staticRoot)) {
-                console.log(`🗂  Serving static from: ${staticRoot}`);
-                app.use(express.static(staticRoot));
+        // Only serve frontend when explicitly requested (e.g., local fullstack preview)
+        if (SERVE_FRONTEND) {
+            if (fs.existsSync(clientDir)) {
+                console.log(`🗂  Serving frontend from: ${clientDir}`);
+                app.use(express.static(clientDir));
             } else {
-                console.warn(`⚠️  SERVE_STATIC=true but not found: ${staticRoot}`);
+                console.warn(`⚠️  SERVE_FRONTEND=true but not found: ${clientDir}`);
             }
         } else {
-            console.log('ℹ️  Static serving disabled on this service.');
+            console.log('ℹ️  Frontend serving disabled - backend API only.');
         }
         
         console.log('✅ Database and services initialized');
@@ -230,16 +229,16 @@ function setupErrorHandling() {
         if (req.path.startsWith('/api/')) {
             res.status(404).json({ error: 'API endpoint not found' });
         } else {
-            // SPA fallback only if static serving is enabled and index.html exists
-            if (SERVE_STATIC) {
-                const indexPath = path.join(staticRoot, 'index.html');
+            // SPA fallback only if frontend serving is enabled and index.html exists
+            if (SERVE_FRONTEND) {
+                const indexPath = path.join(clientDir, 'index.html');
                 if (fs.existsSync(indexPath)) {
                     return res.sendFile(indexPath);
                 }
-                console.warn('⚠️  index.html missing in static root');
+                console.warn('⚠️  index.html missing in frontend directory');
                 res.status(404).send('Frontend build not found.');
             } else {
-                res.status(404).json({ error: 'Static serving disabled' });
+                res.status(404).json({ error: 'Frontend serving disabled - API only backend' });
             }
         }
     });
