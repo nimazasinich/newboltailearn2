@@ -1,71 +1,24 @@
-# Multi-stage build for Persian Legal AI Training System
-FROM node:20-alpine AS builder
+# syntax=docker/dockerfile:1.6
 
-# Set working directory
+FROM node:20-alpine AS base
 WORKDIR /app
 
-# Copy package files
+# Install only prod deps (server runs JS directly)
 COPY package*.json ./
+RUN npm ci --omit=dev
 
-# Install all dependencies (including dev dependencies for build)
-RUN npm ci && npm cache clean --force
-
-# Copy source code
+# Copy runtime sources (backend-only runtime)
+# A .dockerignore will keep context clean
 COPY . .
 
-# Build the application
-RUN npm run build
-RUN npm run compile-server
-
-# Production stage
-FROM node:20-alpine AS production
-
-# Install system dependencies
-RUN apk add --no-cache \
-    python3 \
-    make \
-    g++ \
-    sqlite \
-    curl
-
-# Create app user
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nodejs -u 1001
-
-# Set working directory
-WORKDIR /app
-
-# Copy built application from builder stage
-COPY --from=builder --chown=nodejs:nodejs /app/dist ./dist
-COPY --from=builder --chown=nodejs:nodejs /app/server ./server
-COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
-COPY --from=builder --chown=nodejs:nodejs /app/package*.json ./
-
-# Create necessary directories
-RUN mkdir -p /app/datasets /app/models /app/checkpoints /app/exports /app/logs && \
-    chown -R nodejs:nodejs /app
-
-# Set environment variables
+# Security best practices
 ENV NODE_ENV=production
-ENV PORT=3001
-ENV DB_PATH=/app/data/persian_legal_ai.db
-ENV DATASET_DIRECTORY=/app/datasets
-ENV MODEL_DIRECTORY=/app/models
-ENV CHECKPOINT_DIRECTORY=/app/checkpoints
-ENV EXPORT_DIRECTORY=/app/exports
+USER node
 
-# Create data directory
-RUN mkdir -p /app/data && chown -R nodejs:nodejs /app/data
+# Configure port (Render/other PaaS reads PORT)
+ENV PORT=8000
+EXPOSE 8000
 
-# Switch to non-root user
-USER nodejs
-
-# Expose port
-EXPOSE 3001
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:3001/health || exit 1
-
-# Start the application
+# Start backend (no /app/dist expected)
+# Adjust if your entry changes (kept as-is per repo)
 CMD ["node", "server/index.js"]
