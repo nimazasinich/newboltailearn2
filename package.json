@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Persian Legal Document Archive System with AI Classification and Web Scraping",
   "engines": {
-    "node": ">=20"
+    "node": ">=20 <21"
   },
   "scripts": {
     "dev": "vite --config vite.config.ts",
