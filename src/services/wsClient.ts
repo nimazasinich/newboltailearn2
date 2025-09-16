@@ -1,7 +1,7 @@
 import { SystemMetrics } from './api'
 import { WS_URL } from '../lib/config'
 
-export type WSEventType = 'system_metrics' | 'training_progress' | 'training_complete'
+export type WSEventType = 'system_metrics' | 'training_progress' | 'training_complete' | 'log_update' | 'training_error'
 
 export interface WSEvent {
   type: WSEventType
@@ -17,7 +17,7 @@ class WSClient {
   private reconnectAttempts = 0
   private maxReconnectAttempts = 5
   private reconnectDelays = [1000, 2000, 5000, 10000, 10000] // 1s, 2s, 5s, 10s, 10s
-  private reconnectTimer: number | null = null
+  private reconnectTimer: ReturnType<typeof setTimeout> | null = null
   private isConnecting = false
   private shouldReconnect = true
 

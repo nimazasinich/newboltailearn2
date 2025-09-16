@@ -35,8 +35,15 @@ export class TrainingSimulator {
           throw new Error(`Unsupported model type: ${session.modelType}`);
       }
 
-      // Initialize trainer
-      await trainer.initialize();
+      // Initialize trainer with a dummy base model
+      const dummyModel = tf.sequential({
+        layers: [
+          tf.layers.dense({ units: 128, inputShape: [100] }),
+          tf.layers.dense({ units: 64, activation: 'relu' }),
+          tf.layers.dense({ units: 1, activation: 'sigmoid' })
+        ]
+      });
+      await trainer.initialize(dummyModel);
       
       // Store active session
       this.activeSessions.set(session.id, {

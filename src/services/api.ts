@@ -68,7 +68,7 @@ export const DatasetSchema = z.object({
 export const HealthSchema = z.object({
   ok: z.boolean(),
   database: z.boolean().optional(),
-  tables: z.record(z.number()).optional(),
+  tables: z.record(z.string(), z.number()).optional(),
   timestamp: z.string().optional(),
 })
 
@@ -119,7 +119,7 @@ async function requestWithSchema<T>(
     return schema.parse(data)
   } catch (error) {
     if (error instanceof z.ZodError) {
-      console.error(`API Schema validation error for ${path}:`, error.errors)
+      console.error(`API Schema validation error for ${path}:`, error.issues)
       throw new Error(`Invalid API response format for ${path}`)
     }
     throw error
@@ -165,8 +165,15 @@ export const API = {
   getSystemMetrics: (): Promise<SystemMetrics> => requestWithSchema('/system-stats', SystemMetricsSchema),
   getSettings: () => request('/settings'),
   updateSettings: (settings: any) => request('/settings', { method: 'PUT', body: JSON.stringify(settings) }),
+  
+  // Model training methods
+  trainModel: (id: string, config?: any) => request(`/models/${id}/train`, { method: 'POST', body: config ? JSON.stringify(config) : undefined }),
+  deleteModel: (id: string) => request(`/models/${id}`, { method: 'DELETE' }),
 }
 
 export async function bootstrapClient() {
   await getCsrf()
 }
+
+// Export API as apiClient for backward compatibility
+export const apiClient = API;

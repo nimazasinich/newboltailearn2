@@ -89,10 +89,12 @@ export class PersianBertProcessor {
       const layerNorm1 = tf.layers.layerNormalization().apply(addNorm1) as tf.SymbolicTensor;
       
       // Feed Forward Network
-      const ffn = tf.sequential([
-        tf.layers.dense({ units: this.config.hiddenSize * 4, activation: 'gelu', name: `layer_${i}_ffn_1` }),
-        tf.layers.dense({ units: this.config.hiddenSize, name: `layer_${i}_ffn_2` })
-      ]);
+      const ffn = tf.sequential({
+        layers: [
+          tf.layers.dense({ units: this.config.hiddenSize * 4, activation: 'gelu', name: `layer_${i}_ffn_1` }),
+          tf.layers.dense({ units: this.config.hiddenSize, name: `layer_${i}_ffn_2` })
+        ]
+      });
       
       const ffnOutput = ffn.apply(layerNorm1) as tf.SymbolicTensor;
       
@@ -370,39 +372,47 @@ export class PersianBertProcessor {
     
     // Extract entities
     personPatterns.forEach(pattern => {
-      const matches = text.match(pattern) || [];
-      matches.forEach(match => entities.push({
-        entity: match.trim(),
-        type: 'person',
-        confidence: 0.8
-      }));
+      const matches = text.match(pattern);
+      if (matches) {
+        matches.forEach(match => entities.push({
+          entity: match.trim(),
+          type: 'person',
+          confidence: 0.8
+        }));
+      }
     });
     
     orgPatterns.forEach(pattern => {
-      const matches = text.match(pattern) || [];
-      matches.forEach(match => entities.push({
-        entity: match.trim(),
-        type: 'organization',
-        confidence: 0.9
-      }));
+      const matches = text.match(pattern);
+      if (matches) {
+        matches.forEach(match => entities.push({
+          entity: match.trim(),
+          type: 'organization',
+          confidence: 0.9
+        }));
+      }
     });
     
     locationPatterns.forEach(pattern => {
-      const matches = text.match(pattern) || [];
-      matches.forEach(match => entities.push({
-        entity: match.trim(),
-        type: 'location',
-        confidence: 0.7
-      }));
+      const matches = text.match(pattern);
+      if (matches) {
+        matches.forEach(match => entities.push({
+          entity: match.trim(),
+          type: 'location',
+          confidence: 0.7
+        }));
+      }
     });
     
     datePatterns.forEach(pattern => {
-      const matches = text.match(pattern) || [];
-      matches.forEach(match => entities.push({
-        entity: match.trim(),
-        type: 'date',
-        confidence: 0.95
-      }));
+      const matches = text.match(pattern);
+      if (matches) {
+        matches.forEach(match => entities.push({
+          entity: match.trim(),
+          type: 'date',
+          confidence: 0.95
+        }));
+      }
     });
     
     return entities.slice(0, 50); // Limit results

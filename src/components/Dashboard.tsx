@@ -61,7 +61,7 @@ export default function Dashboard() {
             <Brain className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{modelsData?.length || 0}</div>
+            <div className="text-2xl font-bold">{Array.isArray(modelsData) ? modelsData.length : 0}</div>
           </CardContent>
         </Card>
 
@@ -71,7 +71,7 @@ export default function Dashboard() {
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{modelsData?.filter((m: any) => m.status === 'training').length || 0}</div>
+            <div className="text-2xl font-bold">{Array.isArray(modelsData) ? modelsData.filter((m: any) => m.status === 'training').length : 0}</div>
           </CardContent>
         </Card>
 

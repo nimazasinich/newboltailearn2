@@ -1,7 +1,71 @@
 import Dexie, { Table } from 'dexie';
-import { TrainingSession, ModelCheckpoint, SystemMetrics } from '../../types/training';
-import { LegalDocument, DocumentAnalysis, SearchResult } from '../../types/documents';
-import { User } from '../../types/user';
+
+// Simple type definitions for database
+export interface TrainingSession {
+  id?: number;
+  modelType: string;
+  status: string;
+  userId?: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ModelCheckpoint {
+  id?: number;
+  sessionId: number;
+  epoch: number;
+  step: number;
+  timestamp: Date;
+}
+
+export interface LegalDocument {
+  id?: number;
+  title: string;
+  content: string;
+  category: string;
+  userId?: number;
+  createdAt: Date;
+  updatedAt: Date;
+  searchTokens?: string[];
+}
+
+export interface DocumentAnalysis {
+  documentId: number;
+  analysis: any;
+}
+
+export interface User {
+  id?: string | number;
+  email: string;
+  name?: string;
+  role: string;
+  isActive?: boolean;
+  permissions?: string[];
+  preferences?: any;
+  statistics?: any;
+  createdAt?: Date;
+  lastLoginAt?: Date;
+}
+
+export interface SystemMetrics {
+  id?: number;
+  lastUpdate: Date;
+  cpuUsage?: number;
+  memoryUsage?: number;
+  storageUsage?: number;
+  networkUsage?: number;
+  activeTrainingSessions?: number;
+  totalDocuments?: number;
+  systemHealth?: string;
+  uptime?: number;
+  metrics?: any;
+}
+
+export interface SearchResult {
+  document: LegalDocument;
+  score: number;
+  highlights: string[];
+}
 
 // Database Schema
 export class PersianLegalAIDB extends Dexie {
@@ -10,7 +74,7 @@ export class PersianLegalAIDB extends Dexie {
   legalDocuments!: Table<LegalDocument>;
   documentAnalyses!: Table<DocumentAnalysis>;
   users!: Table<User>;
-  systemMetrics!: Table<SystemMetrics & { id: number }>;
+  systemMetrics!: Table<SystemMetrics>;
   systemLogs!: Table<{
     id?: number;
     timestamp: Date;
@@ -40,7 +104,7 @@ export class PersianLegalAIDB extends Dexie {
       obj.updatedAt = new Date();
     });
 
-    this.legalDocuments.hook('updating', (modifications, primKey, obj, trans) => {
+    this.legalDocuments.hook('updating', (modifications: any, primKey, obj, trans) => {
       if (modifications.content || modifications.title) {
         modifications.searchTokens = this.tokenizePersianText(
           (modifications.content || obj.content) + ' ' + (modifications.title || obj.title)
@@ -129,13 +193,12 @@ export class PersianLegalAIDB extends Dexie {
 
         return {
           document: doc,
-          relevanceScore,
-          matchedTerms: [...new Set(matchedTerms)],
-          highlights: highlights.slice(0, 10) // Limit highlights
+          score: relevanceScore,
+          highlights: highlights.slice(0, 10).map(h => h.text || h)
         };
       })
-      .filter(result => result.relevanceScore > 0)
-      .sort((a, b) => b.relevanceScore - a.relevanceScore)
+      .filter(result => result.score > 0)
+      .sort((a, b) => b.score - a.score)
       .slice(0, 100); // Limit results
 
     return results;
