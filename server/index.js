@@ -4,6 +4,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -50,6 +51,11 @@ app.use(cors());
 // Database and services - will be initialized in async startup
 let db, authService, dbManager;
 
+// Static serving configuration
+const SERVE_STATIC = (process.env.SERVE_STATIC || 'false').toLowerCase() === 'true';
+const STATIC_DIR = process.env.STATIC_DIR || 'dist';
+const staticRoot = path.resolve(__dirname, '..', STATIC_DIR);
+
 // Async startup function
 async function startServer() {
     try {
@@ -66,9 +72,17 @@ async function startServer() {
         // Setup modular components (session, security, CSRF, routes, monitoring)
         setupModules(app, db, io);
         
-        // Serve React build (production) - AFTER security middleware
-        const distPath = path.join(__dirname, "../dist");
-        app.use(express.static(distPath));
+        // Optional static serving for Render deployment
+        if (SERVE_STATIC) {
+            if (fs.existsSync(staticRoot)) {
+                console.log(`🗂  Serving static from: ${staticRoot}`);
+                app.use(express.static(staticRoot));
+            } else {
+                console.warn(`⚠️  SERVE_STATIC=true but not found: ${staticRoot}`);
+            }
+        } else {
+            console.log('ℹ️  Static serving disabled on this service.');
+        }
         
         console.log('✅ Database and services initialized');
         
@@ -211,13 +225,22 @@ function setupAPIRoutes() {
 
 // Setup comprehensive error handling
 function setupErrorHandling() {
-    // Catch 404 errors
+    // Catch 404 errors and handle SPA fallback
     app.use((req, res, next) => {
         if (req.path.startsWith('/api/')) {
             res.status(404).json({ error: 'API endpoint not found' });
         } else {
-            // Serve React app for non-API routes
-            res.sendFile(path.join(__dirname, '../dist/index.html'));
+            // SPA fallback only if static serving is enabled and index.html exists
+            if (SERVE_STATIC) {
+                const indexPath = path.join(staticRoot, 'index.html');
+                if (fs.existsSync(indexPath)) {
+                    return res.sendFile(indexPath);
+                }
+                console.warn('⚠️  index.html missing in static root');
+                res.status(404).send('Frontend build not found.');
+            } else {
+                res.status(404).json({ error: 'Static serving disabled' });
+            }
         }
     });
     
@@ -251,26 +274,19 @@ startServer().then(() => {
         console.log(`📊 Database: ${process.env.DB_PATH || './persian_legal_ai.db'}`);
         console.log(`🌐 API: http://localhost:${PORT}/api`);
         
-        // Validate HuggingFace token configuration
-        try {
-            await logTokenStatus();
-        } catch (error) {
-            console.warn('⚠️ HuggingFace token validation failed:', error.message);
-        }
-        
-        // Test HuggingFace connection
-        try {
-            const isConnected = await testHFConnection();
-            if (isConnected) {
-                console.log('✅ HuggingFace API connection successful');
-                logToDatabase('info', 'server', 'HuggingFace API connection successful');
-            } else {
-                console.log('⚠️  HuggingFace API connection failed - check token configuration');
-                logToDatabase('warning', 'server', 'HuggingFace API connection failed');
+        // Optional HuggingFace startup check
+        const ENABLE_HF_STARTUP_CHECK = (process.env.ENABLE_HF_STARTUP_CHECK || 'false').toLowerCase() === 'true';
+
+        if (ENABLE_HF_STARTUP_CHECK) {
+            try {
+                const result = await testHFConnection();
+                if (result.ok) console.log('✅ HuggingFace API connection OK');
+                else console.warn('⚠️  HuggingFace API connection failed:', result);
+            } catch (e) {
+                console.warn('⚠️  HF check errored (non-fatal):', e?.message || e);
             }
-        } catch (error) {
-            console.log('⚠️  HuggingFace API connection test failed:', error.message);
-            logToDatabase('warning', 'server', 'HuggingFace API connection test failed', { error: error.message });
+        } else {
+            console.log('ℹ️  Skipping HF startup check.');
         }
         
         logToDatabase('info', 'server', `Server started on port ${PORT}`);

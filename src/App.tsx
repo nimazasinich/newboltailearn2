@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from 'react'
-import { BrowserRouter, HashRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { AppLayout } from './components/layout/AppLayout'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { LandingPage } from './components/LandingPage'
@@ -28,32 +28,28 @@ function AppLoading() {
 }
 
 export default function App() {
-  const RouterImpl = import.meta.env.PROD ? HashRouter : BrowserRouter
-  
   return (
-    <RouterImpl>
-      <ErrorBoundary>
-        <Suspense fallback={<AppLoading />}>
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route element={<AppLayout />}>
-              <Route path="/overview" element={<Overview />} />
-              <Route path="/dashboard-advanced" element={<DashboardAdvanced />} />
-              <Route path="/analytics" element={<AnalyticsPage />} />
-              <Route path="/data" element={<DataPage />} />
-              <Route path="/logs" element={<LogsPage />} />
-              <Route path="/models" element={<ModelsPage />} />
-              <Route path="/monitoring" element={<MonitoringPage />} />
-              <Route path="/training" element={<TrainingManagement />} />
-              <Route path="/team" element={<TeamPage />} />
-              <Route path="/settings" element={<SettingsPage />} />
-              <Route path="/download" element={<ProjectDownloader />} />
-            </Route>
-            <Route path="/dashboard" element={<Navigate to="/dashboard-advanced" replace />} />
-            <Route path="*" element={<Navigate to="/overview" replace />} />
-          </Routes>
-        </Suspense>
-      </ErrorBoundary>
-    </RouterImpl>
+    <ErrorBoundary>
+      <Suspense fallback={<AppLoading />}>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route element={<AppLayout />}>
+            <Route path="/overview" element={<Overview />} />
+            <Route path="/dashboard-advanced" element={<DashboardAdvanced />} />
+            <Route path="/analytics" element={<AnalyticsPage />} />
+            <Route path="/data" element={<DataPage />} />
+            <Route path="/logs" element={<LogsPage />} />
+            <Route path="/models" element={<ModelsPage />} />
+            <Route path="/monitoring" element={<MonitoringPage />} />
+            <Route path="/training" element={<TrainingManagement />} />
+            <Route path="/team" element={<TeamPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/download" element={<ProjectDownloader />} />
+          </Route>
+          <Route path="/dashboard" element={<Navigate to="/dashboard-advanced" replace />} />
+          <Route path="*" element={<Navigate to="/overview" replace />} />
+        </Routes>
+      </Suspense>
+    </ErrorBoundary>
   )
 }

@@ -5,21 +5,13 @@ import { Buffer } from "buffer";
  * @throws Error if token is missing or invalid
  */
 export function getHFToken() {
-    // Support both HF_TOKEN_B64 (new) and HF_TOKEN_ENC (legacy)
-    const encoded = process.env.HF_TOKEN_B64 || process.env.HF_TOKEN_ENC;
-    if (!encoded) {
-        throw new Error('HuggingFace token not found in environment variables. Please set HF_TOKEN_B64.');
-    }
+    const b64 = process.env.HF_TOKEN_B64 || '';
+    if (!b64) return null;
     try {
-        const decoded = Buffer.from(encoded, 'base64').toString('utf8');
-        // Validate token format
-        if (!decoded.startsWith('hf_')) {
-            throw new Error('Invalid HuggingFace token format');
-        }
-        return decoded;
-    }
-    catch (error) {
-        throw new Error(`Failed to decode HuggingFace token: ${error.message}`);
+        return Buffer.from(b64, 'base64').toString('utf8').trim() || null;
+    } catch (e) {
+        console.error('❌ Failed to decode HF_TOKEN_B64:', e.message);
+        return null;
     }
 }
 /**
@@ -62,24 +54,16 @@ export function validateTokenConfig() {
         };
     }
 }
-/**
- * Test HuggingFace API connection with decoded token
- * @returns Promise<boolean> - Connection test result
- */
-export async function testHFConnection() {
+export async function testHFConnection(fetchImpl = fetch) {
+    const token = getHFToken();
+    if (!token) return { ok: false, reason: 'token-missing' };
     try {
-        const token = getHFToken();
-        const response = await fetch('https://huggingface.co/api/whoami', {
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Accept': 'application/json'
-            }
+        const res = await fetchImpl('https://huggingface.co/api/whoami-v2', {
+            headers: { Authorization: `Bearer ${token}` }
         });
-        return response.ok;
-    }
-    catch (_error) {
-        console.error('HuggingFace connection test failed:', _error);
-        return false;
+        return { ok: res.ok, status: res.status };
+    } catch (e) {
+        return { ok: false, reason: e.message || 'network-error' };
     }
 }
 /**
