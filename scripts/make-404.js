@@ -1,5 +1,5 @@
-import { copyFileSync, existsSync } from 'fs';
-
+import { copyFileSync, existsSync, mkdirSync } from 'fs';
+mkdirSync('docs', { recursive: true });
 if (existsSync('docs/index.html')) {
   copyFileSync('docs/index.html', 'docs/404.html');
   console.log('➡️  docs/404.html created for SPA fallback');

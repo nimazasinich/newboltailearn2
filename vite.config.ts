@@ -3,22 +3,21 @@ import react from '@vitejs/plugin-react';
 
 export default ({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-  const isGh = env.GITHUB_PAGES === 'true' || process.env.GITHUB_PAGES === 'true';
+  // Use VITE_BASE_PATH if provided (e.g. '/newboltailearn/'), otherwise '/'
+  const base = env.VITE_BASE_PATH && env.VITE_BASE_PATH.trim() !== '' ? env.VITE_BASE_PATH : '/';
 
   return defineConfig({
     plugins: [react()],
-    // IMPORTANT: correct asset base for GitHub Pages
-    base: isGh ? '/newboltailearn/' : '/',
+    base,
     server: {
       port: 5173,
       strictPort: true,
       host: true,
       proxy: {
         '/api': { target: 'http://localhost:3001', changeOrigin: true },
-        '/ws': { target: 'ws://localhost:3001', ws: true, changeOrigin: true }
+        '/ws':  { target: 'ws://localhost:3001',  changeOrigin: true, ws: true }
       }
     },
-    // build directly to docs/ to avoid copy steps going stale
     build: {
       outDir: 'docs',
       sourcemap: true,

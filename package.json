@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "vite --config vite.config.ts",
     "build": "vite build --config vite.config.ts",
-    "build:gh": "cross-env GITHUB_PAGES=true vite build --config vite.config.ts && node scripts/make-404.js",
+    "build:gh": "cross-env VITE_BASE_PATH=/newboltailearn/ vite build --config vite.config.ts && node scripts/make-404.js",
     "preview": "vite preview --config vite.config.ts",
     "start": "NODE_ENV=production node server.js",
     "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
