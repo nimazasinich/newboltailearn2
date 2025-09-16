@@ -1,6 +1,8 @@
 # Ignore archive and docs directories
-archive/
-docs/
+archive/**/*
+docs/**/*
+/archive/
+/docs/
 
 # Ignore backup files
 server/index_backup.js
@@ -13,6 +15,14 @@ validate*.js
 stress-test*.js
 e2e-test-runner.js
 integration-test-runner.js
+master-test-runner.js
+run-tests.js
+test-*.js
 
 # Ignore problematic server files
 server.js
+start*.js
+db-healer.js
+env-healer.js
+git-safety.js
+scripts/

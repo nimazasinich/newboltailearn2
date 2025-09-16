@@ -1,5 +1,5 @@
 // server/database/utils/columns.js
-import Database from 'better-sqlite3';
+// import Database from 'better-sqlite3'; // Unused import
 
 export function hasColumn(db, tableName, columnName) {
   try {

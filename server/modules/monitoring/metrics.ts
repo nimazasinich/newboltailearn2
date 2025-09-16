@@ -11,8 +11,8 @@ interface Metrics {
   httpRequestsByPath: Record<string, number>;
   
   // System metrics
-  memoryUsage: NodeJS.MemoryUsage;
-  cpuUsage: NodeJS.CpuUsage;
+  memoryUsage: any;
+  cpuUsage: any;
   uptime: number;
   
   // Application metrics
@@ -31,7 +31,7 @@ interface Metrics {
 class MetricsCollector {
   private metrics: Metrics;
   private startTime: number;
-  private cpuUsageStart: NodeJS.CpuUsage;
+  private cpuUsageStart: any;
 
   constructor() {
     this.startTime = Date.now();

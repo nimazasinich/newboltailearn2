@@ -217,7 +217,7 @@ export class ModelsController {
             res.status(500).json({ error: 'Failed to export model' });
         }
     }
-    async startTraining(req, res, next) {
+    async startTraining(req, res, _next) {
         try {
             const { id } = req.params;
             const { epochs = 10, batchSize = 32, learningRate = 0.001, datasetId = 'default' } = req.body;
@@ -252,7 +252,7 @@ export class ModelsController {
             res.status(500).json({ error: 'Failed to start training' });
         }
     }
-    async pauseTraining(req, res, next) {
+    async pauseTraining(req, res, _next) {
         try {
             const { id } = req.params;
             const modelId = parseInt(id);
@@ -273,7 +273,7 @@ export class ModelsController {
             res.status(500).json({ error: 'Failed to pause training' });
         }
     }
-    async resumeTraining(req, res, next) {
+    async resumeTraining(req, res, _next) {
         try {
             const { id } = req.params;
             const { epochs = 10, batchSize = 32, learningRate = 0.001, datasetId = 'default' } = req.body;
@@ -309,7 +309,7 @@ export class ModelsController {
             res.status(500).json({ error: 'Failed to resume training' });
         }
     }
-    async startOptimization(req, res, next) {
+    async startOptimization(req, res, _next) {
         try {
             const { id } = req.params;
             const { optimizationType = 'hyperparameter', parameters = {} } = req.body;
