@@ -38,9 +38,11 @@ export function Button({
 
   const classes = cn(baseStyles, variants[variant], sizes[size], className);
 
-  if (asChild) {
-    return React.cloneElement(children as React.ReactElement, {
-      className: cn((children as React.ReactElement).props.className, classes),
+  if (asChild && React.isValidElement(children)) {
+    const childProps = children.props as any;
+    return React.cloneElement(children, {
+      ...childProps,
+      className: cn(childProps.className, classes),
       ...(disabled && { 'aria-disabled': true }),
       ...props,
     });

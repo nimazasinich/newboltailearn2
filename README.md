@@ -276,6 +276,83 @@ Development server proxies API calls:
 - **Runtime Performance**: 60fps animations with Framer Motion
 - **Memory Usage**: Efficient WebSocket connection management
 
+## 🚀 CI/CD Pipeline
+
+The project uses GitHub Actions for continuous integration and deployment with enterprise-grade standards.
+
+### Pipeline Structure
+
+The CI/CD pipeline consists of the following jobs:
+
+#### 1. **Security Audit** (`security-check`)
+- Runs `npm audit` to check for vulnerabilities (non-blocking)
+- Uses TruffleHog to scan for secrets in code
+- Continues on error to avoid blocking development
+
+#### 2. **Lint & Type Check** (`lint-and-type-check`)
+- ESLint validation with custom configuration
+- TypeScript type checking with strict rules
+- Must pass for pipeline to continue
+
+#### 3. **Unit Tests** (`test-unit`)
+- Runs Vitest unit tests with coverage
+- Uploads coverage reports to Codecov
+- Non-blocking for development velocity
+
+#### 4. **Integration Tests** (`test-integration`)
+- Sets up SQLite database for testing
+- Runs integration tests with real database
+- Tests API endpoints and data flows
+
+#### 5. **End-to-End Tests** (`test-e2e`)
+- Uses Playwright for browser automation
+- Tests complete user workflows
+- Captures screenshots and videos on failure
+
+#### 6. **Build Application** (`build`)
+- Builds frontend with Vite
+- Compiles server components
+- Uploads build artifacts
+
+#### 7. **Database Backup** (`database-backup`)
+- Runs only on `main` branch
+- Creates timestamped database backups
+- Uploads backup artifacts (30-day retention)
+
+#### 8. **Docker Build & Scan** (`docker-build`)
+- Multi-stage Docker build (Node.js 20)
+- Trivy vulnerability scanning
+- Container health checks
+- Only runs on `main` branch pushes
+
+### Running CI/CD Locally
+
+```bash
+# Run all checks locally before pushing
+npm run lint                 # ESLint validation
+npm run type-check          # TypeScript checking
+npm run test:unit           # Unit tests
+npm run test:integration    # Integration tests
+npm run test:e2e           # E2E tests (requires Playwright)
+npm run build              # Build application
+npm run db:backup          # Create database backup
+```
+
+### Pipeline Configuration
+
+The pipeline is configured to:
+- ✅ **Non-blocking errors**: Tests and security checks continue on error
+- ✅ **Artifact retention**: Build artifacts kept for 7 days, backups for 30 days
+- ✅ **Branch-specific jobs**: Database backup and Docker build only on `main`
+- ✅ **Dependency management**: Jobs run in parallel where possible
+- ✅ **Enterprise security**: Secret scanning and vulnerability assessment
+
+### Deployment Strategy
+
+- **Frontend**: Automatically deployed to GitHub Pages from `docs/` folder
+- **Backend**: Deployed to Render with environment-based configuration
+- **CI Validation**: Pipeline validates code quality but doesn't auto-deploy
+
 ## 🤝 Contributing
 
 1. Fork the repository

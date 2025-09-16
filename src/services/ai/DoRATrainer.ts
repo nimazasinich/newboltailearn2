@@ -56,11 +56,11 @@ export class DoRATrainer {
       
       if (shape.length === 2) {
         // For 2D weights (dense layers), apply matrix decomposition
-        return this.decomposeMatrix(weight);
+        return this.decomposeMatrix(weight as tf.Tensor2D);
       } else if (shape.length === 4) {
         // For 4D weights (conv layers), reshape and decompose
         const reshaped = weight.reshape([shape[0] * shape[1] * shape[2], shape[3]]);
-        const decomposed = this.decomposeMatrix(reshaped);
+        const decomposed = this.decomposeMatrix(reshaped as tf.Tensor2D);
         return {
           magnitude: decomposed.magnitude.reshape([shape[0], shape[1], shape[2], -1]),
           direction: decomposed.direction.reshape([shape[0], shape[1], shape[2], -1])
@@ -198,7 +198,8 @@ export class DoRATrainer {
       // Compute loss and gradients
       const f = () => {
         const predictions = this.model!.apply(inputs) as tf.Tensor;
-        return tf.losses.softmaxCrossEntropy(targets, predictions);
+        const loss = tf.losses.softmaxCrossEntropy(targets, predictions);
+        return tf.scalar(loss.dataSync()[0]);
       };
 
       const { value: loss, grads } = tf.variableGrads(f);

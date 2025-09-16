@@ -43,5 +43,37 @@ export default [
       'no-unused-vars': 'off', // TypeScript handles this
       'no-console': 'warn',
     },
+  },
+  {
+    files: ['tests/**/*.{js,ts}', '**/*.test.{js,ts}', '**/*.spec.{js,ts}'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        ...globals.jest,
+        describe: 'readonly',
+        test: 'readonly',
+        it: 'readonly',
+        expect: 'readonly',
+        beforeAll: 'readonly',
+        afterAll: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        jest: 'readonly',
+        config: 'readonly',
+      },
+      sourceType: 'module',
+      parser: tsparser,
+      parserOptions: {
+        ecmaVersion: 2020,
+        sourceType: 'module',
+      },
+    },
+    rules: {
+      ...js.configs.recommended.rules,
+      'no-unused-vars': 'off',
+      'no-console': 'off', // Allow console in tests
+    },
   }
 ];

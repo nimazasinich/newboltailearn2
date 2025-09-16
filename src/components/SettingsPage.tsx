@@ -22,7 +22,7 @@ export default function SettingsPage() {
       try {
         setLoading(true);
         const data = await API.getSettings();
-        setSettings(data || settings);
+        setSettings(data && typeof data === 'object' ? { ...settings, ...data } : settings);
       } catch (err) {
         console.error('Failed to load settings:', err);
         setError('خطا در بارگذاری تنظیمات');

@@ -126,7 +126,7 @@ export class QRAdaptor {
       } else {
         // For higher-dimensional tensors, reshape and decompose
         const reshaped = matrix.reshape([-1, shape[shape.length - 1]]);
-        const { Q, R } = this.qrDecompose2D(reshaped);
+        const { Q, R } = this.qrDecompose2D(reshaped as tf.Tensor2D);
         
         return {
           Q: Q.reshape([...shape.slice(0, -1), -1]),
@@ -261,7 +261,8 @@ export class QRAdaptor {
 
       const f = () => {
         const predictions = this.model!.apply(inputs) as tf.Tensor;
-        return tf.losses.softmaxCrossEntropy(targets, predictions);
+        const loss = tf.losses.softmaxCrossEntropy(targets, predictions);
+        return tf.scalar(loss.dataSync()[0]);
       };
 
       const { value: loss, grads } = tf.variableGrads(f);

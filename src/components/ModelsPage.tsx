@@ -4,27 +4,27 @@ import { API } from '../services/api';
 import { websocketService } from '../services/websocket';
 
 interface Model {
-  id: number;
+  id?: string | number;
   name: string;
-  type: 'dora' | 'qr-adaptor' | 'persian-bert';
-  status: 'idle' | 'training' | 'completed' | 'failed' | 'paused';
+  type: string;
+  status: string;
   accuracy: number;
   loss: number;
   epochs: number;
   current_epoch: number;
-  dataset_id: string;
-  config: string;
+  dataset_id?: string | number;
+  config?: string;
   created_at: string;
   updated_at: string;
 }
 
 interface Dataset {
-  id: string;
+  id?: string | number;
   name: string;
   samples: number;
   size_mb: number;
   status: string;
-  type: string;
+  type?: string;
   description?: string;
 }
 
@@ -41,7 +41,7 @@ export function ModelsPage() {
   const [datasets, setDatasets] = useState<Dataset[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [trainingProgress, setTrainingProgress] = useState<Map<number, TrainingProgress>>(new Map());
+  const [trainingProgress, setTrainingProgress] = useState<Map<string | number, TrainingProgress>>(new Map());
   const [error, setError] = useState<string | null>(null);
   const [newModel, setNewModel] = useState({
     name: '',
@@ -129,14 +129,16 @@ export function ModelsPage() {
           name: 'اسناد حقوقی فارسی',
           samples: 15000,
           size_mb: 245,
-          status: 'ready'
+          status: 'ready',
+          type: 'legal-documents'
         },
         {
           id: 'keywords-1',
           name: 'کلیدواژه‌های حقوقی',
           samples: 8500,
           size_mb: 120,
-          status: 'ready'
+          status: 'ready',
+          type: 'keywords'
         }
       ]);
     } finally {
@@ -183,7 +185,8 @@ export function ModelsPage() {
     }
   };
 
-  const handleTrainModel = async (id: number) => {
+  const handleTrainModel = async (id: string | number | undefined) => {
+    if (!id) return;
     try {
       await API.startTraining(id);
       loadModels();
@@ -193,7 +196,8 @@ export function ModelsPage() {
     }
   };
 
-  const handlePauseTraining = async (id: number) => {
+  const handlePauseTraining = async (id: string | number | undefined) => {
+    if (!id) return;
     try {
       await API.pauseTraining(id);
       loadModels();
@@ -203,7 +207,8 @@ export function ModelsPage() {
     }
   };
 
-  const handleResumeTraining = async (id: number) => {
+  const handleResumeTraining = async (id: string | number | undefined) => {
+    if (!id) return;
     try {
       await API.resumeTraining(id);
       loadModels();
@@ -213,7 +218,8 @@ export function ModelsPage() {
     }
   };
 
-  const handleDeleteModel = async (id: number) => {
+  const handleDeleteModel = async (id: string | number | undefined) => {
+    if (!id) return;
     if (!confirm('آیا مطمئن هستید که می‌خواهید این مدل را حذف کنید؟')) {
       return;
     }
@@ -299,7 +305,7 @@ export function ModelsPage() {
       {/* Models Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {models.map((model) => {
-          const progress = trainingProgress.get(model.id);
+          const progress = model.id ? trainingProgress.get(model.id) : undefined;
           const dataset = datasets.find(d => d.id === model.dataset_id);
           
           return (

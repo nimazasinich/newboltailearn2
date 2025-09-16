@@ -16,7 +16,7 @@ export default function LogsPage() {
       try {
         setLoading(true);
         const data = await API.getLogs({ limit: 100 });
-        setLogs(data || []);
+        setLogs(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error('Failed to load logs:', err);
         // Fallback data

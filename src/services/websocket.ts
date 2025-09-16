@@ -1,5 +1,6 @@
 // Re-export from the new wsClient for compatibility
-export { wsClient as default, WSEventType as WebSocketEventType } from './wsClient'
+export { wsClient as default } from './wsClient'
+export type { WSEventType as WebSocketEventType } from './wsClient'
 export type { WSEvent as WebSocketMessage, WSEventListener as EventHandler } from './wsClient'
 
 // Legacy compatibility wrapper
