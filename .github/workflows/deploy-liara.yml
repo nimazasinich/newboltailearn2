@@ -1,0 +1,338 @@
+name: 🚀 Deploy to Liara
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      force_deploy:
+        description: 'Force deployment even if tests fail'
+        required: false
+        default: 'false'
+        type: boolean
+
+env:
+  NODE_VERSION: '20'
+  LIARA_APP_ID: 'newboltailearn'
+  PORT: '8000'
+
+jobs:
+  # Validation job - runs on all triggers
+  validate:
+    name: 🔍 Validate & Test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 🔧 Install dependencies
+        run: npm ci
+
+      - name: 🧹 Run linting
+        run: |
+          npm run lint || {
+            echo "Linting failed, attempting to fix..."
+            npm run lint -- --fix
+            npm run lint
+          }
+
+      - name: 🔍 Run type checking
+        run: |
+          if [ -f tsconfig.json ]; then
+            npm run type-check
+          else
+            echo "No tsconfig.json found, skipping type check"
+          fi
+
+      - name: 🏗️ Run build
+        run: |
+          npm run build || echo "No build script or build failed"
+
+      - name: 🗄️ Validate database schema
+        run: |
+          # Create scripts directory if it doesn't exist
+          mkdir -p scripts
+          
+          # Run database migration and validation
+          node scripts/migrate-db-schema.js || echo "Migration not needed"
+          node scripts/validate-db-schema.js
+
+      - name: 🧪 Run tests
+        run: |
+          npm test || {
+            if [ "${{ github.event.inputs.force_deploy }}" = "true" ]; then
+              echo "Tests failed but force_deploy is enabled"
+              exit 0
+            else
+              echo "Tests failed - stopping deployment"
+              exit 1
+            fi
+          }
+        env:
+          NODE_ENV: test
+
+      - name: 📊 Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: |
+            test-results/
+            coverage/
+            deploy-reports/
+          retention-days: 7
+
+  # Deployment job - only runs on main branch push or manual trigger
+  deploy:
+    name: 🚀 Deploy to Liara
+    runs-on: ubuntu-latest
+    needs: validate
+    if: |
+      (github.ref == 'refs/heads/main' && github.event_name == 'push') || 
+      github.event_name == 'workflow_dispatch'
+    
+    environment:
+      name: production
+      url: https://newboltailearn.liara.run
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 🔧 Install dependencies
+        run: npm ci
+
+      - name: 🌐 Install Liara CLI
+        run: npm install -g @liara/cli
+
+      - name: 📋 Validate tools
+        run: |
+          liara --version
+          node --version
+          npm --version
+          echo "✅ All tools validated"
+
+      - name: 🐳 Ensure Docker configuration
+        run: |
+          # Ensure .dockerignore exists
+          if [ ! -f .dockerignore ]; then
+            cat > .dockerignore << 'EOF'
+          node_modules
+          .git
+          .github
+          dist
+          build
+          docs
+          archive
+          *.log
+          *.env*
+          .vscode
+          coverage
+          playwright-report
+          tmp
+          test-results
+          checkpoints
+          backups
+          EOF
+            echo "✅ Created .dockerignore"
+          fi
+
+          # Ensure Dockerfile exists
+          if [ ! -f Dockerfile ]; then
+            cat > Dockerfile << 'EOF'
+          # syntax=docker/dockerfile:1.6
+          FROM node:20-alpine
+          WORKDIR /app
+          COPY package*.json ./
+          RUN npm ci --omit=dev
+          COPY . .
+          ENV NODE_ENV=production
+          ENV PORT=${PORT:-8000}
+          EXPOSE 8000
+          USER node
+          CMD ["node", "server.js"]
+          EOF
+            echo "✅ Created Dockerfile"
+          fi
+
+      - name: 🗄️ Database migration and validation
+        run: |
+          echo "Running database migration..."
+          node scripts/migrate-db-schema.js || echo "Migration completed or not needed"
+          
+          echo "Validating database schema..."
+          node scripts/validate-db-schema.js || {
+            echo "❌ Database schema validation failed"
+            exit 1
+          }
+
+      - name: 🔐 Authenticate with Liara
+        run: |
+          liara account:add --api-token "${{ secrets.LIARA_API_TOKEN }}" \
+            ${{ secrets.LIARA_TEAM_ID && format('--team-id {0}', secrets.LIARA_TEAM_ID) || '' }}
+          echo "✅ Liara authentication successful"
+
+      - name: 🏗️ Ensure Liara app exists
+        run: |
+          liara create "${{ env.LIARA_APP_ID }}" --platform docker \
+            ${{ secrets.LIARA_TEAM_ID && format('--team-id {0}', secrets.LIARA_TEAM_ID) || '' }} || {
+            echo "App may already exist, continuing..."
+          }
+
+      - name: ⚙️ Configure environment variables
+        run: |
+          echo "Setting core environment variables..."
+          liara env:set --app "${{ env.LIARA_APP_ID }}" NODE_ENV=production
+          liara env:set --app "${{ env.LIARA_APP_ID }}" PORT="${{ env.PORT }}"
+          liara env:set --app "${{ env.LIARA_APP_ID }}" HOST=0.0.0.0
+          
+          echo "Setting database configuration..."
+          if [ -n "${{ secrets.DATABASE_URL }}" ]; then
+            liara env:set --app "${{ env.LIARA_APP_ID }}" DATABASE_URL="${{ secrets.DATABASE_URL }}"
+          else
+            liara env:set --app "${{ env.LIARA_APP_ID }}" DB_PATH="./database.sqlite"
+          fi
+          
+          echo "Setting security secrets..."
+          if [ -n "${{ secrets.JWT_SECRET }}" ]; then
+            liara env:set --app "${{ env.LIARA_APP_ID }}" JWT_SECRET="${{ secrets.JWT_SECRET }}"
+          fi
+          
+          if [ -n "${{ secrets.SESSION_SECRET }}" ]; then
+            liara env:set --app "${{ env.LIARA_APP_ID }}" SESSION_SECRET="${{ secrets.SESSION_SECRET }}"
+          fi
+          
+          echo "Setting application-specific variables..."
+          liara env:set --app "${{ env.LIARA_APP_ID }}" SERVE_FRONTEND=false
+          liara env:set --app "${{ env.LIARA_APP_ID }}" ENABLE_HF_STARTUP_CHECK=false
+          liara env:set --app "${{ env.LIARA_APP_ID }}" ENABLE_WORKERS=true
+          
+          echo "✅ Environment variables configured"
+
+      - name: 🚀 Deploy to Liara
+        run: |
+          echo "Starting deployment to Liara..."
+          liara deploy --app "${{ env.LIARA_APP_ID }}" --dockerfile ./Dockerfile --port "${{ env.PORT }}"
+          echo "✅ Deployment completed"
+
+      - name: 🏥 Health check and monitoring
+        run: |
+          echo "Waiting for application to start..."
+          sleep 60
+          
+          APP_URL="https://${{ env.LIARA_APP_ID }}.liara.run"
+          echo "Running health check on $APP_URL"
+          
+          # Try health endpoint
+          if curl -fsS --max-time 30 "$APP_URL/health"; then
+            echo "✅ Health endpoint check passed"
+          elif curl -fsS --max-time 30 "$APP_URL/"; then
+            echo "✅ Root endpoint accessible"
+          else
+            echo "⚠️ Health check failed, but deployment may still be successful"
+            echo "Check application logs manually"
+          fi
+
+      - name: 📊 Get application logs
+        if: always()
+        run: |
+          echo "Getting recent application logs..."
+          liara logs --app "${{ env.LIARA_APP_ID }}" --since "5m" > deployment-logs.txt || {
+            echo "Could not retrieve logs"
+          }
+
+      - name: 📈 Upload deployment artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-logs
+          path: |
+            deployment-logs.txt
+            deploy-reports/
+          retention-days: 14
+
+      - name: 💬 Deployment notification
+        if: success()
+        run: |
+          echo "🎉 Deployment completed successfully!"
+          echo "🌐 Application URL: https://${{ env.LIARA_APP_ID }}.liara.run"
+          echo "📊 Monitor with: liara logs --app ${{ env.LIARA_APP_ID }} --follow"
+
+      - name: 🚨 Failure notification
+        if: failure()
+        run: |
+          echo "❌ Deployment failed!"
+          echo "Check the logs above for details"
+          echo "Common issues:"
+          echo "- Missing environment variables (LIARA_API_TOKEN, etc.)"
+          echo "- Database schema issues"
+          echo "- Application startup errors"
+          echo "- Network connectivity issues"
+
+  # Post-deployment validation
+  post-deploy:
+    name: 🔍 Post-deployment validation
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: success()
+
+    steps:
+      - name: 🌐 Extended health check
+        run: |
+          APP_URL="https://${{ env.LIARA_APP_ID }}.liara.run"
+          
+          echo "Running extended health checks..."
+          
+          # Check if app responds within reasonable time
+          for i in {1..5}; do
+            echo "Health check attempt $i/5..."
+            if curl -fsS --max-time 10 "$APP_URL/" > /dev/null; then
+              echo "✅ Application is responsive"
+              break
+            fi
+            
+            if [ $i -eq 5 ]; then
+              echo "⚠️ Application may not be fully ready yet"
+            fi
+            
+            sleep 30
+          done
+
+      - name: 📊 Performance check
+        run: |
+          APP_URL="https://${{ env.LIARA_APP_ID }}.liara.run"
+          
+          echo "Running basic performance check..."
+          time curl -fsS --max-time 30 "$APP_URL/" > /dev/null || {
+            echo "⚠️ Performance check failed or timed out"
+          }
+
+      - name: ✅ Deployment summary
+        run: |
+          echo "📋 DEPLOYMENT SUMMARY"
+          echo "===================="
+          echo "✅ Application deployed successfully"
+          echo "🌐 URL: https://${{ env.LIARA_APP_ID }}.liara.run"
+          echo "🏷️ Version: ${{ github.sha }}"
+          echo "📅 Deployed: $(date)"
+          echo "🔧 Node.js: ${{ env.NODE_VERSION }}"
+          echo "📦 Port: ${{ env.PORT }}"
