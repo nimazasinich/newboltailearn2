@@ -1,12 +1,12 @@
 # ===== BASE IMAGE =====
-FROM node:18-alpine AS base
+FROM node:20-alpine AS base
 RUN apk add --no-cache python3 make g++ sqlite curl
 WORKDIR /app
 
 # ===== DEVELOPMENT STAGE =====
 FROM base AS development
 COPY package*.json ./
-RUN npm install
+RUN npm install --legacy-peer-deps
 COPY . .
 EXPOSE 5173 8000
 CMD ["npm", "run", "dev"]
@@ -14,8 +14,7 @@ CMD ["npm", "run", "dev"]
 # ===== BUILD FRONTEND STAGE =====
 FROM base AS build-frontend
 COPY package*.json ./
-# CRITICAL FIX: Install ALL dependencies including devDependencies for build
-RUN npm install
+RUN npm install --legacy-peer-deps
 COPY . .
 RUN npm run build
 
@@ -29,7 +28,7 @@ CMD ["nginx", "-g", "daemon off;"]
 # ===== BACKEND STAGE =====
 FROM base AS backend
 COPY package*.json ./
-RUN npm ci --only=production && npm cache clean --force
+RUN npm ci --only=production --legacy-peer-deps && npm cache clean --force
 COPY server/ ./server/
 COPY .env* ./
 RUN mkdir -p data && chmod 755 data
