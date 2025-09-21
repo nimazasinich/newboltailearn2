@@ -1,17 +1,193 @@
-.git
-.github
+# NewBolt AI Learn - Docker Ignore File
+# Exclude unnecessary files from Docker build context
+
+# Node modules (will be installed in container)
 node_modules
-Dockerfile
-.dockerignore
-.vscode
-coverage
-playwright-report
-docs
-archive
-dist
-build
-tmp
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files (use --env-file instead)
+.env
+.env.local
+.env.development
+.env.production
+
+# Git
+.git
+.gitignore
+
+# Documentation
+*.md
+docs/
+DOCKER_SETUP.md
+DEPLOYMENT.md
+README.md
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
 *.log
-*.sqlite
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+.nyc_output/
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env*
+
+# next.js build output
+.next
+
+# nuxt.js build output
+.nuxt
+
+# vuepress build output
+.vuepress/dist
+
+# Serverless directories
+.serverless
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Build outputs
+dist/
+build/
+
+# Test files
+tests/
+test/
+__tests__/
+*.test.js
+*.spec.js
+
+# Backup files
+backups/
+*.backup
+*.bak
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# Docker files (don't include in build context)
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Scripts (may contain sensitive info)
+scripts/
+*.sh
+
+# Archive and deployment files
+archive/
+deploy-*/
+*.tar.gz
+*.zip
+
+# Database files (use volumes instead)
 *.db
-*.env*
+*.sqlite
+*.sqlite3
+database.sqlite*
+*.db-shm
+*.db-wal
+
+# Model and dataset files (use volumes)
+models/
+datasets/
+checkpoints/
+exports/
+
+# Render deployment files
+render.yaml
+RENDER_DEPLOYMENT_GUIDE.md
+
+# Playwright
+playwright-report/
+test-results/
+
+# TypeScript build info
+*.tsbuildinfo
+
+# ESLint config (included in package.json)
+.eslintrc*
+
+# Prettier config
+.prettierrc*
+
+# EditorConfig
+.editorconfig
+
+# GitHub
+.github/
+
+# Deployment scripts
+deploy-*.sh
+merge_*.sh
+replace_*.sh
+create_*.sh
+
+# Test and validation files
+test_*.js
+validate-*.js
+*-test-runner.js
+e2e-test-runner.js
+integration-test-runner.js
+master-test-runner.js
+stress-test-runner.js
+
+# Kubernetes
+k8s-*
+
+# Environment healing scripts
+*-healer.js
+
+# Safety scripts
+git-safety.js
+
+# Quick fix scripts
+quick-fix.sh
+complete-fix.sh
