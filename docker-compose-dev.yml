@@ -10,16 +10,18 @@ services:
       context: .
       dockerfile: Dockerfile
       target: development
-    container_name: newboltailearn-backend-dev
+    container_name: persian-legal-ai-backend-dev
     ports:
-      - "3000:3000"
+      - "8000:3000"  # Map host port 8000 to container port 3000
       - "9229:9229"  # Node.js debug port
     environment:
       - NODE_ENV=development
       - PORT=3000
+      - SERVER_PORT=3000
       - HOST=0.0.0.0
       - SERVE_FRONTEND=false
-      - DB_PATH=/app/data/persian_legal_ai.db
+      - DATABASE_PATH=/app/data/database.sqlite
+      - DB_PATH=/app/data/database.sqlite  # Legacy compatibility
       - JWT_SECRET=dev-jwt-secret-not-secure
       - SESSION_SECRET=dev-session-secret-not-secure
       - CSRF_SECRET=dev-csrf-secret-not-secure
@@ -48,12 +50,12 @@ services:
       context: .
       dockerfile: Dockerfile
       target: development
-    container_name: newboltailearn-frontend-dev
+    container_name: persian-legal-ai-frontend-dev
     ports:
       - "5173:5173"
     environment:
       - NODE_ENV=development
-      - VITE_API_URL=http://localhost:3000
+      - VITE_API_URL=http://localhost:8000  # Point to backend on host port 8000
       - VITE_BASE_PATH=/
     volumes:
       - .:/app
@@ -86,11 +88,11 @@ services:
   # ===== Database Admin (Optional) =====
   db-admin:
     image: adminer
-    container_name: newboltailearn-db-admin
+    container_name: persian-legal-ai-db-admin
     ports:
-      - "8080:8080"
+      - "8081:8080"  # Use port 8081 to avoid conflict with frontend
     environment:
-      - ADMINER_DEFAULT_SERVER=sqlite:///app/data/persian_legal_ai.db
+      - ADMINER_DEFAULT_SERVER=sqlite:///app/data/database.sqlite
     volumes:
       - ./data:/app/data:ro
     restart: unless-stopped

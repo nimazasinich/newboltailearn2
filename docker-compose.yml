@@ -3,19 +3,23 @@ services:
     build:
       context: .
       target: backend
-    container_name: newbolt-backend
+    container_name: persian-legal-ai-backend
     ports:
-      - "3000:3000"            # (aligns with actual runtime port from logs)
-    env_file:
-      - .env.development
+      - "8000:3000"            # Map host port 8000 to container port 3000
+    environment:
+      - NODE_ENV=production
+      - DATABASE_PATH=/app/data/database.sqlite
+      - SERVER_PORT=3000
+      - PORT=3000
+      - CORS_ORIGIN=http://localhost:8080
     volumes:
-      - backend-data:/app/data # (named volume; avoids Windows bind-mount issues with SQLite)
+      - backend-data:/app/data # Named volume for SQLite database persistence
     healthcheck:
       test: ["CMD", "curl", "-fsS", "http://localhost:3000/health"]
       interval: 30s
-      timeout: 10s
+      timeout: 15s
       retries: 3
-      start_period: 40s
+      start_period: 60s        # Give more time for database initialization
     restart: unless-stopped
     networks: [app-network]
 
@@ -23,9 +27,11 @@ services:
     build:
       context: .
       target: frontend
-    container_name: newbolt-frontend
+    container_name: persian-legal-ai-frontend
     ports:
       - "8080:80"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000
     depends_on:
       backend:
         condition: service_healthy
@@ -37,4 +43,6 @@ networks:
     driver: bridge
 
 volumes:
-  backend-data: {}  # (named volume lives inside Docker; safe for SQLite WAL)
+  backend-data:
+    driver: local
+    # Named volume for SQLite database persistence with WAL mode support

@@ -1,242 +1,140 @@
-import Database from 'better-sqlite3';
+import DatabaseManager from '../../database/DatabaseManager.js';
 import { config } from '../security/config.js';
 
 /**
- * Database optimization and management utilities
+ * Database utilities that use the DatabaseManager singleton
+ * This prevents race conditions and ensures consistent database access
  */
-export class DatabaseManager {
-  private db: Database.Database;
 
-  constructor(dbPath: string) {
-    this.db = new Database(dbPath);
-    this.optimize();
-  }
-
-  /**
-   * Apply SQLite optimizations for performance
-   */
-  private optimize(): void {
-    // Enable Write-Ahead Logging for better concurrency
-    this.db.pragma('journal_mode = WAL');
-    
-    // Increase cache size (negative value = KB, positive = pages)
-    this.db.pragma('cache_size = -64000'); // 64MB cache
-    
-    // Enable memory mapping for faster reads
-    this.db.pragma('mmap_size = 30000000000'); // 30GB mmap
-    
-    // Synchronous mode - NORMAL is safe and faster than FULL
-    this.db.pragma('synchronous = NORMAL');
-    
-    // Enable foreign key constraints
-    this.db.pragma('foreign_keys = ON');
-    
-    // Optimize for faster writes
-    this.db.pragma('temp_store = MEMORY');
-    
-    // Auto vacuum to reclaim space
-    this.db.pragma('auto_vacuum = INCREMENTAL');
-    
-    // Increase page size for better performance with larger data
-    // Note: This only works on new databases
-    if (this.isDatabaseNew()) {
-      this.db.pragma('page_size = 8192');
-    }
-    
-    console.log('✅ Database optimizations applied');
-  }
-
-  /**
-   * Check if database is new (no tables)
-   */
-  private isDatabaseNew(): boolean {
-    const tables = this.db.prepare(
-      "SELECT COUNT(*) as count FROM sqlite_master WHERE type='table'"
-    ).get() as { count: number };
-    
-    return tables.count === 0;
-  }
-
-  /**
-   * Perform database maintenance
-   */
-  async performMaintenance(): Promise<void> {
+/**
+ * Perform database maintenance using the singleton DatabaseManager
+ */
+export async function performDatabaseMaintenance(): Promise<void> {
+  try {
     console.log('Starting database maintenance...');
     
+    const db = DatabaseManager.getConnection();
+    
     // Analyze tables for query optimization
-    this.db.exec('ANALYZE');
+    db.exec('ANALYZE');
     console.log('✓ Database analyzed');
     
     // Incremental vacuum to reclaim space
-    this.db.exec('PRAGMA incremental_vacuum');
+    db.exec('PRAGMA incremental_vacuum');
     console.log('✓ Incremental vacuum completed');
     
     // Optimize database
-    this.db.exec('PRAGMA optimize');
+    db.exec('PRAGMA optimize');
     console.log('✓ Database optimized');
     
     // Check integrity
-    const integrityCheck = this.db.pragma('integrity_check');
-    if (integrityCheck[0].integrity_check === 'ok') {
+    const integrityCheck = db.pragma('integrity_check');
+    if (Array.isArray(integrityCheck) && integrityCheck[0]?.integrity_check === 'ok') {
       console.log('✓ Database integrity check passed');
     } else {
       console.error('⚠ Database integrity issues detected:', integrityCheck);
     }
     
     console.log('Database maintenance completed');
+  } catch (error) {
+    console.error('❌ Database maintenance failed:', error);
+    throw error;
   }
+}
 
-  /**
-   * Get database statistics
-   */
-  getStatistics(): any {
+/**
+ * Get database statistics using the singleton
+ */
+export function getDatabaseStatistics(): any {
+  try {
+    const db = DatabaseManager.getConnection();
+    
     return {
-      pageCount: this.db.pragma('page_count')[0],
-      pageSize: this.db.pragma('page_size')[0],
-      cacheSize: this.db.pragma('cache_size')[0],
-      journalMode: this.db.pragma('journal_mode')[0],
-      walCheckpoint: this.db.pragma('wal_checkpoint(PASSIVE)')[0],
-      stats: this.db.pragma('stats'),
-      compiledOptions: this.db.pragma('compile_options')
+      pageCount: db.pragma('page_count')[0],
+      pageSize: db.pragma('page_size')[0],
+      cacheSize: db.pragma('cache_size')[0],
+      journalMode: db.pragma('journal_mode')[0],
+      walCheckpoint: db.pragma('wal_checkpoint(PASSIVE)')[0],
+      stats: db.pragma('stats'),
+      compiledOptions: db.pragma('compile_options')
     };
+  } catch (error) {
+    console.error('❌ Failed to get database statistics:', error);
+    return { error: error.message };
   }
+}
 
-  /**
-   * Create a checkpoint (for WAL mode)
-   */
-  checkpoint(mode: 'PASSIVE' | 'FULL' | 'RESTART' | 'TRUNCATE' = 'PASSIVE'): void {
-    const result = this.db.pragma(`wal_checkpoint(${mode})`);
+/**
+ * Create a checkpoint (for WAL mode)
+ */
+export function createCheckpoint(mode: 'PASSIVE' | 'FULL' | 'RESTART' | 'TRUNCATE' = 'PASSIVE'): void {
+  try {
+    const db = DatabaseManager.getConnection();
+    const result = db.pragma(`wal_checkpoint(${mode})`);
     console.log(`Checkpoint (${mode}) completed:`, result);
+  } catch (error) {
+    console.error(`❌ Checkpoint (${mode}) failed:`, error);
+    throw error;
   }
+}
 
-  /**
-   * Begin transaction with proper isolation
-   */
-  transaction<T>(fn: () => T): T {
-    const trx = this.db.transaction(fn);
-    return trx.immediate(); // Use immediate mode to prevent deadlocks
-  }
-
-  /**
-   * Prepare statement with caching
-   */
-  prepare(sql: string): Database.Statement {
-    return this.db.prepare(sql);
-  }
-
-  /**
-   * Execute multiple statements in a transaction
-   */
-  batchExecute(statements: string[]): void {
-    const batch = this.db.transaction(() => {
+/**
+ * Execute multiple statements in a transaction using the singleton
+ */
+export function batchExecute(statements: string[]): void {
+  try {
+    const db = DatabaseManager.getConnection();
+    
+    const batch = db.transaction(() => {
       for (const stmt of statements) {
-        this.db.exec(stmt);
+        db.exec(stmt);
       }
     });
+    
     batch();
-  }
-
-  /**
-   * Close database connection properly
-   */
-  close(): void {
-    // Checkpoint before closing
-    this.checkpoint('TRUNCATE');
-    
-    // Close the database
-    this.db.close();
-    
-    console.log('Database connection closed');
-  }
-
-  /**
-   * Get the database instance
-   */
-  getDatabase(): Database.Database {
-    return this.db;
+  } catch (error) {
+    console.error('❌ Batch execution failed:', error);
+    throw error;
   }
 }
 
 /**
- * Database connection pool for better concurrency
+ * Execute a function within a transaction using the singleton
  */
-export class DatabasePool {
-  private connections: Database.Database[] = [];
-  private available: Database.Database[] = [];
-  private dbPath: string;
-  private maxConnections: number;
-
-  constructor(dbPath: string, maxConnections: number = 5) {
-    this.dbPath = dbPath;
-    this.maxConnections = maxConnections;
-    this.initializePool();
-  }
-
-  private initializePool(): void {
-    for (let i = 0; i < this.maxConnections; i++) {
-      const db = new Database(this.dbPath);
-      
-      // Apply optimizations to each connection
-      db.pragma('journal_mode = WAL');
-      db.pragma('cache_size = -16000'); // 16MB per connection
-      db.pragma('synchronous = NORMAL');
-      db.pragma('foreign_keys = ON');
-      
-      this.connections.push(db);
-      this.available.push(db);
-    }
-    
-    console.log(`Database pool initialized with ${this.maxConnections} connections`);
-  }
-
-  /**
-   * Get a connection from the pool
-   */
-  async acquire(): Promise<Database.Database> {
-    // Wait if no connections available
-    while (this.available.length === 0) {
-      await new Promise(resolve => setTimeout(resolve, 10));
-    }
-    
-    const db = this.available.pop()!;
-    return db;
-  }
-
-  /**
-   * Return a connection to the pool
-   */
-  release(db: Database.Database): void {
-    if (!this.available.includes(db) && this.connections.includes(db)) {
-      this.available.push(db);
-    }
-  }
-
-  /**
-   * Execute a query with automatic connection management
-   */
-  async execute<T>(fn: (db: Database.Database) => T): Promise<T> {
-    const db = await this.acquire();
-    try {
-      return fn(db);
-    } finally {
-      this.release(db);
-    }
-  }
-
-  /**
-   * Close all connections in the pool
-   */
-  closeAll(): void {
-    for (const db of this.connections) {
-      db.close();
-    }
-    this.connections = [];
-    this.available = [];
-    console.log('All database connections closed');
+export function executeTransaction<T>(fn: () => T): T {
+  try {
+    const db = DatabaseManager.getConnection();
+    const trx = db.transaction(fn);
+    return trx.immediate(); // Use immediate mode to prevent deadlocks
+  } catch (error) {
+    console.error('❌ Transaction execution failed:', error);
+    throw error;
   }
 }
 
 /**
- * Create and export database manager instance
+ * Get the singleton database instance
+ * @deprecated Use DatabaseManager.getConnection() directly
  */
-export const dbManager = new DatabaseManager(config.DATABASE_PATH || './persian_legal_ai.db');
+export function getDatabaseInstance() {
+  return DatabaseManager.getConnection();
+}
+
+/**
+ * Re-export the DatabaseManager singleton for convenience
+ */
+export { default as DatabaseManager } from '../../database/DatabaseManager.js';
+
+/**
+ * Legacy compatibility - export database manager reference
+ * @deprecated Use DatabaseManager singleton directly
+ */
+export const dbManager = {
+  getDatabase: () => DatabaseManager.getConnection(),
+  getStatistics: getDatabaseStatistics,
+  performMaintenance: performDatabaseMaintenance,
+  checkpoint: createCheckpoint,
+  batchExecute: batchExecute,
+  transaction: executeTransaction,
+  close: () => DatabaseManager.close()
+};

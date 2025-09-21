@@ -30,7 +30,7 @@ import { testHFConnection } from './utils/decode.js'; // getHFHeaders, logTokenS
 import { requireAuth } from './middleware/auth.js'; // requireRole unused
 import { AuthService } from './services/authService.js';
 import { setupModules } from './modules/setup.js';
-import { initializeDatabase } from './database/index.js'; // getDatabaseManager unused
+import DatabaseManager from './database/DatabaseManager.js';
 
 // ES module __dirname equivalent
 const __filename = fileURLToPath(import.meta.url);
@@ -89,7 +89,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Database and services - will be initialized in async startup
-let db, authService, dbManager;
+let db, authService;
 
 // Static serving configuration
 const SERVE_FRONTEND = (process.env.SERVE_FRONTEND || 'false').toLowerCase() === 'true';
@@ -102,8 +102,8 @@ async function startServer() {
         
         // Initialize database with migrations and seed data
         console.log('🔄 Setting up database...');
-        dbManager = await initializeDatabase();
-        db = dbManager.getConnection();
+        await DatabaseManager.initialize();
+        db = DatabaseManager.getConnection();
         
         // Initialize Auth Service
         authService = new AuthService(db);
@@ -144,31 +144,30 @@ async function startServer() {
 
 // Safe database operations with type validation
 function setupDatabaseOperations() {
-    // Utility function for safe database logging
+    // Utility function for safe database logging using DatabaseManager
     global.logToDatabase = (level, category, message, metadata) => {
-        try {
-            if (!db) return;
-            
-            const stmt = db.prepare(`
-                INSERT INTO system_logs (level, category, message, metadata)
-                VALUES (?, ?, ?, ?)
-            `);
-            
-            stmt.run(
-                String(level),
-                String(category), 
-                String(message),
-                metadata ? JSON.stringify(metadata) : null
-            );
-        } catch (error) {
-            console.error('❌ Failed to log to database:', error);
-        }
+        DatabaseManager.logToDatabase(level, category, message, metadata);
     };
     
     // Safe dataset insertion with proper validation
     global.insertDatasetSafe = (datasetData) => {
         try {
-            return dbManager.insertDataset(datasetData);
+            const db = DatabaseManager.getConnection();
+            const stmt = db.prepare(`
+                INSERT OR IGNORE INTO datasets (id, name, source, huggingface_id, samples, size_mb, status, type, description)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `);
+            return stmt.run(
+                datasetData.id,
+                datasetData.name,
+                datasetData.source,
+                datasetData.huggingface_id,
+                datasetData.samples,
+                datasetData.size_mb,
+                datasetData.status || 'available',
+                datasetData.type,
+                datasetData.description
+            );
         } catch (error) {
             console.error('❌ Failed to insert dataset:', error);
             global.logToDatabase('error', 'database', 'Dataset insertion failed', { error: error.message, data: datasetData });
@@ -178,7 +177,23 @@ function setupDatabaseOperations() {
     // Safe model insertion with proper validation
     global.insertModelSafe = (modelData) => {
         try {
-            return dbManager.insertModel(modelData);
+            const db = DatabaseManager.getConnection();
+            const stmt = db.prepare(`
+                INSERT INTO models (name, type, status, accuracy, loss, epochs, current_epoch, dataset_id, config, created_by)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `);
+            return stmt.run(
+                modelData.name,
+                modelData.type,
+                modelData.status || 'idle',
+                modelData.accuracy || 0,
+                modelData.loss || 0,
+                modelData.epochs || 0,
+                modelData.current_epoch || 0,
+                modelData.dataset_id,
+                modelData.config ? JSON.stringify(modelData.config) : null,
+                modelData.created_by
+            );
         } catch (error) {
             console.error('❌ Failed to insert model:', error);
             global.logToDatabase('error', 'database', 'Model insertion failed', { error: error.message, data: modelData });
@@ -236,39 +251,16 @@ function setupAPIRoutes() {
             const Database = await import('better-sqlite3');
             console.log('✅ better-sqlite3 import successful');
             
-            // Test database connection and basic operations
-            if (typeof dbManager !== 'undefined' && dbManager) {
-                const db = dbManager.getConnection();
-                
-                // Test query
-                const testResult = db.prepare('SELECT datetime("now") as current_time').get();
-                healthData.database.connected = true;
-                healthData.database.last_query = testResult.current_time;
-                
-                // Test write operation to health check table
-                try {
-                    db.exec(`
-                        CREATE TABLE IF NOT EXISTS health_check (
-                            id INTEGER PRIMARY KEY,
-                            timestamp TEXT,
-                            node_version TEXT,
-                            abi_version TEXT
-                        )
-                    `);
-                    
-                    const insertStmt = db.prepare(`
-                        INSERT OR REPLACE INTO health_check (id, timestamp, node_version, abi_version) 
-                        VALUES (1, ?, ?, ?)
-                    `);
-                    insertStmt.run(new Date().toISOString(), process.version, process.versions.modules);
-                    
-                    healthData.database.migrations.completed = true;
-                    healthData.database.migrations.timestamp = new Date().toISOString();
-                    
-                } catch (writeError) {
-                    console.warn('⚠️ Database write test failed:', writeError.message);
-                    healthData.database.migrations.error = writeError.message;
-                }
+            // Test database connection using DatabaseManager
+            const dbHealth = await DatabaseManager.healthCheck();
+            healthData.database.connected = dbHealth.healthy;
+            
+            if (dbHealth.healthy) {
+                healthData.database.last_query = dbHealth.timestamp;
+                healthData.database.migrations.completed = true;
+                healthData.database.migrations.timestamp = dbHealth.timestamp;
+            } else {
+                healthData.database.migrations.error = dbHealth.error;
             }
             
             healthData.status = 'healthy';
@@ -290,13 +282,15 @@ function setupAPIRoutes() {
     });
 
     // Detailed API health check endpoint
-    app.get('/api/health', (req, res) => {
+    app.get('/api/health', async (req, res) => {
         try {
-            const stats = dbManager.getStats();
+            const stats = DatabaseManager.getStats();
+            const health = await DatabaseManager.healthCheck();
             res.json({
-                status: 'healthy',
+                status: health.healthy ? 'healthy' : 'unhealthy',
                 timestamp: new Date().toISOString(),
-                database: stats
+                database: stats,
+                health: health
             });
         } catch (error) {
             res.status(500).json({ 
@@ -310,7 +304,7 @@ function setupAPIRoutes() {
     // Database stats endpoint
     app.get('/api/stats', requireAuth, (req, res) => {
         try {
-            const stats = dbManager.getStats();
+            const stats = DatabaseManager.getStats();
             res.json(stats);
         } catch (error) {
             res.status(500).json({ error: 'Failed to get database stats' });
@@ -320,7 +314,7 @@ function setupAPIRoutes() {
     // Debug endpoint for database schema (for troubleshooting)
     app.get('/api/debug/schema', (req, res) => {
         try {
-            const db = dbManager.getConnection();
+            const db = DatabaseManager.getConnection();
             const tables = ['datasets', 'models', 'users'];
             const schema = {};
             
@@ -406,7 +400,7 @@ function setupErrorHandling() {
 }
 
 // Start the server
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || process.env.SERVER_PORT || 8000;
 const HOST = process.env.HOST || '0.0.0.0';
 
 startServer().then(() => {
@@ -433,7 +427,17 @@ startServer().then(() => {
             console.log('ℹ️  Skipping HF startup check.');
         }
         
-        global.logToDatabase('info', 'server', `Server started on port ${PORT}`);
+        // Log server startup using the safe DatabaseManager method
+        try {
+            DatabaseManager.logToDatabase('info', 'server', `Server started on port ${PORT}`, {
+                port: PORT,
+                environment: process.env.NODE_ENV,
+                timestamp: new Date().toISOString()
+            });
+        } catch (logError) {
+            console.warn('⚠️ Failed to log server startup to database:', logError.message);
+            // Don't fail server startup due to logging issues
+        }
         console.log('🎉 Server startup completed successfully!');
     });
 }).catch(error => {
@@ -501,13 +505,11 @@ const gracefulShutdown = async (signal) => {
         }
 
         // Close database connections
-        if (typeof dbManager !== 'undefined' && dbManager) {
-            try {
-                await dbManager.close();
-                console.log('✅ Database connections closed');
-            } catch (dbError) {
-                console.log('⚠️ Error closing database:', dbError.message);
-            }
+        try {
+            await DatabaseManager.close();
+            console.log('✅ Database connections closed');
+        } catch (dbError) {
+            console.log('⚠️ Error closing database:', dbError.message);
         }
 
         clearTimeout(forceExitTimer);

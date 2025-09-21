@@ -74,16 +74,14 @@ npm run dev
    npm run dev
    ```
    
-   **Backend (port 3001):**
+   **Backend (port 8000):**
    ```bash
-   cd server
-   npm install
-   npm start
+   npm run start:dev
    ```
 
 4. **Open your browser**
    - Frontend: http://localhost:5173
-   - Backend API: http://localhost:3001
+   - Backend API: http://localhost:8000
 
 ## 🔧 Available Scripts
 
@@ -113,6 +111,81 @@ npm run dev
 - `system_metrics` - Real-time system performance data
 - `training_progress` - Model training progress updates
 - `training_complete` - Training completion notifications
+
+## 🐳 Docker Deployment
+
+### Quick Start with Docker Compose
+
+```bash
+# Production deployment
+docker-compose up --build -d
+
+# Development with hot reload
+docker-compose -f docker-compose-dev.yml up --build -d
+```
+
+### Container Configuration
+
+The application uses a multi-stage Docker build with optimized containers:
+
+- **Frontend Container**: Nginx serving static files (port 8080)
+- **Backend Container**: Node.js API server (port 8000)
+- **Database**: SQLite with persistent volume storage
+
+### Environment Variables for Docker
+
+**Production (.env.production)**:
+```env
+NODE_ENV=production
+PORT=8000
+DATABASE_PATH=/app/data/database.sqlite
+JWT_SECRET=your-production-jwt-secret
+SESSION_SECRET=your-production-session-secret
+```
+
+**Development (.env.development)**:
+```env
+NODE_ENV=development
+PORT=8000
+DATABASE_PATH=./data/database.sqlite
+DEBUG=true
+```
+
+### Database Persistence
+
+The SQLite database is stored in a Docker volume to ensure data persistence:
+
+```yaml
+volumes:
+  backend-data:
+    driver: local
+```
+
+### Container Health Checks
+
+Both containers include health checks:
+- **Backend**: `curl -fsS http://localhost:3000/health`
+- **Database**: Automatic SQLite connection testing with DatabaseManager singleton
+- **Startup Time**: 60 seconds for database initialization and migration
+
+### Docker Commands
+
+```bash
+# Build containers
+docker-compose build
+
+# Start services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
+
+# Clean up volumes (WARNING: Deletes database)
+docker-compose down -v
+```
 
 ## 🚀 Production Deployment
 
@@ -213,7 +286,7 @@ Development server proxies API calls:
    - No external font imports to avoid PostCSS issues
 
 7. **CORS/Proxy Issues**
-   - Ensure backend is running on port 3001
+   - Ensure backend is running on port 8000
    - Check Vite proxy configuration in `vite.config.ts`
    - Production: CORS allowlist configured for GitHub Pages domain
 
