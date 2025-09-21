@@ -11,10 +11,11 @@ COPY . .
 EXPOSE 5173 8000
 CMD ["npm", "run", "dev"]
 
-# ===== BUILD FRONTEND =====
+# ===== BUILD FRONTEND STAGE =====
 FROM base AS build-frontend
 COPY package*.json ./
-RUN npm ci --only=production
+# CRITICAL FIX: Install ALL dependencies including devDependencies for build
+RUN npm install
 COPY . .
 RUN npm run build
 
@@ -34,5 +35,5 @@ COPY .env* ./
 RUN mkdir -p data && chmod 755 data
 EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD node -e "const http=require('http'); http.get('http://localhost:8000/health', (res) => process.exit(res.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1));"
+  CMD node -e "const http=require('http'); http.get('http://localhost:8000/health', r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1));"
 CMD ["node", "server/index.js"]
