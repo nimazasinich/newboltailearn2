@@ -54,7 +54,20 @@
     "compose:down": "docker-compose down",
     "compose:down:dev": "docker-compose -f docker-compose-dev.yml down",
     "compose:logs": "docker-compose logs -f",
-    "compose:logs:dev": "docker-compose -f docker-compose-dev.yml logs -f"
+    "compose:logs:dev": "docker-compose -f docker-compose-dev.yml logs -f",
+    "docker:build": "docker build -t newboltailearn .",
+    "docker:build:backend": "docker build --target backend -t newboltailearn-backend .",
+    "docker:build:frontend": "docker build --target frontend -t newboltailearn-frontend .",
+    "docker:build:dev": "docker build --target development -t newboltailearn-dev .",
+    "docker:run:backend": "docker run -d --name newbolt-backend -p 8000:8000 --env-file .env.development -v $(pwd)/data:/app/data newboltailearn-backend",
+    "docker:run:frontend": "docker run -d --name newbolt-frontend -p 3000:80 newboltailearn-frontend",
+    "docker:compose:up": "docker compose up --build -d",
+    "docker:compose:down": "docker compose down -v",
+    "docker:compose:dev": "docker compose --profile dev up --build -d",
+    "docker:clean": "docker system prune -af && docker volume prune -f",
+    "docker:logs:backend": "docker logs -f newbolt-backend",
+    "docker:logs:frontend": "docker logs -f newbolt-frontend",
+    "docker:shell:backend": "docker exec -it newbolt-backend sh"
   },
   "dependencies": {
     "@tensorflow/tfjs-node": "^4.10.0",

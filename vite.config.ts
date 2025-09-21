@@ -14,8 +14,8 @@ export default ({ mode }) => {
       strictPort: true,
       host: true,
       proxy: {
-        '/api': { target: 'http://localhost:3001', changeOrigin: true },
-        '/ws':  { target: 'ws://localhost:3001',  changeOrigin: true, ws: true }
+        '/api': { target: 'http://localhost:8000', changeOrigin: true },
+        '/ws':  { target: 'ws://localhost:8000',  changeOrigin: true, ws: true }
       }
     },
     build: {
