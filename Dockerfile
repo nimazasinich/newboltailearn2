@@ -27,13 +27,15 @@ CMD ["nginx", "-g", "daemon off;"]
 
 # ===== BACKEND STAGE =====
 FROM base AS backend
+RUN apk add --no-cache su-exec
 COPY package*.json ./
 RUN npm ci --only=production --legacy-peer-deps && npm cache clean --force
 COPY server/ ./server/
 COPY .env* ./
-RUN mkdir -p /app/data && chmod 755 /app/data && chown node:node /app/data
-USER node
+RUN mkdir -p /app/data
+COPY server/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD node -e "const http=require('http'); http.get('http://localhost:3000/api/health', r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1));"
-CMD ["node", "server/index.js"]
+  CMD node -e "require('http').get('http://localhost:3000/health', r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"
+ENTRYPOINT ["docker-entrypoint.sh"]

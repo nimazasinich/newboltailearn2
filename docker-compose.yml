@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   backend:
     build:
@@ -7,18 +5,19 @@ services:
       target: backend
     container_name: newbolt-backend
     ports:
-      - "3000:3000"
+      - "3000:3000"            # (aligns with actual runtime port from logs)
     env_file:
       - .env.development
     volumes:
-      - backend-data:/app/data
+      - backend-data:/app/data # (named volume; avoids Windows bind-mount issues with SQLite)
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
     restart: unless-stopped
+    networks: [app-network]
 
   frontend:
     build:
@@ -26,12 +25,16 @@ services:
       target: frontend
     container_name: newbolt-frontend
     ports:
-      - "8080:80"
+      - "3000:80"
     depends_on:
       backend:
         condition: service_healthy
     restart: unless-stopped
+    networks: [app-network]
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
-  backend-data:
-    driver: local
+  backend-data: {}  # (named volume lives inside Docker; safe for SQLite WAL)
