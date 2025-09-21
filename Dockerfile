@@ -8,7 +8,7 @@ FROM base AS development
 COPY package*.json ./
 RUN npm install --legacy-peer-deps
 COPY . .
-EXPOSE 5173 8000
+EXPOSE 5173 3000
 CMD ["npm", "run", "dev"]
 
 # ===== BUILD FRONTEND STAGE =====
@@ -31,8 +31,9 @@ COPY package*.json ./
 RUN npm ci --only=production --legacy-peer-deps && npm cache clean --force
 COPY server/ ./server/
 COPY .env* ./
-RUN mkdir -p data && chmod 755 data
-EXPOSE 8000
+RUN mkdir -p /app/data && chmod 755 /app/data && chown node:node /app/data
+USER node
+EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD node -e "const http=require('http'); http.get('http://localhost:8000/health', r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1));"
+  CMD node -e "const http=require('http'); http.get('http://localhost:3000/api/health', r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1));"
 CMD ["node", "server/index.js"]
