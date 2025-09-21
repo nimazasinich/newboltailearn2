@@ -1,2 +1,0 @@
-import{j as e,d as s}from"./index-C8gKYOKK.js";function c({className:a,value:t=0,max:l=100,size:n="default",variant:r="default",...d}){const o=Math.min(Math.max(t/l*100,0),100),i={default:"h-2",sm:"h-1",lg:"h-3"},u={default:"bg-blue-600",success:"bg-green-600",warning:"bg-yellow-600",danger:"bg-red-600"};return e.jsx("div",{className:s("w-full bg-gray-200 rounded-full overflow-hidden",i[n],a),...d,children:e.jsx("div",{className:s("h-full transition-all duration-300 ease-out",u[r]),style:{width:`${o}%`}})})}export{c as P};
-//# sourceMappingURL=Progress-5ARiHOqa.js.map
