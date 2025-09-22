@@ -131,8 +131,8 @@ export const API = {
   health: (): Promise<Health> => requestWithSchema('/health', HealthSchema),
   
   // System monitoring
-  monitoring: (): Promise<SystemMetrics> => requestWithSchema('/monitoring', SystemMetricsSchema),
-  systemStats: (): Promise<SystemMetrics> => requestWithSchema('/system-stats', SystemMetricsSchema),
+  monitoring: (): Promise<SystemMetrics> => requestWithSchema('/system/metrics', SystemMetricsSchema),
+  systemStats: (): Promise<SystemMetrics> => requestWithSchema('/system/metrics', SystemMetricsSchema),
   
   // Models and training
   models: (): Promise<TrainingSession[]> => requestWithSchema('/models', z.array(TrainingSessionSchema)),
@@ -162,7 +162,7 @@ export const API = {
   
   // Additional API methods
   getAnalytics: () => request('/analytics'),
-  getSystemMetrics: (): Promise<SystemMetrics> => requestWithSchema('/system-stats', SystemMetricsSchema),
+  getSystemMetrics: (): Promise<SystemMetrics> => requestWithSchema('/system/metrics', SystemMetricsSchema),
   getSettings: () => request('/settings'),
   updateSettings: (settings: any) => request('/settings', { method: 'PUT', body: JSON.stringify(settings) }),
   
