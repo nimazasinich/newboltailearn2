@@ -1,6 +1,10 @@
 import Database from 'better-sqlite3';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 class DatabaseManager {
     constructor() {
@@ -39,6 +43,9 @@ class DatabaseManager {
             this.db.pragma('busy_timeout = 30000');
             this.db.pragma('temp_store = memory');
 
+            // Apply database schema if schema file exists
+            await this.applySchema();
+
             this.isInitialized = true;
             console.log('Database initialized successfully');
             return this.db;
@@ -72,6 +79,37 @@ class DatabaseManager {
 
     isReady() {
         return this.isInitialized && this.db;
+    }
+
+    async applySchema() {
+        try {
+            const schemaPath = path.join(__dirname, 'schema.sql');
+            
+            if (!fs.existsSync(schemaPath)) {
+                console.log('No schema file found, skipping schema application');
+                return;
+            }
+
+            console.log('Applying database schema...');
+            const schema = fs.readFileSync(schemaPath, 'utf8');
+            this.db.exec(schema);
+            
+            // Verify system_logs table was created
+            const result = this.db.prepare(`
+                SELECT name FROM sqlite_master 
+                WHERE type='table' AND name='system_logs'
+            `).get();
+            
+            if (result) {
+                console.log('✅ system_logs table created successfully');
+            } else {
+                console.warn('⚠️ system_logs table was not created');
+            }
+
+        } catch (error) {
+            console.error('Failed to apply schema:', error);
+            // Don't throw - allow server to continue without schema
+        }
     }
 }
 

@@ -1,4 +1,7 @@
-FROM node:20-alpine
+# Multi-stage build for Persian Legal AI Server
+
+# ===== Base Stage =====
+FROM node:20-alpine AS base
 
 # Install system dependencies
 RUN apk add --no-cache \
@@ -63,5 +66,23 @@ EXPOSE 8000
 # Create volume for data persistence
 VOLUME ["/app/data"]
 
+# ===== Backend Stage =====
+FROM base AS backend
+
 # Use the entrypoint
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+
+# ===== Frontend Stage =====
+FROM nginx:alpine AS frontend
+
+# Copy the built frontend files
+COPY docs/ /usr/share/nginx/html/
+
+# Copy nginx configuration if it exists
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Expose port 80
+EXPOSE 80
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
