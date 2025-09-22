@@ -117,20 +117,33 @@ npm run dev
 ### Quick Start with Docker Compose
 
 ```bash
-# Production deployment
+# Production deployment (automated)
+./docker-build.sh
+./docker-run.sh
+
+# Or manually with docker-compose
 docker-compose up --build -d
 
-# Development with hot reload
-docker-compose -f docker-compose-dev.yml up --build -d
+# Development environment
+./docker-build.sh -m development
+./docker-run.sh -m development
 ```
 
 ### Container Configuration
 
-The application uses a multi-stage Docker build with optimized containers:
+The application uses a **unified container architecture**:
 
-- **Frontend Container**: Nginx serving static files (port 8080)
-- **Backend Container**: Node.js API server (port 8000)
+- **Unified Container**: Single container serving both frontend and backend
+- **Frontend**: React application served via Node.js/Express (port 8080)
+- **Backend**: Node.js API server with health monitoring (port 8080)
 - **Database**: SQLite with persistent volume storage
+- **Monitoring**: Built-in health checks and system metrics (beacon functionality)
+
+### Management Scripts
+
+- **`./docker-build.sh`**: Automated build with options (-m development, -r rebuild, -n no-cache)
+- **`./docker-run.sh`**: Container lifecycle management (--start, --stop, --logs, --status)
+- **See `DOCKER_GUIDE.md`**: Complete Docker documentation with troubleshooting
 
 ### Environment Variables for Docker
 

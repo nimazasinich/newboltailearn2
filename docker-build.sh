@@ -1,7 +1,6 @@
 #!/bin/bash
-# NewBolt AI Learn - Docker Build Script
-# Build Docker image for the project
 
+# Persian Legal AI - Docker Build Script
 set -e
 
 # Colors for output
@@ -12,11 +11,9 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Default values
-IMAGE_NAME="newboltailearn"
-TAG="latest"
-TARGET=""
-CACHE_FROM=""
-BUILD_ARGS=""
+MODE="production"
+REBUILD=false
+NO_CACHE=false
 
 # Function to print colored output
 print_status() {
@@ -35,106 +32,133 @@ print_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
-# Function to show usage
-usage() {
+# Help function
+show_help() {
+    echo "Persian Legal AI - Docker Build Script"
+    echo ""
     echo "Usage: $0 [OPTIONS]"
     echo ""
     echo "Options:"
-    echo "  -t, --target TARGET     Build specific target (backend, frontend, development)"
-    echo "  -n, --name NAME         Image name (default: newboltailearn)"
-    echo "  --tag TAG              Image tag (default: latest)"
-    echo "  --no-cache             Build without using cache"
-    echo "  --build-arg ARG=VALUE  Pass build argument"
-    echo "  -h, --help             Show this help message"
+    echo "  -m, --mode MODE      Build mode: production (default) or development"
+    echo "  -r, --rebuild        Force rebuild (remove existing container/image)"
+    echo "  -n, --no-cache       Build without cache"
+    echo "  -h, --help           Show this help message"
     echo ""
     echo "Examples:"
-    echo "  $0                          # Build default image"
-    echo "  $0 -t backend               # Build backend only"
-    echo "  $0 -t frontend              # Build frontend only"
-    echo "  $0 -t development           # Build development image"
-    echo "  $0 --no-cache               # Build without cache"
-    echo "  $0 --build-arg NODE_ENV=production"
+    echo "  $0                   # Build production image"
+    echo "  $0 -m development    # Build development image"
+    echo "  $0 -r -n             # Force rebuild without cache"
 }
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
     case $1 in
-        -t|--target)
-            TARGET="$2"
+        -m|--mode)
+            MODE="$2"
             shift 2
             ;;
-        -n|--name)
-            IMAGE_NAME="$2"
-            shift 2
-            ;;
-        --tag)
-            TAG="$2"
-            shift 2
-            ;;
-        --no-cache)
-            CACHE_FROM="--no-cache"
+        -r|--rebuild)
+            REBUILD=true
             shift
             ;;
-        --build-arg)
-            BUILD_ARGS="$BUILD_ARGS --build-arg $2"
-            shift 2
+        -n|--no-cache)
+            NO_CACHE=true
+            shift
             ;;
         -h|--help)
-            usage
+            show_help
             exit 0
             ;;
         *)
             print_error "Unknown option: $1"
-            usage
+            show_help
             exit 1
             ;;
     esac
 done
 
-# Build the image
-print_status "Building Docker image: $IMAGE_NAME:$TAG"
-
-if [ -n "$TARGET" ]; then
-    print_status "Target: $TARGET"
-    FULL_IMAGE_NAME="$IMAGE_NAME:$TAG-$TARGET"
-    TARGET_ARG="--target $TARGET"
-else
-    FULL_IMAGE_NAME="$IMAGE_NAME:$TAG"
-    TARGET_ARG=""
-fi
-
-print_status "Full image name: $FULL_IMAGE_NAME"
-
-# Check if Dockerfile exists
-if [ ! -f "Dockerfile" ]; then
-    print_error "Dockerfile not found in current directory"
+# Validate mode
+if [[ "$MODE" != "production" && "$MODE" != "development" ]]; then
+    print_error "Invalid mode: $MODE. Must be 'production' or 'development'"
     exit 1
 fi
 
-# Build command
-BUILD_CMD="docker build -t $FULL_IMAGE_NAME $TARGET_ARG $CACHE_FROM $BUILD_ARGS ."
+print_status "Starting Persian Legal AI build process..."
+print_status "Mode: $MODE"
 
-print_status "Executing: $BUILD_CMD"
+# Set container and image names based on mode
+if [[ "$MODE" == "development" ]]; then
+    CONTAINER_NAME="persian-legal-ai-dev"
+    IMAGE_NAME="persian-legal-ai:dev"
+    COMPOSE_FILE="docker-compose-dev.yml"
+else
+    CONTAINER_NAME="persian-legal-ai"
+    IMAGE_NAME="persian-legal-ai:latest"
+    COMPOSE_FILE="docker-compose.yml"
+fi
 
-# Execute build
-if eval $BUILD_CMD; then
-    print_success "Docker image built successfully: $FULL_IMAGE_NAME"
+# Check if Docker is running
+if ! docker info >/dev/null 2>&1; then
+    print_error "Docker is not running. Please start Docker and try again."
+    exit 1
+fi
+
+# Stop and remove existing container if rebuild is requested
+if [[ "$REBUILD" == true ]]; then
+    print_warning "Rebuild requested. Stopping and removing existing containers..."
     
-    # Show image info
-    print_status "Image information:"
-    docker images | grep "$IMAGE_NAME" | head -5
-    
-    print_status "To run the image:"
-    if [ -n "$TARGET" ]; then
-        echo "  docker run -p 3000:3000 $FULL_IMAGE_NAME"
-    else
-        echo "  docker run -p 3000:3000 $FULL_IMAGE_NAME"
+    if docker ps -q -f name="$CONTAINER_NAME" | grep -q .; then
+        print_status "Stopping container: $CONTAINER_NAME"
+        docker stop "$CONTAINER_NAME" >/dev/null 2>&1 || true
     fi
     
-    print_status "To run with docker-compose:"
-    echo "  docker-compose up --build -d"
+    if docker ps -aq -f name="$CONTAINER_NAME" | grep -q .; then
+        print_status "Removing container: $CONTAINER_NAME"
+        docker rm "$CONTAINER_NAME" >/dev/null 2>&1 || true
+    fi
     
+    if docker images -q "$IMAGE_NAME" | grep -q .; then
+        print_status "Removing image: $IMAGE_NAME"
+        docker rmi "$IMAGE_NAME" >/dev/null 2>&1 || true
+    fi
+fi
+
+# Build frontend if not in development mode
+if [[ "$MODE" == "production" ]]; then
+    print_status "Building frontend assets..."
+    if command -v npm >/dev/null 2>&1; then
+        npm run build
+        print_success "Frontend build completed"
+    else
+        print_warning "npm not found. Assuming frontend is already built."
+    fi
+fi
+
+# Prepare build arguments
+BUILD_ARGS=""
+if [[ "$NO_CACHE" == true ]]; then
+    BUILD_ARGS="--no-cache"
+    print_status "Building without cache"
+fi
+
+# Build the Docker image
+print_status "Building Docker image: $IMAGE_NAME"
+docker build $BUILD_ARGS -t "$IMAGE_NAME" .
+
+if [[ $? -eq 0 ]]; then
+    print_success "Docker image built successfully: $IMAGE_NAME"
 else
-    print_error "Docker build failed"
+    print_error "Failed to build Docker image"
     exit 1
 fi
+
+# Show image info
+print_status "Image information:"
+docker images "$IMAGE_NAME" --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}\t{{.CreatedAt}}"
+
+print_success "Build process completed!"
+print_status "To run the container:"
+print_status "  docker-compose -f $COMPOSE_FILE up -d"
+print_status ""
+print_status "To view logs:"
+print_status "  docker-compose -f $COMPOSE_FILE logs -f"

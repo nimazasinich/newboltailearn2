@@ -1,113 +1,64 @@
-# NewBolt AI Learn - Development Docker Compose
-# Optimized for development with hot reload and debugging
-
 version: '3.8'
 
 services:
-  # ===== Development Backend =====
-  backend-dev:
+  persian-legal-ai-dev:
     build:
       context: .
       dockerfile: Dockerfile
-      target: development
-    container_name: persian-legal-ai-backend-dev
+    container_name: persian-legal-ai-dev
+    restart: unless-stopped
     ports:
-      - "8000:3000"  # Map host port 8000 to container port 3000
-      - "9229:9229"  # Node.js debug port
+      - "8080:8080"
+      - "5173:5173"  # Vite dev server port
     environment:
       - NODE_ENV=development
-      - PORT=3000
-      - SERVER_PORT=3000
-      - HOST=0.0.0.0
-      - SERVE_FRONTEND=false
       - DATABASE_PATH=/app/data/database.sqlite
-      - DB_PATH=/app/data/database.sqlite  # Legacy compatibility
-      - JWT_SECRET=dev-jwt-secret-not-secure
-      - SESSION_SECRET=dev-session-secret-not-secure
-      - CSRF_SECRET=dev-csrf-secret-not-secure
-      - DEBUG=true
-      - TF_CPP_MIN_LOG_LEVEL=2
+      - SERVER_PORT=8080
+      - PORT=8080
+      - DEBUG=persian-legal:*
     volumes:
-      - .:/app
-      - /app/node_modules
-      - ./data:/app/data
-      - ./datasets:/app/datasets
-      - ./models:/app/models
-      - ./checkpoints:/app/checkpoints
-      - ./exports:/app/exports
-      - ./logs:/app/logs
-    command: npm run dev
-    restart: unless-stopped
+      - persian-legal-data-dev:/app/data
+      - ./src:/app/src:ro           # Mount source for hot reload
+      - ./server:/app/server:ro     # Mount server for hot reload
+      - ./docs:/app/docs:ro         # Mount built frontend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
     networks:
-      - newboltailearn-dev-network
-    labels:
-      - "app=newboltailearn"
-      - "component=backend-dev"
+      - persian-legal-dev-network
+    command: >
+      sh -c "
+        echo 'Starting development server...' &&
+        node server/index.js
+      "
 
-  # ===== Development Frontend =====
-  frontend-dev:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: development
-    container_name: persian-legal-ai-frontend-dev
-    ports:
-      - "5173:5173"
-    environment:
-      - NODE_ENV=development
-      - VITE_API_URL=http://localhost:8000  # Point to backend on host port 8000
-      - VITE_BASE_PATH=/
-    volumes:
-      - .:/app
-      - /app/node_modules
-    command: npm run dev -- --host 0.0.0.0
-    restart: unless-stopped
-    depends_on:
-      - backend-dev
-    networks:
-      - newboltailearn-dev-network
-    labels:
-      - "app=newboltailearn"
-      - "component=frontend-dev"
-
-  # ===== Redis for Development =====
-  redis-dev:
-    image: redis:7-alpine
-    container_name: newboltailearn-redis-dev
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_dev_data:/data
-    restart: unless-stopped
-    networks:
-      - newboltailearn-dev-network
-    labels:
-      - "app=newboltailearn"
-      - "component=redis-dev"
-
-  # ===== Database Admin (Optional) =====
+  # Optional: Database admin interface
   db-admin:
-    image: adminer
-    container_name: persian-legal-ai-db-admin
+    image: adminer:4.8.1
+    container_name: persian-legal-db-admin
+    restart: unless-stopped
     ports:
-      - "8081:8080"  # Use port 8081 to avoid conflict with frontend
+      - "8081:8080"
     environment:
       - ADMINER_DEFAULT_SERVER=sqlite:///app/data/database.sqlite
     volumes:
-      - ./data:/app/data:ro
-    restart: unless-stopped
+      - persian-legal-data-dev:/app/data:ro
     networks:
-      - newboltailearn-dev-network
+      - persian-legal-dev-network
+    depends_on:
+      - persian-legal-ai-dev
     profiles:
       - admin
-    labels:
-      - "app=newboltailearn"
-      - "component=db-admin"
-
-volumes:
-  redis_dev_data:
-    driver: local
 
 networks:
-  newboltailearn-dev-network:
+  persian-legal-dev-network:
     driver: bridge
+    name: persian-legal-dev-network
+
+volumes:
+  persian-legal-data-dev:
+    driver: local
+    name: persian-legal-data-dev
