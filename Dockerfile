@@ -58,10 +58,10 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 # Set environment variables
 ENV NODE_ENV=production
 ENV DATABASE_PATH=/app/data/database.sqlite
-ENV SERVER_PORT=8000
+ENV SERVER_PORT=8080
 
 # Expose port
-EXPOSE 8000
+EXPOSE 8080
 
 # Create volume for data persistence
 VOLUME ["/app/data"]
