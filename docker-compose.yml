@@ -6,16 +6,17 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: persian-legal-ai
-    restart: unless-stopped
     ports:
       - "8080:8080"
     environment:
       - NODE_ENV=production
       - DATABASE_PATH=/app/data/database.sqlite
-      - SERVER_PORT=8080
       - PORT=8080
+      - LOG_LEVEL=info
     volumes:
-      - persian-legal-data:/app/data
+      - ./data:/app/data
+      - ./logs:/app/logs
+    restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 30s
@@ -24,17 +25,25 @@ services:
       start_period: 40s
     networks:
       - persian-legal-network
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.persian-legal.rule=Host(`localhost`)"
-      - "traefik.http.services.persian-legal.loadbalancer.server.port=8080"
+
+  # Optional: Redis for caching (if available)
+  redis:
+    image: redis:7-alpine
+    container_name: persian-legal-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    networks:
+      - persian-legal-network
+    profiles:
+      - with-redis
+
+volumes:
+  redis-data:
+    driver: local
 
 networks:
   persian-legal-network:
     driver: bridge
-    name: persian-legal-network
-
-volumes:
-  persian-legal-data:
-    driver: local
-    name: persian-legal-data

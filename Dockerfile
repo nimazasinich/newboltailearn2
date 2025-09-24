@@ -1,14 +1,15 @@
-# Persian Legal AI - Unified Docker Container
+# Persian Legal AI - Enterprise Docker Container
 FROM node:20-alpine
 
-# Install system dependencies
+# Install system dependencies for native modules and utilities
 RUN apk add --no-cache \
     python3 \
     make \
     g++ \
     sqlite \
     curl \
-    su-exec
+    su-exec \
+    bash
 
 # Create app user and group for security
 RUN addgroup -g 1001 -S appgroup && \
@@ -20,7 +21,7 @@ WORKDIR /app
 # Copy package files first for better caching
 COPY package*.json ./
 
-# Install dependencies
+# Install dependencies with production optimizations
 RUN npm ci --only=production --legacy-peer-deps && \
     npm cache clean --force
 
@@ -29,31 +30,22 @@ COPY server/ ./server/
 COPY docs/ ./docs/
 COPY .env* ./
 
-# Create data directory with proper permissions
-RUN mkdir -p /app/data && \
+# Create necessary directories with proper permissions
+RUN mkdir -p /app/data /app/logs && \
     chown -R appuser:appgroup /app && \
-    chmod 755 /app/data
+    chmod 755 /app/data /app/logs
 
 # Create entrypoint script
-RUN cat > /usr/local/bin/docker-entrypoint.sh << 'EOF'
-#!/bin/sh
-set -e
-
-echo "Starting Persian Legal AI Server..."
-
-# Ensure data directory exists and has correct permissions
-mkdir -p /app/data
-chown -R appuser:appgroup /app/data
-chmod 755 /app/data
-
-# Health check
-echo "Performing health checks..."
-node -e "console.log('Node.js version:', process.version)"
-
-# Switch to app user and start the application
-echo "Starting server as appuser on port 8080..."
-exec su-exec appuser:appgroup node server/index.js
-EOF
+RUN echo '#!/bin/bash' > /usr/local/bin/docker-entrypoint.sh && \
+    echo 'set -e' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo 'echo "Starting Persian Legal AI Server..."' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo 'mkdir -p /app/data' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo 'chown -R appuser:appgroup /app/data' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo 'chmod 755 /app/data' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo 'echo "Performing health checks..."' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo 'node -e "console.log(\"Node.js version:\", process.version)"' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo 'echo "Starting server as appuser on port 8080..."' >> /usr/local/bin/docker-entrypoint.sh && \
+    echo 'exec su-exec appuser:appgroup node server/main.js' >> /usr/local/bin/docker-entrypoint.sh
 
 # Make entrypoint executable
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
@@ -63,12 +55,13 @@ ENV NODE_ENV=production
 ENV DATABASE_PATH=/app/data/database.sqlite
 ENV SERVER_PORT=8080
 ENV PORT=8080
+ENV LOG_LEVEL=info
 
 # Expose port
 EXPOSE 8080
 
 # Create volume for data persistence
-VOLUME ["/app/data"]
+VOLUME ["/app/data", "/app/logs"]
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
