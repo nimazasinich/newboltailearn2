@@ -31,6 +31,7 @@ export function ModernSidebar() {
   const [expandedGroups, setExpandedGroups] = useState<string[]>(['main']);
   const [systemSpecsExpanded, setSystemSpecsExpanded] = useState(false);
   const [trainingExpanded, setTrainingExpanded] = useState(false);
+  const [activeTab, setActiveTab] = useState('status');
   const [systemStatus, setSystemStatus] = useState<SystemStatus>({
     status: 'healthy',
     models_training: 2,
@@ -351,12 +352,32 @@ export function ModernSidebar() {
                      systemStatus.status === 'warning' ? 'هشدار سیستم' : 'خطای سیستم'}
                   </span>
                 </div>
-                <motion.div
-                  animate={{ rotate: systemSpecsExpanded ? 180 : 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <ChevronUp className="w-4 h-4 text-slate-300" />
-                </motion.div>
+                <div className="flex items-center gap-2">
+                  {/* Mini Icons */}
+                  <div className="flex items-center gap-1">
+                    <motion.div
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 2, repeat: Infinity, delay: 0 }}
+                      className="w-2 h-2 bg-blue-400/60 rounded-full shadow-sm shadow-blue-400/30"
+                    />
+                    <motion.div
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+                      className="w-2 h-2 bg-purple-400/60 rounded-full shadow-sm shadow-purple-400/30"
+                    />
+                    <motion.div
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+                      className="w-2 h-2 bg-emerald-400/60 rounded-full shadow-sm shadow-emerald-400/30"
+                    />
+                  </div>
+                  <motion.div
+                    animate={{ rotate: systemSpecsExpanded ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <ChevronUp className="w-4 h-4 text-slate-300" />
+                  </motion.div>
+                </div>
               </div>
             </motion.button>
 
@@ -417,13 +438,13 @@ export function ModernSidebar() {
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <motion.div
-                    animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 360] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  >
-                    <Sparkles className="w-5 h-5 text-emerald-400" />
-                  </motion.div>
-                  <span className="text-sm font-bold text-emerald-300">آموزش فعال</span>
+              <motion.div
+                animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 360] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
+                <Sparkles className="w-5 h-5 text-emerald-400" />
+              </motion.div>
+              <span className="text-sm font-bold text-emerald-300">آموزش فعال</span>
                   <motion.span
                     animate={{ scale: [1, 1.1, 1] }}
                     transition={{ duration: 1.5, repeat: Infinity }}
@@ -465,8 +486,8 @@ export function ModernSidebar() {
                         <span>زمان باقیمانده</span>
                       </div>
                       <span className="font-bold text-blue-400">23 دقیقه</span>
-                    </div>
-                    
+            </div>
+            
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <Target className="w-3 h-3 text-purple-400" />
@@ -474,13 +495,13 @@ export function ModernSidebar() {
                       </div>
                       <span className="font-bold text-purple-400">94.2%</span>
                     </div>
-                  </div>
-                  
+            </div>
+            
                   <div className="w-full bg-slate-700 rounded-full h-2 mt-3">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{ width: "87%" }}
-                      transition={{ duration: 2 }}
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: "87%" }}
+                transition={{ duration: 2 }}
                       className="h-2 bg-gradient-to-r from-emerald-400 via-emerald-500 to-blue-500 rounded-full shadow-lg relative overflow-hidden"
                     >
                       <motion.div
@@ -506,7 +527,7 @@ export function ModernSidebar() {
                     >
                       جزئیات
                     </motion.button>
-                  </div>
+            </div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -514,7 +535,7 @@ export function ModernSidebar() {
         )}
       </AnimatePresence>
 
-      {/* Bottom Status Bar */}
+      {/* Bottom Tabs */}
       <div className="p-4 border-t border-slate-600/50 mt-auto">
         <AnimatePresence>
           {!collapsed && (
@@ -523,14 +544,73 @@ export function ModernSidebar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="text-center mb-3"
+              className="mb-3"
             >
-              <div className="text-xs text-slate-300 mb-1">
-                نسخه 2.1.0 - هوش مصنوعی حقوقی
+              {/* Tab Navigation */}
+              <div className="flex bg-slate-700/30 rounded-lg p-1">
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setActiveTab('status')}
+                  className={`flex-1 px-3 py-2 text-xs font-medium rounded-md transition-all duration-300 ${
+                    activeTab === 'status'
+                      ? 'bg-emerald-500/20 text-emerald-300 shadow-sm'
+                      : 'text-slate-400 hover:text-slate-300'
+                  }`}
+                >
+                  وضعیت
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setActiveTab('settings')}
+                  className={`flex-1 px-3 py-2 text-xs font-medium rounded-md transition-all duration-300 ${
+                    activeTab === 'settings'
+                      ? 'bg-blue-500/20 text-blue-300 shadow-sm'
+                      : 'text-slate-400 hover:text-slate-300'
+                  }`}
+                >
+                  تنظیمات
+                </motion.button>
               </div>
-              <div className="text-xs text-slate-400">
-                © 2024 تمامی حقوق محفوظ است
+
+              {/* Tab Content */}
+              <AnimatePresence mode="wait">
+                {activeTab === 'status' && (
+                  <motion.div
+                    key="status"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="mt-2 text-center"
+                  >
+                    <div className="text-xs text-slate-300 mb-1">
+                      نسخه 2.1.0 - هوش مصنوعی حقوقی
+                    </div>
+                    <div className="text-xs text-slate-400">
+                      سیستم فعال و آماده
+                    </div>
+                  </motion.div>
+                )}
+                {activeTab === 'settings' && (
+                  <motion.div
+                    key="settings"
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="mt-2 text-center"
+                  >
+                    <div className="text-xs text-slate-300 mb-1">
+                      تنظیمات سیستم
+                    </div>
+                    <div className="text-xs text-slate-400">
+                      پیکربندی و مدیریت
               </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           )}
         </AnimatePresence>
