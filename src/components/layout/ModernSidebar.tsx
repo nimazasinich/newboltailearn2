@@ -6,7 +6,7 @@ import {
   Monitor, LogOut, Home, BookOpen, Scale, Gavel, Shield,
   TrendingUp, Activity, Cpu, Globe, Download, Upload,
   ChevronDown, ChevronRight, Dot, Sparkles, Briefcase,
-  ChevronUp, Zap, Clock, HardDrive, Target
+  ChevronUp, Zap, Clock, HardDrive, Target, Heart, Play, CheckCircle
 } from 'lucide-react';
 
 interface NavItem {
@@ -543,101 +543,156 @@ export function ModernSidebar() {
         )}
       </AnimatePresence>
 
-      {/* Bottom Tabs */}
-      <div className="p-4 border-t border-slate-600/50 mt-auto">
-        <AnimatePresence>
-          {!collapsed && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="mb-3"
-            >
-              {/* Tab Navigation */}
-              <div className="flex bg-slate-700/30 rounded-lg p-1">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setActiveTab('status')}
-                  className={`flex-1 px-3 py-2 text-xs font-medium rounded-md transition-all duration-300 ${
-                    activeTab === 'status'
-                      ? 'bg-emerald-500/20 text-emerald-300 shadow-sm'
-                      : 'text-slate-400 hover:text-slate-300'
-                  }`}
-                >
-                  وضعیت
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setActiveTab('settings')}
-                  className={`flex-1 px-3 py-2 text-xs font-medium rounded-md transition-all duration-300 ${
-                    activeTab === 'settings'
-                      ? 'bg-blue-500/20 text-blue-300 shadow-sm'
-                      : 'text-slate-400 hover:text-slate-300'
-                  }`}
-                >
-                  تنظیمات
-                </motion.button>
-              </div>
-
-              {/* Tab Content */}
-              <AnimatePresence mode="wait">
-                {activeTab === 'status' && (
-                  <motion.div
-                    key="status"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className="mt-2 text-center"
+        {/* Enhanced System Status & Model Status Tabs */}
+        <div className="p-4 border-t border-slate-600/50 mt-auto">
+          <AnimatePresence>
+            {!collapsed && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="mb-3"
+              >
+                {/* Enhanced Tab Navigation */}
+                <div className="flex bg-gradient-to-r from-slate-700/40 to-slate-600/40 rounded-xl p-1 shadow-lg">
+                  <motion.button
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setActiveTab('status')}
+                    className={`flex-1 px-4 py-2.5 text-xs font-bold rounded-lg transition-all duration-300 relative overflow-hidden ${
+                      activeTab === 'status'
+                        ? 'bg-gradient-to-r from-emerald-500/30 to-teal-500/30 text-emerald-200 shadow-lg shadow-emerald-500/20 border border-emerald-400/30'
+                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-600/30'
+                    }`}
                   >
-                    <div className="text-xs text-slate-300 mb-1">
-                      نسخه 2.1.0 - هوش مصنوعی حقوقی
+                    {activeTab === 'status' && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="absolute inset-0 bg-gradient-to-r from-emerald-400/10 to-teal-400/10 rounded-lg"
+                      />
+                    )}
+                    <div className="relative z-10 flex items-center justify-center gap-2">
+                      <Heart className="w-3 h-3" />
+                      <span>وضعیت سیستم</span>
                     </div>
-                    <div className="text-xs text-slate-400">
-                      سیستم فعال و آماده
-                    </div>
-                  </motion.div>
-                )}
-                {activeTab === 'settings' && (
-                  <motion.div
-                    key="settings"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.2 }}
-                    className="mt-2 text-center"
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setActiveTab('models')}
+                    className={`flex-1 px-4 py-2.5 text-xs font-bold rounded-lg transition-all duration-300 relative overflow-hidden ${
+                      activeTab === 'models'
+                        ? 'bg-gradient-to-r from-blue-500/30 to-purple-500/30 text-blue-200 shadow-lg shadow-blue-500/20 border border-blue-400/30'
+                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-600/30'
+                    }`}
                   >
-                    <div className="text-xs text-slate-300 mb-1">
-                      تنظیمات سیستم
+                    {activeTab === 'models' && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="absolute inset-0 bg-gradient-to-r from-blue-400/10 to-purple-400/10 rounded-lg"
+                      />
+                    )}
+                    <div className="relative z-10 flex items-center justify-center gap-2">
+                      <Brain className="w-3 h-3" />
+                      <span>وضعیت مدل‌ها</span>
                     </div>
-                    <div className="text-xs text-slate-400">
-                      پیکربندی و مدیریت
-              </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                  </motion.button>
+                </div>
 
-        {/* Collapse/Expand Toggle */}
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setCollapsed(!collapsed)}
-          className="w-full p-2 bg-slate-700/30 hover:bg-slate-600/30 rounded-xl transition-all duration-300 flex items-center justify-center"
-        >
-          <motion.div
-            animate={{ rotate: collapsed ? 0 : 180 }}
-            transition={{ duration: 0.3 }}
+                {/* Enhanced Tab Content */}
+                <AnimatePresence mode="wait">
+                  {activeTab === 'status' && (
+                    <motion.div
+                      key="status"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.3 }}
+                      className="mt-3 p-3 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 rounded-xl border border-emerald-400/20"
+                    >
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50" />
+                            <span className="text-xs text-emerald-200 font-medium">وضعیت کلی</span>
+                          </div>
+                          <span className="text-xs text-emerald-300 font-bold">سالم</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Cpu className="w-3 h-3 text-blue-400" />
+                            <span className="text-xs text-slate-300">CPU</span>
+                          </div>
+                          <span className="text-xs text-blue-300 font-bold">{systemStatus.cpu_usage}%</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <HardDrive className="w-3 h-3 text-purple-400" />
+                            <span className="text-xs text-slate-300">حافظه</span>
+                          </div>
+                          <span className="text-xs text-purple-300 font-bold">{systemStatus.memory_usage}%</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                  {activeTab === 'models' && (
+                    <motion.div
+                      key="models"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.3 }}
+                      className="mt-3 p-3 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl border border-blue-400/20"
+                    >
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse shadow-lg shadow-blue-400/50" />
+                            <span className="text-xs text-blue-200 font-medium">مدل‌های فعال</span>
+                          </div>
+                          <span className="text-xs text-blue-300 font-bold">{systemStatus.models_training}</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Play className="w-3 h-3 text-emerald-400" />
+                            <span className="text-xs text-slate-300">در حال آموزش</span>
+                          </div>
+                          <span className="text-xs text-emerald-300 font-bold">2</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="w-3 h-3 text-green-400" />
+                            <span className="text-xs text-slate-300">تکمیل شده</span>
+                          </div>
+                          <span className="text-xs text-green-300 font-bold">1</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Enhanced Collapse/Expand Toggle */}
+          <motion.button
+            whileHover={{ scale: 1.05, y: -1 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setCollapsed(!collapsed)}
+            className="w-full p-2.5 bg-gradient-to-r from-slate-700/40 to-slate-600/40 hover:from-slate-600/50 hover:to-slate-500/50 rounded-xl transition-all duration-300 flex items-center justify-center shadow-lg"
           >
-            <ChevronRight className="w-4 h-4 text-slate-300" />
-          </motion.div>
-        </motion.button>
-      </div>
+            <motion.div
+              animate={{ rotate: collapsed ? 0 : 180 }}
+              transition={{ duration: 0.3 }}
+              className="w-4 h-4 text-slate-300"
+            >
+              <ChevronRight className="w-full h-full" />
+            </motion.div>
+          </motion.button>
+        </div>
     </motion.div>
   );
 }
