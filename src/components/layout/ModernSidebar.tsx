@@ -6,7 +6,7 @@ import {
   Monitor, LogOut, Home, BookOpen, Scale, Gavel, Shield,
   TrendingUp, Activity, Cpu, Globe, Download, Upload,
   ChevronDown, ChevronRight, Dot, Sparkles, Briefcase,
-  Heart, Play, CheckCircle
+  Heart, Play, CheckCircle, HardDrive
 } from 'lucide-react';
 
 interface NavItem {
