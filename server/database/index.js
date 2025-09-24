@@ -1,5 +1,5 @@
-import DatabaseManager from './DatabaseManager.js';
-import { DatabaseMigrator } from './migrate.js';
+import DatabaseManager from './DatabaseManager';
+import { DatabaseMigrator } from './migrate';
 
 /**
  * Database initialization wrapper that uses the DatabaseManager singleton

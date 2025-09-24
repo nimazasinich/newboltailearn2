@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import { Server } from 'socket.io';
-import { ModelsController } from '../modules/controllers/models.controller.js';
-import { requireAuth, requireRole } from '../middleware/auth.js';
-import { validate, schemas } from '../modules/security/validators.js';
-import { apiRateLimiter, trainingRateLimiter } from '../modules/security/rateLimiter.js';
-import { csrfProtection } from '../modules/security/csrf.js';
+import { ModelsController } from '../modules/controllers/models.controller';
+import { requireAuth, requireRole } from '../middleware/auth';
+import { validate, schemas } from '../modules/security/validators';
+import { apiRateLimiter, trainingRateLimiter } from '../modules/security/rateLimiter';
+import { csrfProtection } from '../modules/security/csrf';
 
 export function createModelsRoutes(controller: ModelsController, io: Server): Router {
   const router = Router();

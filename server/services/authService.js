@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { generateToken } from '../middleware/auth.js';
+import { generateToken } from '../middleware/auth';
 export class AuthService {
     constructor(database) {
         this.db = database;

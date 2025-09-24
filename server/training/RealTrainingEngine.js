@@ -2,7 +2,7 @@
 process.env.TF_CPP_MIN_LOG_LEVEL = '2';
 
 import * as tf from "@tensorflow/tfjs-node";
-import { PersianTokenizer } from "./tokenizer.js";
+import { PersianTokenizer } from "./tokenizer";
 import fs from "fs";
 import path from "path";
 export class RealTrainingEngine {

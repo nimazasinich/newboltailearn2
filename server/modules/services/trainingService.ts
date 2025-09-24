@@ -1,8 +1,8 @@
 import { Server } from 'socket.io';
 import Database from 'better-sqlite3';
-import { getRealTrainingEngine } from '../../training/RealTrainingEngineImpl.js';
-import { config, isDemoMode } from '../security/config.js';
-import { WorkerManager } from '../workers/trainingWorker.js';
+import { getRealTrainingEngine } from '../../training/RealTrainingEngineImpl';
+import { config, isDemoMode } from '../security/config';
+import { WorkerManager } from '../workers/trainingWorker';
 import { 
   TrainingRequest, 
   TrainingProgress as WorkerTrainingProgress, 
@@ -13,7 +13,7 @@ import {
   PreprocessingResult,
   OptimizationRequest,
   OptimizationResult
-} from '../workers/types.js';
+} from '../workers/types';
 
 export interface TrainingConfig {
   epochs: number;

@@ -78,7 +78,7 @@ class HuggingFaceAPI {
             console.log(`Fetching real data from: ${url}`);
             
             // Get secure HuggingFace headers
-            const { getHFHeaders } = await import('../../utils/decode.js');
+            const { getHFHeaders } = await import('../../utils/decode');
             const headers = getHFHeaders();
             
             const response = await fetch(url, {
@@ -169,7 +169,7 @@ class HuggingFaceAPI {
         }
         
         try {
-            const { getHFHeaders } = await import('../../utils/decode.js');
+            const { getHFHeaders } = await import('../../utils/decode');
             const headers = getHFHeaders();
             
             const allData = [];

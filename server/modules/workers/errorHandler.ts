@@ -7,7 +7,7 @@
 
 import { Worker } from 'worker_threads';
 import Database from 'better-sqlite3';
-import { WorkerMetrics } from './types.js';
+import { WorkerMetrics } from './types';
 
 export interface WorkerError {
   workerId: string;

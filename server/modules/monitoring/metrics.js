@@ -1,4 +1,4 @@
-import { config } from '../security/config.js';
+import { config } from '../security/config';
 class MetricsCollector {
     constructor() {
         this.startTime = Date.now();

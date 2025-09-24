@@ -1,12 +1,12 @@
-import { applySecurity, setupDevIdentification } from './security/index.js';
-import { applyRouteProtection } from './security/routeProtection.js';
-import { setupMetrics } from './monitoring/metrics.js';
-import { configureSocketAuth } from './sockets/auth.js';
-import { createAuthRoutes } from './routes/auth.routes.js';
-import { createModelsRoutes } from './routes/models.routes.js';
-import { AuthController } from './controllers/auth.controller.js';
-import { ModelsController } from './controllers/models.controller.js';
-import { config } from './security/config.js';
+import { applySecurity, setupDevIdentification } from './security/index';
+import { applyRouteProtection } from './security/routeProtection';
+import { setupMetrics } from './monitoring/metrics';
+import { configureSocketAuth } from './sockets/auth';
+import { createAuthRoutes } from './routes/auth.routes';
+import { createModelsRoutes } from './routes/models.routes';
+import { AuthController } from './controllers/auth.controller';
+import { ModelsController } from './controllers/models.controller';
+import { config } from './security/config';
 /**
  * Setup all modular components
  * This function is called from server/index.ts to wire up all modules
@@ -47,6 +47,13 @@ function setupModularRoutes(app, db, io) {
     // Mount routes
     app.use('/api/auth', createAuthRoutes(authController));
     app.use('/api/models', createModelsRoutes(modelsController, io));
+    
+    // Import and mount datasets gallery route
+    import('../routes/datasets.ts').then(({ default: datasetsRoute }) => {
+        app.use('/api/datasets-gallery', datasetsRoute);
+        console.log('✅ Datasets gallery route mounted');
+    });
+    
     // Note: We're not removing existing routes from server/index.ts
     // to maintain backward compatibility. The new routes will coexist
     // with the old ones, and we can gradually migrate functionality.
@@ -54,5 +61,5 @@ function setupModularRoutes(app, db, io) {
 /**
  * Export configuration for use in server/index.ts
  */
-export { config } from './security/config.js';
-export { metricsCollector } from './monitoring/metrics.js';
+export { config } from './security/config';
+export { metricsCollector } from './monitoring/metrics';

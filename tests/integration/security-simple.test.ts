@@ -3,7 +3,7 @@ import { Application } from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import Database from 'better-sqlite3';
-import { setupModules } from '../../server/modules/setup.js';
+import { setupModules } from '../../server/modules/setup';
 
 // Mock database for testing
 const mockDb = new Database(':memory:');

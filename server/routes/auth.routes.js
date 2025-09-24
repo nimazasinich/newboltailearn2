@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { requireAuth } from '../middleware/auth.js';
-import { validate, schemas } from '../modules/security/validators.js';
-import { authRateLimiter } from '../modules/security/rateLimiter.js';
-import { csrfProtection } from '../modules/security/csrf.js';
+import { requireAuth } from '../middleware/auth';
+import { validate, schemas } from '../modules/security/validators';
+import { authRateLimiter } from '../modules/security/rateLimiter';
+import { csrfProtection } from '../modules/security/csrf';
 export function createAuthRoutes(controller) {
     const router = Router();
     // Apply rate limiting to auth routes

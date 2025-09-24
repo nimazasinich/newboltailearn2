@@ -12,7 +12,7 @@ export function Header({ onMenuClick }: HeaderProps) {
   const { user } = useAuth();
 
   return (
-    <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+    <header className="bg-white/95 backdrop-blur-lg border-b border-slate-200/50 shadow-sm sticky top-0 z-40">
       <div className="px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Mobile menu button */}
@@ -27,7 +27,7 @@ export function Header({ onMenuClick }: HeaderProps) {
 
           {/* Desktop logo - hidden on mobile since it's in sidebar */}
           <div className="hidden lg:flex items-center">
-            <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+            <h1 className="text-2xl font-display text-transparent bg-clip-text bg-gradient-to-r from-slate-800 to-slate-600">
               سیستم آموزش هوش مصنوعی حقوقی
             </h1>
           </div>

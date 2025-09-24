@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { AuthService } from '../../services/authService.js';
-import { generateToken } from '../../middleware/auth.js';
+import { AuthService } from '../../services/authService';
+import { generateToken } from '../../middleware/auth';
 import Database from 'better-sqlite3';
 
 export class AuthController {

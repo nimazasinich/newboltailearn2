@@ -5,6 +5,16 @@ import jwt from 'jsonwebtoken';
  */
 export function requireAuth(req, res, next) {
     try {
+        // Skip authentication in development mode
+        if (process.env.NODE_ENV === 'development') {
+            req.user = {
+                id: 1,
+                username: 'dev-user',
+                role: 'admin'
+            };
+            return next();
+        }
+        
         const authHeader = req.headers.authorization;
         if (!authHeader) {
             res.status(401).json({ error: 'Authorization header is required' });

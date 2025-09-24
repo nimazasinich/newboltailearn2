@@ -1,4 +1,4 @@
-import { verifyToken } from '../../middleware/auth.js';
+import { verifyToken } from '../../middleware/auth';
 /**
  * Configure Socket.IO authentication
  */

@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { validate, schemas } from '../security/validators.js';
-import { authRateLimiter } from '../security/rateLimiter.js';
-import { requireAuth } from '../../middleware/auth.js';
+import { validate, schemas } from '../security/validators';
+import { authRateLimiter } from '../security/rateLimiter';
+import { requireAuth } from '../../middleware/auth';
 export function createAuthRoutes(authController) {
     const router = Router();
     // Public routes (with rate limiting)

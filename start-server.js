@@ -1,34 +1,22 @@
 #!/usr/bin/env node
 
-// Simple server startup script
-const { spawn } = require('child_process');
-const path = require('path');
+// Custom server startup script to handle deprecation warnings
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+process.env.PORT = process.env.PORT || '8080';
 
-console.log('🚀 Starting Persian Legal AI Server...');
+// Suppress specific deprecation warnings from third-party packages
+const originalEmitWarning = process.emitWarning;
+process.emitWarning = function(warning, name, code, ...args) {
+  // Suppress util._extend deprecation warnings
+  if (code === 'DEP0060' || (typeof warning === 'string' && warning.includes('util._extend'))) {
+    return;
+  }
+  // Allow other warnings to pass through
+  return originalEmitWarning.call(this, warning, name, code, ...args);
+};
 
 // Start the server
-const serverProcess = spawn('node', ['server/server/index.js'], {
-  stdio: 'inherit',
-  cwd: __dirname
-});
-
-serverProcess.on('error', (error) => {
+import('./server/index.js').catch(error => {
   console.error('Failed to start server:', error);
   process.exit(1);
-});
-
-serverProcess.on('exit', (code) => {
-  console.log(`Server exited with code ${code}`);
-  process.exit(code);
-});
-
-// Handle graceful shutdown
-process.on('SIGINT', () => {
-  console.log('\n🛑 Shutting down server...');
-  serverProcess.kill('SIGINT');
-});
-
-process.on('SIGTERM', () => {
-  console.log('\n🛑 Shutting down server...');
-  serverProcess.kill('SIGTERM');
 });

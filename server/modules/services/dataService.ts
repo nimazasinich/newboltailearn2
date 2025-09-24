@@ -1,5 +1,5 @@
 import Database from 'better-sqlite3';
-import { config, useFakeData, isDemoMode } from '../security/config.js';
+import { config, useFakeData, isDemoMode } from '../security/config';
 
 /**
  * Data Service with fake/real data toggle and demo mode support

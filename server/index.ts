@@ -233,7 +233,10 @@ const defaultDatasets = [
     source: 'huggingface',
     huggingface_id: 'PerSets/iran-legal-persian-qa',
     samples: 10247,
-    size_mb: 15.2
+    size_mb: 15.2,
+    status: 'available',
+    type: 'qa',
+    description: 'مجموعه پرسش و پاسخ حقوقی ایران'
   },
   {
     id: 'legal-laws',
@@ -241,7 +244,10 @@ const defaultDatasets = [
     source: 'huggingface',
     huggingface_id: 'QomSSLab/legal_laws_lite_chunk_v1',
     samples: 50000,
-    size_mb: 125.8
+    size_mb: 125.8,
+    status: 'available',
+    type: 'laws',
+    description: 'مجموعه متون قوانین ایران'
   },
   {
     id: 'persian-ner',
@@ -249,7 +255,10 @@ const defaultDatasets = [
     source: 'huggingface',
     huggingface_id: 'mansoorhamidzadeh/Persian-NER-Dataset-500k',
     samples: 500000,
-    size_mb: 890.5
+    size_mb: 890.5,
+    status: 'available',
+    type: 'ner',
+    description: 'مجموعه تشخیص موجودیت فارسی'
   }
 ];
 

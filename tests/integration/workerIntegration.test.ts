@@ -4,10 +4,10 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { TrainingService } from '../../server/modules/services/trainingService.js';
-import { WorkerManager } from '../../server/modules/workers/trainingWorker.js';
-import { WorkerErrorHandler } from '../../server/modules/workers/errorHandler.js';
-import { WorkerPerformanceMonitor } from '../../server/modules/monitoring/workerMetrics.js';
+import { TrainingService } from '../../server/modules/services/trainingService';
+import { WorkerManager } from '../../server/modules/workers/trainingWorker';
+import { WorkerErrorHandler } from '../../server/modules/workers/errorHandler';
+import { WorkerPerformanceMonitor } from '../../server/modules/monitoring/workerMetrics';
 import Database from 'better-sqlite3';
 import { Server } from 'socket.io';
 import { createServer } from 'http';

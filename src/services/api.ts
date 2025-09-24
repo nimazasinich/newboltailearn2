@@ -1,9 +1,13 @@
 import { z } from 'zod'
-import { API_URL } from '../lib/config'
+import { API_BASE } from '../lib/config'
 
 type RequestInit = globalThis.RequestInit
 
-const BASE = `${API_URL}/api`
+// safe join: join('/api', '/health') => '/api/health'; join('/api', 'health') => '/api/health'
+function join(base: string, path: string) {
+  return `${base}${path.startsWith('/') ? path : `/${path}`}`;
+}
+
 let csrf = ''
 
 // Zod schemas for API responses
@@ -14,17 +18,20 @@ export const SystemMetricsSchema = z.object({
     total: z.number(),
     percentage: z.number(),
   }),
-  disk: z.object({
+  process_memory: z.object({
     used: z.number(),
     total: z.number(),
     percentage: z.number(),
-  }),
-  network: z.object({
-    download: z.number(),
-    upload: z.number(),
-  }),
+  }).optional(),
   uptime: z.number(),
-  temperature: z.number().optional(),
+  system_uptime: z.number().optional(),
+  platform: z.string().optional(),
+  arch: z.string().optional(),
+  training: z.object({
+    active: z.number(),
+    total: z.number(),
+    completed: z.number(),
+  }).optional(),
   timestamp: z.string(),
 })
 
@@ -58,6 +65,8 @@ export const DatasetSchema = z.object({
   source: z.string(),
   samples: z.number(),
   size_mb: z.number(),
+  size: z.number().optional(), // Alias from controller
+  records: z.number().optional(), // Alias from controller
   status: z.string(),
   type: z.string().optional(),
   created_at: z.string(),
@@ -66,10 +75,17 @@ export const DatasetSchema = z.object({
 })
 
 export const HealthSchema = z.object({
-  ok: z.boolean(),
-  database: z.boolean().optional(),
-  tables: z.record(z.string(), z.number()).optional(),
+  status: z.string(),
+  database: z.string().optional(),
+  uptime: z.number().optional(),
+  memory: z.object({
+    used: z.number(),
+    total: z.number(),
+    percentage: z.number(),
+  }).optional(),
+  cpu: z.number().optional(),
   timestamp: z.string().optional(),
+  beacon: z.string().optional(),
 })
 
 export type SystemMetrics = z.infer<typeof SystemMetricsSchema>
@@ -79,7 +95,7 @@ export type Health = z.infer<typeof HealthSchema>
 
 async function getCsrf() {
   try {
-    const r = await fetch(`${BASE}/csrf-token`, { credentials: 'include' })
+    const r = await fetch(`${API_BASE}/csrf-token`, { credentials: 'include' })
     if (r.ok) {
       const j = await r.json()
       csrf = j?.token || ''
@@ -99,13 +115,20 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   if (token) headers.Authorization = `Bearer ${token}`
   if (init.method && init.method !== 'GET') headers['X-CSRF-Token'] = csrf
 
-  let res = await fetch(`${BASE}${path}`, { ...init, headers, credentials: 'include' })
+  const url = path.startsWith('/api') || path.startsWith('http')
+    ? path
+    : join(API_BASE, path);
+  
+  let res = await fetch(url, { ...init, headers, credentials: 'include' })
   if (res.status === 403) {
     await getCsrf()
     headers['X-CSRF-Token'] = csrf
-    res = await fetch(`${BASE}${path}`, { ...init, headers, credentials: 'include' })
+    res = await fetch(url, { ...init, headers, credentials: 'include' })
   }
-  if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`)
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new Error(`HTTP ${res.status} on ${url}: ${text || res.statusText}`);
+  }
   return res.json()
 }
 
@@ -131,12 +154,28 @@ export const API = {
   health: (): Promise<Health> => requestWithSchema('/health', HealthSchema),
   
   // System monitoring
-  monitoring: (): Promise<SystemMetrics> => requestWithSchema('/system/metrics', SystemMetricsSchema),
-  systemStats: (): Promise<SystemMetrics> => requestWithSchema('/system/metrics', SystemMetricsSchema),
+  monitoring: (): Promise<SystemMetrics> => requestWithSchema('/monitoring', SystemMetricsSchema),
+  systemStats: (): Promise<SystemMetrics> => requestWithSchema('/monitoring', SystemMetricsSchema),
   
   // Models and training
-  models: (): Promise<TrainingSession[]> => requestWithSchema('/models', z.array(TrainingSessionSchema)),
-  getModels: (): Promise<TrainingSession[]> => requestWithSchema('/models', z.array(TrainingSessionSchema)),
+  models: (): Promise<TrainingSession[]> => requestWithSchema('/models', z.object({
+    models: z.array(TrainingSessionSchema),
+    pagination: z.object({
+      page: z.number(),
+      limit: z.number(),
+      total: z.number(),
+      pages: z.number(),
+    })
+  })).then(data => data.models),
+  getModels: (): Promise<TrainingSession[]> => requestWithSchema('/models', z.object({
+    models: z.array(TrainingSessionSchema),
+    pagination: z.object({
+      page: z.number(),
+      limit: z.number(),
+      total: z.number(),
+      pages: z.number(),
+    })
+  })).then(data => data.models),
   getModel: (id: string | number): Promise<TrainingSession> => requestWithSchema(`/models/${id}`, TrainingSessionSchema),
   createModel: (data: any) => request('/models', { method: 'POST', body: JSON.stringify(data) }),
   startTraining: (id: string | number, body?: any) => request(`/models/${id}/start`, { method: 'POST', body: body ? JSON.stringify(body) : undefined }),
@@ -145,8 +184,27 @@ export const API = {
   resumeTraining: (id: string | number) => request(`/models/${id}/resume`, { method: 'POST' }),
   
   // Datasets
-  datasets: (): Promise<Dataset[]> => requestWithSchema('/datasets', z.array(DatasetSchema)),
-  getDatasets: (): Promise<Dataset[]> => requestWithSchema('/datasets', z.array(DatasetSchema)),
+  datasets: (): Promise<Dataset[]> => requestWithSchema('/datasets', z.object({
+    datasets: z.array(DatasetSchema),
+    pagination: z.object({
+      page: z.number(),
+      limit: z.number(),
+      total: z.number(),
+      pages: z.number(),
+    })
+  })).then(data => data.datasets),
+  getDatasets: (): Promise<Dataset[]> => requestWithSchema('/datasets', z.object({
+    datasets: z.array(DatasetSchema),
+    pagination: z.object({
+      page: z.number(),
+      limit: z.number(),
+      total: z.number(),
+      pages: z.number(),
+    })
+  })).then(data => data.datasets.map((d: any) => ({
+    ...d,
+    sizeMB: typeof d.size === 'number' ? d.size : (typeof d.size_mb === 'number' ? d.size_mb : undefined),
+  }))),
   getDataset: (id: string | number): Promise<Dataset> => requestWithSchema(`/datasets/${id}`, DatasetSchema),
   downloadDataset: (id: string | number) => request(`/datasets/${id}/download`, { method: 'POST' }),
   
@@ -162,7 +220,7 @@ export const API = {
   
   // Additional API methods
   getAnalytics: () => request('/analytics'),
-  getSystemMetrics: (): Promise<SystemMetrics> => requestWithSchema('/system/metrics', SystemMetricsSchema),
+  getSystemMetrics: (): Promise<SystemMetrics> => requestWithSchema('/monitoring', SystemMetricsSchema),
   getSettings: () => request('/settings'),
   updateSettings: (settings: any) => request('/settings', { method: 'PUT', body: JSON.stringify(settings) }),
   

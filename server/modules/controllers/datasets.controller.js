@@ -1,4 +1,4 @@
-import { isDemoMode } from '../security/config.js';
+import { isDemoMode } from '../security/config';
 export class DatasetsController {
     constructor(db) {
         this.db = db;
@@ -9,7 +9,7 @@ export class DatasetsController {
             const offset = (Number(page) - 1) * Number(limit);
             const datasets = this.db.prepare(`
         SELECT 
-          id, name, type, status, size, records, 
+          id, name, type, status, size_mb as size, samples as records, 
           description, source, created_at, updated_at
         FROM datasets
         ORDER BY ${sort} ${order}
@@ -36,7 +36,7 @@ export class DatasetsController {
             const { id } = req.params;
             const dataset = this.db.prepare(`
         SELECT 
-          id, name, type, status, size, records, 
+          id, name, type, status, size_mb AS size, samples AS records, 
           description, source, created_at, updated_at
         FROM datasets
         WHERE id = ?

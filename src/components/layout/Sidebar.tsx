@@ -17,6 +17,7 @@ import {
   Layout,
   Monitor
 } from 'lucide-react';
+import { ChartBarIcon, BoltIcon, PlayCircleIcon, CloudArrowDownIcon } from '../ui/icons';
 import { cn } from '../../utils/cn';
 
 interface SidebarProps {
@@ -25,12 +26,13 @@ interface SidebarProps {
 }
 
 const navigationItems = [
-  { name: 'نمای کلی', href: '/overview', icon: Layout, description: 'نمای کلی سیستم' },
-  { name: 'داشبورد پیشرفته', href: '/dashboard-advanced', icon: BarChart3, description: 'داشبورد تعاملی' },
+  { name: 'نمای کلی', href: '/overview', icon: ChartBarIcon, description: 'نمای کلی سیستم' },
+  { name: 'داشبورد پیشرفته', href: '/dashboard-advanced', icon: BoltIcon, description: 'داشبورد تعاملی' },
   { name: 'تحلیل‌ها', href: '/analytics', icon: TrendingUp, description: 'گزارش‌ها و آمار' },
   { name: 'دیتاست‌ها', href: '/data', icon: Database, description: 'مدیریت داده‌ها' },
+  { name: 'گالری دیتاست‌ها', href: '/data-gallery', icon: CloudArrowDownIcon, description: 'دانلود دیتاست‌ها' },
   { name: 'لاگ‌ها', href: '/logs', icon: FileText, description: 'سوابق سیستم' },
-  { name: 'مدل‌ها', href: '/models', icon: Brain, description: 'مدیریت مدل‌های AI' },
+  { name: 'مدل‌ها', href: '/models', icon: PlayCircleIcon, description: 'مدیریت مدل‌های AI' },
   { name: 'نظارت سیستم', href: '/monitoring', icon: Monitor, description: 'وضعیت سیستم' },
   { name: 'آموزش مدل‌ها', href: '/training', icon: Activity, description: 'مدیریت آموزش AI' },
   { name: 'تیم', href: '/team', icon: Users, description: 'اعضای تیم' },
@@ -44,7 +46,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
   return (
     <>
       {/* Desktop sidebar */}
-      <div className="hidden lg:flex lg:flex-col lg:w-80 lg:fixed lg:inset-y-0 bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700">
+      <div className="hidden lg:flex lg:flex-col lg:w-80 lg:fixed lg:inset-y-0 bg-white/80 backdrop-blur-xl border-l border-slate-200/50 shadow-2xl">
         <div className="flex-1 flex flex-col min-h-0">
           {/* Logo/Brand */}
           <div className="flex items-center h-20 px-6 bg-gradient-to-r from-blue-500 to-purple-600">
@@ -75,7 +77,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                   key={item.name}
                   to={item.href}
                   className={cn(
-                    'group flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 hover:scale-105 hover:shadow-md',
+                    'flex items-center gap-3 px-4 py-3 text-slate-600 hover:text-primary-600 hover:bg-primary-50/80 rounded-lg transition-all duration-200 group',
                     isActive
                       ? 'bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 text-blue-600 dark:text-blue-400 border-l-4 border-blue-500 shadow-sm'
                       : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100 dark:hover:from-gray-700 dark:hover:to-gray-600'
@@ -84,7 +86,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                   aria-label={`${item.name} - ${item.description}`}
                 >
                   <Icon className={cn(
-                    "h-5 w-5 flex-shrink-0 transition-transform duration-200",
+                    "icon icon-muted group-hover:text-primary-600",
                     isActive ? "scale-110" : "group-hover:scale-110"
                   )} />
                   <div className="flex flex-col">

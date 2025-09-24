@@ -1,386 +1,539 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/Card';
-import { Button } from './ui/Button';
+import { ModernCard } from './ui/ModernCard';
+import { SlimBadge } from './ui/SlimBadge';
 import { Progress } from './ui/Progress';
-import { Badge } from './ui/Badge';
-import { API } from '../services/api';
-import { websocketService } from '../services/websocket';
+import { Button } from './ui/Button';
 import { 
   Play, 
   Pause, 
   Square, 
-  RefreshCw, 
-  Brain,
+  Settings, 
+  Brain, 
+  Database,
   Clock,
+  Target,
+  Zap,
+  Plus,
+  Eye,
+  Download,
   TrendingUp,
-  AlertTriangle,
-  CheckCircle
+  BarChart3,
+  Activity,
+  CheckCircle,
+  AlertCircle,
+  RefreshCw
 } from 'lucide-react';
+import {
+  LineChart,
+  Line,
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell
+} from 'recharts';
 
-interface TrainingSession {
-  id: number;
-  name: string;
-  status: 'training' | 'paused' | 'completed' | 'failed' | 'pending';
-  progress: number;
-  accuracy: number;
-  startTime: string;
-  estimatedCompletion?: string;
-  modelType: string;
-  dataset: string;
-}
+// Mock Data برای Training Management
+const MOCK_TRAINING_SESSIONS = [
+  {
+    id: 1,
+    model_name: 'Persian BERT Legal v3.0',
+    model_type: 'persian-bert',
+    dataset: 'Legal QA Persian Extended',
+    status: 'training',
+    progress: 64,
+    current_epoch: 32,
+    total_epochs: 50,
+    accuracy: 0.89,
+    loss: 0.23,
+    learning_rate: 0.001,
+    batch_size: 32,
+    estimated_completion: '2h 15m',
+    elapsed_time: '1h 45m',
+    started_at: new Date(Date.now() - 6300000).toISOString(),
+    gpu_usage: 85,
+    memory_usage: 12.4
+  },
+  {
+    id: 2,
+    model_name: 'Contract Analyzer Pro',
+    model_type: 'dora',
+    dataset: 'Contract Analysis Dataset',
+    status: 'training',
+    progress: 28,
+    current_epoch: 14,
+    total_epochs: 50,
+    accuracy: 0.76,
+    loss: 0.45,
+    learning_rate: 0.0005,
+    batch_size: 16,
+    estimated_completion: '4h 30m',
+    elapsed_time: '1h 20m',
+    started_at: new Date(Date.now() - 4800000).toISOString(),
+    gpu_usage: 72,
+    memory_usage: 8.2
+  },
+  {
+    id: 3,
+    model_name: 'Legal Document Classifier',
+    model_type: 'qr-adaptor',
+    dataset: 'Legal Documents Collection',
+    status: 'paused',
+    progress: 45,
+    current_epoch: 18,
+    total_epochs: 40,
+    accuracy: 0.82,
+    loss: 0.31,
+    learning_rate: 0.002,
+    batch_size: 64,
+    estimated_completion: 'متوقف شده',
+    elapsed_time: '2h 10m',
+    started_at: new Date(Date.now() - 8400000).toISOString(),
+    gpu_usage: 0,
+    memory_usage: 0
+  }
+];
+
+const MOCK_TRAINING_QUEUE = [
+  {
+    id: 4,
+    model_name: 'Case Law Predictor v2',
+    model_type: 'persian-bert',
+    dataset: 'Case Law Database',
+    priority: 'high',
+    estimated_duration: '6h',
+    scheduled_for: new Date(Date.now() + 3600000).toISOString()
+  },
+  {
+    id: 5,
+    model_name: 'Legal Summarizer',
+    model_type: 'dora',
+    dataset: 'Legal Documents',
+    priority: 'medium',
+    estimated_duration: '4h',
+    scheduled_for: new Date(Date.now() + 7200000).toISOString()
+  }
+];
+
+const MOCK_TRAINING_HISTORY = Array.from({ length: 10 }, (_, i) => ({
+  date: new Date(Date.now() - i * 24 * 60 * 60 * 1000).toLocaleDateString('fa-IR'),
+  sessions: Math.floor(Math.random() * 5) + 1,
+  avg_accuracy: Math.random() * 0.2 + 0.8,
+  total_time: Math.floor(Math.random() * 8) + 2
+}));
+
+const MOCK_MODEL_PERFORMANCE = [
+  { name: 'Persian BERT', accuracy: 94, training_time: 8.5, efficiency: 92 },
+  { name: 'DORA', accuracy: 89, training_time: 6.2, efficiency: 88 },
+  { name: 'QR Adaptor', accuracy: 85, training_time: 4.8, efficiency: 85 }
+];
+
+const MOCK_RESOURCE_USAGE = Array.from({ length: 24 }, (_, i) => ({
+  hour: `${i}:00`,
+  gpu_usage: Math.floor(Math.random() * 40) + 30,
+  memory_usage: Math.floor(Math.random() * 30) + 40,
+  cpu_usage: Math.floor(Math.random() * 25) + 25
+}));
 
 export default function TrainingManagement() {
-  const [sessions, setSessions] = useState<TrainingSession[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [activeSessions, setActiveSessions] = useState(MOCK_TRAINING_SESSIONS);
+  const [trainingQueue, setTrainingQueue] = useState(MOCK_TRAINING_QUEUE);
+  const [loading, setLoading] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
 
-  // Load training sessions
-  useEffect(() => {
-    const loadSessions = async () => {
-      try {
-        setLoading(true);
-        const models = await API.getModels();
-        
-        if (models) {
-          setSessions(models.map((model: any, index: number) => ({
-            id: model.id || index,
-            name: model.name || `مدل ${index + 1}`,
-            status: model.status || 'pending',
-            progress: model.progress || 0,
-            accuracy: model.accuracy || 0,
-            startTime: model.startTime || new Date().toISOString(),
-            estimatedCompletion: model.estimatedCompletion,
-            modelType: model.type || 'LSTM',
-            dataset: model.dataset || 'قوانین مدنی'
-          })));
-        }
-      } catch (err) {
-        console.error('Failed to load training sessions:', err);
-        setError('خطا در بارگذاری جلسات آموزش');
-        // Fallback data
-        setSessions([
-          {
-            id: 1,
-            name: 'مدل طبقه‌بندی اسناد حقوقی',
-            status: 'training',
-            progress: 65,
-            accuracy: 0.87,
-            startTime: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-            estimatedCompletion: new Date(Date.now() + 1 * 60 * 60 * 1000).toISOString(),
-            modelType: 'BERT',
-            dataset: 'قوانین مدنی'
-          },
-          {
-            id: 2,
-            name: 'مدل استخراج کلیدواژه',
-            status: 'paused',
-            progress: 30,
-            accuracy: 0.73,
-            startTime: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
-            modelType: 'LSTM',
-            dataset: 'قوانین جزایی'
-          },
-          {
-            id: 3,
-            name: 'مدل خلاصه‌سازی متن',
-            status: 'completed',
-            progress: 100,
-            accuracy: 0.91,
-            startTime: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-            modelType: 'T5',
-            dataset: 'قوانین تجاری'
-          }
-        ]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadSessions();
-  }, []);
-
-  // WebSocket for real-time updates
-  useEffect(() => {
-    websocketService.connect();
-
-    const handleTrainingProgress = (data: any) => {
-      setSessions(prev => prev.map(session => 
-        session.id === data.modelId 
-          ? { ...session, progress: data.progress, accuracy: data.accuracy }
-          : session
-      ));
-    };
-
-    const handleTrainingComplete = (data: any) => {
-      setSessions(prev => prev.map(session => 
-        session.id === data.modelId 
-          ? { ...session, status: 'completed', progress: 100 }
-          : session
-      ));
-    };
-
-    const handleTrainingError = (data: any) => {
-      setSessions(prev => prev.map(session => 
-        session.id === data.modelId 
-          ? { ...session, status: 'failed' }
-          : session
-      ));
-    };
-
-    websocketService.on('training_progress', handleTrainingProgress);
-    websocketService.on('training_complete', handleTrainingComplete);
-    websocketService.on('training_error', handleTrainingError);
-
-    return () => {
-      websocketService.off('training_progress', handleTrainingProgress);
-      websocketService.off('training_complete', handleTrainingComplete);
-      websocketService.off('training_error', handleTrainingError);
-    };
-  }, []);
-
-  const handleStartTraining = async (sessionId: number) => {
-    try {
-      await API.startTraining(sessionId);
-      setSessions(prev => prev.map(session => 
-        session.id === sessionId ? { ...session, status: 'training' } : session
-      ));
-    } catch (err) {
-      console.error('Failed to start training:', err);
-    }
-  };
-
-  const handlePauseTraining = async (sessionId: number) => {
-    try {
-      await API.pauseTraining(sessionId);
-      setSessions(prev => prev.map(session => 
-        session.id === sessionId ? { ...session, status: 'paused' } : session
-      ));
-    } catch (err) {
-      console.error('Failed to pause training:', err);
-    }
-  };
-
-  const handleResumeTraining = async (sessionId: number) => {
-    try {
-      await API.resumeTraining(sessionId);
-      setSessions(prev => prev.map(session => 
-        session.id === sessionId ? { ...session, status: 'training' } : session
-      ));
-    } catch (err) {
-      console.error('Failed to resume training:', err);
-    }
-  };
-
-  const getStatusBadge = (status: string) => {
+  const getStatusColor = (status: string) => {
     switch (status) {
-      case 'training':
-        return <Badge className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">در حال آموزش</Badge>;
-      case 'paused':
-        return <Badge className="bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">متوقف شده</Badge>;
-      case 'completed':
-        return <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">تکمیل شده</Badge>;
-      case 'failed':
-        return <Badge className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">ناموفق</Badge>;
-      case 'pending':
-        return <Badge className="bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200">در انتظار</Badge>;
-      default:
-        return <Badge>نامشخص</Badge>;
+      case 'training': return 'info';
+      case 'paused': return 'warning';
+      case 'completed': return 'success';
+      case 'failed': return 'error';
+      default: return 'neutral';
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'training':
-        return <RefreshCw className="h-4 w-4 animate-spin text-blue-600" />;
-      case 'paused':
-        return <Pause className="h-4 w-4 text-yellow-600" />;
-      case 'completed':
-        return <CheckCircle className="h-4 w-4 text-green-600" />;
-      case 'failed':
-        return <AlertTriangle className="h-4 w-4 text-red-600" />;
-      default:
-        return <Clock className="h-4 w-4 text-gray-600" />;
+      case 'training': return <Play className="w-3 h-3" />;
+      case 'paused': return <Pause className="w-3 h-3" />;
+      case 'completed': return <CheckCircle className="w-3 h-3" />;
+      case 'failed': return <AlertCircle className="w-3 h-3" />;
+      default: return <Clock className="w-3 h-3" />;
     }
   };
 
-  const formatDuration = (startTime: string): string => {
-    const start = new Date(startTime);
-    const now = new Date();
-    const diff = now.getTime() - start.getTime();
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    
-    if (hours > 0) {
-      return `${hours} ساعت و ${minutes} دقیقه`;
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'training': return 'در حال آموزش';
+      case 'paused': return 'متوقف شده';
+      case 'completed': return 'تکمیل شده';
+      case 'failed': return 'ناموفق';
+      default: return 'نامشخص';
     }
-    return `${minutes} دقیقه`;
   };
 
-  if (loading) {
-    return (
-      <div className="space-y-6" dir="rtl">
-        <div className="animate-pulse space-y-4">
-          {[...Array(3)].map((_, i) => (
-            <Card key={i}>
-              <CardContent className="p-6">
-                <div className="h-4 bg-gray-300 rounded w-1/3 mb-4"></div>
-                <div className="h-6 bg-gray-300 rounded w-full mb-2"></div>
-                <div className="h-4 bg-gray-300 rounded w-2/3"></div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
-    );
-  }
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'high': return 'error';
+      case 'medium': return 'warning';
+      case 'low': return 'neutral';
+      default: return 'neutral';
+    }
+  };
+
+  // آمار کلی
+  const stats = {
+    active: activeSessions.filter(s => s.status === 'training').length,
+    paused: activeSessions.filter(s => s.status === 'paused').length,
+    queued: trainingQueue.length,
+    avgAccuracy: activeSessions.reduce((sum, s) => sum + s.accuracy, 0) / activeSessions.length * 100,
+    totalGpuUsage: activeSessions.reduce((sum, s) => sum + s.gpu_usage, 0),
+    totalMemoryUsage: activeSessions.reduce((sum, s) => sum + s.memory_usage, 0)
+  };
 
   return (
-    <div className="space-y-6" dir="rtl">
-      {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-            مدیریت آموزش مدل‌ها
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">
-            نظارت و کنترل جلسات آموزش مدل‌های یادگیری ماشین
-          </p>
-        </div>
-        <Button className="bg-blue-600 hover:bg-blue-700">
-          <Brain className="h-4 w-4 ml-2" />
-          ایجاد مدل جدید
-        </Button>
-      </div>
-
-      {error && (
-        <div className="p-4 bg-yellow-50 dark:bg-yellow-950 border border-yellow-200 dark:border-yellow-800 rounded-lg">
-          <div className="flex items-center gap-2">
-            <AlertTriangle className="h-5 w-5 text-yellow-600" />
-            <p className="text-yellow-800 dark:text-yellow-200">{error}</p>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-6">
+      <div className="max-w-7xl mx-auto space-y-8">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-4xl font-light text-slate-900 dark:text-slate-100 mb-2">
+              آموزش مدل‌ها
+            </h1>
+            <p className="text-lg text-slate-600 dark:text-slate-400">
+              مدیریت و نظارت بر فرآیند آموزش مدل‌های هوش مصنوعی
+            </p>
           </div>
-          <p className="text-sm text-yellow-600 dark:text-yellow-400 mt-1">
-            در حال نمایش داده‌های نمونه
-          </p>
+          <div className="flex items-center gap-3">
+            <Button variant="outline" className="rounded-xl">
+              <Settings className="w-4 h-4 ml-2" />
+              تنظیمات آموزش
+            </Button>
+            <Button onClick={() => setShowCreateModal(true)} className="rounded-xl bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700">
+              <Plus className="w-4 h-4 ml-2" />
+              آموزش جدید
+            </Button>
+          </div>
         </div>
-      )}
 
-      {/* Training Sessions */}
-      <div className="space-y-4">
-        {sessions.map((session) => (
-          <Card key={session.id} className="overflow-hidden">
-            <CardHeader className="pb-4">
-              <div className="flex justify-between items-start">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    {getStatusIcon(session.status)}
-                    <CardTitle className="text-xl">{session.name}</CardTitle>
-                    {getStatusBadge(session.status)}
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <ModernCard variant="elevated" className="text-center">
+            <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl mb-4">
+              <Activity className="w-7 h-7 text-white" />
+            </div>
+            <h3 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1">{stats.active}</h3>
+            <p className="text-slate-600 dark:text-slate-400">در حال آموزش</p>
+            <div className="mt-2">
+              <SlimBadge variant="info" size="xs">فعال</SlimBadge>
+            </div>
+          </ModernCard>
+
+          <ModernCard variant="elevated" className="text-center">
+            <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-2xl mb-4">
+              <Target className="w-7 h-7 text-white" />
+            </div>
+            <h3 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1">{stats.avgAccuracy.toFixed(1)}%</h3>
+            <p className="text-slate-600 dark:text-slate-400">میانگین دقت</p>
+            <div className="flex items-center justify-center gap-1 mt-2">
+              <TrendingUp className="w-4 h-4 text-emerald-500" />
+              <span className="text-sm text-emerald-600">+2.3%</span>
+            </div>
+          </ModernCard>
+
+          <ModernCard variant="elevated" className="text-center">
+            <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-purple-400 to-purple-600 rounded-2xl mb-4">
+              <Zap className="w-7 h-7 text-white" />
+            </div>
+            <h3 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1">{stats.totalGpuUsage}%</h3>
+            <p className="text-slate-600 dark:text-slate-400">استفاده GPU</p>
+            <div className="mt-2">
+              <SlimBadge variant={stats.totalGpuUsage > 80 ? 'warning' : 'success'} size="xs">
+                {stats.totalGpuUsage > 80 ? 'بالا' : 'نرمال'}
+              </SlimBadge>
+            </div>
+          </ModernCard>
+
+          <ModernCard variant="elevated" className="text-center">
+            <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-amber-400 to-amber-600 rounded-2xl mb-4">
+              <Clock className="w-7 h-7 text-white" />
+            </div>
+            <h3 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-1">{stats.queued}</h3>
+            <p className="text-slate-600 dark:text-slate-400">در صف انتظار</p>
+            <div className="mt-2">
+              <SlimBadge variant="neutral" size="xs">آماده</SlimBadge>
+            </div>
+          </ModernCard>
+        </div>
+
+        {/* Active Training Sessions */}
+        <ModernCard variant="outlined">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+              <Brain className="w-5 h-5 text-purple-500" />
+              جلسات آموزش فعال
+            </h3>
+            <SlimBadge variant="info">{stats.active} فعال</SlimBadge>
+          </div>
+          <div className="space-y-6">
+            {activeSessions.map((session) => (
+              <div key={session.id} className="p-6 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-purple-400 to-purple-600 rounded-xl flex items-center justify-center">
+                      <Brain className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+                        {session.model_name}
+                      </h4>
+                      <p className="text-slate-600 dark:text-slate-400">
+                        {session.model_type} • {session.dataset}
+                      </p>
+                    </div>
                   </div>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-600 dark:text-gray-400">
-                    <div>
-                      <span className="font-medium">نوع مدل:</span> {session.modelType}
-                    </div>
-                    <div>
-                      <span className="font-medium">مجموعه داده:</span> {session.dataset}
-                    </div>
-                    <div>
-                      <span className="font-medium">مدت زمان:</span> {formatDuration(session.startTime)}
-                    </div>
-                    <div>
-                      <span className="font-medium">دقت فعلی:</span> {(session.accuracy * 100).toFixed(1)}%
-                    </div>
+                  <div className="flex items-center gap-2">
+                    <SlimBadge variant={getStatusColor(session.status)}>
+                      {getStatusIcon(session.status)}
+                      {getStatusText(session.status)}
+                    </SlimBadge>
                   </div>
                 </div>
-                <div className="flex gap-2 mr-4">
-                  {session.status === 'pending' && (
-                    <Button 
-                      size="sm" 
-                      onClick={() => handleStartTraining(session.id)}
-                      className="bg-green-600 hover:bg-green-700"
-                    >
-                      <Play className="h-4 w-4" />
-                    </Button>
-                  )}
+
+                {/* Progress */}
+                <div className="space-y-3 mb-4">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-slate-600 dark:text-slate-400">پیشرفت آموزش</span>
+                    <span className="font-medium">{session.current_epoch}/{session.total_epochs} epochs</span>
+                  </div>
+                  <Progress value={session.progress} className="h-3" />
+                  <div className="flex justify-between text-xs text-slate-500">
+                    <span>دقت: {(session.accuracy * 100).toFixed(1)}%</span>
+                    <span>خطا: {session.loss.toFixed(3)}</span>
+                    <span>زمان باقی‌مانده: {session.estimated_completion}</span>
+                  </div>
+                </div>
+
+                {/* Stats Grid */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                  <div className="text-center p-3 bg-white dark:bg-slate-700 rounded-lg">
+                    <div className="text-lg font-bold text-slate-900 dark:text-slate-100">{session.learning_rate}</div>
+                    <div className="text-xs text-slate-500">Learning Rate</div>
+                  </div>
+                  <div className="text-center p-3 bg-white dark:bg-slate-700 rounded-lg">
+                    <div className="text-lg font-bold text-slate-900 dark:text-slate-100">{session.batch_size}</div>
+                    <div className="text-xs text-slate-500">Batch Size</div>
+                  </div>
+                  <div className="text-center p-3 bg-white dark:bg-slate-700 rounded-lg">
+                    <div className="text-lg font-bold text-slate-900 dark:text-slate-100">{session.gpu_usage}%</div>
+                    <div className="text-xs text-slate-500">GPU Usage</div>
+                  </div>
+                  <div className="text-center p-3 bg-white dark:bg-slate-700 rounded-lg">
+                    <div className="text-lg font-bold text-slate-900 dark:text-slate-100">{session.memory_usage}GB</div>
+                    <div className="text-xs text-slate-500">Memory</div>
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex items-center gap-3">
                   {session.status === 'training' && (
-                    <Button 
-                      size="sm" 
-                      variant="outline" 
-                      onClick={() => handlePauseTraining(session.id)}
-                    >
-                      <Pause className="h-4 w-4" />
+                    <Button variant="outline" size="sm" className="rounded-lg">
+                      <Pause className="w-3 h-3 ml-1" />
+                      توقف
                     </Button>
                   )}
                   {session.status === 'paused' && (
-                    <Button 
-                      size="sm" 
-                      onClick={() => handleResumeTraining(session.id)}
-                      className="bg-blue-600 hover:bg-blue-700"
-                    >
-                      <Play className="h-4 w-4" />
+                    <Button variant="outline" size="sm" className="rounded-lg">
+                      <Play className="w-3 h-3 ml-1" />
+                      ادامه
                     </Button>
                   )}
+                  <Button variant="outline" size="sm" className="rounded-lg">
+                    <Square className="w-3 h-3 ml-1" />
+                    توقف کامل
+                  </Button>
+                  <Button variant="outline" size="sm" className="rounded-lg">
+                    <Eye className="w-3 h-3 ml-1" />
+                    جزئیات
+                  </Button>
+                  <Button variant="outline" size="sm" className="rounded-lg">
+                    <Settings className="w-3 h-3 ml-1" />
+                    تنظیمات
+                  </Button>
                 </div>
               </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div>
-                  <div className="flex justify-between text-sm mb-2">
-                    <span>پیشرفت آموزش</span>
-                    <span>{session.progress}%</span>
-                  </div>
-                  <Progress value={session.progress} className="h-2" />
-                </div>
-                
-                {session.status === 'training' && session.estimatedCompletion && (
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
-                    <Clock className="h-4 w-4 inline ml-1" />
-                    زمان تخمینی تکمیل: {new Date(session.estimatedCompletion).toLocaleTimeString('fa-IR')}
-                  </div>
-                )}
-                
-                {session.status === 'completed' && (
-                  <div className="flex items-center gap-4 text-sm">
-                    <div className="flex items-center gap-1 text-green-600">
-                      <CheckCircle className="h-4 w-4" />
-                      آموزش با موفقیت تکمیل شد
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <TrendingUp className="h-4 w-4" />
-                      دقت نهایی: {(session.accuracy * 100).toFixed(1)}%
-                    </div>
-                  </div>
-                )}
-                
-                {session.status === 'failed' && (
-                  <div className="flex items-center gap-1 text-sm text-red-600">
-                    <AlertTriangle className="h-4 w-4" />
-                    خطا در آموزش مدل
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+            ))}
+          </div>
+        </ModernCard>
 
-      {sessions.length === 0 && !loading && (
-        <Card>
-          <CardContent className="text-center py-12">
-            <Brain className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-              هیچ جلسه آموزشی یافت نشد
+        {/* Charts */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Training History */}
+          <ModernCard variant="outlined">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                <BarChart3 className="w-5 h-5 text-blue-500" />
+                تاریخچه آموزش
+              </h3>
+              <SlimBadge variant="neutral">10 روز گذشته</SlimBadge>
+            </div>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={MOCK_TRAINING_HISTORY.slice().reverse()}>
+                  <defs>
+                    <linearGradient id="sessionsGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis 
+                    dataKey="date" 
+                    tick={{ fontSize: 12 }}
+                    stroke="#64748b"
+                  />
+                  <YAxis 
+                    tick={{ fontSize: 12 }}
+                    stroke="#64748b"
+                  />
+                  <Tooltip 
+                    contentStyle={{
+                      backgroundColor: 'white',
+                      border: '1px solid #e2e8f0',
+                      borderRadius: '12px'
+                    }}
+                  />
+                  <Area 
+                    type="monotone" 
+                    dataKey="sessions" 
+                    stroke="#3b82f6" 
+                    strokeWidth={2}
+                    fill="url(#sessionsGradient)"
+                    name="جلسات آموزش"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </ModernCard>
+
+          {/* Resource Usage */}
+          <ModernCard variant="outlined">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                <Zap className="w-5 h-5 text-purple-500" />
+                استفاده از منابع
+              </h3>
+              <SlimBadge variant="warning">زنده</SlimBadge>
+            </div>
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={MOCK_RESOURCE_USAGE.slice(-12)}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                  <XAxis 
+                    dataKey="hour" 
+                    tick={{ fontSize: 12 }}
+                    stroke="#64748b"
+                  />
+                  <YAxis 
+                    tick={{ fontSize: 12 }}
+                    stroke="#64748b"
+                  />
+                  <Tooltip 
+                    contentStyle={{
+                      backgroundColor: 'white',
+                      border: '1px solid #e2e8f0',
+                      borderRadius: '12px'
+                    }}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="gpu_usage" 
+                    stroke="#8b5cf6" 
+                    strokeWidth={2}
+                    name="GPU (%)"
+                    dot={false}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="memory_usage" 
+                    stroke="#10b981" 
+                    strokeWidth={2}
+                    name="Memory (%)"
+                    dot={false}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </ModernCard>
+        </div>
+
+        {/* Training Queue */}
+        <ModernCard variant="outlined">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+              <Clock className="w-5 h-5 text-amber-500" />
+              صف آموزش
             </h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
-              برای شروع، یک مدل جدید ایجاد کنید
-            </p>
-            <Button className="bg-blue-600 hover:bg-blue-700">
-              <Brain className="h-4 w-4 ml-2" />
-              ایجاد اولین مدل
-            </Button>
-          </CardContent>
-        </Card>
-      )}
+            <SlimBadge variant="neutral">{trainingQueue.length} در انتظار</SlimBadge>
+          </div>
+          <div className="space-y-4">
+            {trainingQueue.map((item) => (
+              <div key={item.id} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800 rounded-xl">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 bg-amber-100 dark:bg-amber-900/30 rounded-lg flex items-center justify-center">
+                    <Clock className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-slate-900 dark:text-slate-100">{item.model_name}</h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                      {item.model_type} • {item.dataset}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <SlimBadge variant={getPriorityColor(item.priority)} size="sm">
+                    {item.priority === 'high' ? 'اولویت بالا' : 
+                     item.priority === 'medium' ? 'اولویت متوسط' : 'اولویت پایین'}
+                  </SlimBadge>
+                  <div className="text-sm text-slate-500">
+                    زمان تخمینی: {item.estimated_duration}
+                  </div>
+                  <Button variant="outline" size="sm" className="rounded-lg">
+                    <Play className="w-3 h-3 ml-1" />
+                    شروع فوری
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </ModernCard>
+
+        {/* Create Training Modal Placeholder */}
+        {showCreateModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+            <ModernCard className="w-full max-w-2xl">
+              <div className="p-6">
+                <h3 className="text-xl font-semibold mb-4">شروع آموزش جدید</h3>
+                <p className="text-slate-600 mb-6">فرم ایجاد جلسه آموزش در حال توسعه است...</p>
+                <div className="flex justify-end gap-3">
+                  <Button variant="outline" onClick={() => setShowCreateModal(false)}>
+                    انصراف
+                  </Button>
+                  <Button onClick={() => setShowCreateModal(false)}>
+                    شروع آموزش
+                  </Button>
+                </div>
+              </div>
+            </ModernCard>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

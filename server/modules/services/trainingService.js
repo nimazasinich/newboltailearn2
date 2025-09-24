@@ -1,6 +1,6 @@
-import { getRealTrainingEngine } from '../../training/RealTrainingEngineImpl.js';
-import { config, isDemoMode } from '../security/config.js';
-import { WorkerManager } from '../workers/trainingWorker.js';
+import { getRealTrainingEngine } from '../../training/RealTrainingEngineImpl';
+import { config, isDemoMode } from '../security/config';
+import { WorkerManager } from '../workers/trainingWorker';
 export class TrainingService {
     constructor(db, io) {
         this.workerManager = null;

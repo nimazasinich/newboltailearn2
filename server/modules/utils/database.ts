@@ -1,5 +1,5 @@
-import DatabaseManager from '../../database/DatabaseManager.js';
-import { config } from '../security/config.js';
+import DatabaseManager from '../../database/DatabaseManager';
+import { config } from '../security/config';
 
 /**
  * Database utilities that use the DatabaseManager singleton
@@ -123,7 +123,7 @@ export function getDatabaseInstance() {
 /**
  * Re-export the DatabaseManager singleton for convenience
  */
-export { default as DatabaseManager } from '../../database/DatabaseManager.js';
+export { default as DatabaseManager } from '../../database/DatabaseManager';
 
 /**
  * Legacy compatibility - export database manager reference

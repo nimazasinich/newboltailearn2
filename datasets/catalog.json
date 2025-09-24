@@ -1,0 +1,57 @@
+[
+  {
+    "id": "sample-legal-mini",
+    "title": "Sample Legal Mini",
+    "description": "Small legal dataset for testing.",
+    "sizeMB": 2.3,
+    "records": 1200,
+    "tags": ["legal", "nlp"],
+    "license": "CC BY 4.0",
+    "updatedAt": "2025-09-22T00:00:00.000Z",
+    "localFile": "sample-legal-mini.zip"
+  },
+  {
+    "id": "sample-ner-mini",
+    "title": "Sample NER Mini (FA)",
+    "description": "Small Persian NER dataset.",
+    "sizeMB": 1.1,
+    "records": 800,
+    "tags": ["ner", "nlp"],
+    "license": "CC BY 4.0",
+    "updatedAt": "2025-09-22T00:00:00.000Z",
+    "localFile": "sample-ner-mini.zip"
+  },
+  {
+    "id": "persian-qa-dataset",
+    "title": "Persian Q&A Dataset",
+    "description": "Persian question and answer dataset for training QA models.",
+    "sizeMB": 5.7,
+    "records": 2500,
+    "tags": ["qa", "nlp", "legal"],
+    "license": "MIT",
+    "updatedAt": "2025-09-22T00:00:00.000Z",
+    "localFile": "persian-qa-dataset.zip"
+  },
+  {
+    "id": "legal-classification",
+    "title": "Legal Document Classification",
+    "description": "Dataset for classifying legal documents by type and category.",
+    "sizeMB": 8.2,
+    "records": 3500,
+    "tags": ["classification", "legal"],
+    "license": "CC BY 4.0",
+    "updatedAt": "2025-09-22T00:00:00.000Z",
+    "localFile": "legal-classification.zip"
+  },
+  {
+    "id": "sentiment-analysis-fa",
+    "title": "Persian Sentiment Analysis",
+    "description": "Persian text sentiment analysis dataset with positive/negative labels.",
+    "sizeMB": 3.4,
+    "records": 1800,
+    "tags": ["sentiment", "nlp"],
+    "license": "Apache 2.0",
+    "updatedAt": "2025-09-22T00:00:00.000Z",
+    "localFile": "sentiment-analysis-fa.zip"
+  }
+]

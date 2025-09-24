@@ -4,15 +4,15 @@
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { TrainingWorkerPool, WorkerManager } from '../../../server/modules/workers/trainingWorker.js';
-import { WorkerErrorHandler } from '../../../server/modules/workers/errorHandler.js';
-import { WorkerPerformanceMonitor } from '../../../server/modules/monitoring/workerMetrics.js';
+import { TrainingWorkerPool, WorkerManager } from '../../../server/modules/workers/trainingWorker';
+import { WorkerErrorHandler } from '../../../server/modules/workers/errorHandler';
+import { WorkerPerformanceMonitor } from '../../../server/modules/monitoring/workerMetrics';
 import { 
   TrainingRequest, 
   EvaluationRequest, 
   PreprocessingRequest, 
   OptimizationRequest 
-} from '../../../server/modules/workers/types.js';
+} from '../../../server/modules/workers/types';
 import Database from 'better-sqlite3';
 import { testDb } from '../../setup';
 

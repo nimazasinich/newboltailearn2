@@ -18,14 +18,16 @@ export function Button({
   disabled,
   ...props
 }: ButtonProps) {
-  const baseStyles = 'inline-flex items-center justify-center rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50';
+  const baseStyles = 'inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ' +
+                    'focus:outline-none focus:ring-4 focus:ring-primary-500/20 disabled:pointer-events-none disabled:opacity-50';
   
   const variants = {
-    default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+    default: 'bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-lg ' +
+             'hover:shadow-xl hover:scale-[1.02] active:scale-[0.98]',
     destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
-    outline: 'border border-input bg-background hover:bg-accent hover:text-accent-foreground',
+    outline: 'bg-white/10 backdrop-blur-md border border-white/20 text-slate-700 hover:bg-white/20',
     secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-    ghost: 'hover:bg-accent hover:text-accent-foreground',
+    ghost: 'text-slate-700 hover:bg-slate-100',
     link: 'text-primary underline-offset-4 hover:underline',
   };
 

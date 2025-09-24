@@ -1,39 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Sidebar } from './Sidebar';
-import { API } from '../../services/api';
+import { CreativeSidebar } from './CreativeSidebar';
+import { NotificationBell } from '../NotificationSystem';
+import { useSystemStatus } from '../../context/SystemContext';
 
 export function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [systemStatus, setSystemStatus] = useState<'online' | 'offline'>('online');
-  
-  useEffect(() => {
-    const checkHealth = async () => {
-      try {
-        await API.health();
-        setSystemStatus('online');
-      } catch {
-        setSystemStatus('offline');
-      }
-    };
-    
-    checkHealth();
-    const healthInterval = setInterval(checkHealth, 30000);
-    
-    return () => {
-      clearInterval(healthInterval);
-    };
-  }, []);
+  const { statusText, statusColor, isHealthy } = useSystemStatus();
 
   return (
     <div className="min-h-screen flex bg-gray-50 dark:bg-gray-900" dir="rtl">
-      <Sidebar 
-        isOpen={sidebarOpen} 
-        onClose={() => setSidebarOpen(false)}
-      />
+      <CreativeSidebar />
       
-      <div className="flex-1 lg:mr-80">
+      <div className="flex-1">
         <header className="sticky top-0 z-40 bg-white/80 dark:bg-gray-900/80 border-b border-gray-200 dark:border-gray-800 backdrop-blur-sm">
           <div className="px-4 py-3 flex items-center justify-between">
             <button 
@@ -50,27 +29,27 @@ export function AppLayout() {
                 سامانه هوش مصنوعی حقوقی ایران
               </div>
               <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${
-                systemStatus === 'online' 
+                statusColor === 'green' 
                   ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
+                  : statusColor === 'yellow'
+                  ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300'
                   : 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300'
               }`}>
                 <div className={`w-2 h-2 rounded-full ${
-                  systemStatus === 'online' ? 'bg-green-500' : 'bg-red-500'
+                  statusColor === 'green' ? 'bg-green-500' : 
+                  statusColor === 'yellow' ? 'bg-yellow-500' : 'bg-red-500'
                 }`} />
-                {systemStatus === 'online' ? 'آنلاین' : 'آفلاین'}
+                {statusText}
               </div>
+              <NotificationBell />
             </div>
           </div>
         </header>
         
         <main className="p-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, type: 'spring' }}
-          >
+          <div>
             <Outlet />
-          </motion.div>
+          </div>
         </main>
       </div>
     </div>

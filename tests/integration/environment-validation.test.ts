@@ -19,7 +19,7 @@ describe.skip('Environment Validation Tests', () => {
       
       expect(() => {
         // Re-import config to trigger validation
-        import('../../server/modules/security/config.js');
+        import('../../server/modules/security/config');
       }).toThrow('JWT_SECRET: Required');
     });
 

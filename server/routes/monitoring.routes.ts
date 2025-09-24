@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { MonitoringController } from '../modules/controllers/monitoring.controller.js';
-import { requireAuth, requireRole } from '../middleware/auth.js';
-import { apiRateLimiter } from '../modules/security/rateLimiter.js';
+import { MonitoringController } from '../modules/controllers/monitoring.controller';
+import { requireAuth, requireRole } from '../middleware/auth';
+import { apiRateLimiter } from '../modules/security/rateLimiter';
 
 export function createMonitoringRoutes(controller: MonitoringController): Router {
   const router = Router();

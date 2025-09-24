@@ -1,7 +1,8 @@
-import DatabaseManager from './database/DatabaseManager.js';
+import DatabaseManager from './database/DatabaseManager';
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import createApiRouter from './routes/index';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,10 +22,9 @@ async function startServer() {
         
         // Setup express middleware
         app.use(express.json());
-        app.use(express.static(path.join(__dirname, '../docs')));
         
         // Health check endpoint (beacon functionality)
-        app.get('/health', (req, res) => {
+        app.get('/api/health', (req, res) => {
             try {
                 const dbStatus = DatabaseManager.isReady();
                 const uptime = process.uptime();
@@ -84,8 +84,66 @@ async function startServer() {
             });
         });
         
-        // Serve frontend for all other routes (SPA fallback)
-        app.get('*', (req, res) => {
+        // Mount API router
+        const dbConnection = DatabaseManager.getConnection();
+        const apiRouter = createApiRouter(null, dbConnection); // No WebSocket for now
+        app.use('/api', apiRouter);
+        
+        // Direct logs endpoint for compatibility
+        app.get('/api/logs', (req, res) => {
+            try {
+                const { page = 1, limit = 50, level, category } = req.query;
+                const offset = (Number(page) - 1) * Number(limit);
+                
+                let query = `
+                    SELECT 
+                        id, level, category, message, metadata, timestamp
+                    FROM system_logs
+                    WHERE 1=1
+                `;
+                const params = [];
+                
+                if (level) {
+                    query += ' AND level = ?';
+                    params.push(level);
+                }
+                if (category) {
+                    query += ' AND category = ?';
+                    params.push(category);
+                }
+                
+                query += ' ORDER BY timestamp DESC LIMIT ? OFFSET ?';
+                params.push(Number(limit), offset);
+                
+                const logs = dbConnection.prepare(query).all(...params);
+                const total = dbConnection.prepare(`
+                    SELECT COUNT(*) as count FROM system_logs 
+                    WHERE 1=1 ${level ? 'AND level = ?' : ''} ${category ? 'AND category = ?' : ''}
+                `).get(...(level ? [level] : []), ...(category ? [category] : []));
+                
+                res.json({
+                    logs,
+                    pagination: {
+                        page: Number(page),
+                        limit: Number(limit),
+                        total: total.count,
+                        pages: Math.ceil(total.count / Number(limit))
+                    }
+                });
+            } catch (error) {
+                console.error('Get logs error:', error);
+                res.status(500).json({ error: 'Failed to fetch logs' });
+            }
+        });
+        
+        
+        // ✅ Static files AFTER APIs (production only)
+        if (process.env.NODE_ENV === 'production') {
+            app.use(express.static(path.join(__dirname, '../docs'), { maxAge: '1h', etag: true }));
+        }
+        
+        // ✅ SPA catch-all LAST — explicitly exclude /api
+        app.get(/^\/(?!api\/).*/, (req, res) => {
             res.sendFile(path.join(__dirname, '../docs/index.html'));
         });
         

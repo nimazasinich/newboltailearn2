@@ -1,7 +1,7 @@
 // import Database from "better-sqlite3"; // Unused import
 import path from "path";
 import fs from "fs";
-import { RealTrainingEngine } from "./RealTrainingEngine.js";
+import { RealTrainingEngine } from "./RealTrainingEngine";
 function tableExists(db, name) {
     const row = db.prepare(`SELECT name FROM sqlite_master WHERE type='table' AND name=?`).get(name);
     return !!row;

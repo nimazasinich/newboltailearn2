@@ -5,7 +5,7 @@
  * Monitors worker thread performance, memory usage, and responsiveness
  */
 
-import { WorkerMetrics, WorkerPoolStatus } from '../workers/types.js';
+import { WorkerMetrics, WorkerPoolStatus } from '../workers/types';
 import Database from 'better-sqlite3';
 
 export interface PerformanceAlert {

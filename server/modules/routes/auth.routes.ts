@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { AuthController } from '../controllers/auth.controller.js';
-import { validate, schemas } from '../security/validators.js';
-import { authRateLimiter } from '../security/rateLimiter.js';
-import { requireAuth } from '../../middleware/auth.js';
+import { AuthController } from '../controllers/auth.controller';
+import { validate, schemas } from '../security/validators';
+import { authRateLimiter } from '../security/rateLimiter';
+import { requireAuth } from '../../middleware/auth';
 
 export function createAuthRoutes(authController: AuthController): Router {
   const router = Router();

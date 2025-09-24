@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import Database from 'better-sqlite3';
 import { Server } from 'socket.io';
-import { config, isDemoMode } from '../security/config.js';
-import { TrainingService } from '../services/trainingService.js';
+import { config, isDemoMode } from '../security/config';
+import { TrainingService } from '../services/trainingService';
 
 export class ModelsController {
   private db: Database.Database;

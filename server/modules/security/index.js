@@ -1,10 +1,10 @@
 import session from 'express-session';
 import SQLiteStore from 'connect-sqlite3';
-import { configureHelmet } from './helmet.js';
-import { globalRateLimiter } from './rateLimiter.js';
-import { injectCSRFToken, getCSRFToken } from './csrf.js';
-import { sanitizeResponse } from './validators.js';
-import { config } from './config.js';
+import { configureHelmet } from './helmet';
+import { globalRateLimiter } from './rateLimiter';
+import { injectCSRFToken, getCSRFToken } from './csrf';
+import { sanitizeResponse } from './validators';
+import { config } from './config';
 import compression from 'compression';
 import mongoSanitize from 'express-mongo-sanitize';
 
@@ -54,11 +54,11 @@ export function applySecurity(app) {
 /**
  * Export all security middleware for selective use
  */
-export { configureHelmet } from './helmet.js';
-export { globalRateLimiter, authRateLimiter, apiRateLimiter, trainingRateLimiter, downloadRateLimiter } from './rateLimiter.js';
-export { csrfProtection, injectCSRFToken, getCSRFToken } from './csrf.js';
-export * from './validators.js';
-export * from './config.js';
+export { configureHelmet } from './helmet';
+export { globalRateLimiter, authRateLimiter, apiRateLimiter, trainingRateLimiter, downloadRateLimiter } from './rateLimiter';
+export { csrfProtection, injectCSRFToken, getCSRFToken } from './csrf';
+export * from './validators';
+export * from './config';
 /**
  * Dev identification endpoint (non-production only)
  */

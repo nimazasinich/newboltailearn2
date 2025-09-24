@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { requireAuth, requireRole } from '../../middleware/auth.js';
-import { validate, validateQuery, schemas } from '../security/validators.js';
-import { apiRateLimiter } from '../security/rateLimiter.js';
-import { csrfProtection } from '../security/csrf.js';
+import { requireAuth, requireRole } from '../../middleware/auth';
+import { validate, validateQuery, schemas } from '../security/validators';
+import { apiRateLimiter } from '../security/rateLimiter';
+import { csrfProtection } from '../security/csrf';
 export function createModelsRoutes(modelsController) {
     const router = Router();
     // Apply rate limiting to all routes

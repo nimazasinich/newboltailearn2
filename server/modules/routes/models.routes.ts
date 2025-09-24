@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { ModelsController } from '../controllers/models.controller.js';
-import { requireAuth, requireRole } from '../../middleware/auth.js';
-import { validate, validateQuery, schemas } from '../security/validators.js';
-import { apiRateLimiter } from '../security/rateLimiter.js';
-import { csrfProtection } from '../security/csrf.js';
+import { ModelsController } from '../controllers/models.controller';
+import { requireAuth, requireRole } from '../../middleware/auth';
+import { validate, validateQuery, schemas } from '../security/validators';
+import { apiRateLimiter } from '../security/rateLimiter';
+import { csrfProtection } from '../security/csrf';
 
 export function createModelsRoutes(modelsController: ModelsController): Router {
   const router = Router();

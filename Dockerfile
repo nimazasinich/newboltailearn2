@@ -70,5 +70,9 @@ EXPOSE 8080
 # Create volume for data persistence
 VOLUME ["/app/data"]
 
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD curl --fail http://localhost:8080/health || exit 1
+
 # Use the entrypoint
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]

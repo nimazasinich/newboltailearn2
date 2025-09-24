@@ -1,6 +1,6 @@
 import { Server, Socket } from 'socket.io';
 import jwt from 'jsonwebtoken';
-import { verifyToken } from '../../middleware/auth.js';
+import { verifyToken } from '../../middleware/auth';
 
 interface AuthenticatedSocket extends Socket {
   userId?: number;

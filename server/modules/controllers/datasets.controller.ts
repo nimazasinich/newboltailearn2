@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import Database from 'better-sqlite3';
-import { isDemoMode } from '../security/config.js';
+import { isDemoMode } from '../security/config';
 
 export class DatasetsController {
   private db: Database.Database;
@@ -16,7 +16,7 @@ export class DatasetsController {
 
       const datasets = this.db.prepare(`
         SELECT 
-          id, name, type, status, size, records, 
+          id, name, type, status, size_mb AS size, samples AS records, 
           description, source, created_at, updated_at
         FROM datasets
         ORDER BY ${sort} ${order}
@@ -46,7 +46,7 @@ export class DatasetsController {
       
       const dataset = this.db.prepare(`
         SELECT 
-          id, name, type, status, size, records, 
+          id, name, type, status, size_mb AS size, samples AS records, 
           description, source, created_at, updated_at
         FROM datasets
         WHERE id = ?

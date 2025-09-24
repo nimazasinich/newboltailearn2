@@ -1,6 +1,6 @@
-import { requireAuth, requireRole } from '../../middleware/auth.js';
-import { csrfProtection } from './csrf.js';
-import { apiRateLimiter, trainingRateLimiter, downloadRateLimiter } from './rateLimiter.js';
+import { requireAuth, requireRole } from '../../middleware/auth';
+import { csrfProtection } from './csrf';
+import { apiRateLimiter, trainingRateLimiter, downloadRateLimiter } from './rateLimiter';
 /**
  * Apply security middleware to all routes
  * This ensures JWT, CSRF, and rate limiting are properly enforced

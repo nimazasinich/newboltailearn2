@@ -1,7 +1,7 @@
 // TensorFlow.js removed - using stub implementation
 // This is a stub implementation that simulates training without TensorFlow
 
-import { PersianTokenizer } from './tokenizer.js';
+import { PersianTokenizer } from './tokenizer';
 import fs from 'fs';
 import path from 'path';
 

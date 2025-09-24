@@ -1,6 +1,6 @@
 import { Application, Request, Response, NextFunction } from 'express';
 import promClient from 'prom-client';
-import { config } from '../security/config.js';
+import { config } from '../security/config';
 
 // Create a Registry
 const register = new promClient.Registry();

@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { AnalyticsController } from '../modules/controllers/analytics.controller.js';
-import { requireAuth, requireRole } from '../middleware/auth.js';
-import { apiRateLimiter } from '../modules/security/rateLimiter.js';
+import { AnalyticsController } from '../modules/controllers/analytics.controller';
+import { requireAuth, requireRole } from '../middleware/auth';
+import { apiRateLimiter } from '../modules/security/rateLimiter';
 
 export function createAnalyticsRoutes(controller: AnalyticsController): Router {
   const router = Router();

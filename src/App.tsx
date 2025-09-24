@@ -1,13 +1,17 @@
 import React, { Suspense, lazy } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { AppLayout } from './components/layout/AppLayout'
-import { LandingPage } from './components/LandingPage'
+import { EnhancedAppLayout } from './components/layout/EnhancedAppLayout'
+import { EnhancedLandingPage } from './components/EnhancedLandingPage'
+import { ErrorBoundary } from './components/ErrorBoundary'
+import { ToastProvider } from './components/ui/Toast'
+import { SystemProvider } from './context/SystemContext'
+import { NotificationProvider } from './components/NotificationSystem'
 
 const lazyCompat = <T extends Record<string, any>>(imp: () => Promise<T>, key: string) =>
   lazy(async () => { const m = await imp(); return { default: m.default ?? m[key] } })
 
 const Overview           = lazyCompat(() => import('./components/Overview'), 'Overview')
-const DashboardAdvanced  = lazyCompat(() => import('./components/Dashboard'), 'Dashboard')
+const DashboardAdvanced  = lazyCompat(() => import('./components/EnhancedDashboard'), 'default')
 const AnalyticsPage      = lazyCompat(() => import('./components/AnalyticsPage'), 'AnalyticsPage')
 const DataPage           = lazyCompat(() => import('./components/DataPage'), 'DataPage')
 const ModelsPage         = lazyCompat(() => import('./components/ModelsPage'), 'ModelsPage')
@@ -17,36 +21,58 @@ const SettingsPage       = lazyCompat(() => import('./components/SettingsPage'),
 const TeamPage           = lazyCompat(() => import('./components/TeamPage'), 'TeamPage')
 const TrainingManagement = lazyCompat(() => import('./components/TrainingManagement'), 'TrainingManagement')
 const ProjectDownloader  = lazyCompat(() => import('./components/ProjectDownloader'), 'ProjectDownloader')
+const DatasetGallery     = lazyCompat(() => import('./components/DatasetGallery'), 'DatasetGallery')
 
 function AppLoading() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <div className="w-12 h-12 rounded-full border-2 border-blue-600 border-t-transparent animate-spin" />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800" dir="rtl">
+      <div className="text-center space-y-4">
+        <div className="w-16 h-16 rounded-full border-4 border-blue-500 border-t-transparent animate-spin mx-auto" />
+        <div className="text-white font-persian text-lg">
+          در حال بارگذاری سیستم هوش مصنوعی حقوقی...
+        </div>
+        <div className="text-slate-400 text-sm">
+          لطفاً صبر کنید
+        </div>
+      </div>
     </div>
   )
 }
 
 export default function App() {
   return (
-    <Suspense fallback={<AppLoading />}>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route element={<AppLayout />}>
-          <Route path="/overview" element={<Overview />} />
-          <Route path="/dashboard-advanced" element={<DashboardAdvanced />} />
-          <Route path="/analytics" element={<AnalyticsPage />} />
-          <Route path="/data" element={<DataPage />} />
-          <Route path="/logs" element={<LogsPage />} />
-          <Route path="/models" element={<ModelsPage />} />
-          <Route path="/monitoring" element={<MonitoringPage />} />
-          <Route path="/training" element={<TrainingManagement />} />
-          <Route path="/team" element={<TeamPage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/download" element={<ProjectDownloader />} />
-        </Route>
-        <Route path="/dashboard" element={<Navigate to="/dashboard-advanced" replace />} />
-        <Route path="*" element={<Navigate to="/overview" replace />} />
-      </Routes>
-    </Suspense>
+    <ErrorBoundary>
+      <SystemProvider>
+        <NotificationProvider>
+          <ToastProvider>
+            <Suspense fallback={<AppLoading />}>
+              <Routes>
+                <Route path="/" element={<EnhancedLandingPage />} />
+                <Route element={<EnhancedAppLayout />}>
+                  <Route path="/overview" element={<Overview />} />
+                  <Route path="/dashboard" element={<DashboardAdvanced />} />
+                  <Route path="/dashboard-advanced" element={<DashboardAdvanced />} />
+                  <Route path="/analytics" element={<AnalyticsPage />} />
+                  <Route path="/data" element={<DataPage />} />
+                  <Route path="/data-gallery" element={<DatasetGallery />} />
+                  <Route path="/logs" element={<LogsPage />} />
+                  <Route path="/models" element={<ModelsPage />} />
+                  <Route path="/models/:category" element={<ModelsPage />} />
+                  <Route path="/monitoring" element={<MonitoringPage />} />
+                  <Route path="/training" element={<TrainingManagement />} />
+                  <Route path="/team" element={<TeamPage />} />
+                  <Route path="/settings" element={<SettingsPage />} />
+                  <Route path="/download" element={<ProjectDownloader />} />
+                  <Route path="/legal-docs" element={<DataPage />} />
+                  <Route path="/export" element={<ProjectDownloader />} />
+                  <Route path="/import" element={<DataPage />} />
+                </Route>
+                <Route path="*" element={<Navigate to="/overview" replace />} />
+              </Routes>
+            </Suspense>
+          </ToastProvider>
+        </NotificationProvider>
+      </SystemProvider>
+    </ErrorBoundary>
   )
 }

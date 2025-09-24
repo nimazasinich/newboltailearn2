@@ -1,15 +1,15 @@
 import { Application } from 'express';
 import { Server } from 'socket.io';
 import Database from 'better-sqlite3';
-import { applySecurity, setupDevIdentification } from './security/index.js';
-import { applyRouteProtection } from './security/routeProtection.js';
-import { setupMetrics } from './monitoring/metrics.js';
-import { configureSocketAuth } from './sockets/auth.js';
-import { createAuthRoutes } from './routes/auth.routes.js';
-import { createModelsRoutes } from './routes/models.routes.js';
-import { AuthController } from './controllers/auth.controller.js';
-import { ModelsController } from './controllers/models.controller.js';
-import { config } from './security/config.js';
+import { applySecurity, setupDevIdentification } from './security/index';
+import { applyRouteProtection } from './security/routeProtection';
+import { setupMetrics } from './monitoring/metrics';
+import { configureSocketAuth } from './sockets/auth';
+import { createAuthRoutes } from './routes/auth.routes';
+import { createModelsRoutes } from './routes/models.routes';
+import { AuthController } from './controllers/auth.controller';
+import { ModelsController } from './controllers/models.controller';
+import { config } from './security/config';
 
 /**
  * Setup all modular components
@@ -68,5 +68,5 @@ function setupModularRoutes(app: Application, db: Database.Database, io: any): v
 /**
  * Export configuration for use in server/index.ts
  */
-export { config } from './security/config.js';
-export { metricsCollector } from './monitoring/metrics.js';
+export { config } from './security/config';
+export { metricsCollector } from './monitoring/metrics';

@@ -1,5 +1,5 @@
-import { AuthService } from '../../services/authService.js';
-import { generateToken } from '../../middleware/auth.js';
+import { AuthService } from '../../services/authService';
+import { generateToken } from '../../middleware/auth';
 export class AuthController {
     constructor(db) {
         this.authService = new AuthService(db);

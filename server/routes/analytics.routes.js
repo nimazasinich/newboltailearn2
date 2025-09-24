@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { requireAuth, requireRole } from '../middleware/auth.js';
-import { apiRateLimiter } from '../modules/security/rateLimiter.js';
+import { requireAuth, requireRole } from '../middleware/auth';
+import { apiRateLimiter } from '../modules/security/rateLimiter';
 export function createAnalyticsRoutes(controller) {
     const router = Router();
     // Apply common middleware

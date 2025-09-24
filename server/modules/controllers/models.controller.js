@@ -1,5 +1,5 @@
-import { isDemoMode } from '../security/config.js';
-import { TrainingService } from '../services/trainingService.js';
+import { isDemoMode } from '../security/config';
+import { TrainingService } from '../services/trainingService';
 export class ModelsController {
     constructor(db, io) {
         this.db = db;

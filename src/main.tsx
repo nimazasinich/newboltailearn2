@@ -9,7 +9,13 @@ const basename = (import.meta as any).env.BASE_URL || '/newboltailearn/';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <HashRouter basename={basename}>
+    <HashRouter 
+      basename={basename}
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true
+      }}
+    >
       <ErrorBoundary>
         <App />
       </ErrorBoundary>

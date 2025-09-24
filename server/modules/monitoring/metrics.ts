@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { Application } from 'express';
-import { config } from '../security/config.js';
+import { config } from '../security/config';
 
 interface Metrics {
   // HTTP metrics

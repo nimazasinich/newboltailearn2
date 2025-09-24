@@ -34,7 +34,7 @@ export function Progress({
   return (
     <div
       className={cn(
-        'w-full bg-gray-200 rounded-full overflow-hidden',
+        'w-full bg-slate-200 rounded-full overflow-hidden',
         sizes[size],
         className
       )}
@@ -42,7 +42,7 @@ export function Progress({
     >
       <div
         className={cn(
-          'h-full transition-all duration-300 ease-out',
+          'h-full bg-gradient-to-r from-primary-500 to-accent-500 rounded-full transition-all duration-500 ease-out',
           variants[variant]
         )}
         style={{ width: `${percentage}%` }}
