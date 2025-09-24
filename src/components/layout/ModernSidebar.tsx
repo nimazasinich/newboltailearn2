@@ -339,51 +339,53 @@ export function ModernSidebar() {
             className="mx-4 mb-4"
           >
             <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => setSystemSpecsExpanded(!systemSpecsExpanded)}
-              className="w-full p-3 bg-gradient-to-r from-emerald-500/20 to-blue-500/20 rounded-2xl border border-emerald-400/30 hover:from-emerald-500/30 hover:to-blue-500/30 transition-all duration-300 shadow-lg hover:shadow-emerald-500/20"
+              className="w-full p-4 bg-gradient-to-r from-teal-500/25 to-emerald-500/25 rounded-2xl border border-teal-400/40 hover:from-teal-500/35 hover:to-emerald-500/35 transition-all duration-300 shadow-xl hover:shadow-teal-500/25 backdrop-blur-sm"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <motion.div
-                    animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 360] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  >
-                    <Sparkles className="w-5 h-5 text-emerald-400" />
-                  </motion.div>
-                  <span className="text-sm font-bold text-emerald-300">وضعیت سیستم</span>
+                  <div className="w-8 h-8 bg-gradient-to-br from-teal-400 to-emerald-500 rounded-lg flex items-center justify-center shadow-lg">
+                    <Sparkles className="w-4 h-4 text-white" />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-sm font-bold text-white">وضعیت سیستم</span>
+                    <span className="text-xs text-teal-200">سیستم فعال و آماده</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
                   <motion.span
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                    className="px-2 py-1 bg-emerald-500/30 text-emerald-200 text-xs rounded-full font-medium"
+                    animate={{ scale: [1, 1.05, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="px-3 py-1 bg-white/20 text-white text-xs rounded-full font-bold backdrop-blur-sm"
                   >
                     {systemStatus.status === 'healthy' ? 'سالم' :
                      systemStatus.status === 'warning' ? 'هشدار' : 'خطا'}
                   </motion.span>
-                </div>
-                <div className="flex items-center gap-2">
-                  {/* Mini Icons */}
                   <div className="flex items-center gap-1">
                     <motion.div
-                      animate={{ scale: [1, 1.1, 1] }}
+                      animate={{ scale: [1, 1.2, 1] }}
                       transition={{ duration: 2, repeat: Infinity, delay: 0 }}
-                      className="w-2 h-2 bg-blue-400/60 rounded-full shadow-sm shadow-blue-400/30"
+                      className="w-2 h-2 bg-white/60 rounded-full shadow-sm"
                     />
                     <motion.div
-                      animate={{ scale: [1, 1.1, 1] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-                      className="w-2 h-2 bg-purple-400/60 rounded-full shadow-sm shadow-purple-400/30"
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 2, repeat: Infinity, delay: 0.3 }}
+                      className="w-2 h-2 bg-white/40 rounded-full shadow-sm"
                     />
                     <motion.div
-                      animate={{ scale: [1, 1.1, 1] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-                      className="w-2 h-2 bg-emerald-400/60 rounded-full shadow-sm shadow-emerald-400/30"
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}
+                      className="w-2 h-2 bg-white/60 rounded-full shadow-sm"
                     />
                   </div>
                   <motion.div
                     animate={{ rotate: systemSpecsExpanded ? 180 : 0 }}
-                    transition={{ duration: 0.2 }}
+                    transition={{ duration: 0.3 }}
+                    className="w-5 h-5 text-white/80"
                   >
-                    <ChevronUp className="w-4 h-4 text-slate-300" />
+                    <ChevronUp className="w-full h-full" />
                   </motion.div>
                 </div>
               </div>
@@ -441,32 +443,37 @@ export function ModernSidebar() {
             className="mx-4 mb-4"
           >
             <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => setTrainingExpanded(!trainingExpanded)}
-              className="w-full p-3 bg-gradient-to-r from-emerald-500/20 to-blue-500/20 rounded-2xl border border-emerald-400/30 hover:from-emerald-500/30 hover:to-blue-500/30 transition-all duration-300 shadow-lg hover:shadow-emerald-500/20"
+              className="w-full p-4 bg-gradient-to-r from-blue-500/25 to-purple-500/25 rounded-2xl border border-blue-400/40 hover:from-blue-500/35 hover:to-purple-500/35 transition-all duration-300 shadow-xl hover:shadow-blue-500/25 backdrop-blur-sm"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-              <motion.div
-                animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 360] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                <Sparkles className="w-5 h-5 text-emerald-400" />
-              </motion.div>
-              <span className="text-sm font-bold text-emerald-300">آموزش فعال</span>
+                  <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded-lg flex items-center justify-center shadow-lg">
+                    <Sparkles className="w-4 h-4 text-white" />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-sm font-bold text-white">آموزش فعال</span>
+                    <span className="text-xs text-blue-200">مدل‌های در حال آموزش</span>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
                   <motion.span
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                    className="px-2 py-1 bg-emerald-500/30 text-emerald-200 text-xs rounded-full font-medium"
+                    animate={{ scale: [1, 1.05, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="px-3 py-1 bg-white/20 text-white text-xs rounded-full font-bold backdrop-blur-sm"
                   >
                     در حال اجرا
                   </motion.span>
+                  <motion.div
+                    animate={{ rotate: trainingExpanded ? 180 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="w-5 h-5 text-white/80"
+                  >
+                    <ChevronUp className="w-full h-full" />
+                  </motion.div>
                 </div>
-                <motion.div
-                  animate={{ rotate: trainingExpanded ? 180 : 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <ChevronUp className="w-4 h-4 text-emerald-300" />
-                </motion.div>
               </div>
             </motion.button>
 
@@ -555,48 +562,48 @@ export function ModernSidebar() {
                 className="mb-3"
               >
                 {/* Enhanced Tab Navigation */}
-                <div className="flex bg-gradient-to-r from-slate-700/40 to-slate-600/40 rounded-xl p-1 shadow-lg">
+                <div className="flex bg-slate-800/60 rounded-xl p-1 shadow-xl backdrop-blur-sm border border-slate-600/30">
                   <motion.button
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={{ scale: 1.02, y: -1 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={() => setActiveTab('status')}
-                    className={`flex-1 px-4 py-2.5 text-xs font-bold rounded-lg transition-all duration-300 relative overflow-hidden ${
+                    className={`flex-1 px-4 py-3 text-sm font-bold rounded-lg transition-all duration-300 relative overflow-hidden ${
                       activeTab === 'status'
-                        ? 'bg-gradient-to-r from-emerald-500/30 to-teal-500/30 text-emerald-200 shadow-lg shadow-emerald-500/20 border border-emerald-400/30'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-600/30'
+                        ? 'bg-gradient-to-r from-teal-500/40 to-emerald-500/40 text-white shadow-lg shadow-teal-500/30 border border-teal-400/50'
+                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-700/40'
                     }`}
                   >
                     {activeTab === 'status' && (
                       <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="absolute inset-0 bg-gradient-to-r from-emerald-400/10 to-teal-400/10 rounded-lg"
+                        className="absolute inset-0 bg-gradient-to-r from-teal-400/20 to-emerald-400/20 rounded-lg"
                       />
                     )}
                     <div className="relative z-10 flex items-center justify-center gap-2">
-                      <Heart className="w-3 h-3" />
+                      <Heart className="w-4 h-4" />
                       <span>وضعیت سیستم</span>
                     </div>
                   </motion.button>
                   <motion.button
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    whileTap={{ scale: 0.95 }}
+                    whileHover={{ scale: 1.02, y: -1 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={() => setActiveTab('models')}
-                    className={`flex-1 px-4 py-2.5 text-xs font-bold rounded-lg transition-all duration-300 relative overflow-hidden ${
+                    className={`flex-1 px-4 py-3 text-sm font-bold rounded-lg transition-all duration-300 relative overflow-hidden ${
                       activeTab === 'models'
-                        ? 'bg-gradient-to-r from-blue-500/30 to-purple-500/30 text-blue-200 shadow-lg shadow-blue-500/20 border border-blue-400/30'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-600/30'
+                        ? 'bg-gradient-to-r from-blue-500/40 to-purple-500/40 text-white shadow-lg shadow-blue-500/30 border border-blue-400/50'
+                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-700/40'
                     }`}
                   >
                     {activeTab === 'models' && (
                       <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="absolute inset-0 bg-gradient-to-r from-blue-400/10 to-purple-400/10 rounded-lg"
+                        className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-lg"
                       />
                     )}
                     <div className="relative z-10 flex items-center justify-center gap-2">
-                      <Brain className="w-3 h-3" />
+                      <Brain className="w-4 h-4" />
                       <span>وضعیت مدل‌ها</span>
                     </div>
                   </motion.button>
@@ -611,29 +618,33 @@ export function ModernSidebar() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.3 }}
-                      className="mt-3 p-3 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 rounded-xl border border-emerald-400/20"
+                      className="mt-3 p-4 bg-gradient-to-r from-teal-500/15 to-emerald-500/15 rounded-xl border border-teal-400/30 shadow-lg backdrop-blur-sm"
                     >
-                      <div className="space-y-2">
+                      <div className="space-y-3">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse shadow-lg shadow-emerald-400/50" />
-                            <span className="text-xs text-emerald-200 font-medium">وضعیت کلی</span>
+                            <div className="w-2 h-2 bg-teal-400 rounded-full animate-pulse shadow-lg shadow-teal-400/50" />
+                            <span className="text-sm text-teal-200 font-bold">وضعیت کلی</span>
                           </div>
-                          <span className="text-xs text-emerald-300 font-bold">سالم</span>
+                          <span className="text-sm text-white font-bold bg-white/20 px-2 py-1 rounded-full">سالم</span>
                         </div>
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between p-2 bg-white/5 rounded-lg">
                           <div className="flex items-center gap-2">
-                            <Cpu className="w-3 h-3 text-blue-400" />
-                            <span className="text-xs text-slate-300">CPU</span>
+                            <div className="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center">
+                              <Cpu className="w-3 h-3 text-blue-400" />
+                            </div>
+                            <span className="text-sm text-slate-200">CPU</span>
                           </div>
-                          <span className="text-xs text-blue-300 font-bold">{systemStatus.cpu_usage}%</span>
+                          <span className="text-sm text-blue-300 font-bold">{systemStatus.cpu_usage}%</span>
                         </div>
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between p-2 bg-white/5 rounded-lg">
                           <div className="flex items-center gap-2">
-                            <HardDrive className="w-3 h-3 text-purple-400" />
-                            <span className="text-xs text-slate-300">حافظه</span>
+                            <div className="w-6 h-6 bg-purple-500/20 rounded flex items-center justify-center">
+                              <HardDrive className="w-3 h-3 text-purple-400" />
+                            </div>
+                            <span className="text-sm text-slate-200">حافظه</span>
                           </div>
-                          <span className="text-xs text-purple-300 font-bold">{systemStatus.memory_usage}%</span>
+                          <span className="text-sm text-purple-300 font-bold">{systemStatus.memory_usage}%</span>
                         </div>
                       </div>
                     </motion.div>
@@ -645,29 +656,33 @@ export function ModernSidebar() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.3 }}
-                      className="mt-3 p-3 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl border border-blue-400/20"
+                      className="mt-3 p-4 bg-gradient-to-r from-blue-500/15 to-purple-500/15 rounded-xl border border-blue-400/30 shadow-lg backdrop-blur-sm"
                     >
-                      <div className="space-y-2">
+                      <div className="space-y-3">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse shadow-lg shadow-blue-400/50" />
-                            <span className="text-xs text-blue-200 font-medium">مدل‌های فعال</span>
+                            <span className="text-sm text-blue-200 font-bold">مدل‌های فعال</span>
                           </div>
-                          <span className="text-xs text-blue-300 font-bold">{systemStatus.models_training}</span>
+                          <span className="text-sm text-white font-bold bg-white/20 px-2 py-1 rounded-full">{systemStatus.models_training}</span>
                         </div>
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between p-2 bg-white/5 rounded-lg">
                           <div className="flex items-center gap-2">
-                            <Play className="w-3 h-3 text-emerald-400" />
-                            <span className="text-xs text-slate-300">در حال آموزش</span>
+                            <div className="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center">
+                              <Play className="w-3 h-3 text-emerald-400" />
+                            </div>
+                            <span className="text-sm text-slate-200">در حال آموزش</span>
                           </div>
-                          <span className="text-xs text-emerald-300 font-bold">2</span>
+                          <span className="text-sm text-emerald-300 font-bold">2</span>
                         </div>
-                        <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between p-2 bg-white/5 rounded-lg">
                           <div className="flex items-center gap-2">
-                            <CheckCircle className="w-3 h-3 text-green-400" />
-                            <span className="text-xs text-slate-300">تکمیل شده</span>
+                            <div className="w-6 h-6 bg-green-500/20 rounded flex items-center justify-center">
+                              <CheckCircle className="w-3 h-3 text-green-400" />
+                            </div>
+                            <span className="text-sm text-slate-200">تکمیل شده</span>
                           </div>
-                          <span className="text-xs text-green-300 font-bold">1</span>
+                          <span className="text-sm text-green-300 font-bold">1</span>
                         </div>
                       </div>
                     </motion.div>
