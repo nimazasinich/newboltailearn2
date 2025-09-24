@@ -12,6 +12,25 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import Database from 'better-sqlite3';
 
+// Enterprise Components (optional - will fallback if not available)
+let DatabaseConnectionPool, APIMonitor, RedisCacheManager, SecurityManager;
+try {
+    const dbPool = await import('./database/connection-pool.js');
+    const apiMonitor = await import('./middleware/api-monitoring.js');
+    const cacheManager = await import('./cache/redis-cache.js');
+    const securityManager = await import('./middleware/security.js');
+    
+    DatabaseConnectionPool = dbPool.default;
+    APIMonitor = apiMonitor.default;
+    RedisCacheManager = cacheManager.default;
+    SecurityManager = securityManager.default;
+    
+    console.log('✅ Enterprise components loaded successfully');
+} catch (error) {
+    console.log('⚠️ Enterprise components not available, using fallback mode');
+    console.log('Error:', error.message);
+}
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -26,35 +45,47 @@ async function initializeEnterpriseComponents() {
     try {
         console.log('🔧 Initializing enterprise components...');
         
-        // Initialize database connection pool
-        dbPool = new DatabaseConnectionPool({
-            maxConnections: 10,
-            minConnections: 2,
-            databasePath: process.env.DATABASE_PATH || './data/database.sqlite'
-        });
-        await dbPool.initialize();
+        // Initialize database connection pool (if available)
+        if (DatabaseConnectionPool) {
+            dbPool = new DatabaseConnectionPool({
+                maxConnections: 10,
+                minConnections: 2,
+                databasePath: process.env.DATABASE_PATH || './data/database.sqlite'
+            });
+            await dbPool.initialize();
+            console.log('✅ Database connection pool initialized');
+        }
         
-        // Initialize API monitoring
-        apiMonitor = new APIMonitor({
-            logLevel: 'info',
-            logFile: './logs/api-monitor.log'
-        });
+        // Initialize API monitoring (if available)
+        if (APIMonitor) {
+            apiMonitor = new APIMonitor({
+                logLevel: 'info',
+                logFile: './logs/api-monitor.log'
+            });
+            console.log('✅ API monitoring initialized');
+        }
         
-        // Initialize cache manager
-        cacheManager = new RedisCacheManager({
-            host: process.env.REDIS_HOST || 'localhost',
-            port: process.env.REDIS_PORT || 6379,
-            enableFallback: true
-        });
+        // Initialize cache manager (if available)
+        if (RedisCacheManager) {
+            cacheManager = new RedisCacheManager({
+                host: process.env.REDIS_HOST || 'localhost',
+                port: process.env.REDIS_PORT || 6379,
+                enableFallback: true
+            });
+            console.log('✅ Cache manager initialized');
+        }
         
-        // Initialize security manager
-        securityManager = new SecurityManager({
-            enableHelmet: true,
-            enableRateLimit: true,
-            enableInputValidation: true,
-            enableXSSProtection: true,
-            enableCSRFProtection: true
-        });
+        // Initialize security manager (if available)
+        if (SecurityManager) {
+            securityManager = new SecurityManager({
+                enableHelmet: true,
+                enableRateLimit: true,
+                enableInputValidation: true,
+                enableXSSProtection: true,
+                enableCSRFProtection: true
+            });
+            console.log('✅ Security manager initialized');
+        }
         
         console.log('✅ Enterprise components initialized successfully');
     } catch (error) {
