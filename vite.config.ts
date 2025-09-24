@@ -28,7 +28,17 @@ export default ({ mode }) => {
     build: {
       outDir: 'docs',
       sourcemap: true,
-      emptyOutDir: true
+      emptyOutDir: true,
+      minify: 'terser',
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['react', 'react-dom'],
+            ui: ['lucide-react', 'framer-motion'],
+            charts: ['recharts']
+          }
+        }
+      }
     }
   });
 };

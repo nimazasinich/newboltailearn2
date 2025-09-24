@@ -48,7 +48,11 @@
     "docker:build:frontend": "./docker-build.sh -t frontend",
     "docker:build:dev": "./docker-build.sh -t development",
     "docker:build:all": "./docker-build.sh -t backend && ./docker-build.sh -t frontend && ./docker-build.sh -t development",
-    "docker:run": "./docker-run.sh"
+    "docker:run": "./docker-run.sh",
+    "start:enterprise": "NODE_ENV=production node server/main.js",
+    "dev:enterprise": "NODE_ENV=development nodemon server/main.js",
+    "test:enterprise": "npm run test && npm run test:e2e",
+    "validate:enterprise": "node scripts/validate-deployment.js"
   },
   "dependencies": {
     "@tensorflow/tfjs-node": "^4.15.0",
@@ -61,10 +65,10 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-mongo-sanitize": "^2.2.0",
-    "express-rate-limit": "^8.1.0",
+    "express-rate-limit": "^7.1.5",
     "express-session": "^1.18.2",
     "framer-motion": "^12.23.21",
-    "isomorphic-dompurify": "^2.28.0",
+    "isomorphic-dompurify": "^2.6.0",
     "jszip": "^3.10.1",
     "lucide-react": "^0.294.0",
     "multer": "^1.4.5-lts.1",
@@ -75,7 +79,11 @@
     "recharts": "^3.2.1",
     "socket.io": "^4.7.4",
     "socket.io-client": "^4.8.1",
-    "zod": "^4.1.11"
+    "zod": "^4.1.11",
+    "express-slow-down": "^2.0.1",
+    "helmet": "^7.1.0",
+    "validator": "^13.11.0",
+    "redis": "^4.6.10"
   },
   "devDependencies": {
     "@types/node": "^20.10.4",

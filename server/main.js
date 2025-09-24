@@ -16,6 +16,56 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+// Enterprise Components Initialization
+let dbPool = null;
+let apiMonitor = null;
+let cacheManager = null;
+let securityManager = null;
+
+async function initializeEnterpriseComponents() {
+    try {
+        console.log('🔧 Initializing enterprise components...');
+        
+        // Initialize database connection pool
+        dbPool = new DatabaseConnectionPool({
+            maxConnections: 10,
+            minConnections: 2,
+            databasePath: process.env.DATABASE_PATH || './data/database.sqlite'
+        });
+        await dbPool.initialize();
+        
+        // Initialize API monitoring
+        apiMonitor = new APIMonitor({
+            logLevel: 'info',
+            logFile: './logs/api-monitor.log'
+        });
+        
+        // Initialize cache manager
+        cacheManager = new RedisCacheManager({
+            host: process.env.REDIS_HOST || 'localhost',
+            port: process.env.REDIS_PORT || 6379,
+            enableFallback: true
+        });
+        
+        // Initialize security manager
+        securityManager = new SecurityManager({
+            enableHelmet: true,
+            enableRateLimit: true,
+            enableInputValidation: true,
+            enableXSSProtection: true,
+            enableCSRFProtection: true
+        });
+        
+        console.log('✅ Enterprise components initialized successfully');
+    } catch (error) {
+        console.error('❌ Failed to initialize enterprise components:', error);
+        // Continue without enterprise features
+    }
+}
+
+// Initialize enterprise components
+initializeEnterpriseComponents();
+
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
@@ -77,6 +127,30 @@ app.use((req, res, next) => {
 
 app.use(express.json({ limit: '50mb' }));
 app.use(express.static('dist'));
+// Enterprise Middleware
+if (securityManager) {
+    // Security middleware
+    app.use(securityManager.getHelmetConfig());
+    app.use(securityManager.getRateLimitConfig());
+    app.use(securityManager.getSlowDownConfig());
+    app.use(securityManager.securityHeaders());
+    app.use(securityManager.inputValidation());
+    app.use(securityManager.xssProtection());
+    app.use(securityManager.sqlInjectionProtection());
+    app.use(securityManager.fileUploadProtection());
+}
+
+if (apiMonitor) {
+    // API monitoring middleware
+    app.use(apiMonitor.middleware());
+}
+
+if (cacheManager) {
+    // Cache middleware for specific routes
+    app.use('/api/documents', cacheManager.middleware({ ttl: 300 })); // 5 minutes
+    app.use('/api/analytics', cacheManager.middleware({ ttl: 60 })); // 1 minute
+}
+
 
 // Database Setup
 let db = null;
@@ -388,6 +462,25 @@ app.get('/api/health', (req, res) => {
 // Root health check for Docker
 app.get('/health', (req, res) => {
     res.json({ status: 'healthy', timestamp: new Date().toISOString() });
+// Enhanced health check with enterprise metrics
+app.get('/api/health/enterprise', (req, res) => {
+    const healthData = {
+        status: 'healthy',
+        timestamp: new Date().toISOString(),
+        uptime: process.uptime(),
+        memory: process.memoryUsage(),
+        database: db ? 'connected' : 'disconnected',
+        enterprise: {
+            databasePool: dbPool ? dbPool.getStats() : null,
+            apiMonitor: apiMonitor ? apiMonitor.getHealthStatus() : null,
+            cacheManager: cacheManager ? cacheManager.getStats() : null,
+            securityManager: securityManager ? securityManager.getSecurityMetrics() : null
+        }
+    };
+    
+    res.json(healthData);
+});
+
 });
 
 // Documents API
@@ -663,3 +756,32 @@ process.on('SIGTERM', () => {
 });
 
 export default app;
+
+// Graceful shutdown
+process.on('SIGTERM', async () => {
+    console.log('🔄 SIGTERM received, shutting down gracefully...');
+    
+    if (dbPool) {
+        await dbPool.close();
+    }
+    
+    if (cacheManager) {
+        await cacheManager.close();
+    }
+    
+    process.exit(0);
+});
+
+process.on('SIGINT', async () => {
+    console.log('🔄 SIGINT received, shutting down gracefully...');
+    
+    if (dbPool) {
+        await dbPool.close();
+    }
+    
+    if (cacheManager) {
+        await cacheManager.close();
+    }
+    
+    process.exit(0);
+});

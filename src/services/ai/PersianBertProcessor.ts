@@ -1,7 +1,7 @@
 // Persian BERT Processor for Legal Document Classification
 // Real implementation with actual BERT operations
 
-import * as tf from '@tensorflow/tfjs-node';
+import { loadTensorFlow, PersianBertProcessorFallback } from './TensorFlowFallback';
 import fs from 'fs';
 import path from 'path';
 
