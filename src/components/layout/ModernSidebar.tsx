@@ -327,26 +327,33 @@ export function ModernSidebar() {
       </nav>
 
 
-        {/* Enhanced System Status & Model Status Tabs */}
-        <div className="p-3 border-t border-slate-600/50 mt-auto">
+        {/* Enhanced System Status & Model Status Tabs - Dynamic Position */}
+        <motion.div 
+          className="border-t border-slate-600/50"
+          animate={{ 
+            marginTop: collapsed ? 0 : 'auto',
+            padding: collapsed ? '0.5rem' : '0.75rem'
+          }}
+          transition={{ duration: 0.3 }}
+        >
         <AnimatePresence>
           {!collapsed && (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
               transition={{ duration: 0.3 }}
-                className="mb-2"
-              >
-                {/* Enhanced Tab Navigation */}
-                <div className="flex bg-gradient-to-r from-slate-800/80 to-slate-700/80 rounded-lg p-0.5 shadow-2xl backdrop-blur-sm border border-slate-500/40">
+              className="mb-1"
+            >
+                {/* Enhanced Tab Navigation - Compact */}
+                <div className="flex bg-gradient-to-r from-slate-800/80 to-slate-700/80 rounded-md p-0.5 shadow-lg backdrop-blur-sm border border-slate-500/40">
                   <motion.button
-                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileHover={{ scale: 1.05, y: -1 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setActiveTab('status')}
-                    className={`flex-1 px-3 py-2 text-xs font-bold rounded-md transition-all duration-300 relative overflow-hidden ${
+                    className={`flex-1 px-2 py-1.5 text-xs font-bold rounded-sm transition-all duration-300 relative overflow-hidden ${
                       activeTab === 'status'
-                        ? 'bg-gradient-to-r from-cyan-500/50 to-teal-500/50 text-white shadow-xl shadow-cyan-500/40 border border-cyan-400/60'
+                        ? 'bg-gradient-to-r from-cyan-500/50 to-teal-500/50 text-white shadow-lg shadow-cyan-500/40 border border-cyan-400/60'
                         : 'text-slate-300 hover:text-white hover:bg-slate-600/30'
                     }`}
                   >
@@ -363,12 +370,12 @@ export function ModernSidebar() {
                     </div>
                   </motion.button>
                   <motion.button
-                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileHover={{ scale: 1.05, y: -1 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setActiveTab('models')}
-                    className={`flex-1 px-3 py-2 text-xs font-bold rounded-md transition-all duration-300 relative overflow-hidden ${
+                    className={`flex-1 px-2 py-1.5 text-xs font-bold rounded-sm transition-all duration-300 relative overflow-hidden ${
                       activeTab === 'models'
-                        ? 'bg-gradient-to-r from-indigo-500/50 to-slate-600/50 text-white shadow-xl shadow-indigo-500/40 border border-indigo-400/60'
+                        ? 'bg-gradient-to-r from-indigo-500/50 to-slate-600/50 text-white shadow-lg shadow-indigo-500/40 border border-indigo-400/60'
                         : 'text-slate-300 hover:text-white hover:bg-slate-600/30'
                     }`}
                   >
@@ -395,9 +402,9 @@ export function ModernSidebar() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.3 }}
-                      className="mt-2 p-3 bg-gradient-to-r from-cyan-500/15 to-teal-500/15 rounded-lg border border-cyan-400/30 shadow-lg backdrop-blur-sm"
+                      className="mt-1.5 p-2 bg-gradient-to-r from-cyan-500/15 to-teal-500/15 rounded-md border border-cyan-400/30 shadow-md backdrop-blur-sm"
                     >
-                      <div className="space-y-2">
+                      <div className="space-y-1.5">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <div className="w-2 h-2 bg-teal-400 rounded-full animate-pulse shadow-lg shadow-teal-400/50" />
@@ -405,18 +412,18 @@ export function ModernSidebar() {
                           </div>
                           <span className="text-sm text-white font-bold bg-white/20 px-2 py-1 rounded-full">سالم</span>
                         </div>
-                        <div className="flex items-center justify-between p-1.5 bg-white/5 rounded-md">
+                        <div className="flex items-center justify-between p-1 bg-white/5 rounded-sm">
                           <div className="flex items-center gap-2">
-                            <div className="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center">
+                            <div className="w-5 h-5 bg-blue-500/20 rounded flex items-center justify-center">
                               <Cpu className="w-3 h-3 text-blue-400" />
                             </div>
                             <span className="text-sm text-slate-200">CPU</span>
                           </div>
                           <span className="text-sm text-blue-300 font-bold">{systemStatus.cpu_usage}%</span>
                         </div>
-                        <div className="flex items-center justify-between p-1.5 bg-white/5 rounded-md">
+                        <div className="flex items-center justify-between p-1 bg-white/5 rounded-sm">
                           <div className="flex items-center gap-2">
-                            <div className="w-6 h-6 bg-purple-500/20 rounded flex items-center justify-center">
+                            <div className="w-5 h-5 bg-purple-500/20 rounded flex items-center justify-center">
                               <HardDrive className="w-3 h-3 text-purple-400" />
                             </div>
                             <span className="text-sm text-slate-200">حافظه</span>
@@ -433,9 +440,9 @@ export function ModernSidebar() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.3 }}
-                      className="mt-2 p-3 bg-gradient-to-r from-indigo-500/15 to-slate-500/15 rounded-lg border border-indigo-400/30 shadow-lg backdrop-blur-sm"
+                      className="mt-1.5 p-2 bg-gradient-to-r from-indigo-500/15 to-slate-500/15 rounded-md border border-indigo-400/30 shadow-md backdrop-blur-sm"
                     >
-                      <div className="space-y-2">
+                      <div className="space-y-1.5">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse shadow-lg shadow-blue-400/50" />
@@ -443,18 +450,18 @@ export function ModernSidebar() {
                           </div>
                           <span className="text-sm text-white font-bold bg-white/20 px-2 py-1 rounded-full">{systemStatus.models_training}</span>
                         </div>
-                        <div className="flex items-center justify-between p-1.5 bg-white/5 rounded-md">
+                        <div className="flex items-center justify-between p-1 bg-white/5 rounded-sm">
                           <div className="flex items-center gap-2">
-                            <div className="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center">
+                            <div className="w-5 h-5 bg-emerald-500/20 rounded flex items-center justify-center">
                               <Play className="w-3 h-3 text-emerald-400" />
                             </div>
                             <span className="text-sm text-slate-200">در حال آموزش</span>
                           </div>
                           <span className="text-sm text-emerald-300 font-bold">2</span>
                         </div>
-                        <div className="flex items-center justify-between p-1.5 bg-white/5 rounded-md">
+                        <div className="flex items-center justify-between p-1 bg-white/5 rounded-sm">
                           <div className="flex items-center gap-2">
-                            <div className="w-6 h-6 bg-green-500/20 rounded flex items-center justify-center">
+                            <div className="w-5 h-5 bg-green-500/20 rounded flex items-center justify-center">
                               <CheckCircle className="w-3 h-3 text-green-400" />
                             </div>
                             <span className="text-sm text-slate-200">تکمیل شده</span>
@@ -468,8 +475,7 @@ export function ModernSidebar() {
             </motion.div>
           )}
         </AnimatePresence>
-
-      </div>
+        </motion.div>
     </motion.div>
   );
 }
