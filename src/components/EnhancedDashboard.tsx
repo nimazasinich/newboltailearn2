@@ -49,11 +49,11 @@ export default function EnhancedDashboard() {
 
   // Legal categories specific to Iranian law
   const legalCategories: LegalCategory[] = [
-    { name: 'قوانین مدنی', models: 4, accuracy: 94.2, documents: 15400, color: '#3b82f6' },
-    { name: 'قوانین جزایی', models: 3, accuracy: 91.8, documents: 12800, color: '#ef4444' },
-    { name: 'قوانین تجاری', models: 2, accuracy: 88.5, documents: 8900, color: '#10b981' },
-    { name: 'قوانین اداری', models: 2, accuracy: 92.1, documents: 11200, color: '#f59e0b' },
-    { name: 'قوانین قضایی', models: 1, accuracy: 87.3, documents: 6700, color: '#8b5cf6' }
+    { name: 'قوانین مدنی', models: 4, accuracy: 94.2, documents: 15400, color: '#10b981' },
+    { name: 'قوانین جزایی', models: 3, accuracy: 91.8, documents: 12800, color: '#3b82f6' },
+    { name: 'قوانین تجاری', models: 2, accuracy: 88.5, documents: 8900, color: '#06b6d4' },
+    { name: 'قوانین اداری', models: 2, accuracy: 92.1, documents: 11200, color: '#8b5cf6' },
+    { name: 'قوانین قضایی', models: 1, accuracy: 87.3, documents: 6700, color: '#f59e0b' }
   ];
 
   // Performance data over time
@@ -172,17 +172,17 @@ export default function EnhancedDashboard() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'training': return 'from-blue-500 to-cyan-500';
-      case 'paused': return 'from-yellow-500 to-orange-500';
-      case 'completed': return 'from-green-500 to-emerald-500';
-      case 'error': return 'from-red-500 to-pink-500';
-      default: return 'from-gray-500 to-slate-500';
+      case 'training': return 'from-emerald-400 via-emerald-500 to-blue-500';
+      case 'paused': return 'from-amber-400 to-orange-500';
+      case 'completed': return 'from-emerald-400 via-emerald-500 to-teal-500';
+      case 'error': return 'from-red-400 to-pink-500';
+      default: return 'from-slate-400 to-slate-500';
     }
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center" dir="rtl">
+      <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800 flex items-center justify-center" dir="rtl">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -201,7 +201,7 @@ export default function EnhancedDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 p-6" dir="rtl">
+    <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800 p-6" dir="rtl">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -376,17 +376,23 @@ export default function EnhancedDashboard() {
 
                     {/* Progress Bar */}
                     <div className="mb-4">
-                      <div className="flex justify-between text-xs text-slate-400 mb-1">
+                      <div className="flex justify-between text-xs text-slate-300 mb-2">
                         <span>پیشرفت آموزش</span>
-                        <span>{model.progress}%</span>
+                        <span className="font-bold text-emerald-400">{model.progress}%</span>
                       </div>
-                      <div className="w-full bg-slate-700 rounded-full h-2">
+                      <div className="w-full bg-slate-700 rounded-full h-3 shadow-inner">
                         <motion.div
                           initial={{ width: 0 }}
                           animate={{ width: `${model.progress}%` }}
-                          transition={{ duration: 1, delay: 0.5 + index * 0.1 }}
-                          className={`h-2 bg-gradient-to-r ${getStatusColor(model.status)} rounded-full`}
-                        />
+                          transition={{ duration: 1.5, delay: 0.5 + index * 0.1, ease: "easeOut" }}
+                          className={`h-3 bg-gradient-to-r ${getStatusColor(model.status)} rounded-full shadow-lg relative overflow-hidden`}
+                        >
+                          <motion.div
+                            animate={{ x: ['-100%', '100%'] }}
+                            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                          />
+                        </motion.div>
                       </div>
                     </div>
 

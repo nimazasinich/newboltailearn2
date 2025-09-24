@@ -5,7 +5,8 @@ import {
   Brain, BarChart3, Database, FileText, Users, Settings, 
   Monitor, LogOut, Home, BookOpen, Scale, Gavel, Shield,
   TrendingUp, Activity, Cpu, Globe, Download, Upload,
-  ChevronDown, ChevronRight, Dot, Sparkles, Briefcase
+  ChevronDown, ChevronRight, Dot, Sparkles, Briefcase,
+  ChevronUp, Zap, Clock, HardDrive
 } from 'lucide-react';
 
 interface NavItem {
@@ -28,6 +29,7 @@ export function ModernSidebar() {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<string[]>(['main']);
+  const [systemSpecsExpanded, setSystemSpecsExpanded] = useState(false);
   const [systemStatus, setSystemStatus] = useState<SystemStatus>({
     status: 'healthy',
     models_training: 2,
@@ -78,7 +80,6 @@ export function ModernSidebar() {
       group: 'tools',
       label: 'ابزارها',
       items: [
-        { path: '/training', label: 'مدیریت آموزش', icon: Cpu, description: 'کنترل فرآیند آموزش' },
         { path: '/export', label: 'صادرات داده', icon: Download, description: 'صادرات و پشتیبان‌گیری' },
         { path: '/import', label: 'واردات داده', icon: Upload, description: 'واردات داده‌های جدید' }
       ]
@@ -126,16 +127,16 @@ export function ModernSidebar() {
       transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
       className={`${
         collapsed ? 'w-20' : 'w-80'
-      } h-screen bg-gradient-to-b from-slate-900/95 to-slate-800/95 backdrop-blur-xl border-l border-slate-700/50 transition-all duration-300 flex flex-col`}
+      } h-screen bg-gradient-to-b from-slate-800/95 to-slate-900/95 backdrop-blur-xl border-l border-slate-600/50 transition-all duration-300 flex flex-col`}
       dir="rtl"
     >
       {/* Header */}
-      <div className="p-6 border-b border-slate-700/50">
+      <div className="p-6 border-b border-slate-600/50">
         <motion.div
           className="flex items-center gap-4"
           layout
         >
-          <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center">
+          <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-blue-500 rounded-2xl flex items-center justify-center shadow-lg">
             <Brain className="h-6 w-6 text-white" />
           </div>
           
@@ -149,7 +150,7 @@ export function ModernSidebar() {
                 className="overflow-hidden"
               >
                 <h2 className="text-lg font-bold text-white">AI حقوقی ایران</h2>
-                <p className="text-xs text-slate-400">سامانه یادگیری عمیق</p>
+                <p className="text-xs text-slate-300">سامانه یادگیری عمیق</p>
               </motion.div>
             )}
           </AnimatePresence>
@@ -164,50 +165,11 @@ export function ModernSidebar() {
               animate={{ rotate: collapsed ? 180 : 0 }}
               transition={{ duration: 0.3 }}
             >
-              <ChevronRight className="w-4 h-4 text-slate-400" />
+              <ChevronRight className="w-4 h-4 text-slate-300" />
             </motion.div>
           </motion.button>
         </motion.div>
       </div>
-
-      {/* System Status */}
-      <AnimatePresence>
-        {!collapsed && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
-            className="p-4 mx-4 mt-4 bg-gradient-to-r from-slate-800/50 to-slate-700/50 rounded-2xl border border-slate-600/30"
-          >
-            <div className="flex items-center gap-3 mb-3">
-              <div className={`w-3 h-3 rounded-full animate-pulse ${
-                systemStatus.status === 'healthy' ? 'bg-green-400' :
-                systemStatus.status === 'warning' ? 'bg-yellow-400' : 'bg-red-400'
-              }`} />
-              <span className="text-sm font-medium text-white">
-                {systemStatus.status === 'healthy' ? 'سیستم سالم' :
-                 systemStatus.status === 'warning' ? 'هشدار سیستم' : 'خطای سیستم'}
-              </span>
-            </div>
-            
-            <div className="space-y-2 text-xs">
-              <div className="flex justify-between text-slate-300">
-                <span>مدل‌های در حال آموزش</span>
-                <span className="font-bold text-blue-400">{systemStatus.models_training}</span>
-              </div>
-              <div className="flex justify-between text-slate-300">
-                <span>استفاده پردازنده</span>
-                <span className="font-bold text-cyan-400">{systemStatus.cpu_usage}%</span>
-              </div>
-              <div className="flex justify-between text-slate-300">
-                <span>استفاده حافظه</span>
-                <span className="font-bold text-purple-400">{systemStatus.memory_usage}%</span>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* Navigation */}
       <nav className="flex-1 overflow-y-auto p-4 space-y-2">
@@ -226,7 +188,7 @@ export function ModernSidebar() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   onClick={() => toggleGroup(section.group)}
-                  className="w-full flex items-center gap-3 px-3 py-2 text-xs font-semibold text-slate-400 hover:text-slate-300 transition-colors"
+                  className="w-full flex items-center gap-3 px-3 py-2 text-xs font-semibold text-slate-300 hover:text-white transition-colors"
                 >
                   <motion.div
                     animate={{ rotate: expandedGroups.includes(section.group) ? 90 : 0 }}
@@ -256,7 +218,7 @@ export function ModernSidebar() {
                         className={({ isActive }) => `
                           group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 relative overflow-hidden
                           ${isActive 
-                            ? 'bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-400/30 text-white' 
+                            ? 'bg-gradient-to-r from-emerald-500/20 to-blue-500/20 border border-emerald-400/30 text-white' 
                             : 'hover:bg-slate-700/30 text-slate-300 hover:text-white'
                           }
                         `}
@@ -265,14 +227,14 @@ export function ModernSidebar() {
                         {isActive(item.path) && (
                           <motion.div
                             layoutId="activeIndicator"
-                            className="absolute right-0 top-0 bottom-0 w-1 bg-gradient-to-b from-blue-400 to-purple-400 rounded-full"
+                            className="absolute right-0 top-0 bottom-0 w-1 bg-gradient-to-b from-emerald-400 to-blue-400 rounded-full"
                             transition={{ duration: 0.3 }}
                           />
                         )}
 
                         <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
                           isActive(item.path) 
-                            ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white' 
+                            ? 'bg-gradient-to-r from-emerald-500 to-blue-500 text-white' 
                             : 'bg-slate-700/50 group-hover:bg-slate-600/50'
                         }`}>
                           <item.icon className="w-5 h-5" />
@@ -302,7 +264,7 @@ export function ModernSidebar() {
                                     <motion.span
                                       initial={{ scale: 0 }}
                                       animate={{ scale: 1 }}
-                                      className="px-2 py-1 bg-gradient-to-r from-cyan-500 to-blue-500 text-white text-xs rounded-full font-medium"
+                                      className="px-2 py-1 bg-gradient-to-r from-emerald-500 to-blue-500 text-white text-xs rounded-full font-medium"
                                     >
                                       {item.badge}
                                     </motion.span>
@@ -340,7 +302,7 @@ export function ModernSidebar() {
                                   className={({ isActive }) => `
                                     flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200
                                     ${isActive 
-                                      ? 'bg-blue-500/20 text-blue-300 border border-blue-400/30' 
+                                      ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400/30' 
                                       : 'text-slate-400 hover:text-slate-300 hover:bg-slate-700/30'
                                     }
                                   `}
@@ -363,7 +325,82 @@ export function ModernSidebar() {
         ))}
       </nav>
 
-      {/* Training Status Indicator */}
+      {/* Collapsible System Specifications */}
+      <AnimatePresence>
+        {!collapsed && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.3 }}
+            className="mx-4 mb-4"
+          >
+            <motion.button
+              onClick={() => setSystemSpecsExpanded(!systemSpecsExpanded)}
+              className="w-full p-3 bg-gradient-to-r from-slate-700/50 to-slate-600/50 rounded-2xl border border-slate-500/30 hover:from-slate-600/50 hover:to-slate-500/50 transition-all duration-300"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className={`w-3 h-3 rounded-full animate-pulse ${
+                    systemStatus.status === 'healthy' ? 'bg-emerald-400' :
+                    systemStatus.status === 'warning' ? 'bg-yellow-400' : 'bg-red-400'
+                  }`} />
+                  <span className="text-sm font-medium text-white">
+                    {systemStatus.status === 'healthy' ? 'سیستم سالم' :
+                     systemStatus.status === 'warning' ? 'هشدار سیستم' : 'خطای سیستم'}
+                  </span>
+                </div>
+                <motion.div
+                  animate={{ rotate: systemSpecsExpanded ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ChevronUp className="w-4 h-4 text-slate-300" />
+                </motion.div>
+              </div>
+            </motion.button>
+
+            <AnimatePresence>
+              {systemSpecsExpanded && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="mt-2 p-4 bg-gradient-to-r from-slate-800/50 to-slate-700/50 rounded-2xl border border-slate-600/30"
+                >
+                  <div className="space-y-3 text-xs">
+                    <div className="flex items-center justify-between text-slate-300">
+                      <div className="flex items-center gap-2">
+                        <Zap className="w-3 h-3 text-emerald-400" />
+                        <span>مدل‌های در حال آموزش</span>
+                      </div>
+                      <span className="font-bold text-emerald-400">{systemStatus.models_training}</span>
+                    </div>
+                    
+                    <div className="flex items-center justify-between text-slate-300">
+                      <div className="flex items-center gap-2">
+                        <Cpu className="w-3 h-3 text-blue-400" />
+                        <span>استفاده پردازنده</span>
+                      </div>
+                      <span className="font-bold text-blue-400">{systemStatus.cpu_usage}%</span>
+                    </div>
+                    
+                    <div className="flex items-center justify-between text-slate-300">
+                      <div className="flex items-center gap-2">
+                        <HardDrive className="w-3 h-3 text-purple-400" />
+                        <span>استفاده حافظه</span>
+                      </div>
+                      <span className="font-bold text-purple-400">{systemStatus.memory_usage}%</span>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Training Status Indicator - Moved to Bottom */}
       <AnimatePresence>
         {!collapsed && (
           <motion.div
@@ -384,16 +421,22 @@ export function ModernSidebar() {
             </div>
             
             <div className="text-xs text-slate-300 space-y-1">
-              <div>مدل قوانین مدنی: 87% تکمیل</div>
-              <div>زمان باقیمانده: 23 دقیقه</div>
+              <div className="flex items-center gap-2">
+                <Clock className="w-3 h-3 text-blue-400" />
+                <span>مدل قوانین مدنی: 87% تکمیل</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Clock className="w-3 h-3 text-emerald-400" />
+                <span>زمان باقیمانده: 23 دقیقه</span>
+              </div>
             </div>
             
-            <div className="w-full bg-slate-700 rounded-full h-1.5 mt-3">
+            <div className="w-full bg-slate-700 rounded-full h-2 mt-3">
               <motion.div
                 initial={{ width: 0 }}
                 animate={{ width: "87%" }}
                 transition={{ duration: 2 }}
-                className="h-1.5 bg-gradient-to-r from-emerald-400 to-blue-400 rounded-full"
+                className="h-2 bg-gradient-to-r from-emerald-400 via-emerald-500 to-blue-500 rounded-full shadow-lg"
               />
             </div>
           </motion.div>
@@ -401,7 +444,7 @@ export function ModernSidebar() {
       </AnimatePresence>
 
       {/* Footer */}
-      <div className="p-4 border-t border-slate-700/50">
+      <div className="p-4 border-t border-slate-600/50">
         <AnimatePresence>
           {!collapsed && (
             <motion.div
@@ -411,10 +454,10 @@ export function ModernSidebar() {
               transition={{ duration: 0.3 }}
               className="text-center"
             >
-              <div className="text-xs text-slate-400 mb-2">
+              <div className="text-xs text-slate-300 mb-2">
                 نسخه 2.1.0 - هوش مصنوعی حقوقی
               </div>
-              <div className="text-xs text-slate-500">
+              <div className="text-xs text-slate-400">
                 © 2024 تمامی حقوق محفوظ است
               </div>
             </motion.div>
@@ -432,7 +475,7 @@ export function ModernSidebar() {
             animate={{ rotate: collapsed ? 0 : 180 }}
             transition={{ duration: 0.3 }}
           >
-            <ChevronRight className="w-4 h-4 text-slate-400" />
+            <ChevronRight className="w-4 h-4 text-slate-300" />
           </motion.div>
         </motion.button>
       </div>
