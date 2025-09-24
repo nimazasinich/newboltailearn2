@@ -6,7 +6,7 @@ import {
   Monitor, LogOut, Home, BookOpen, Scale, Gavel, Shield,
   TrendingUp, Activity, Cpu, Globe, Download, Upload,
   ChevronDown, ChevronRight, Dot, Sparkles, Briefcase,
-  ChevronUp, Zap, Clock, HardDrive, Target, Heart, Play, CheckCircle
+  Heart, Play, CheckCircle
 } from 'lucide-react';
 
 interface NavItem {
@@ -29,8 +29,6 @@ export function ModernSidebar() {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<string[]>(['main']);
-  const [systemSpecsExpanded, setSystemSpecsExpanded] = useState(false);
-  const [trainingExpanded, setTrainingExpanded] = useState(false);
   const [activeTab, setActiveTab] = useState('status');
   const [systemStatus, setSystemStatus] = useState<SystemStatus>({
     status: 'healthy',
@@ -328,227 +326,6 @@ export function ModernSidebar() {
         ))}
       </nav>
 
-      {/* Collapsible System Specifications */}
-      <AnimatePresence>
-        {!collapsed && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.3 }}
-            className="mx-4 mb-2"
-          >
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => setSystemSpecsExpanded(!systemSpecsExpanded)}
-              className="w-full p-2.5 bg-gradient-to-r from-cyan-500/30 to-teal-500/30 rounded-xl border border-cyan-400/50 hover:from-cyan-500/40 hover:to-teal-500/40 transition-all duration-300 shadow-lg hover:shadow-cyan-500/30 backdrop-blur-sm"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 bg-gradient-to-br from-cyan-400 to-teal-500 rounded-md flex items-center justify-center shadow-md">
-                    <Sparkles className="w-3 h-3 text-white" />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-xs font-bold text-white">وضعیت سیستم</span>
-                    <span className="text-xs text-cyan-200">سیستم فعال</span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <motion.span
-                    animate={{ scale: [1, 1.05, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="px-2 py-0.5 bg-white/20 text-white text-xs rounded-full font-bold backdrop-blur-sm"
-                  >
-                    {systemStatus.status === 'healthy' ? 'سالم' :
-                     systemStatus.status === 'warning' ? 'هشدار' : 'خطا'}
-                  </motion.span>
-                  <div className="flex items-center gap-0.5">
-                    <motion.div
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: 0 }}
-                      className="w-1.5 h-1.5 bg-white/60 rounded-full shadow-sm"
-                    />
-                    <motion.div
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: 0.3 }}
-                      className="w-1.5 h-1.5 bg-white/40 rounded-full shadow-sm"
-                    />
-                    <motion.div
-                      animate={{ scale: [1, 1.2, 1] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}
-                      className="w-1.5 h-1.5 bg-white/60 rounded-full shadow-sm"
-                    />
-                  </div>
-                  <motion.div
-                    animate={{ rotate: systemSpecsExpanded ? 180 : 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="w-4 h-4 text-white/80"
-                  >
-                    <ChevronUp className="w-full h-full" />
-                  </motion.div>
-                </div>
-              </div>
-            </motion.button>
-
-            <AnimatePresence>
-              {systemSpecsExpanded && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="mt-1 p-2 bg-gradient-to-r from-cyan-500/10 to-teal-500/10 rounded-lg border border-cyan-400/20 shadow-md"
-                  >
-                  <div className="space-y-2 text-xs">
-                    <div className="flex items-center justify-between text-emerald-200 p-2 bg-emerald-500/10 rounded-lg border border-emerald-400/20 shadow-sm shadow-emerald-500/10">
-                      <div className="flex items-center gap-2">
-                        <Zap className="w-3 h-3 text-emerald-400" />
-                        <span>مدل‌های در حال آموزش</span>
-                      </div>
-                      <span className="font-bold text-emerald-300">{systemStatus.models_training}</span>
-                    </div>
-                    
-                    <div className="flex items-center justify-between text-blue-200 p-2 bg-blue-500/10 rounded-lg border border-blue-400/20 shadow-sm shadow-blue-500/10">
-                      <div className="flex items-center gap-2">
-                        <Cpu className="w-3 h-3 text-blue-400" />
-                        <span>استفاده پردازنده</span>
-                      </div>
-                      <span className="font-bold text-blue-300">{systemStatus.cpu_usage}%</span>
-                    </div>
-                    
-                    <div className="flex items-center justify-between text-purple-200 p-2 bg-purple-500/10 rounded-lg border border-purple-400/20 shadow-sm shadow-purple-500/10">
-                      <div className="flex items-center gap-2">
-                        <HardDrive className="w-3 h-3 text-purple-400" />
-                        <span>استفاده حافظه</span>
-                      </div>
-                      <span className="font-bold text-purple-300">{systemStatus.memory_usage}%</span>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Training Status Indicator - Collapsible */}
-      <AnimatePresence>
-        {!collapsed && (
-              <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.3 }}
-            className="mx-4 mb-2"
-          >
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => setTrainingExpanded(!trainingExpanded)}
-              className="w-full p-2.5 bg-gradient-to-r from-indigo-500/30 to-slate-600/30 rounded-xl border border-indigo-400/50 hover:from-indigo-500/40 hover:to-slate-600/40 transition-all duration-300 shadow-lg hover:shadow-indigo-500/30 backdrop-blur-sm"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 bg-gradient-to-br from-indigo-400 to-slate-500 rounded-md flex items-center justify-center shadow-md">
-                    <Sparkles className="w-3 h-3 text-white" />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-xs font-bold text-white">آموزش فعال</span>
-                    <span className="text-xs text-indigo-200">مدل‌های فعال</span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <motion.span
-                    animate={{ scale: [1, 1.05, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="px-2 py-0.5 bg-white/20 text-white text-xs rounded-full font-bold backdrop-blur-sm"
-                  >
-                    در حال اجرا
-                  </motion.span>
-                  <motion.div
-                    animate={{ rotate: trainingExpanded ? 180 : 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="w-4 h-4 text-white/80"
-                  >
-                    <ChevronUp className="w-full h-full" />
-                  </motion.div>
-                </div>
-              </div>
-            </motion.button>
-
-            <AnimatePresence>
-              {trainingExpanded && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="mt-1 p-2 bg-gradient-to-r from-indigo-500/10 to-slate-500/10 rounded-lg border border-indigo-400/20"
-                >
-                  <div className="text-xs text-slate-300 space-y-1.5">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Cpu className="w-3 h-3 text-blue-400" />
-                        <span>مدل قوانین مدنی</span>
-                      </div>
-                      <span className="font-bold text-emerald-400">87%</span>
-                    </div>
-                    
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Clock className="w-3 h-3 text-emerald-400" />
-                        <span>زمان باقیمانده</span>
-                      </div>
-                      <span className="font-bold text-blue-400">23 دقیقه</span>
-            </div>
-            
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Target className="w-3 h-3 text-purple-400" />
-                        <span>دقت فعلی</span>
-                      </div>
-                      <span className="font-bold text-purple-400">94.2%</span>
-                    </div>
-            </div>
-            
-                  <div className="w-full bg-slate-700 rounded-full h-2 mt-3">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: "87%" }}
-                transition={{ duration: 2 }}
-                      className="h-2 bg-gradient-to-r from-emerald-400 via-emerald-500 to-blue-500 rounded-full shadow-lg relative overflow-hidden"
-                    >
-                      <motion.div
-                        animate={{ x: ['-100%', '100%'] }}
-                        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                      />
-                    </motion.div>
-                  </div>
-                  
-                  <div className="flex gap-2 mt-3">
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex-1 px-3 py-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 text-xs rounded-lg transition-all duration-300"
-                    >
-                      مدیریت
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex-1 px-3 py-1.5 bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 text-xs rounded-lg transition-all duration-300"
-                    >
-                      جزئیات
-                    </motion.button>
-            </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
         {/* Enhanced System Status & Model Status Tabs */}
         <div className="p-3 border-t border-slate-600/50 mt-auto">
@@ -692,21 +469,6 @@ export function ModernSidebar() {
           )}
         </AnimatePresence>
 
-          {/* Enhanced Collapse/Expand Toggle */}
-        <motion.button
-            whileHover={{ scale: 1.05, y: -1 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setCollapsed(!collapsed)}
-            className="w-full p-2.5 bg-gradient-to-r from-slate-700/40 to-slate-600/40 hover:from-slate-600/50 hover:to-slate-500/50 rounded-xl transition-all duration-300 flex items-center justify-center shadow-lg"
-        >
-          <motion.div
-            animate={{ rotate: collapsed ? 0 : 180 }}
-            transition={{ duration: 0.3 }}
-              className="w-4 h-4 text-slate-300"
-          >
-              <ChevronRight className="w-full h-full" />
-          </motion.div>
-        </motion.button>
       </div>
     </motion.div>
   );
