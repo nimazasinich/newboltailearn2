@@ -435,7 +435,7 @@ export function ModernSidebar() {
       {/* Training Status Indicator - Collapsible */}
       <AnimatePresence>
         {!collapsed && (
-          <motion.div
+              <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
@@ -461,7 +461,7 @@ export function ModernSidebar() {
                 <div className="flex items-center gap-3">
                   <motion.span
                     animate={{ scale: [1, 1.05, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
+                transition={{ duration: 2, repeat: Infinity }}
                     className="px-3 py-1 bg-white/20 text-white text-xs rounded-full font-bold backdrop-blur-sm"
                   >
                     در حال اجرا
@@ -472,7 +472,7 @@ export function ModernSidebar() {
                     className="w-5 h-5 text-white/80"
                   >
                     <ChevronUp className="w-full h-full" />
-                  </motion.div>
+              </motion.div>
                 </div>
               </div>
             </motion.button>
@@ -551,59 +551,59 @@ export function ModernSidebar() {
       </AnimatePresence>
 
         {/* Enhanced System Status & Model Status Tabs */}
-        <div className="p-4 border-t border-slate-600/50 mt-auto">
-          <AnimatePresence>
-            {!collapsed && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
-                className="mb-3"
+        <div className="p-3 border-t border-slate-600/50 mt-auto">
+        <AnimatePresence>
+          {!collapsed && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+                className="mb-2"
               >
                 {/* Enhanced Tab Navigation */}
-                <div className="flex bg-slate-800/60 rounded-xl p-1 shadow-xl backdrop-blur-sm border border-slate-600/30">
+                <div className="flex bg-gradient-to-r from-slate-800/80 to-slate-700/80 rounded-lg p-0.5 shadow-2xl backdrop-blur-sm border border-slate-500/40">
                   <motion.button
-                    whileHover={{ scale: 1.02, y: -1 }}
-                    whileTap={{ scale: 0.98 }}
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => setActiveTab('status')}
-                    className={`flex-1 px-4 py-3 text-sm font-bold rounded-lg transition-all duration-300 relative overflow-hidden ${
+                    className={`flex-1 px-3 py-2 text-xs font-bold rounded-md transition-all duration-300 relative overflow-hidden ${
                       activeTab === 'status'
-                        ? 'bg-gradient-to-r from-teal-500/40 to-emerald-500/40 text-white shadow-lg shadow-teal-500/30 border border-teal-400/50'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-700/40'
+                        ? 'bg-gradient-to-r from-cyan-500/50 to-teal-500/50 text-white shadow-xl shadow-cyan-500/40 border border-cyan-400/60'
+                        : 'text-slate-300 hover:text-white hover:bg-slate-600/30'
                     }`}
                   >
                     {activeTab === 'status' && (
                       <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="absolute inset-0 bg-gradient-to-r from-teal-400/20 to-emerald-400/20 rounded-lg"
+                        className="absolute inset-0 bg-gradient-to-r from-cyan-400/30 to-teal-400/30 rounded-md"
                       />
                     )}
-                    <div className="relative z-10 flex items-center justify-center gap-2">
-                      <Heart className="w-4 h-4" />
+                    <div className="relative z-10 flex items-center justify-center gap-1.5">
+                      <Heart className="w-3 h-3" />
                       <span>وضعیت سیستم</span>
                     </div>
                   </motion.button>
                   <motion.button
-                    whileHover={{ scale: 1.02, y: -1 }}
-                    whileTap={{ scale: 0.98 }}
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={() => setActiveTab('models')}
-                    className={`flex-1 px-4 py-3 text-sm font-bold rounded-lg transition-all duration-300 relative overflow-hidden ${
+                    className={`flex-1 px-3 py-2 text-xs font-bold rounded-md transition-all duration-300 relative overflow-hidden ${
                       activeTab === 'models'
-                        ? 'bg-gradient-to-r from-blue-500/40 to-purple-500/40 text-white shadow-lg shadow-blue-500/30 border border-blue-400/50'
-                        : 'text-slate-400 hover:text-slate-200 hover:bg-slate-700/40'
+                        ? 'bg-gradient-to-r from-indigo-500/50 to-slate-600/50 text-white shadow-xl shadow-indigo-500/40 border border-indigo-400/60'
+                        : 'text-slate-300 hover:text-white hover:bg-slate-600/30'
                     }`}
                   >
                     {activeTab === 'models' && (
                       <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-lg"
+                        className="absolute inset-0 bg-gradient-to-r from-indigo-400/30 to-slate-400/30 rounded-md"
                       />
                     )}
-                    <div className="relative z-10 flex items-center justify-center gap-2">
-                      <Brain className="w-4 h-4" />
+                    <div className="relative z-10 flex items-center justify-center gap-1.5">
+                      <Brain className="w-3 h-3" />
                       <span>وضعیت مدل‌ها</span>
                     </div>
                   </motion.button>
@@ -618,9 +618,9 @@ export function ModernSidebar() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.3 }}
-                      className="mt-3 p-4 bg-gradient-to-r from-teal-500/15 to-emerald-500/15 rounded-xl border border-teal-400/30 shadow-lg backdrop-blur-sm"
+                      className="mt-2 p-3 bg-gradient-to-r from-cyan-500/15 to-teal-500/15 rounded-lg border border-cyan-400/30 shadow-lg backdrop-blur-sm"
                     >
-                      <div className="space-y-3">
+                      <div className="space-y-2">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <div className="w-2 h-2 bg-teal-400 rounded-full animate-pulse shadow-lg shadow-teal-400/50" />
@@ -628,7 +628,7 @@ export function ModernSidebar() {
                           </div>
                           <span className="text-sm text-white font-bold bg-white/20 px-2 py-1 rounded-full">سالم</span>
                         </div>
-                        <div className="flex items-center justify-between p-2 bg-white/5 rounded-lg">
+                        <div className="flex items-center justify-between p-1.5 bg-white/5 rounded-md">
                           <div className="flex items-center gap-2">
                             <div className="w-6 h-6 bg-blue-500/20 rounded flex items-center justify-center">
                               <Cpu className="w-3 h-3 text-blue-400" />
@@ -637,7 +637,7 @@ export function ModernSidebar() {
                           </div>
                           <span className="text-sm text-blue-300 font-bold">{systemStatus.cpu_usage}%</span>
                         </div>
-                        <div className="flex items-center justify-between p-2 bg-white/5 rounded-lg">
+                        <div className="flex items-center justify-between p-1.5 bg-white/5 rounded-md">
                           <div className="flex items-center gap-2">
                             <div className="w-6 h-6 bg-purple-500/20 rounded flex items-center justify-center">
                               <HardDrive className="w-3 h-3 text-purple-400" />
@@ -656,9 +656,9 @@ export function ModernSidebar() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.3 }}
-                      className="mt-3 p-4 bg-gradient-to-r from-blue-500/15 to-purple-500/15 rounded-xl border border-blue-400/30 shadow-lg backdrop-blur-sm"
+                      className="mt-2 p-3 bg-gradient-to-r from-indigo-500/15 to-slate-500/15 rounded-lg border border-indigo-400/30 shadow-lg backdrop-blur-sm"
                     >
-                      <div className="space-y-3">
+                      <div className="space-y-2">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse shadow-lg shadow-blue-400/50" />
@@ -666,7 +666,7 @@ export function ModernSidebar() {
                           </div>
                           <span className="text-sm text-white font-bold bg-white/20 px-2 py-1 rounded-full">{systemStatus.models_training}</span>
                         </div>
-                        <div className="flex items-center justify-between p-2 bg-white/5 rounded-lg">
+                        <div className="flex items-center justify-between p-1.5 bg-white/5 rounded-md">
                           <div className="flex items-center gap-2">
                             <div className="w-6 h-6 bg-emerald-500/20 rounded flex items-center justify-center">
                               <Play className="w-3 h-3 text-emerald-400" />
@@ -675,7 +675,7 @@ export function ModernSidebar() {
                           </div>
                           <span className="text-sm text-emerald-300 font-bold">2</span>
                         </div>
-                        <div className="flex items-center justify-between p-2 bg-white/5 rounded-lg">
+                        <div className="flex items-center justify-between p-1.5 bg-white/5 rounded-md">
                           <div className="flex items-center gap-2">
                             <div className="w-6 h-6 bg-green-500/20 rounded flex items-center justify-center">
                               <CheckCircle className="w-3 h-3 text-green-400" />
@@ -683,31 +683,31 @@ export function ModernSidebar() {
                             <span className="text-sm text-slate-200">تکمیل شده</span>
                           </div>
                           <span className="text-sm text-green-300 font-bold">1</span>
-                        </div>
-                      </div>
+              </div>
+              </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </motion.div>
-            )}
-          </AnimatePresence>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
           {/* Enhanced Collapse/Expand Toggle */}
-          <motion.button
+        <motion.button
             whileHover={{ scale: 1.05, y: -1 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setCollapsed(!collapsed)}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setCollapsed(!collapsed)}
             className="w-full p-2.5 bg-gradient-to-r from-slate-700/40 to-slate-600/40 hover:from-slate-600/50 hover:to-slate-500/50 rounded-xl transition-all duration-300 flex items-center justify-center shadow-lg"
-          >
-            <motion.div
-              animate={{ rotate: collapsed ? 0 : 180 }}
-              transition={{ duration: 0.3 }}
+        >
+          <motion.div
+            animate={{ rotate: collapsed ? 0 : 180 }}
+            transition={{ duration: 0.3 }}
               className="w-4 h-4 text-slate-300"
-            >
+          >
               <ChevronRight className="w-full h-full" />
-            </motion.div>
-          </motion.button>
-        </div>
+          </motion.div>
+        </motion.button>
+      </div>
     </motion.div>
   );
 }
