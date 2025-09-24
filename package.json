@@ -52,7 +52,11 @@
     "start:enterprise": "NODE_ENV=production node server/main.js",
     "dev:enterprise": "NODE_ENV=development nodemon server/main.js",
     "test:enterprise": "npm run test && npm run test:e2e",
-    "validate:enterprise": "node scripts/validate-deployment.js"
+    "validate:enterprise": "node scripts/validate-deployment.js",
+    "reliability:status": "curl -s http://localhost:8080/api/reliability/status | jq",
+    "reliability:health": "curl -s http://localhost:8080/api/reliability/health | jq",
+    "reliability:test": "node scripts/test-reliability-systems.js",
+    "reliability:monitor": "node scripts/monitor-reliability.js"
   },
   "dependencies": {
     "@tensorflow/tfjs-node": "^4.15.0",

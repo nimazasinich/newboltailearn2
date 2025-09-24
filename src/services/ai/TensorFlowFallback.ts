@@ -158,18 +158,26 @@ class MockTensorFlow implements TensorFlowFallback {
   }
 }
 
-// Dynamic TensorFlow.js loader with fallback
+// Dynamic TensorFlow.js loader with advanced fallback
 export async function loadTensorFlow(): Promise<TensorFlowFallback> {
   try {
-    // Try to load real TensorFlow.js
-    const tf = await import('@tensorflow/tfjs-node');
-    console.log('✅ TensorFlow.js native bindings loaded successfully');
+    // Try to load real TensorFlow.js with compatibility layer
+    const { tfCompatibility } = await import('./TensorFlowCompatibilityLayer');
+    const tf = await import('@tensorflow/tfjs');
+    
+    // Initialize with optimal backend
+    await tfCompatibility.initializeTensorFlow();
+    
+    console.log('✅ TensorFlow.js loaded with compatibility layer');
+    console.log('📊 Backend info:', tfCompatibility.getBackendInfo());
+    console.log('💡 Recommendations:', tfCompatibility.getPerformanceRecommendations());
+    
     return tf as any;
   } catch (error) {
-    console.warn('⚠️ TensorFlow.js native bindings not available, using fallback');
+    console.warn('⚠️ TensorFlow.js not available, using advanced fallback');
     console.warn('Error:', error.message);
     
-    // Return mock implementation
+    // Return enhanced mock implementation
     return new MockTensorFlow();
   }
 }

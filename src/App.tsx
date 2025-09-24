@@ -1,3 +1,4 @@
+import './services/reliability-integration';
 import React, { Suspense, lazy } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { EnhancedAppLayout } from './components/layout/EnhancedAppLayout'
