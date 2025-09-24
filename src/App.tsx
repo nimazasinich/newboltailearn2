@@ -13,6 +13,7 @@ const lazyCompat = <T extends Record<string, any>>(imp: () => Promise<T>, key: s
 
 const Overview           = lazyCompat(() => import('./components/Overview'), 'Overview')
 const DashboardAdvanced  = lazyCompat(() => import('./components/EnhancedDashboard'), 'default')
+const UltimateDashboard  = lazyCompat(() => import('./components/UltimatePersianDashboard'), 'default')
 const AnalyticsPage      = lazyCompat(() => import('./components/AnalyticsPage'), 'AnalyticsPage')
 const DataPage           = lazyCompat(() => import('./components/DataPage'), 'DataPage')
 const ModelsPage         = lazyCompat(() => import('./components/ModelsPage'), 'ModelsPage')
@@ -53,6 +54,7 @@ export default function App() {
                   <Route path="/overview" element={<Overview />} />
                   <Route path="/dashboard" element={<DashboardAdvanced />} />
                   <Route path="/dashboard-advanced" element={<DashboardAdvanced />} />
+                  <Route path="/dashboard-ultimate" element={<UltimateDashboard />} />
                   <Route path="/analytics" element={<AnalyticsPage />} />
                   <Route path="/data" element={<DataPage />} />
                   <Route path="/data-gallery" element={<DatasetGallery />} />

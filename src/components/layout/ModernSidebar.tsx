@@ -46,7 +46,8 @@ export function ModernSidebar() {
       label: 'داشبورد اصلی',
       items: [
         { path: '/overview', label: 'نمای کلی', icon: Home, description: 'داشبورد اصلی سیستم' },
-        { path: '/dashboard', label: 'مانیتورینگ', icon: BarChart3, description: 'آمار و نمودارها', badge: 'جدید' }
+        { path: '/dashboard', label: 'مانیتورینگ', icon: BarChart3, description: 'آمار و نمودارها', badge: 'جدید' },
+        { path: '/dashboard-ultimate', label: 'داشبورد پیشرفته', icon: Sparkles, description: 'داشبورد تعاملی پیشرفته', badge: 'ویژه' }
       ]
     },
     {
