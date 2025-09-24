@@ -5,7 +5,7 @@ import {
   BarChart3, PieChart, LineChart, Monitor, Cpu, HardDrive, Wifi,
   CheckCircle, AlertTriangle, Clock, Target, Award, Zap,
   FileText, BookOpen, Scale, Gavel, Briefcase, Shield,
-  Heart, ArrowLeft
+  Heart, ArrowLeft, Settings
 } from 'lucide-react';
 import { 
   BarChart as RechartsBar, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
@@ -184,17 +184,17 @@ export default function EnhancedDashboard() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800 flex items-center justify-center" dir="rtl">
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
+          initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           className="text-center"
         >
           <motion.div
             animate={{ rotate: 360 }}
-            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            className="w-16 h-16 mx-auto mb-4 border-4 border-blue-500 border-t-transparent rounded-full"
+            transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+            className="w-8 h-8 mx-auto mb-3 border-2 border-emerald-500/50 border-t-emerald-500 rounded-full"
           />
-          <h2 className="text-2xl font-bold text-white mb-2">در حال بارگذاری داشبورد</h2>
-          <p className="text-slate-400">لطفاً صبر کنید...</p>
+          <h2 className="text-sm font-semibold text-white mb-1">در حال بارگذاری...</h2>
+          <p className="text-xs text-slate-400">آماده‌سازی سیستم</p>
         </motion.div>
       </div>
     );
@@ -397,9 +397,37 @@ export default function EnhancedDashboard() {
                     </div>
 
                     {/* Model Details */}
-                    <div className="flex justify-between text-xs text-slate-400">
+                    <div className="flex justify-between text-xs text-slate-400 mb-3">
                       <span>دوره‌ها: {model.epochs}</span>
                       <span>{new Date(model.created_at).toLocaleDateString('fa-IR')}</span>
+                    </div>
+
+                    {/* Model Management Buttons */}
+                    <div className="flex gap-2">
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="flex-1 px-3 py-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 text-xs rounded-lg transition-all duration-300 flex items-center justify-center gap-1"
+                      >
+                        <Play className="w-3 h-3" />
+                        شروع
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="flex-1 px-3 py-1.5 bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 text-xs rounded-lg transition-all duration-300 flex items-center justify-center gap-1"
+                      >
+                        <Settings className="w-3 h-3" />
+                        تنظیمات
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="flex-1 px-3 py-1.5 bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 text-xs rounded-lg transition-all duration-300 flex items-center justify-center gap-1"
+                      >
+                        <BarChart3 className="w-3 h-3" />
+                        آمار
+                      </motion.button>
                     </div>
 
                     {/* Expanded Details */}

@@ -6,7 +6,7 @@ import {
   Monitor, LogOut, Home, BookOpen, Scale, Gavel, Shield,
   TrendingUp, Activity, Cpu, Globe, Download, Upload,
   ChevronDown, ChevronRight, Dot, Sparkles, Briefcase,
-  ChevronUp, Zap, Clock, HardDrive
+  ChevronUp, Zap, Clock, HardDrive, Target
 } from 'lucide-react';
 
 interface NavItem {
@@ -30,6 +30,7 @@ export function ModernSidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<string[]>(['main']);
   const [systemSpecsExpanded, setSystemSpecsExpanded] = useState(false);
+  const [trainingExpanded, setTrainingExpanded] = useState(false);
   const [systemStatus, setSystemStatus] = useState<SystemStatus>({
     status: 'healthy',
     models_training: 2,
@@ -400,7 +401,7 @@ export function ModernSidebar() {
         )}
       </AnimatePresence>
 
-      {/* Training Status Indicator - Moved to Bottom */}
+      {/* Training Status Indicator - Collapsible */}
       <AnimatePresence>
         {!collapsed && (
           <motion.div
@@ -408,43 +409,113 @@ export function ModernSidebar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.3 }}
-            className="p-4 mx-4 mb-4 bg-gradient-to-r from-emerald-500/10 to-blue-500/10 rounded-2xl border border-emerald-400/20"
+            className="mx-4 mb-4"
           >
-            <div className="flex items-center gap-3 mb-3">
-              <motion.div
-                animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 360] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                <Sparkles className="w-5 h-5 text-emerald-400" />
-              </motion.div>
-              <span className="text-sm font-bold text-emerald-300">آموزش فعال</span>
-            </div>
-            
-            <div className="text-xs text-slate-300 space-y-1">
-              <div className="flex items-center gap-2">
-                <Clock className="w-3 h-3 text-blue-400" />
-                <span>مدل قوانین مدنی: 87% تکمیل</span>
+            <motion.button
+              onClick={() => setTrainingExpanded(!trainingExpanded)}
+              className="w-full p-3 bg-gradient-to-r from-emerald-500/20 to-blue-500/20 rounded-2xl border border-emerald-400/30 hover:from-emerald-500/30 hover:to-blue-500/30 transition-all duration-300 shadow-lg hover:shadow-emerald-500/20"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <motion.div
+                    animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 360] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  >
+                    <Sparkles className="w-5 h-5 text-emerald-400" />
+                  </motion.div>
+                  <span className="text-sm font-bold text-emerald-300">آموزش فعال</span>
+                  <motion.span
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                    className="px-2 py-1 bg-emerald-500/30 text-emerald-200 text-xs rounded-full font-medium"
+                  >
+                    در حال اجرا
+                  </motion.span>
+                </div>
+                <motion.div
+                  animate={{ rotate: trainingExpanded ? 180 : 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ChevronUp className="w-4 h-4 text-emerald-300" />
+                </motion.div>
               </div>
-              <div className="flex items-center gap-2">
-                <Clock className="w-3 h-3 text-emerald-400" />
-                <span>زمان باقیمانده: 23 دقیقه</span>
-              </div>
-            </div>
-            
-            <div className="w-full bg-slate-700 rounded-full h-2 mt-3">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: "87%" }}
-                transition={{ duration: 2 }}
-                className="h-2 bg-gradient-to-r from-emerald-400 via-emerald-500 to-blue-500 rounded-full shadow-lg"
-              />
-            </div>
+            </motion.button>
+
+            <AnimatePresence>
+              {trainingExpanded && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="mt-2 p-4 bg-gradient-to-r from-emerald-500/10 to-blue-500/10 rounded-2xl border border-emerald-400/20"
+                >
+                  <div className="text-xs text-slate-300 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Cpu className="w-3 h-3 text-blue-400" />
+                        <span>مدل قوانین مدنی</span>
+                      </div>
+                      <span className="font-bold text-emerald-400">87%</span>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Clock className="w-3 h-3 text-emerald-400" />
+                        <span>زمان باقیمانده</span>
+                      </div>
+                      <span className="font-bold text-blue-400">23 دقیقه</span>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Target className="w-3 h-3 text-purple-400" />
+                        <span>دقت فعلی</span>
+                      </div>
+                      <span className="font-bold text-purple-400">94.2%</span>
+                    </div>
+                  </div>
+                  
+                  <div className="w-full bg-slate-700 rounded-full h-2 mt-3">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: "87%" }}
+                      transition={{ duration: 2 }}
+                      className="h-2 bg-gradient-to-r from-emerald-400 via-emerald-500 to-blue-500 rounded-full shadow-lg relative overflow-hidden"
+                    >
+                      <motion.div
+                        animate={{ x: ['-100%', '100%'] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                      />
+                    </motion.div>
+                  </div>
+                  
+                  <div className="flex gap-2 mt-3">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex-1 px-3 py-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 text-xs rounded-lg transition-all duration-300"
+                    >
+                      مدیریت
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex-1 px-3 py-1.5 bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 text-xs rounded-lg transition-all duration-300"
+                    >
+                      جزئیات
+                    </motion.button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Footer */}
-      <div className="p-4 border-t border-slate-600/50">
+      {/* Bottom Status Bar */}
+      <div className="p-4 border-t border-slate-600/50 mt-auto">
         <AnimatePresence>
           {!collapsed && (
             <motion.div
@@ -452,9 +523,9 @@ export function ModernSidebar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="text-center"
+              className="text-center mb-3"
             >
-              <div className="text-xs text-slate-300 mb-2">
+              <div className="text-xs text-slate-300 mb-1">
                 نسخه 2.1.0 - هوش مصنوعی حقوقی
               </div>
               <div className="text-xs text-slate-400">
@@ -469,7 +540,7 @@ export function ModernSidebar() {
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setCollapsed(!collapsed)}
-          className="w-full mt-3 p-2 bg-slate-700/30 hover:bg-slate-600/30 rounded-xl transition-all duration-300 flex items-center justify-center"
+          className="w-full p-2 bg-slate-700/30 hover:bg-slate-600/30 rounded-xl transition-all duration-300 flex items-center justify-center"
         >
           <motion.div
             animate={{ rotate: collapsed ? 0 : 180 }}
