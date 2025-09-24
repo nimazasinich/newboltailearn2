@@ -336,54 +336,54 @@ export function ModernSidebar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.3 }}
-            className="mx-4 mb-4"
+            className="mx-4 mb-2"
           >
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setSystemSpecsExpanded(!systemSpecsExpanded)}
-              className="w-full p-4 bg-gradient-to-r from-teal-500/25 to-emerald-500/25 rounded-2xl border border-teal-400/40 hover:from-teal-500/35 hover:to-emerald-500/35 transition-all duration-300 shadow-xl hover:shadow-teal-500/25 backdrop-blur-sm"
+              className="w-full p-2.5 bg-gradient-to-r from-cyan-500/30 to-teal-500/30 rounded-xl border border-cyan-400/50 hover:from-cyan-500/40 hover:to-teal-500/40 transition-all duration-300 shadow-lg hover:shadow-cyan-500/30 backdrop-blur-sm"
             >
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-gradient-to-br from-teal-400 to-emerald-500 rounded-lg flex items-center justify-center shadow-lg">
-                    <Sparkles className="w-4 h-4 text-white" />
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 bg-gradient-to-br from-cyan-400 to-teal-500 rounded-md flex items-center justify-center shadow-md">
+                    <Sparkles className="w-3 h-3 text-white" />
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-sm font-bold text-white">وضعیت سیستم</span>
-                    <span className="text-xs text-teal-200">سیستم فعال و آماده</span>
+                    <span className="text-xs font-bold text-white">وضعیت سیستم</span>
+                    <span className="text-xs text-cyan-200">سیستم فعال</span>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
                   <motion.span
                     animate={{ scale: [1, 1.05, 1] }}
                     transition={{ duration: 2, repeat: Infinity }}
-                    className="px-3 py-1 bg-white/20 text-white text-xs rounded-full font-bold backdrop-blur-sm"
+                    className="px-2 py-0.5 bg-white/20 text-white text-xs rounded-full font-bold backdrop-blur-sm"
                   >
                     {systemStatus.status === 'healthy' ? 'سالم' :
                      systemStatus.status === 'warning' ? 'هشدار' : 'خطا'}
                   </motion.span>
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-0.5">
                     <motion.div
                       animate={{ scale: [1, 1.2, 1] }}
                       transition={{ duration: 2, repeat: Infinity, delay: 0 }}
-                      className="w-2 h-2 bg-white/60 rounded-full shadow-sm"
+                      className="w-1.5 h-1.5 bg-white/60 rounded-full shadow-sm"
                     />
                     <motion.div
                       animate={{ scale: [1, 1.2, 1] }}
                       transition={{ duration: 2, repeat: Infinity, delay: 0.3 }}
-                      className="w-2 h-2 bg-white/40 rounded-full shadow-sm"
+                      className="w-1.5 h-1.5 bg-white/40 rounded-full shadow-sm"
                     />
                     <motion.div
                       animate={{ scale: [1, 1.2, 1] }}
                       transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}
-                      className="w-2 h-2 bg-white/60 rounded-full shadow-sm"
+                      className="w-1.5 h-1.5 bg-white/60 rounded-full shadow-sm"
                     />
                   </div>
                   <motion.div
                     animate={{ rotate: systemSpecsExpanded ? 180 : 0 }}
                     transition={{ duration: 0.3 }}
-                    className="w-5 h-5 text-white/80"
+                    className="w-4 h-4 text-white/80"
                   >
                     <ChevronUp className="w-full h-full" />
                   </motion.div>
@@ -398,9 +398,9 @@ export function ModernSidebar() {
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="mt-2 p-4 bg-gradient-to-r from-emerald-500/10 to-blue-500/10 rounded-2xl border border-emerald-400/20 shadow-lg"
+                    className="mt-1 p-2 bg-gradient-to-r from-cyan-500/10 to-teal-500/10 rounded-lg border border-cyan-400/20 shadow-md"
                   >
-                  <div className="space-y-3 text-xs">
+                  <div className="space-y-2 text-xs">
                     <div className="flex items-center justify-between text-emerald-200 p-2 bg-emerald-500/10 rounded-lg border border-emerald-400/20 shadow-sm shadow-emerald-500/10">
                       <div className="flex items-center gap-2">
                         <Zap className="w-3 h-3 text-emerald-400" />
@@ -440,39 +440,39 @@ export function ModernSidebar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.3 }}
-            className="mx-4 mb-4"
+            className="mx-4 mb-2"
           >
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => setTrainingExpanded(!trainingExpanded)}
-              className="w-full p-4 bg-gradient-to-r from-blue-500/25 to-purple-500/25 rounded-2xl border border-blue-400/40 hover:from-blue-500/35 hover:to-purple-500/35 transition-all duration-300 shadow-xl hover:shadow-blue-500/25 backdrop-blur-sm"
+              className="w-full p-2.5 bg-gradient-to-r from-indigo-500/30 to-slate-600/30 rounded-xl border border-indigo-400/50 hover:from-indigo-500/40 hover:to-slate-600/40 transition-all duration-300 shadow-lg hover:shadow-indigo-500/30 backdrop-blur-sm"
             >
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded-lg flex items-center justify-center shadow-lg">
-                    <Sparkles className="w-4 h-4 text-white" />
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 bg-gradient-to-br from-indigo-400 to-slate-500 rounded-md flex items-center justify-center shadow-md">
+                    <Sparkles className="w-3 h-3 text-white" />
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-sm font-bold text-white">آموزش فعال</span>
-                    <span className="text-xs text-blue-200">مدل‌های در حال آموزش</span>
+                    <span className="text-xs font-bold text-white">آموزش فعال</span>
+                    <span className="text-xs text-indigo-200">مدل‌های فعال</span>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
                   <motion.span
                     animate={{ scale: [1, 1.05, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                    className="px-3 py-1 bg-white/20 text-white text-xs rounded-full font-bold backdrop-blur-sm"
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="px-2 py-0.5 bg-white/20 text-white text-xs rounded-full font-bold backdrop-blur-sm"
                   >
                     در حال اجرا
                   </motion.span>
                   <motion.div
                     animate={{ rotate: trainingExpanded ? 180 : 0 }}
                     transition={{ duration: 0.3 }}
-                    className="w-5 h-5 text-white/80"
+                    className="w-4 h-4 text-white/80"
                   >
                     <ChevronUp className="w-full h-full" />
-              </motion.div>
+                  </motion.div>
                 </div>
               </div>
             </motion.button>
@@ -484,9 +484,9 @@ export function ModernSidebar() {
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="mt-2 p-4 bg-gradient-to-r from-emerald-500/10 to-blue-500/10 rounded-2xl border border-emerald-400/20"
+                  className="mt-1 p-2 bg-gradient-to-r from-indigo-500/10 to-slate-500/10 rounded-lg border border-indigo-400/20"
                 >
-                  <div className="text-xs text-slate-300 space-y-2">
+                  <div className="text-xs text-slate-300 space-y-1.5">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <Cpu className="w-3 h-3 text-blue-400" />
