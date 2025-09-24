@@ -339,18 +339,25 @@ export function ModernSidebar() {
           >
             <motion.button
               onClick={() => setSystemSpecsExpanded(!systemSpecsExpanded)}
-              className="w-full p-3 bg-gradient-to-r from-slate-700/50 to-slate-600/50 rounded-2xl border border-slate-500/30 hover:from-slate-600/50 hover:to-slate-500/50 transition-all duration-300"
+              className="w-full p-3 bg-gradient-to-r from-emerald-500/20 to-blue-500/20 rounded-2xl border border-emerald-400/30 hover:from-emerald-500/30 hover:to-blue-500/30 transition-all duration-300 shadow-lg hover:shadow-emerald-500/20"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className={`w-3 h-3 rounded-full animate-pulse ${
-                    systemStatus.status === 'healthy' ? 'bg-emerald-400' :
-                    systemStatus.status === 'warning' ? 'bg-yellow-400' : 'bg-red-400'
-                  }`} />
-                  <span className="text-sm font-medium text-white">
-                    {systemStatus.status === 'healthy' ? 'سیستم سالم' :
-                     systemStatus.status === 'warning' ? 'هشدار سیستم' : 'خطای سیستم'}
-                  </span>
+                  <motion.div
+                    animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 360] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  >
+                    <Sparkles className="w-5 h-5 text-emerald-400" />
+                  </motion.div>
+                  <span className="text-sm font-bold text-emerald-300">وضعیت سیستم</span>
+                  <motion.span
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                    className="px-2 py-1 bg-emerald-500/30 text-emerald-200 text-xs rounded-full font-medium"
+                  >
+                    {systemStatus.status === 'healthy' ? 'سالم' :
+                     systemStatus.status === 'warning' ? 'هشدار' : 'خطا'}
+                  </motion.span>
                 </div>
                 <div className="flex items-center gap-2">
                   {/* Mini Icons */}
@@ -383,36 +390,36 @@ export function ModernSidebar() {
 
             <AnimatePresence>
               {systemSpecsExpanded && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="mt-2 p-4 bg-gradient-to-r from-slate-800/50 to-slate-700/50 rounded-2xl border border-slate-600/30"
-                >
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="mt-2 p-4 bg-gradient-to-r from-emerald-500/10 to-blue-500/10 rounded-2xl border border-emerald-400/20 shadow-lg"
+                  >
                   <div className="space-y-3 text-xs">
-                    <div className="flex items-center justify-between text-slate-300">
+                    <div className="flex items-center justify-between text-emerald-200 p-2 bg-emerald-500/10 rounded-lg border border-emerald-400/20 shadow-sm shadow-emerald-500/10">
                       <div className="flex items-center gap-2">
                         <Zap className="w-3 h-3 text-emerald-400" />
                         <span>مدل‌های در حال آموزش</span>
                       </div>
-                      <span className="font-bold text-emerald-400">{systemStatus.models_training}</span>
+                      <span className="font-bold text-emerald-300">{systemStatus.models_training}</span>
                     </div>
                     
-                    <div className="flex items-center justify-between text-slate-300">
+                    <div className="flex items-center justify-between text-blue-200 p-2 bg-blue-500/10 rounded-lg border border-blue-400/20 shadow-sm shadow-blue-500/10">
                       <div className="flex items-center gap-2">
                         <Cpu className="w-3 h-3 text-blue-400" />
                         <span>استفاده پردازنده</span>
                       </div>
-                      <span className="font-bold text-blue-400">{systemStatus.cpu_usage}%</span>
+                      <span className="font-bold text-blue-300">{systemStatus.cpu_usage}%</span>
                     </div>
                     
-                    <div className="flex items-center justify-between text-slate-300">
+                    <div className="flex items-center justify-between text-purple-200 p-2 bg-purple-500/10 rounded-lg border border-purple-400/20 shadow-sm shadow-purple-500/10">
                       <div className="flex items-center gap-2">
                         <HardDrive className="w-3 h-3 text-purple-400" />
                         <span>استفاده حافظه</span>
                       </div>
-                      <span className="font-bold text-purple-400">{systemStatus.memory_usage}%</span>
+                      <span className="font-bold text-purple-300">{systemStatus.memory_usage}%</span>
                     </div>
                   </div>
                 </motion.div>

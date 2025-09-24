@@ -172,11 +172,11 @@ export default function EnhancedDashboard() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'training': return 'from-emerald-400 via-emerald-500 to-blue-500';
+      case 'training': return 'from-emerald-400 via-teal-500 to-blue-500';
       case 'paused': return 'from-amber-400 to-orange-500';
-      case 'completed': return 'from-emerald-400 via-emerald-500 to-teal-500';
+      case 'completed': return 'from-emerald-400 via-teal-500 to-blue-500';
       case 'error': return 'from-red-400 to-pink-500';
-      default: return 'from-slate-400 to-slate-500';
+      default: return 'from-emerald-400 via-teal-500 to-blue-500';
     }
   };
 
