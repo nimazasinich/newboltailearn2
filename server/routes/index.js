@@ -1,14 +1,14 @@
 import { Router } from 'express';
-import { createAuthRoutes } from './auth.routes';
-import { createModelsRoutes } from './models.routes';
-import { createDatasetsRoutes } from './datasets.routes';
-import { createAnalyticsRoutes } from './analytics.routes';
-import { createMonitoringRoutes } from './monitoring.routes';
-import { AuthController } from '../modules/controllers/auth.controller';
-import { ModelsController } from '../modules/controllers/models.controller';
-import { DatasetsController } from '../modules/controllers/datasets.controller';
-import { AnalyticsController } from '../modules/controllers/analytics.controller';
-import { MonitoringController } from '../modules/controllers/monitoring.controller';
+import { createAuthRoutes } from './auth.routes.js';
+import { createModelsRoutes } from './models.routes.js';
+import { createDatasetsRoutes } from './datasets.routes.js';
+import { createAnalyticsRoutes } from './analytics.routes.js';
+import { createMonitoringRoutes } from './monitoring.routes.js';
+import { AuthController } from '../modules/controllers/auth.controller.js';
+import { ModelsController } from '../modules/controllers/models.controller.js';
+import { DatasetsController } from '../modules/controllers/datasets.controller.js';
+import { AnalyticsController } from '../modules/controllers/analytics.controller.js';
+import { MonitoringController } from '../modules/controllers/monitoring.controller.js';
 /**
  * Main API Router
  * Mounts all API routes under /api prefix

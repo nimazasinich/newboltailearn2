@@ -11,6 +11,7 @@ import fs from 'fs';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import Database from 'better-sqlite3';
+import createSimpleApiRouter from './routes/simple-api.js';
 
 // Enterprise Components (optional - will fallback if not available)
 let DatabaseConnectionPool, APIMonitor, RedisCacheManager, SecurityManager;
@@ -182,7 +183,6 @@ if (cacheManager) {
     app.use('/api/analytics', cacheManager.middleware({ ttl: 60 })); // 1 minute
 }
 
-
 // Database Setup
 let db = null;
 try {
@@ -196,6 +196,9 @@ try {
     
     // Initialize schema
     initializeDatabase();
+    
+    // Mount API routes after database initialization
+    app.use('/api', createSimpleApiRouter(db));
     
 } catch (error) {
     console.error('❌ Database connection failed:', error);
@@ -229,7 +232,7 @@ function initializeDatabase() {
 
         -- AI Models Table
         CREATE TABLE IF NOT EXISTS models (
-            id TEXT PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             type TEXT DEFAULT 'persian-legal-classifier',
             version TEXT DEFAULT '1.0.0',
@@ -248,10 +251,24 @@ function initializeDatabase() {
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );
 
+        -- Datasets Table
+        CREATE TABLE IF NOT EXISTS datasets (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            type TEXT DEFAULT 'legal-documents',
+            status TEXT DEFAULT 'idle',
+            size_mb REAL DEFAULT 0,
+            samples INTEGER DEFAULT 0,
+            description TEXT,
+            source TEXT DEFAULT 'internal',
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+
         -- Training Sessions Table
         CREATE TABLE IF NOT EXISTS training_sessions (
-            id TEXT PRIMARY KEY,
-            model_id TEXT NOT NULL,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            model_id INTEGER NOT NULL,
             session_name TEXT NOT NULL,
             status TEXT DEFAULT 'pending',
             progress REAL DEFAULT 0,

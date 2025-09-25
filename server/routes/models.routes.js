@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { requireAuth, requireRole } from '../middleware/auth';
-import { validate, schemas } from '../modules/security/validators';
-import { apiRateLimiter, trainingRateLimiter } from '../modules/security/rateLimiter';
-import { csrfProtection } from '../modules/security/csrf';
+import { requireAuth, requireRole } from '../middleware/auth.js';
+import { validate, schemas } from '../modules/security/validators.js';
+import { apiRateLimiter, trainingRateLimiter } from '../modules/security/rateLimiter.js';
+import { csrfProtection } from '../modules/security/csrf.js';
 export function createModelsRoutes(controller, io) {
     const router = Router();
     // Apply common middleware for models routes

@@ -102,11 +102,54 @@ const MOCK_SYSTEM_METRICS = {
 };
 
 export default function Overview() {
-  const [systemMetrics, setSystemMetrics] = useState<SystemMetrics | null>(MOCK_SYSTEM_METRICS);
-  const [models, setModels] = useState<TrainingSession[]>(MOCK_MODELS);
-  const [datasets, setDatasets] = useState<Dataset[]>(MOCK_DATASETS);
-  const [loading, setLoading] = useState(false);
+  const [systemMetrics, setSystemMetrics] = useState<SystemMetrics | null>(null);
+  const [models, setModels] = useState<TrainingSession[]>([]);
+  const [datasets, setDatasets] = useState<Dataset[]>([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Load real data from API
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Load models
+        const modelsResponse = await fetch('/api/models');
+        if (modelsResponse.ok) {
+          const modelsData = await modelsResponse.json();
+          setModels(modelsData);
+        }
+
+        // Load datasets
+        const datasetsResponse = await fetch('/api/datasets');
+        if (datasetsResponse.ok) {
+          const datasetsData = await datasetsResponse.json();
+          setDatasets(datasetsData);
+        }
+
+        // Load system metrics
+        const metricsResponse = await fetch('/api/system/metrics');
+        if (metricsResponse.ok) {
+          const metricsData = await metricsResponse.json();
+          setSystemMetrics(metricsData);
+        }
+
+      } catch (err) {
+        console.error('Error loading data:', err);
+        setError('خطا در بارگذاری داده‌ها');
+        // Fallback to mock data on error
+        setSystemMetrics(MOCK_SYSTEM_METRICS);
+        setModels(MOCK_MODELS);
+        setDatasets(MOCK_DATASETS);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, []);
 
   // آمار محاسبه شده
   const stats = {
@@ -137,6 +180,19 @@ export default function Overview() {
     cpu: Math.floor(Math.random() * 30 + 30),
     memory: Math.floor(Math.random() * 25 + 35),
   }));
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="w-16 h-16 rounded-full border-4 border-blue-500 border-t-transparent animate-spin mx-auto" />
+          <div className="text-slate-600 dark:text-slate-400 font-persian text-lg">
+            در حال بارگذاری داده‌ها...
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">

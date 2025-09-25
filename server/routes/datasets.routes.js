@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import fs from 'fs';
 import path from 'path';
-import { requireAuth, requireRole } from '../middleware/auth';
-import { validate, schemas } from '../modules/security/validators';
-import { apiRateLimiter } from '../modules/security/rateLimiter';
-import { csrfProtection } from '../modules/security/csrf';
+import { requireAuth, requireRole } from '../middleware/auth.js';
+import { validate, schemas } from '../modules/security/validators.js';
+import { apiRateLimiter } from '../modules/security/validators.js';
+import { csrfProtection } from '../modules/security/validators.js';
 
 const ROOT = process.cwd();
 const DATASETS_DIR = path.join(ROOT, 'datasets');

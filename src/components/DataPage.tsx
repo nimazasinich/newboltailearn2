@@ -101,12 +101,39 @@ const MOCK_DATASETS = [
 ];
 
 export default function DataPage() {
-  const [datasets, setDatasets] = useState(MOCK_DATASETS);
-  const [loading, setLoading] = useState(false);
+  const [datasets, setDatasets] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [typeFilter, setTypeFilter] = useState('all');
   const [showUploadModal, setShowUploadModal] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Load real data from API
+  useEffect(() => {
+    const loadDatasets = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await fetch('/api/datasets');
+        if (response.ok) {
+          const data = await response.json();
+          setDatasets(data);
+        } else {
+          throw new Error('Failed to load datasets');
+        }
+      } catch (err) {
+        console.error('Error loading datasets:', err);
+        setError('خطا در بارگذاری دیتاست‌ها');
+        // Fallback to mock data
+        setDatasets(MOCK_DATASETS);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadDatasets();
+  }, []);
 
   // فیلتر کردن دیتاست‌ها
   const filteredDatasets = datasets.filter(dataset => {
@@ -167,6 +194,19 @@ export default function DataPage() {
     totalSize: datasets.reduce((sum, d) => sum + d.size_mb, 0),
     avgQuality: datasets.reduce((sum, d) => sum + d.quality_score, 0) / datasets.length
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="w-16 h-16 rounded-full border-4 border-blue-500 border-t-transparent animate-spin mx-auto" />
+          <div className="text-slate-600 dark:text-slate-400 font-persian text-lg">
+            در حال بارگذاری دیتاست‌ها...
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900 p-6">
