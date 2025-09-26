@@ -314,7 +314,7 @@ const logToDatabase = (level: string, category: string, message: string, metadat
 const userCount = db.prepare('SELECT COUNT(*) as count FROM users').get() as { count: number };
 if (userCount.count === 0) {
   const bcrypt = await import('bcryptjs');
-  const defaultPassword = process.env.DEFAULT_ADMIN_PASSWORD || 'Admin123!@#';
+  const defaultPassword = process.env.DEFAULT_ADMIN_PASSWORD;
   const hashedPassword = bcrypt.hashSync(defaultPassword, 10);
   
   const insertAdmin = db.prepare(`
