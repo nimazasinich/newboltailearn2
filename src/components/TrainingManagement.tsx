@@ -5,6 +5,7 @@ import { Progress } from './ui/Progress';
 import { Button } from './ui/Button';
 import { trainingService } from '../services/training';
 import { tensorFlowEngine, TensorFlowTrainingConfig, TrainingProgress } from '../services/ai/TensorFlowIntegration';
+import { TrainingSession, QueuedTraining } from '../types/training';
 import * as tf from '@tensorflow/tfjs';
 import { 
   Play, 
@@ -62,6 +63,8 @@ export default function TrainingManagement() {
   const [isTraining, setIsTraining] = useState(false);
   const [trainingProgress, setTrainingProgress] = useState<TrainingProgress | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [activeSessions, setActiveSessions] = useState<TrainingSession[]>([]);
+  const [trainingQueue, setTrainingQueue] = useState<QueuedTraining[]>([]);
 
   // Load initial data
   useEffect(() => {
@@ -173,7 +176,7 @@ export default function TrainingManagement() {
 
   const handleStopTraining = async (modelId: number) => {
     try {
-      await trainingService.stopTraining(modelId);
+      await trainingService.stopTraining(String(modelId));
       tensorFlowEngine.stopTraining();
       setIsTraining(false);
       setTrainingProgress(null);
@@ -337,9 +340,9 @@ const MOCK_RESOURCE_USAGE = Array.from({ length: 24 }, (_, i) => ({
     active: activeSessions.filter(s => s.status === 'training').length,
     paused: activeSessions.filter(s => s.status === 'paused').length,
     queued: trainingQueue.length,
-    avgAccuracy: activeSessions.reduce((sum, s) => sum + s.accuracy, 0) / activeSessions.length * 100,
-    totalGpuUsage: activeSessions.reduce((sum, s) => sum + s.gpu_usage, 0),
-    totalMemoryUsage: activeSessions.reduce((sum, s) => sum + s.memory_usage, 0)
+    avgAccuracy: activeSessions.reduce((sum, s) => sum + (s.accuracy || 0), 0) / activeSessions.length * 100,
+    totalGpuUsage: activeSessions.reduce((sum, s) => sum + (s.gpu_usage || 0), 0),
+    totalMemoryUsage: activeSessions.reduce((sum, s) => sum + (s.memory_usage || 0), 0)
   };
 
   return (
@@ -439,7 +442,7 @@ const MOCK_RESOURCE_USAGE = Array.from({ length: 24 }, (_, i) => ({
                         {session.model_name}
                       </h4>
                       <p className="text-slate-600 dark:text-slate-400">
-                        {session.model_type} • {session.dataset}
+                        {session.modelType} • {session.dataset}
                       </p>
                     </div>
                   </div>
@@ -457,10 +460,10 @@ const MOCK_RESOURCE_USAGE = Array.from({ length: 24 }, (_, i) => ({
                     <span className="text-slate-600 dark:text-slate-400">پیشرفت آموزش</span>
                     <span className="font-medium">{session.current_epoch}/{session.total_epochs} epochs</span>
                   </div>
-                  <Progress value={session.progress} className="h-3" />
+                  <Progress value={session.progress.completionPercentage} className="h-3" />
                   <div className="flex justify-between text-xs text-slate-500">
-                    <span>دقت: {(session.accuracy * 100).toFixed(1)}%</span>
-                    <span>خطا: {session.loss.toFixed(3)}</span>
+                    <span>دقت: {((session.accuracy || 0) * 100).toFixed(1)}%</span>
+                    <span>خطا: {(session.loss || 0).toFixed(3)}</span>
                     <span>زمان باقی‌مانده: {session.estimated_completion}</span>
                   </div>
                 </div>
@@ -492,7 +495,7 @@ const MOCK_RESOURCE_USAGE = Array.from({ length: 24 }, (_, i) => ({
                       variant="outline" 
                       size="sm" 
                       className="rounded-lg"
-                      onClick={() => handlePauseTraining(session.id)}
+                      onClick={() => handlePauseTraining(Number(session.id))}
                     >
                       <Pause className="w-3 h-3 ml-1" />
                       توقف
@@ -503,7 +506,7 @@ const MOCK_RESOURCE_USAGE = Array.from({ length: 24 }, (_, i) => ({
                       variant="outline" 
                       size="sm" 
                       className="rounded-lg"
-                      onClick={() => handleResumeTraining(session.id)}
+                      onClick={() => handleResumeTraining(Number(session.id))}
                     >
                       <Play className="w-3 h-3 ml-1" />
                       ادامه
@@ -513,7 +516,7 @@ const MOCK_RESOURCE_USAGE = Array.from({ length: 24 }, (_, i) => ({
                     variant="outline" 
                     size="sm" 
                     className="rounded-lg"
-                    onClick={() => handleStopTraining(session.id)}
+                    onClick={() => handleStopTraining(Number(session.id))}
                     disabled={session.status === 'completed'}
                   >
                     <Square className="w-3 h-3 ml-1" />
@@ -706,7 +709,7 @@ const MOCK_RESOURCE_USAGE = Array.from({ length: 24 }, (_, i) => ({
                   <div>
                     <h4 className="font-medium text-slate-900 dark:text-slate-100">{item.model_name}</h4>
                     <p className="text-sm text-slate-600 dark:text-slate-400">
-                      {item.model_type} • {item.dataset}
+                      {item.modelType} • {item.dataset}
                     </p>
                   </div>
                 </div>
@@ -716,7 +719,7 @@ const MOCK_RESOURCE_USAGE = Array.from({ length: 24 }, (_, i) => ({
                      item.priority === 'medium' ? 'اولویت متوسط' : 'اولویت پایین'}
                   </SlimBadge>
                   <div className="text-sm text-slate-500">
-                    زمان تخمینی: {item.estimated_duration}
+                    زمان تخمینی: {item.estimatedDuration || item.estimated_duration}
                   </div>
                   <Button variant="outline" size="sm" className="rounded-lg">
                     <Play className="w-3 h-3 ml-1" />

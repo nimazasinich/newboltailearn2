@@ -195,7 +195,7 @@ export function EnhancedSidebar({
           <div className="space-y-2">
             <AnimatePresence>
               {filteredItems.map((item, index) => (
-                <NavigationItem
+                <NavigationItemComponent
                   key={item.id}
                   item={item}
                   index={index}
@@ -246,7 +246,7 @@ interface NavigationItemProps {
   onToggleExpanded: () => void;
 }
 
-function NavigationItem({ 
+function NavigationItemComponent({ 
   item, 
   index, 
   collapsed, 

@@ -47,10 +47,10 @@ interface Model {
   name: string;
   type: string;
   status: 'idle' | 'training' | 'paused' | 'completed' | 'error';
-  accuracy: number;
-  loss: number;
-  epochs: number;
-  current_epoch: number;
+  accuracy?: number;
+  loss?: number;
+  epochs?: number;
+  current_epoch?: number;
   dataset_id?: string | number;
   config?: string;
   created_at: string;
@@ -353,7 +353,7 @@ const MODEL_CATEGORIES = [
                 <div className="space-y-2 mb-4">
                   <div className="flex justify-between text-sm">
                     <span className="text-slate-400">دقت:</span>
-                    <span className="text-white">{(model.accuracy * 100).toFixed(1)}%</span>
+                    <span className="text-white">{((model.accuracy || 0) * 100).toFixed(1)}%</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-slate-400">نوع:</span>

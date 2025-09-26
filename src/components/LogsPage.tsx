@@ -12,7 +12,7 @@ export function LogsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<LogFilter>('all');
-  const { showToast } = useToast();
+  const { addToast } = useToast();
 
   useEffect(() => {
     loadLogs();
@@ -73,10 +73,10 @@ export function LogsPage() {
       link.click();
       document.body.removeChild(link);
       
-      showToast('گزارش‌ها با موفقیت صادر شد', 'success');
+      addToast({ type: 'success', title: 'گزارش‌ها با موفقیت صادر شد' });
     } catch (err) {
       console.error('Failed to export logs:', err);
-      showToast('خطا در صادرات گزارش‌ها', 'error');
+      addToast({ type: 'error', title: 'خطا در صادرات گزارش‌ها' });
     }
   };
 
@@ -188,7 +188,7 @@ export function LogsPage() {
   ];
 
   if (loading && logs.length === 0) {
-    return <PageSkeleton showHeader />;
+    return <PageSkeleton />;
   }
 
   return (
@@ -275,7 +275,7 @@ export function LogsPage() {
             data={logs}
             columns={columns}
             loading={loading}
-            error={error}
+            error={error || undefined}
             emptyMessage="هیچ گزارشی یافت نشد"
             searchPlaceholder="جستجوی گزارش‌ها..."
             itemsPerPage={25}

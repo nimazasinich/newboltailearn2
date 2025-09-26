@@ -2,23 +2,21 @@ import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  ChartBarIcon,
-  BoltIcon,
+  BarChart3,
+  Zap,
   TrendingUp,
   Database,
-  CloudArrowDownIcon,
+  Download,
   FileText,
-  PlayCircleIcon,
+  PlayCircle,
   Monitor,
   Activity,
   Users,
   Settings,
-  Download,
   ChevronLeft,
   ChevronRight,
   Sparkles,
   Brain,
-  Zap,
   Target,
   Layers
 } from 'lucide-react';
@@ -27,7 +25,7 @@ const navigationItems = [
   { 
     name: 'نمای کلی', 
     href: '/overview', 
-    icon: ChartBarIcon, 
+    icon: BarChart3, 
     description: 'داشبورد اصلی',
     gradient: 'from-blue-400 to-blue-600',
     bgColor: 'bg-blue-50 dark:bg-blue-900/20'
@@ -35,7 +33,7 @@ const navigationItems = [
   { 
     name: 'داشبورد پیشرفته', 
     href: '/dashboard-advanced', 
-    icon: BoltIcon, 
+    icon: Zap, 
     description: 'تحلیل پیشرفته',
     gradient: 'from-purple-400 to-purple-600',
     bgColor: 'bg-purple-50 dark:bg-purple-900/20'
@@ -59,7 +57,7 @@ const navigationItems = [
   { 
     name: 'گالری دیتاست‌ها', 
     href: '/data-gallery', 
-    icon: CloudArrowDownIcon, 
+    icon: Download, 
     description: 'دانلود دیتاست‌ها',
     gradient: 'from-teal-400 to-teal-600',
     bgColor: 'bg-teal-50 dark:bg-teal-900/20'
@@ -75,7 +73,7 @@ const navigationItems = [
   { 
     name: 'مدل‌ها', 
     href: '/models', 
-    icon: PlayCircleIcon, 
+    icon: PlayCircle, 
     description: 'مدیریت مدل‌های AI',
     gradient: 'from-indigo-400 to-indigo-600',
     bgColor: 'bg-indigo-50 dark:bg-indigo-900/20'

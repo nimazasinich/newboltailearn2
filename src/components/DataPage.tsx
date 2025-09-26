@@ -21,6 +21,23 @@ import {
   BarChart3
 } from 'lucide-react';
 
+// Dataset interface
+interface Dataset {
+  id: string;
+  name: string;
+  source: string;
+  samples: number;
+  size_mb: number;
+  status: string;
+  type: string;
+  description: string;
+  created_at: string;
+  updated_at: string;
+  download_count: number;
+  usage_count: number;
+  quality_score: number;
+}
+
 // Mock Data برای Datasets
 const MOCK_DATASETS = [
   {
@@ -101,7 +118,7 @@ const MOCK_DATASETS = [
 ];
 
 export default function DataPage() {
-  const [datasets, setDatasets] = useState([]);
+  const [datasets, setDatasets] = useState<Dataset[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { SystemMetrics } from '../types/training';
 import { 
   Brain, TrendingUp, Database, Users, Activity, Play, Pause, Square,
   BarChart3, PieChart, LineChart, Monitor, Cpu, HardDrive, Wifi,
@@ -17,7 +18,7 @@ import {
 } from 'recharts';
 import { EnhancedCard, MetricCard, ProgressCard } from './ui/EnhancedCard';
 import { EnhancedSidebar, TopNavigation } from './ui/EnhancedNavigation';
-import { PerformanceChart, CategoryDistribution, SystemMetrics, RadialProgress } from './charts/EnhancedCharts';
+import { PerformanceChart, CategoryDistribution, SystemMetrics as SystemMetricsChart, RadialProgress } from './charts/EnhancedCharts';
 import { cn } from '../utils/cn';
 
 interface Model {
@@ -31,17 +32,11 @@ interface Model {
   created_at: string;
 }
 
-interface SystemMetrics {
-  cpu_usage: number;
-  memory_usage: number;
-  gpu_usage: number;
-  disk_usage: number;
-  active_connections: number;
-  uptime: number;
-}
+// SystemMetrics is imported from types/training.ts
 
 interface LegalCategory {
   name: string;
+  value: number;
   models: number;
   accuracy: number;
   documents: number;
@@ -58,11 +53,11 @@ export default function UltimatePersianDashboard() {
 
   // Legal categories specific to Iranian law
   const legalCategories: LegalCategory[] = [
-    { name: 'قوانین مدنی', models: 4, accuracy: 94.2, documents: 15400, color: '#10b981' },
-    { name: 'قوانین جزایی', models: 3, accuracy: 91.8, documents: 12800, color: '#3b82f6' },
-    { name: 'قوانین تجاری', models: 2, accuracy: 88.5, documents: 8900, color: '#06b6d4' },
-    { name: 'قوانین اداری', models: 2, accuracy: 92.1, documents: 11200, color: '#8b5cf6' },
-    { name: 'قوانین قضایی', models: 1, accuracy: 87.3, documents: 6700, color: '#f59e0b' }
+    { name: 'قوانین مدنی', value: 35, models: 4, accuracy: 94.2, documents: 15400, color: '#10b981' },
+    { name: 'قوانین جزایی', value: 28, models: 3, accuracy: 91.8, documents: 12800, color: '#3b82f6' },
+    { name: 'قوانین تجاری', value: 20, models: 2, accuracy: 88.5, documents: 8900, color: '#06b6d4' },
+    { name: 'قوانین اداری', value: 12, models: 2, accuracy: 92.1, documents: 11200, color: '#8b5cf6' },
+    { name: 'قوانین قضایی', value: 5, models: 1, accuracy: 87.3, documents: 6700, color: '#f59e0b' }
   ];
 
   // Performance data over time
@@ -307,7 +302,7 @@ export default function UltimatePersianDashboard() {
           </div>
 
           {/* System Metrics */}
-          <SystemMetrics data={systemMetricsData} delay={0.8} />
+          <SystemMetricsChart data={systemMetricsData} delay={0.8} />
 
           {/* Enhanced Models Section */}
           <motion.div

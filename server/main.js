@@ -15,22 +15,35 @@ import createSimpleApiRouter from './routes/simple-api.js';
 
 // Enterprise Components (optional - will fallback if not available)
 let DatabaseConnectionPool, APIMonitor, RedisCacheManager, SecurityManager;
-try {
-    const dbPool = await import('./database/connection-pool.js');
-    const apiMonitor = await import('./middleware/api-monitoring.js');
-    const cacheManager = await import('./cache/redis-cache.js');
-    const securityManager = await import('./middleware/security.js');
+
+// Initialize database with proper async handling
+(async () => {
+    try {
+        await import('./database/init.js');
+        console.log('✅ Database initialization complete');
+    } catch (error) {
+        console.log('⚠️ Database initialization skipped:', error.message);
+    }
+})();
+
+(async () => {
+    try {
+        const dbPool = await import('./database/connection-pool.js');
+        const apiMonitor = await import('./middleware/api-monitoring.js');
+        const cacheManager = await import('./cache/redis-cache.js');
+        const securityManager = await import('./middleware/security.js');
+        
+        DatabaseConnectionPool = dbPool.default;
+        APIMonitor = apiMonitor.default;
+        RedisCacheManager = cacheManager.default;
+        SecurityManager = securityManager.default;
     
-    DatabaseConnectionPool = dbPool.default;
-    APIMonitor = apiMonitor.default;
-    RedisCacheManager = cacheManager.default;
-    SecurityManager = securityManager.default;
-    
-    console.log('✅ Enterprise components loaded successfully');
-} catch (error) {
-    console.log('⚠️ Enterprise components not available, using fallback mode');
-    console.log('Error:', error.message);
-}
+        console.log('✅ Enterprise components loaded successfully');
+    } catch (error) {
+        console.log('⚠️ Enterprise components not available, using fallback mode');
+        console.log('Error:', error.message);
+    }
+})();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

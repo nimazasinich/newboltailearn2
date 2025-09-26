@@ -3,7 +3,7 @@ export interface TrainingSession {
   id: string;
   name: string;
   modelType: 'dora' | 'qr-adaptor' | 'persian-bert';
-  status: 'pending' | 'running' | 'paused' | 'completed' | 'failed';
+  status: 'pending' | 'running' | 'paused' | 'completed' | 'failed' | 'training';
   progress: TrainingProgress;
   metrics: TrainingMetrics;
   configuration: ModelConfiguration;
@@ -11,6 +11,18 @@ export interface TrainingSession {
   createdAt: Date;
   updatedAt: Date;
   userId: string;
+  // Additional properties for UI compatibility
+  accuracy?: number;
+  gpu_usage?: number;
+  memory_usage?: number;
+  model_name?: string;
+  dataset?: string;
+  current_epoch?: number;
+  total_epochs?: number;
+  loss?: number;
+  estimated_completion?: string;
+  learning_rate?: number;
+  batch_size?: number;
 }
 
 export interface TrainingProgress {
@@ -96,6 +108,21 @@ export interface ModelCheckpoint {
   timestamp: Date;
   size: number; // bytes
   description: string;
+}
+
+export interface QueuedTraining {
+  id: string;
+  name: string;
+  modelType: 'dora' | 'qr-adaptor' | 'persian-bert';
+  priority: 'low' | 'medium' | 'high';
+  estimatedDuration: number; // minutes
+  estimated_duration?: number; // minutes (alternative naming)
+  queuedAt: Date;
+  configuration: ModelConfiguration;
+  userId: string;
+  // Additional properties for UI compatibility
+  model_name?: string;
+  dataset?: string;
 }
 
 export interface SystemMetrics {

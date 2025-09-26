@@ -49,15 +49,17 @@ export interface ModelInfo {
   id: number;
   name: string;
   type: string;
-  status: string;
+  status: 'idle' | 'training' | 'paused' | 'completed' | 'error';
   accuracy?: number;
   loss?: number;
   epochs?: number;
-  currentEpoch?: number;
-  datasetId?: string;
+  current_epoch?: number;
+  dataset_id?: string;
   config?: any;
-  createdAt: string;
-  updatedAt: string;
+  created_at: string;
+  updated_at: string;
+  description?: string;
+  category?: string;
 }
 
 export const trainingService = {
@@ -464,6 +466,37 @@ export const trainingService = {
         averageAccuracy: 0,
         totalTrainingHours: 0
       };
+    }
+  },
+
+  /**
+   * Get datasets
+   */
+  async getDatasets(): Promise<{ datasets: any[] }> {
+    try {
+      const response = await apiRequest(joinApiPath(API_BASE, '/datasets'));
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Get datasets failed:', error);
+      return { datasets: [] };
+    }
+  },
+
+  /**
+   * Stop training
+   */
+  async stopTraining(sessionId: string): Promise<{ success: boolean; message: string }> {
+    try {
+      const response = await apiRequest(
+        joinApiPath(API_BASE, `/training/${sessionId}/stop`),
+        { method: 'POST' }
+      );
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Stop training failed:', error);
+      return { success: false, message: 'Failed to stop training' };
     }
   }
 };
