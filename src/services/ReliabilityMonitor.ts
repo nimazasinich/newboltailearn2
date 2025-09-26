@@ -25,7 +25,7 @@ export interface ReliabilityReport {
 
 export class ReliabilityMonitor {
   private components: Map<string, ComponentStatus> = new Map();
-  private monitoringInterval: NodeJS.Timeout | null = null;
+  private monitoringInterval: Timer | null = null;
   private alertThresholds = {
     errorRate: 0.1, // 10% error rate
     responseTime: 5000, // 5 seconds
