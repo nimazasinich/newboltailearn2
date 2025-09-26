@@ -1,45 +1,20 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "moduleResolution": "node",
-    "lib": ["ES2021", "DOM"],
-    "outDir": "./dist",
-    "rootDir": "./server",
-    "strict": false,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "allowJs": true,
-    "checkJs": false,
-    "noEmitOnError": false,
-    "incremental": true,
-    "tsBuildInfoFile": "./dist/.tsbuildinfo",
     "isolatedModules": true,
-    "allowImportingTsExtensions": false,
-    "noEmit": false,
-    "verbatimModuleSyntax": false,
-    "types": ["node"]
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "strict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true
   },
-  "include": [
-    "server/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "src",
-    "public",
-    "tests",
-    "**/*.test.ts",
-    "**/*.spec.ts",
-    ".next",
-    "build"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "server", "tests", "**/*.test.ts", "**/*.spec.ts"]
 }
