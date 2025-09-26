@@ -2,7 +2,8 @@
 // Reliability API Endpoints
 // Server-side endpoints for reliability monitoring
 
-app.get('/api/reliability/status', (req, res) => {
+export default function reliabilityRoutes(app) {
+  app.get('/api/reliability/status', (req, res) => {
   try {
     const reliabilityMonitor = global.reliabilityMonitor;
     const fallbackSystemManager = global.fallbackSystemManager;
@@ -154,3 +155,4 @@ app.get('/api/reliability/health', (req, res) => {
     });
   }
 });
+}

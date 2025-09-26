@@ -28,6 +28,7 @@ export function EnhancedAppLayout() {
   const [searchQuery, setSearchQuery] = useState('');
   const [notifications, setNotifications] = useState<SystemNotification[]>([]);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>({
     backend: false,
     websocket: false,

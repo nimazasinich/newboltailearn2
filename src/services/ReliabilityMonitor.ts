@@ -3,6 +3,9 @@
  * Comprehensive monitoring and fallback management for all system components
  */
 
+// Timer type for compatibility
+type Timer = ReturnType<typeof setTimeout>;
+
 export interface ComponentStatus {
   name: string;
   status: 'healthy' | 'degraded' | 'failed' | 'unknown';

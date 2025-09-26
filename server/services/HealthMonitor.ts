@@ -15,7 +15,13 @@ export interface HealthStatus {
   };
   metrics: {
     uptime: number;
-    memoryUsage: NodeJS.MemoryUsage;
+    memoryUsage: {
+      rss: number;
+      heapTotal: number;
+      heapUsed: number;
+      external: number;
+      arrayBuffers: number;
+    };
     cpuUsage: number;
     activeConnections: number;
     totalRequests: number;

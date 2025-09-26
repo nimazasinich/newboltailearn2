@@ -58,7 +58,18 @@ import { PerformanceChart, CategoryDistribution, SystemMetrics, RadialProgress }
 import { cn } from '../utils/cn';
 
 // Mock Data
-const MOCK_MODELS = [
+const MOCK_MODELS: Array<{
+  id: number;
+  name: string;
+  type: string;
+  status: 'training' | 'completed' | 'paused' | 'error' | 'idle';
+  accuracy: number;
+  loss: number;
+  epochs: number;
+  current_epoch: number;
+  created_at: string;
+  updated_at: string;
+}> = [
   {
     id: 1,
     name: 'Persian BERT Legal',
@@ -152,8 +163,8 @@ const systemMetricsData = [
 
 export default function EnhancedOverview() {
   const [systemMetrics, setSystemMetrics] = useState<typeof MOCK_SYSTEM_METRICS | null>(null);
-  const [models, setModels] = useState<typeof MOCK_MODELS>([]);
-  const [datasets, setDatasets] = useState<typeof MOCK_DATASETS>([]);
+  const [models, setModels] = useState<typeof MOCK_MODELS>(MOCK_MODELS);
+  const [datasets, setDatasets] = useState<typeof MOCK_DATASETS>(MOCK_DATASETS);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);

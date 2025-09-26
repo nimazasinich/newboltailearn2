@@ -28,7 +28,7 @@ export function LoadableSection({
   if (loading) {
     return (
       <div className={className}>
-        <PageSkeleton lines={skeletonLines} />
+        <PageSkeleton />
       </div>
     );
   }

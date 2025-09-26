@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-// NodeJS types for file system operations
-declare global {
-  namespace NodeJS {
-    interface Process {
-      platform: string;
-    }
-  }
-}
-
+// Check if we're in a Node.js environment
 const isNode = typeof process !== 'undefined' && process.platform;
 import JSZip from 'jszip';
 import { Button } from './ui/Button';
