@@ -3,9 +3,9 @@
  * Optimizes database connections and query performance
  */
 
-const Database = require('better-sqlite3');
-const path = require('path');
-const fs = require('fs');
+import Database from 'better-sqlite3';
+import path from 'path';
+import fs from 'fs';
 
 class DatabaseConnectionPool {
     constructor(config = {}) {
@@ -377,4 +377,4 @@ class DatabaseConnectionPool {
     }
 }
 
-module.exports = DatabaseConnectionPool;
+export default DatabaseConnectionPool;
