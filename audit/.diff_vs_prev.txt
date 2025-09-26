@@ -1,0 +1,104 @@
+M	.env.example
+A	MEASUREMENT_REPORT.md
+A	PRODUCTION_READY_IMPLEMENTATION.md
+A	docs/assets/AnalyticsPage-817f599b.js
+R099	docs/assets/AnalyticsPage-bc795bf4.js.map	docs/assets/AnalyticsPage-817f599b.js.map
+D	docs/assets/AnalyticsPage-bc795bf4.js
+D	docs/assets/Badge-4af634c7.js
+D	docs/assets/Badge-4af634c7.js.map
+A	docs/assets/Card-05ea3c10.js
+A	docs/assets/Card-05ea3c10.js.map
+D	docs/assets/DataPage-5c2a11b5.js
+A	docs/assets/DataPage-6a3fbc74.js
+R099	docs/assets/DataPage-5c2a11b5.js.map	docs/assets/DataPage-6a3fbc74.js.map
+D	docs/assets/DatasetGallery-40e07425.js
+A	docs/assets/DatasetGallery-aa40363d.js
+R099	docs/assets/DatasetGallery-40e07425.js.map	docs/assets/DatasetGallery-aa40363d.js.map
+A	docs/assets/EnhancedCharts-677b2751.js
+R099	docs/assets/EnhancedCharts-7f63619c.js.map	docs/assets/EnhancedCharts-677b2751.js.map
+D	docs/assets/EnhancedCharts-7f63619c.js
+A	docs/assets/EnhancedDashboard-b863cf8a.js
+R099	docs/assets/EnhancedDashboard-ff373fa6.js.map	docs/assets/EnhancedDashboard-b863cf8a.js.map
+D	docs/assets/EnhancedDashboard-ff373fa6.js
+D	docs/assets/LogsPage-55e83c08.js
+A	docs/assets/LogsPage-a53bebb9.js
+R099	docs/assets/LogsPage-55e83c08.js.map	docs/assets/LogsPage-a53bebb9.js.map
+A	docs/assets/ModelsPage-6ad67226.js
+R099	docs/assets/ModelsPage-b69e0932.js.map	docs/assets/ModelsPage-6ad67226.js.map
+D	docs/assets/ModelsPage-b69e0932.js
+R080	docs/assets/ModernCard-6e250514.js	docs/assets/ModernCard-00131242.js
+R093	docs/assets/ModernCard-6e250514.js.map	docs/assets/ModernCard-00131242.js.map
+A	docs/assets/MonitoringPage-35f83082.js
+R099	docs/assets/MonitoringPage-e678e8a9.js.map	docs/assets/MonitoringPage-35f83082.js.map
+D	docs/assets/MonitoringPage-e678e8a9.js
+D	docs/assets/Overview-2298cfe4.js
+A	docs/assets/Overview-84da371e.js
+R099	docs/assets/Overview-2298cfe4.js.map	docs/assets/Overview-84da371e.js.map
+R073	docs/assets/Progress-350c75db.js	docs/assets/Progress-4a97a030.js
+R093	docs/assets/Progress-350c75db.js.map	docs/assets/Progress-4a97a030.js.map
+A	docs/assets/ProjectDownloader-16305b96.js
+R054	docs/assets/ProjectDownloader-4462aedb.js.map	docs/assets/ProjectDownloader-16305b96.js.map
+D	docs/assets/ProjectDownloader-4462aedb.js
+D	docs/assets/SettingsPage-8bce1474.js
+A	docs/assets/SettingsPage-d818c300.js
+R099	docs/assets/SettingsPage-8bce1474.js.map	docs/assets/SettingsPage-d818c300.js.map
+R088	docs/assets/SlimBadge-80ee705a.js	docs/assets/SlimBadge-2ce4047c.js
+R094	docs/assets/SlimBadge-80ee705a.js.map	docs/assets/SlimBadge-2ce4047c.js.map
+D	docs/assets/TeamPage-d1e08472.js
+A	docs/assets/TeamPage-dfc6ad46.js
+R099	docs/assets/TeamPage-d1e08472.js.map	docs/assets/TeamPage-dfc6ad46.js.map
+A	docs/assets/TrainingManagement-4f37cd2b.js
+A	docs/assets/TrainingManagement-4f37cd2b.js.map
+D	docs/assets/TrainingManagement-691ff832.js
+D	docs/assets/TrainingManagement-691ff832.js.map
+A	docs/assets/UltimatePersianDashboard-0a1d8fd6.js
+R099	docs/assets/UltimatePersianDashboard-bd7b32c9.js.map	docs/assets/UltimatePersianDashboard-0a1d8fd6.js.map
+D	docs/assets/UltimatePersianDashboard-bd7b32c9.js
+D	docs/assets/_commonjs-dynamic-modules-3e972b61.js
+D	docs/assets/_commonjs-dynamic-modules-3e972b61.js.map
+A	docs/assets/api-0e2caca8.js
+A	docs/assets/api-0e2caca8.js.map
+A	docs/assets/charts-a2a9b922.js
+A	docs/assets/charts-a2a9b922.js.map
+D	docs/assets/charts-f100c383.js
+D	docs/assets/charts-f100c383.js.map
+A	docs/assets/index-618bed8c.css
+A	docs/assets/index-c2564e4d.js
+A	docs/assets/index-c2564e4d.js.map
+D	docs/assets/index-fd59a914.css
+R050	docs/assets/index-405e141b.js	docs/assets/tensorflow-ed369cbe.js
+R058	docs/assets/index-405e141b.js.map	docs/assets/tensorflow-ed369cbe.js.map
+A	docs/assets/training-1c21563a.js
+R098	docs/assets/training-29a71528.js.map	docs/assets/training-1c21563a.js.map
+D	docs/assets/training-29a71528.js
+A	docs/assets/ui-b8d29e0a.js
+A	docs/assets/ui-b8d29e0a.js.map
+D	docs/assets/ui-e4256d80.js
+D	docs/assets/ui-e4256d80.js.map
+A	docs/assets/utils-1adaa6f0.js
+A	docs/assets/utils-1adaa6f0.js.map
+R099	docs/assets/vendor-7ccbd9e1.js	docs/assets/vendor-98bc350f.js
+R099	docs/assets/vendor-7ccbd9e1.js.map	docs/assets/vendor-98bc350f.js.map
+M	docs/index.html
+M	package-lock.json
+M	package.json
+A	server/main.ts
+A	server/middleware/errorHandler.ts
+A	server/routes/error.routes.ts
+M	server/routes/models.routes.ts
+A	server/services/HealthMonitor.ts
+A	server/services/Logger.ts
+A	server/services/ModelPersistence.ts
+A	server/services/PersianLegalProcessor.ts
+M	server/training/RealTrainingEngine.ts
+D	src/components/Dashboard.tsx
+D	src/components/DashboardAdvanced.tsx
+M	src/components/ErrorBoundary.tsx
+D	src/components/ReliabilityDashboard.tsx
+D	src/components/layout/AppLayout.tsx
+D	src/components/layout/Layout.tsx
+D	src/components/layout/enhanced_persian_dashboard.tsx
+M	src/services/ai/DoRATrainer.ts
+M	src/services/ai/TensorFlowIntegration.ts
+M	tsconfig.json
+M	vite.config.ts

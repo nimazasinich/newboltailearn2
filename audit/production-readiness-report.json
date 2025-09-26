@@ -1,0 +1,211 @@
+{
+  "repo": "nimazasinich/newboltailearn2",
+  "commit": "9da7cb0b61871b1f03ecc4244ddf39365b5d5cca",
+  "summary": {
+    "overall_status": "fail",
+    "production_readiness_score": 10,
+    "key_failures": [
+      "Type checking fails: @types/react index.d.ts is corrupted, causing TS1005 syntax errors.",
+      "ESLint fails because @typescript-eslint/scope-manager cannot be resolved.",
+      "Build script fails with 'vite: not found', so frontend assets are not rebuilt.",
+      "Production server fails at startup: socket.io module resolution throws ERR_MODULE_NOT_FOUND.",
+      "Runtime probes for health/auth/model/document processing all fail because the server never boots."
+    ],
+    "key_warnings": [
+      "Default JWT/SESSION/CSRF secrets are committed in .env.",
+      "Dockerfile copies all .env* files into the production image.",
+      "CI workflows use continue-on-error extensively, masking failures on main.",
+      "ci-cd workflow references npm run test:performance which does not exist."
+    ]
+  },
+  "build": {
+    "install_ok": true,
+    "typecheck_ok": false,
+    "lint_ok": false,
+    "build_ok": false,
+    "evidence": {
+      "tsc_errors": "npm warn Unknown env config \"http-proxy\". This will stop working in the next major version of npm.\nnode_modules/@types/react/index.d.ts(2276,21): error TS1005: '}' expected.\n",
+      "lint_summary": "(node:5869) ESLintIgnoreWarning: The \".eslintignore\" file is no longer supported. Switch to using the \"ignores\" property in \"eslint.config.js\": https://eslint.org/docs/latest/use/configure/migration-guide#ignoring-files\n(Use `node --trace-warnings ...` to show where the warning was created)\n\nOops! Something went wrong! :(\n\nESLint: 9.34.0\n\nError: Cannot find module '@typescript-eslint/scope-manager'\nRequire stack:\n- /tmp/audit/repo/node_modules/@typescript-eslint/parser/dist/parser.js\n- /tmp/audit/repo/node_modules/@typescript-eslint/parser/dist/index.js\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1212:15)\n    at Module._load (node:internal/modules/cjs/loader:1043:27)\n    at Module.require (node:internal/modules/cjs/loader:1298:19)\n    at require (node:internal/modules/helpers:182:18)\n    at Object.<anonymous> (/tmp/audit/repo/node_modules/@typescript-eslint/parser/dist/parser.js:7:25)\n    at Module._compile (node:internal/modules/cjs/loader:1529:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1613:10)\n    at Module.load (node:internal/modules/cjs/loader:1275:32)\n    at Module._load (node:internal/modules/cjs/loader:1096:12)\n    at Module.require (node:internal/modules/cjs/loader:1298:19)\n",
+      "build_summary": "sh: 1: vite: not found\n"
+    }
+  },
+  "runtime": {
+    "health_ok": false,
+    "api_health_ok": false,
+    "auth_ok": false,
+    "model_persistence_ok": false,
+    "persian_processing_ok": false,
+    "security_headers_present": []
+  },
+  "frontend": {
+    "bundle_sizes": [
+      {
+        "file": "docs/assets/tensorflow-ed369cbe.js",
+        "size_bytes": 1475540
+      },
+      {
+        "file": "docs/assets/charts-a2a9b922.js",
+        "size_bytes": 340110
+      },
+      {
+        "file": "docs/assets/vendor-98bc350f.js",
+        "size_bytes": 140783
+      },
+      {
+        "file": "docs/assets/index-c2564e4d.js",
+        "size_bytes": 140734
+      },
+      {
+        "file": "docs/assets/ProjectDownloader-16305b96.js",
+        "size_bytes": 135173
+      },
+      {
+        "file": "docs/assets/ui-b8d29e0a.js",
+        "size_bytes": 133387
+      },
+      {
+        "file": "docs/assets/api-0e2caca8.js",
+        "size_bytes": 50960
+      },
+      {
+        "file": "docs/assets/TrainingManagement-4f37cd2b.js",
+        "size_bytes": 21215
+      },
+      {
+        "file": "docs/assets/EnhancedDashboard-b863cf8a.js",
+        "size_bytes": 21031
+      },
+      {
+        "file": "docs/assets/EnhancedCharts-677b2751.js",
+        "size_bytes": 20196
+      }
+    ],
+    "tf_browser_ok": true
+  },
+  "integrity": {
+    "missing_required": [],
+    "deleted_since_prev": [
+      "docs/assets/AnalyticsPage-bc795bf4.js",
+      "docs/assets/Badge-4af634c7.js",
+      "docs/assets/Badge-4af634c7.js.map",
+      "docs/assets/DataPage-5c2a11b5.js",
+      "docs/assets/DatasetGallery-40e07425.js",
+      "docs/assets/EnhancedCharts-7f63619c.js",
+      "docs/assets/EnhancedDashboard-ff373fa6.js",
+      "docs/assets/LogsPage-55e83c08.js",
+      "docs/assets/ModelsPage-b69e0932.js",
+      "docs/assets/MonitoringPage-e678e8a9.js",
+      "docs/assets/Overview-2298cfe4.js",
+      "docs/assets/ProjectDownloader-4462aedb.js",
+      "docs/assets/SettingsPage-8bce1474.js",
+      "docs/assets/TeamPage-d1e08472.js",
+      "docs/assets/TrainingManagement-691ff832.js",
+      "docs/assets/TrainingManagement-691ff832.js.map",
+      "docs/assets/UltimatePersianDashboard-bd7b32c9.js",
+      "docs/assets/_commonjs-dynamic-modules-3e972b61.js",
+      "docs/assets/_commonjs-dynamic-modules-3e972b61.js.map",
+      "docs/assets/charts-f100c383.js",
+      "docs/assets/charts-f100c383.js.map",
+      "docs/assets/index-fd59a914.css",
+      "docs/assets/training-29a71528.js",
+      "docs/assets/ui-e4256d80.js",
+      "docs/assets/ui-e4256d80.js.map",
+      "src/components/Dashboard.tsx",
+      "src/components/DashboardAdvanced.tsx",
+      "src/components/ReliabilityDashboard.tsx",
+      "src/components/layout/AppLayout.tsx",
+      "src/components/layout/Layout.tsx",
+      "src/components/layout/enhanced_persian_dashboard.tsx"
+    ]
+  },
+  "security": {
+    "prod_vulns": {
+      "total": 0,
+      "critical": 0,
+      "high": 0,
+      "moderate": 0,
+      "low": 0
+    },
+    "dev_vulns": {
+      "total": 2
+    },
+    "findings": [
+      "Default secrets are committed in .env and intended for production customization.",
+      "Dockerfile copies .env* into the container, risking secret exposure.",
+      "Extensive continue-on-error usage in CI may hide regressions."
+    ]
+  },
+  "ci": {
+    "workflows": [
+      "ci-cd.yml",
+      "ci-cd.yml.bak",
+      "ci.yml",
+      "ci.yml.bak",
+      "deploy-liara.yml",
+      "deploy-liara.yml.bak",
+      "docker-build.yml",
+      "security-check.yml"
+    ],
+    "continue_on_error_usages": [
+      ".github/workflows/ci.yml.bak:38:        continue-on-error: true",
+      ".github/workflows/ci.yml.bak:57:        continue-on-error: true",
+      ".github/workflows/ci.yml.bak:78:        continue-on-error: true",
+      ".github/workflows/ci.yml.bak:92:        continue-on-error: true",
+      ".github/workflows/ci.yml.bak:117:        continue-on-error: true",
+      ".github/workflows/ci.yml.bak:168:        continue-on-error: true",
+      ".github/workflows/ci.yml.bak:244:        continue-on-error: true",
+      ".github/workflows/ci.yml.bak:253:        continue-on-error: true",
+      ".github/workflows/ci.yml.bak:314:        continue-on-error: true",
+      ".github/workflows/ci.yml.bak:321:        continue-on-error: true",
+      ".github/workflows/ci.yml.bak:334:        continue-on-error: true",
+      ".github/workflows/docker-build.yml:70:        continue-on-error: true",
+      ".github/workflows/security-check.yml:41:      continue-on-error: true",
+      ".github/workflows/ci.yml:38:        continue-on-error: true",
+      ".github/workflows/ci.yml:57:        continue-on-error: true",
+      ".github/workflows/ci.yml:78:        continue-on-error: true",
+      ".github/workflows/ci.yml:92:        continue-on-error: true",
+      ".github/workflows/ci.yml:117:        continue-on-error: true",
+      ".github/workflows/ci.yml:168:        continue-on-error: true",
+      ".github/workflows/ci.yml:244:        continue-on-error: true",
+      ".github/workflows/ci.yml:253:        continue-on-error: true",
+      ".github/workflows/ci.yml:314:        continue-on-error: true",
+      ".github/workflows/ci.yml:321:        continue-on-error: true",
+      ".github/workflows/ci.yml:334:        continue-on-error: true",
+      ".github/workflows/ci-cd.yml:75:        continue-on-error: true",
+      ".github/workflows/ci-cd.yml:179:        continue-on-error: true",
+      ".github/workflows/ci-cd.yml.bak:75:        continue-on-error: true",
+      ".github/workflows/ci-cd.yml.bak:179:        continue-on-error: true"
+    ],
+    "undefined_script_references": [
+      ".github/workflows/ci-cd.yml:231:        run: npm run test:performance",
+      ".github/workflows/ci-cd.yml.bak:231:        run: npm run test:performance"
+    ]
+  },
+  "artifacts": {
+    "paths": [
+      "audit/.logs_install.txt",
+      "audit/.logs_tsc.txt",
+      "audit/.logs_lint.txt",
+      "audit/.logs_build.txt",
+      "audit/.bundle_sizes.txt",
+      "audit/.probe_health.fail",
+      "audit/.probe_api_health.fail",
+      "audit/.probe_register.json",
+      "audit/.probe_login.json",
+      "audit/.probe_model_create.json",
+      "audit/.probe_model_list.json",
+      "audit/.probe_process.json",
+      "audit/.security_headers.txt",
+      "audit/.tf_imports.txt",
+      "audit/.diff_vs_prev.txt",
+      "audit/.deleted_since_prev.txt",
+      "audit/.missing_required.txt",
+      "audit/.audit_prod.json",
+      "audit/.audit_all.json",
+      "audit/.workflows_list.txt",
+      "audit/.workflows_continue_on_error.txt",
+      "audit/.workflow_undefined_scripts.txt",
+      "audit/.recent_commits.txt"
+    ]
+  }
+}
