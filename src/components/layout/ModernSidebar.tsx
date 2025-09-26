@@ -41,6 +41,13 @@ export function ModernSidebar() {
   const navRef = useRef<HTMLDivElement>(null);
   const [navHeight, setNavHeight] = useState(0);
 
+  // Debug logging to help identify loading issues
+  useEffect(() => {
+    console.log('🔧 ModernSidebar: Component mounted successfully');
+    console.log('🔧 ModernSidebar: Current location:', location.pathname);
+    console.log('🔧 ModernSidebar: Collapsed state:', collapsed);
+  }, [location.pathname, collapsed]);
+
   // Navigation structure for Persian Legal AI - Simplified and optimized
   const navigation: { group: string; label: string; items: NavItem[] }[] = [
     {
@@ -119,15 +126,18 @@ export function ModernSidebar() {
   // Calculate dynamic height for the status panel based on nav height
   const statusPanelHeight = `calc(100vh - ${navHeight + 140}px)`;
 
-  return (
+  // Error boundary for sidebar rendering
+  try {
+    return (
     <motion.div
       initial={{ x: -300 }}
       animate={{ x: 0 }}
       transition={{ duration: 0.5, type: "spring", stiffness: 120 }}
       className={`${
         collapsed ? 'w-20' : 'w-80'
-      } h-screen bg-gradient-to-b from-slate-800/95 to-slate-900/95 backdrop-blur-xl border-l border-slate-600/50 transition-all duration-300 flex flex-col overflow-hidden relative`}
+      } h-screen bg-gradient-to-b from-slate-800/95 to-slate-900/95 backdrop-blur-xl border-l border-slate-600/50 transition-all duration-300 flex flex-col overflow-hidden relative z-50`}
       dir="rtl"
+      style={{ zIndex: 50 }}
     >
       {/* Header */}
       <div className="p-6 border-b border-slate-600/50 flex-shrink-0">
@@ -549,5 +559,16 @@ export function ModernSidebar() {
         }
       `}</style>
     </motion.div>
-  );
+    );
+  } catch (error) {
+    console.error('❌ ModernSidebar rendering error:', error);
+    return (
+      <div className="w-80 h-screen bg-gradient-to-b from-slate-800/95 to-slate-900/95 backdrop-blur-xl border-l border-slate-600/50 flex items-center justify-center" dir="rtl">
+        <div className="text-center text-white">
+          <div className="text-red-400 mb-2">⚠️ خطا در بارگذاری منو</div>
+          <div className="text-sm text-slate-300">لطفاً صفحه را رفرش کنید</div>
+        </div>
+      </div>
+    );
+  }
 }

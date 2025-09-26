@@ -59,7 +59,7 @@ export function EnhancedAppLayout() {
         const backendResponse = await fetch('/api/health').catch(() => null);
         const wsTest = new Promise((resolve) => {
           try {
-            const ws = new WebSocket('ws://localhost:8080');
+            const ws = new WebSocket('ws://localhost:8080/');
             ws.onopen = () => { ws.close(); resolve(true); };
             ws.onerror = () => resolve(false);
             setTimeout(() => resolve(false), 3000);
@@ -140,7 +140,7 @@ export function EnhancedAppLayout() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="sticky top-0 z-40 bg-white/5 backdrop-blur-xl border-b border-slate-700/50"
+          className="sticky top-0 z-30 bg-white/5 backdrop-blur-xl border-b border-slate-700/50"
         >
           <div className="px-6 py-4">
             <div className="flex items-center justify-between">

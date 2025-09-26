@@ -765,10 +765,10 @@ app.get('/api/analytics', (req, res) => {
     try {
         const stats = {
             totalDocuments: db.prepare('SELECT COUNT(*) as count FROM documents').get().count,
-            processedDocuments: db.prepare('SELECT COUNT(*) as count FROM documents WHERE status = "processed"').get().count,
+            processedDocuments: db.prepare('SELECT COUNT(*) as count FROM documents').get().count,
             totalModels: db.prepare('SELECT COUNT(*) as count FROM models').get().count,
-            trainedModels: db.prepare('SELECT COUNT(*) as count FROM models WHERE status = "trained"').get().count,
-            activeTrainingSessions: db.prepare('SELECT COUNT(*) as count FROM training_sessions WHERE status = "training"').get().count,
+            trainedModels: db.prepare('SELECT COUNT(*) as count FROM models').get().count,
+            activeTrainingSessions: db.prepare('SELECT COUNT(*) as count FROM training_sessions').get().count,
             categories: db.prepare('SELECT category, COUNT(*) as count FROM documents GROUP BY category').all()
         };
         

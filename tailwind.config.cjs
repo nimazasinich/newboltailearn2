@@ -16,8 +16,50 @@ module.exports = {
       },
       fontFamily: {
         'vazir': ['Vazirmatn', 'sans-serif'],
+        'persian': ['Vazirmatn', 'IRANSans', 'Tahoma', 'sans-serif'],
         display: ["IRANSans","Vazirmatn","Tahoma","sans-serif"],
         body:    ["IRANSans","Vazirmatn","Tahoma","sans-serif"]
+      },
+      animation: {
+        'float': 'float 6s ease-in-out infinite',
+        'pulse-soft': 'pulse-soft 2s ease-in-out infinite',
+        'gradient-shift': 'gradientShift 15s ease infinite',
+        'shimmer': 'shimmer 2s infinite',
+        'glow-pulse': 'glowPulse 2s ease-in-out infinite alternate',
+        'scale-in': 'scaleIn 0.3s ease-out forwards'
+      },
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-20px)' }
+        },
+        'pulse-soft': {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.8' }
+        },
+        gradientShift: {
+          '0%': { 'background-position': '0% 50%' },
+          '50%': { 'background-position': '100% 50%' },
+          '100%': { 'background-position': '0% 50%' }
+        },
+        shimmer: {
+          '0%': { left: '-100%' },
+          '100%': { left: '100%' }
+        },
+        glowPulse: {
+          'from': { 'box-shadow': '0 0 20px rgba(59, 130, 246, 0.5)' },
+          'to': { 'box-shadow': '0 0 30px rgba(59, 130, 246, 0.8)' }
+        },
+        scaleIn: {
+          'from': {
+            transform: 'scale(0.8)',
+            opacity: '0'
+          },
+          'to': {
+            transform: 'scale(1)',
+            opacity: '1'
+          }
+        }
       }
     } 
   },

@@ -134,9 +134,12 @@ export class TensorFlowCompatibilityLayer {
       
       // Verify result is valid
       if (result.length > 0 && !result.some(val => isNaN(val) || !isFinite(val))) {
-        this.optimalBackend = tf.getBackend();
-        this.compatibilityReport!.optimalBackend = this.optimalBackend;
-        console.log(`✅ Backend ${this.optimalBackend} verified successfully`);
+        const currentBackend = tf.getBackend();
+        this.optimalBackend = currentBackend;
+        if (this.compatibilityReport) {
+          this.compatibilityReport.optimalBackend = currentBackend;
+        }
+        console.log(`✅ Backend ${currentBackend} verified successfully`);
       } else {
         throw new Error('Invalid prediction result');
       }
