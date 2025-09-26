@@ -1,7 +1,13 @@
 # Persian Legal AI Dashboard – Audit Report
 
 ## Executive Summary (Status: **Red**)
-Production readiness is **not** verified. TypeScript compilation fails with multiple errors, and the production server crashes immediately under Node ESM rules. Health probes to the documented endpoints are unreachable. Although the Vite build completes, these blockers indicate the system is not deployable without remediation.
+Production readiness remains **unverified**. The latest audit confirms:
+
+1. **TypeScript compilation still fails** (six blocking errors in `src/services/training.ts`).
+2. **Production server crashes on startup** because the Node ESM entrypoint attempts to call `require`.
+3. **Health probes to all documented endpoints are refused**, so uptime guarantees cannot be met.
+
+While `npm run build` does succeed, the combination of TypeScript failures and an inoperable server keeps the deployment posture at **Red** until these issues are resolved.
 
 ## Evidence Table
 
