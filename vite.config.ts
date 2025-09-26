@@ -35,7 +35,10 @@ export default ({ mode }) => {
           manualChunks: {
             vendor: ['react', 'react-dom'],
             ui: ['lucide-react', 'framer-motion'],
-            charts: ['recharts']
+            charts: ['recharts'],
+            tensorflow: ['@tensorflow/tfjs'],
+            utils: ['clsx'],
+            api: ['zod']
           }
         }
       }

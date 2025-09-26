@@ -1,10 +1,8 @@
 // DoRA (Dynamic Rank Adaptation) Trainer for Persian Legal Documents
 // Real implementation with actual tensor operations
 
-import { Tensor, tensor2d, tensor3d, tensor4d } from '@tensorflow/tfjs-node';
-import * as tf from '@tensorflow/tfjs-node';
-import fs from 'fs';
-import path from 'path';
+import { Tensor, tensor2d, tensor3d, tensor4d } from '@tensorflow/tfjs';
+import * as tf from '@tensorflow/tfjs';
 
 export interface PersianLegalDocument {
     id: string;
@@ -317,16 +315,10 @@ export class DoRATrainer {
         }
 
         try {
-            // Create directory if it doesn't exist
-            const dir = path.dirname(modelPath);
-            if (!fs.existsSync(dir)) {
-                fs.mkdirSync(dir, { recursive: true });
-            }
-
-            // Save model
-            await this.model.save(`file://${modelPath}`);
+            // In browser environment, save to IndexedDB
+            await this.model.save('indexeddb://dora-model');
             
-            // Save tokenizer and category mapping
+            // Save tokenizer and category mapping to localStorage
             const metadata = {
                 tokenizer: Object.fromEntries(this.tokenizer),
                 categoryMap: Object.fromEntries(this.categoryMap),
@@ -335,9 +327,9 @@ export class DoRATrainer {
                 config: this.config
             };
 
-            fs.writeFileSync(`${modelPath}_metadata.json`, JSON.stringify(metadata, null, 2));
+            localStorage.setItem('dora-model-metadata', JSON.stringify(metadata));
             
-            console.log(`✅ Model saved to ${modelPath}`);
+            console.log(`✅ Model saved to browser storage`);
         } catch (error) {
             console.error('❌ Failed to save model:', error);
             throw error;
@@ -347,13 +339,13 @@ export class DoRATrainer {
     // Load model from file
     async loadModel(modelPath: string): Promise<void> {
         try {
-            // Load model
-            this.model = await tf.loadLayersModel(`file://${modelPath}/model.json`);
+            // Load model from IndexedDB
+            this.model = await tf.loadLayersModel('indexeddb://dora-model');
             
-            // Load metadata
-            const metadataPath = `${modelPath}_metadata.json`;
-            if (fs.existsSync(metadataPath)) {
-                const metadata = JSON.parse(fs.readFileSync(metadataPath, 'utf8'));
+            // Load metadata from localStorage
+            const metadataStr = localStorage.getItem('dora-model-metadata');
+            if (metadataStr) {
+                const metadata = JSON.parse(metadataStr);
                 
                 this.tokenizer = new Map(Object.entries(metadata.tokenizer));
                 this.categoryMap = new Map(Object.entries(metadata.categoryMap));
@@ -361,7 +353,7 @@ export class DoRATrainer {
                 this.vocabSize = metadata.vocabSize;
                 this.config = metadata.config;
                 
-                console.log(`✅ Model loaded from ${modelPath}`);
+                console.log(`✅ Model loaded from browser storage`);
             } else {
                 throw new Error('Model metadata not found');
             }
