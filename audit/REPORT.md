@@ -13,7 +13,7 @@ While `npm run build` does succeed, the combination of TypeScript failures and a
 
 | Area | Result | Evidence |
 | --- | --- | --- |
-| Repo status | Clean working tree at commit `540de94bf9b9e10f6ca76af3c7c2d06259916c36` on branch `work` | `audit/artifacts/git-status.txt`, `audit/artifacts/commit.txt`, `audit/artifacts/branch.txt` |
+| Repo status | Only audit artifacts modified at commit `540de94bf9b9e10f6ca76af3c7c2d06259916c36` on branch `work` | `audit/artifacts/git-status.txt`, `audit/artifacts/commit.txt`, `audit/artifacts/branch.txt` |
 | Install | `npm ci` succeeded (with deprecation warnings) | `audit/artifacts/npm-ci.log` |
 | TypeScript | **Fail** – 6 errors in `src/services/training.ts` | `audit/artifacts/tsc.log` |
 | ESLint | Pass – no output, exit code 0 | `audit/artifacts/lint.log` |
@@ -41,7 +41,7 @@ While `npm run build` does succeed, the combination of TypeScript failures and a
 * `npm ci` installs all dependencies successfully despite multiple deprecation warnings (`audit/artifacts/npm-ci.log`).
 * `npm run build` finishes with a full Vite bundle; chunk size warnings highlight very large TensorFlow assets (`audit/artifacts/build.log`).
 * `npm start` fails: Node treats `server/main.js` as ESM and throws "require is not defined" before the server can listen, so no port is open (`audit/artifacts/server.log`).
-* Health checks to `/health`, `/api/health`, and `/` on port 3000 all return connection refused because the server never bound to the port (`audit/artifacts/curl-errors.txt`).
+* Health checks to `/health`, `/api/health`, and `/` on port 3000 all return connection refused because the server never bound to the port (`audit/artifacts/curl-errors.txt`, `audit/artifacts/health-probes.txt`).
 * `npm run dev` launches a Vite dev server and prints the localhost banner before being terminated by `timeout` (`audit/artifacts/dev.log`).
 
 ## Regressions (File Deletions/Renames)

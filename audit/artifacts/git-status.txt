@@ -1,1 +1,4 @@
+ M audit/REPORT.md
+ M audit/VERDICT.json
  M audit/artifacts/git-status.txt
+ M audit/artifacts/health-probes.txt

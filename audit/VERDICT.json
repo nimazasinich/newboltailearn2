@@ -15,6 +15,7 @@
     "npm start under production exits because require is not defined in ES module scope; see audit/artifacts/server.log.",
     "Health probes to port 3000 fail with connection refused; see audit/artifacts/curl-errors.txt.",
     "Vite dev server banner confirms localhost:5173 availability; see audit/artifacts/dev.log.",
-    "Only ModernSidebar mounts inside EnhancedAppLayout, no evidence of multiple sidebars simultaneously; see audit/artifacts/mount-modern.txt."
+    "Only ModernSidebar mounts inside EnhancedAppLayout, no evidence of multiple sidebars simultaneously; see audit/artifacts/mount-modern.txt.",
+    "Health probes to /health, /api/health, and / return connection refused; see audit/artifacts/health-probes.txt."
   ]
 }
