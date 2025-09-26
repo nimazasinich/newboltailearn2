@@ -1,0 +1,1905 @@
+﻿
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/22/2025   4:20 AM                .bolt           
+d-----         9/22/2025   4:20 AM                .github         
+d-----         9/22/2025   4:20 AM                archive         
+d-----         9/26/2025   7:16 PM                audit           
+d-----         9/22/2025   4:20 AM                backups         
+d-----         9/22/2025   4:20 AM                checkpoints     
+d-----         9/26/2025   7:16 PM                cursor-memory   
+d-----         9/23/2025  10:30 AM                cursor-outputs  
+d-----         9/23/2025   9:00 AM                cursor-templates
+d-----         9/25/2025   4:05 AM                data            
+d-----         9/24/2025   6:18 PM                database        
+d-----         9/26/2025   7:16 PM                datasets        
+d-----         9/26/2025   7:16 PM                deploy-reports  
+d-----         9/22/2025   9:31 PM                dist            
+d-----         9/26/2025   5:27 PM                docs            
+d-----         9/23/2025   8:28 AM                generated-forms 
+d-----         9/26/2025   7:16 PM                nginx           
+d-----         9/26/2025   7:28 PM                node_modules    
+d-----         9/26/2025   7:16 PM                playwright-repor
+                                                  t               
+d-----         9/22/2025   4:20 AM                public          
+d-----         9/26/2025   7:16 PM                scripts         
+d-----         9/26/2025   7:16 PM                server          
+d-----         9/26/2025   7:16 PM                src             
+d-----         9/22/2025   4:20 AM                test-results    
+d-----         9/26/2025   7:16 PM                tests           
+-a----         9/25/2025  12:55 AM            816 .dockerignore   
+-a----         9/22/2025   4:20 AM              7 .engines        
+-a----         9/22/2025   4:20 AM           1021 .env            
+-a----         9/22/2025   4:20 AM            789 .env.development
+-a----         9/25/2025  12:23 AM            380 .env.example    
+-a----         9/22/2025   4:20 AM            833 .env.production 
+-a----         9/22/2025   4:20 AM            145 .env.production.
+                                                  example         
+-a----         9/26/2025   8:23 PM           4413 .env.sample     
+-a----         9/22/2025   4:20 AM            622 .env.test       
+-a----         9/22/2025   4:20 AM            425 .eslintignore   
+-a----         9/25/2025  12:23 AM            658 .eslintrc.js    
+-a----         9/22/2025   4:20 AM           1122 .eslintrc.json  
+-a----         9/22/2025   4:20 AM            515 .gitignore      
+-a----         9/22/2025   4:20 AM              7 .node-version   
+-a----         9/22/2025   4:20 AM              6 .nvmrc          
+-a----         9/25/2025  12:04 AM            295 .prettierrc     
+-a----         9/22/2025   4:20 AM            252 404.html        
+-a----         9/22/2025   4:20 AM            783 clean-install.js
+-a----         9/22/2025   4:20 AM          42780 complete-fix.sh 
+-a----         9/24/2025  12:24 PM           7748 COMPLETE-INTEGRA
+                                                  TION-SUMMARY.md 
+-a----         9/23/2025  10:31 AM            450 complete-mcp-con
+                                                  fig.json        
+-a----         9/25/2025  12:10 AM          30354 complete-mcp-ser
+                                                  ver.js          
+-a----         9/23/2025  10:31 AM          22365 complete-mcp-ser
+                                                  ver.mjs         
+-a----         9/23/2025  10:01 AM           8937 COMPLETE_MCP_GUI
+                                                  DE.md           
+-a----         9/24/2025   6:00 PM              0 COMPLETE_MISSION
+                                                  .sh             
+-a----         9/24/2025  12:03 PM           5895 COMPREHENSIVE-IN
+                                                  TEGRATION.md    
+-a----         9/23/2025  10:41 AM           6542 create-cursor-in
+                                                  stall-link.js   
+-a----         9/23/2025  10:54 AM          10396 create-enhanced-
+                                                  install-link.js 
+-a----         9/22/2025   4:20 AM           6250 create_runflare_
+                                                  branch.sh       
+-a----         9/23/2025  10:40 AM            693 cursor-install-l
+                                                  ink.txt         
+-a----         9/23/2025  10:40 AM           5250 cursor-install.h
+                                                  tml             
+-a----         9/23/2025  10:41 AM            462 cursor-mcp-confi
+                                                  g.json          
+-a----         9/23/2025  10:41 AM          24506 cursor-mcp-serve
+                                                  r.mjs           
+-a----         9/23/2025  10:41 AM           5584 CURSOR_MCP_FINAL
+                                                  _GUIDE.md       
+-a----         9/23/2025  10:21 AM           3625 CURSOR_MCP_INSTA
+                                                  LLATION_GUIDE.md
+-a----         9/22/2025   4:20 AM         147456 database.sqlite 
+-a----         9/22/2025   4:20 AM          32768 database.sqlite-
+                                                  shm             
+-a----         9/22/2025   4:20 AM          28872 database.sqlite-
+                                                  wal             
+-a----         9/22/2025   4:20 AM           7917 DATABASE_FIX_SUM
+                                                  MARY.md         
+-a----         9/24/2025   6:29 PM           4744 DATABASE_VALIDAT
+                                                  ION_COMPLETE.sh 
+-a----         9/24/2025   6:31 PM           7652 DATABASE_VALIDAT
+                                                  ION_REPORT.md   
+-a----         9/22/2025   4:20 AM           5600 db-healer.js    
+-a----         9/22/2025   4:20 AM          17996 deploy-enhanced.
+                                                  sh              
+-a----         9/26/2025   7:16 PM           9019 deploy-to-liara.
+                                                  sh              
+-a----         9/22/2025   4:20 AM           9305 DEPLOYMENT.md   
+-a----         9/24/2025   6:00 PM              0 DEPLOY_OR_DIE.sh
+-a----         9/26/2025   7:16 PM           9334 docker-autofix.s
+                                                  h               
+-a----         9/26/2025   7:16 PM           4494 docker-build.sh 
+-a----         9/26/2025   7:16 PM           1672 docker-compose-d
+                                                  ev.yml          
+-a----         9/25/2025  12:56 AM           1568 docker-compose.d
+                                                  ev.yml          
+-a----         9/25/2025  12:56 AM           1044 docker-compose.y
+                                                  ml              
+-a----         9/26/2025   7:16 PM           5700 docker-run.sh   
+-a----         9/25/2025  12:55 AM           2380 Dockerfile      
+-a----         9/26/2025   7:16 PM            489 Dockerfile.bak  
+-a----         9/26/2025   7:16 PM           5230 DOCKER_COMMANDS.
+                                                  md              
+-a----         9/26/2025   7:16 PM           5118 DOCKER_FIX_SUMMA
+                                                  RY.md           
+-a----         9/26/2025   7:16 PM           7140 DOCKER_GUIDE.md 
+-a----         9/26/2025   7:16 PM           6844 DOCKER_REWRITE_S
+                                                  UMMARY.md       
+-a----         9/26/2025   7:16 PM           8651 DOCKER_SETUP.md 
+-a----         9/26/2025   7:16 PM           6122 DOCKER_TROUBLESH
+                                                  OOTING.md       
+-a----         9/26/2025   7:16 PM          11195 e2e-test-runner.
+                                                  js              
+-a----         9/23/2025  10:54 AM            480 enhanced-cursor-
+                                                  mcp-config.json 
+-a----         9/23/2025  10:53 AM          32999 enhanced-cursor-
+                                                  mcp-server.mjs  
+-a----         9/23/2025  10:54 AM            726 enhanced-install
+                                                  -link.txt       
+-a----         9/23/2025  10:54 AM           8111 enhanced-install
+                                                  .html           
+-a----         9/24/2025  11:57 AM           7323 ENHANCEMENT-SUMM
+                                                  ARY.md          
+-a----         9/25/2025  12:34 AM            591 enterprise-confi
+                                                  g.json          
+-a----         9/26/2025   7:16 PM           4172 env-healer.js   
+-a----         9/26/2025   7:16 PM           2436 eslint.config.js
+-a----         9/26/2025   7:21 PM           5126 et --soft       
+                                                  c56aefd         
+-a----         9/26/2025   7:16 PM           1352 example_usage.tx
+                                                  t               
+-a----         9/26/2025   8:37 PM              0 file_list.txt   
+-a----         9/23/2025  10:31 AM           5206 FINAL_MCP_INSTAL
+                                                  LATION_GUIDE.md 
+-a----         9/24/2025   6:01 PM           3927 FINAL_VERIFICATI
+                                                  ON.sh           
+-a----         9/26/2025   7:16 PM           4305 FIX_SUMMARY.md  
+-a----         9/24/2025  11:05 PM           3639 fix_typescript_i
+                                                  mports.md       
+-a----         9/26/2025   7:16 PM          21733 get-docker.sh   
+-a----         9/26/2025   7:16 PM           8965 git-safety.js   
+-a----         9/24/2025   5:34 PM           6883 IMPLEMENTATION_C
+                                                  OMPLETE.md      
+-a----         9/22/2025  10:26 PM          11806 IMPLEMENTATION_S
+                                                  UMMARY.md       
+-a----         9/26/2025   7:16 PM            517 index.html      
+-a----         9/25/2025  12:04 AM          22129 integrated-serve
+                                                  r.js            
+-a----         9/26/2025   7:16 PM           8190 integration-test
+                                                  -runner.js      
+-a----         9/25/2025  12:12 AM          48329 intelligent-pers
+                                                  ian-mcp-server.j
+                                                  s               
+-a----         9/23/2025   9:10 AM           9626 INTELLIGENT_MCP_
+                                                  GUIDE.md        
+-a----         9/26/2025   7:16 PM            741 jest.config.js  
+-a----         9/26/2025   7:16 PM           6398 k8s-debug-script
+                                                  .sh             
+-a----         9/24/2025  11:56 AM           3415 launch-enhanced-
+                                                  app.bat         
+-a----         9/24/2025  12:09 PM           5060 launch-real-syst
+                                                  em.bat          
+-a----         9/26/2025   7:16 PM          10285 master-test-runn
+                                                  er.js           
+-a----         9/23/2025   8:51 AM           6627 MCP_ENHANCEMENTS
+                                                  _SUMMARY.md     
+-a----         9/26/2025   7:16 PM           3219 merge_all_branch
+                                                  es.sh           
+-a----         9/26/2025   7:16 PM            956 nginx.conf      
+-a----         9/26/2025   5:28 PM         374356 package-lock.jso
+                                                  n               
+-a----         9/26/2025   5:28 PM           6186 package.json    
+-a----         9/24/2025   5:34 PM           4720 package.json.bac
+                                                  kup             
+-a----         9/25/2025  12:12 AM          47537 persian-mcp-serv
+                                                  er-enhanced.js  
+-a----         9/23/2025   8:40 AM          21509 persian-mcp-serv
+                                                  er.js           
+-a----         9/22/2025   4:20 AM        7237632 persian_legal_ai
+                                                  .db             
+-a----         9/22/2025   4:20 AM        7237632 persian_legal_ai
+                                                  .db.backup      
+-a----         9/25/2025  12:19 AM           1199 playwright.confi
+                                                  g.ts            
+-a----         9/26/2025   7:16 PM             87 postcss.config.c
+                                                  js              
+-a----         9/22/2025   4:20 AM            107 postcss.config.j
+                                                  s.backup        
+-a----         9/24/2025  12:07 PM           5827 PROPER-INTEGRATI
+                                                  ON-PLAN.md      
+-a----         9/26/2025   7:16 PM           3666 quick-fix.sh    
+-a----         9/26/2025   7:16 PM          15643 README.md       
+-a----         9/25/2025  12:48 AM           1057 reliability-conf
+                                                  ig.json         
+-a----         9/26/2025   7:16 PM            737 render.yaml     
+-a----         9/26/2025   7:16 PM          10236 RENDER_DEPLOYMEN
+                                                  T_GUIDE.md      
+-a----         9/26/2025   7:16 PM           4548 replace_branch_w
+                                                  ith_main.sh     
+-a----         9/26/2025   7:16 PM           8042 run-tests.js    
+-a----         9/26/2025   7:16 PM           2540 server.js       
+-a----         9/26/2025   7:16 PM           5235 SERVER_FIX_SUMMA
+                                                  RY.md           
+-a----         9/23/2025  10:21 AM            853 setup-cursor-mcp
+                                                  .bat            
+-a----         9/26/2025   7:16 PM           4434 SETUP_SUMMARY.md
+-a----         9/25/2025  12:06 AM          15742 simple-server.js
+-a----         9/23/2025  10:06 AM          42735 smart-persian-mc
+                                                  p-bundle.mjs    
+-a----         9/25/2025  12:12 AM          71513 smart-persian-mc
+                                                  p-server.js     
+-a----         9/23/2025   9:00 AM           7672 SMART_MCP_GUIDE.
+                                                  md              
+-a----         9/22/2025   5:18 AM            811 start-server.js 
+-a----         9/26/2025   7:16 PM           1981 start-unified.js
+-a----         9/26/2025   7:16 PM           1565 start.js        
+-a----         9/26/2025   7:16 PM          18995 stress-test-runn
+                                                  er.js           
+-a----         9/26/2025   4:33 PM           2279 tailwind.config.
+                                                  cjs             
+-a----         9/26/2025   7:16 PM           1022 tailwind.config.
+                                                  js.backup       
+-a----         9/23/2025  10:31 AM           3521 test-complete-mc
+                                                  p.js            
+-a----         9/26/2025   7:16 PM           4313 test-database-fi
+                                                  xes.js          
+-a----         9/24/2025  11:56 AM           5182 test-enhanced-ap
+                                                  p.js            
+-a----         9/26/2025   5:30 PM          10023 test-frontend.ht
+                                                  ml              
+-a----         9/23/2025  10:21 AM           3499 test-mcp-install
+                                                  ation.js        
+-a----         9/26/2025   7:16 PM           8899 test-phase2.js  
+-a----         9/26/2025   7:16 PM            552 test-results-com
+                                                  plete.json      
+-a----         9/26/2025   7:16 PM            442 test-results-int
+                                                  egration.json   
+-a----         9/26/2025   7:16 PM           1371 test-results-str
+                                                  ess.json        
+-a----         9/26/2025   7:16 PM           2050 test-training.js
+-a----         9/26/2025   7:16 PM           8217 test-worker-cred
+                                                  entials.js      
+-a----         9/26/2025   7:16 PM          17716 test-worker-logi
+                                                  n.html          
+-a----         9/26/2025   7:16 PM          11486 test_complete_fl
+                                                  ow.js           
+-a----         9/26/2025   7:16 PM          11637 test_dashboard_f
+                                                  low.js          
+-a----         9/24/2025   6:00 PM              0 TEST_EVERYTHING.
+                                                  sh              
+-a----         9/22/2025   4:20 AM         147456 test_migration.d
+                                                  b               
+-a----         9/26/2025   7:16 PM           9848 test_page_conten
+                                                  t.js            
+-a----         9/26/2025   7:16 PM            768 tsconfig.app.jso
+                                                  n               
+-a----         9/22/2025   4:20 AM           1804 tsconfig.app.tsb
+                                                  uildinfo        
+-a----         9/26/2025   7:16 PM           1062 tsconfig.json   
+-a----         9/26/2025   7:16 PM            529 tsconfig.node.js
+                                                  on              
+-a----         9/26/2025   7:16 PM            728 tsconfig.server.
+                                                  json            
+-a----         9/23/2025  10:10 AM          42792 ultimate-persian
+                                                  -mcp-server.mjs 
+-a----         9/23/2025  10:12 AM           9023 ULTIMATE_MCP_GUI
+                                                  DE.md           
+-a----         9/26/2025   7:16 PM           5269 validate-dashboa
+                                                  rd.js           
+-a----         9/25/2025  12:38 AM           1243 vite.config.ts  
+-a----         9/26/2025   7:16 PM            871 vitest.config.ts
+-a----         9/26/2025   7:30 PM          16465 ync local with  
+                                                  remote         
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\.bolt
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/22/2025   4:20 AM             42 config.json     
+-a----         9/22/2025   4:20 AM            406 prompt          
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\.github
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/26/2025   8:26 PM                workflows       
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\.github\workflows
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   8:18 PM           8214 ci-cd.yml       
+-a----         9/22/2025   4:20 AM           8212 ci-cd.yml.bak   
+-a----         9/26/2025   8:18 PM          10230 ci.yml          
+-a----         9/22/2025   4:20 AM          10228 ci.yml.bak      
+-a----         9/26/2025   8:26 PM          10941 deploy-liara.yml
+-a----         9/22/2025   4:20 AM          10904 deploy-liara.yml
+                                                  .bak            
+-a----         9/22/2025   4:20 AM           2441 docker-build.yml
+-a----         9/22/2025   4:20 AM           5353 security-check.y
+                                                  ml              
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\archive
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/26/2025   7:16 PM                2025-09-14_21-01
+d-----         9/26/2025   7:16 PM                2025-09-14_21-15
+d-----         9/26/2025   7:16 PM                docs_legacy     
+d-----         9/26/2025   7:16 PM                INCOMPLETE      
+-a----         9/22/2025   4:20 AM        1238975 project_backup_2
+                                                  0250915_0849.zip
+-a----         9/22/2025   4:20 AM        2147540 project_backup_2
+                                                  0250915_0911.zip
+-a----         9/22/2025   4:20 AM        2149216 project_backup_2
+                                                  0250915_1014.zip
+-a----         9/22/2025   4:20 AM        2890472 project_backup_2
+                                                  0250915_175518.z
+                                                  ip              
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\archive\2025-09-14_21-01
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/26/2025   7:16 PM                components-legac
+                                                  y               
+d-----         9/26/2025   7:16 PM                root-legacy     
+-a----         9/26/2025   7:16 PM           3422 App-legacy.tsx  
+-a----         9/26/2025   7:16 PM            789 backup-manifest.
+                                                  json            
+-a----         9/26/2025   7:16 PM           3612 manifest.json   
+-a----         9/22/2025   4:20 AM        1942430 project-backup.z
+                                                  ip              
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\archive\2025-09-14_21-01\components-legacy
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/26/2025   7:16 PM                analytics       
+d-----         9/26/2025   7:16 PM                dashboard       
+d-----         9/26/2025   7:16 PM                hooks           
+d-----         9/26/2025   7:16 PM                lib             
+d-----         9/26/2025   7:16 PM                pages           
+d-----         9/26/2025   7:16 PM                router          
+d-----         9/26/2025   7:16 PM                state           
+d-----         9/26/2025   7:16 PM                stores          
+-a----         9/26/2025   7:16 PM           2720 AuthGuard.tsx   
+-a----         9/26/2025   7:16 PM          53354 Dashboard.backup
+                                                  .tsx            
+-a----         9/26/2025   7:16 PM          19213 LeaderboardPage.
+                                                  tsx             
+-a----         9/26/2025   7:16 PM           6263 Loading.tsx     
+-a----         9/26/2025   7:16 PM          23102 ModelManagementP
+                                                  age.tsx         
+-a----         9/26/2025   7:16 PM           1805 router.tsx      
+-a----         9/26/2025   7:16 PM          14449 Sidebar.tsx     
+-a----         9/26/2025   7:16 PM           4911 SocketIntegratio
+                                                  n.tsx           
+-a----         9/26/2025   7:16 PM           1360 SocketStatus.tsx
+-a----         9/26/2025   7:16 PM          33448 TrainingControlP
+                                                  anel.tsx        
+-a----         9/26/2025   7:16 PM          22957 TrainingHistoryP
+                                                  age.tsx         
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\archive\2025-09-14_21-01\components-legacy\analy
+    tics
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM          22485 AdvancedAnalytic
+                                                  sDashboard.tsx  
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\archive\2025-09-14_21-01\components-legacy\dashb
+    oard
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM          22196 Overview.tsx    
+-a----         9/26/2025   7:16 PM          29189 TrainingManageme
+                                                  nt.tsx          
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\archive\2025-09-14_21-01\components-legacy\hooks
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM          12590 useAnalytics.ts 
+-a----         9/26/2025   7:16 PM           7939 useAuth.ts      
+-a----         9/26/2025   7:16 PM           1521 useConnectionSta
+                                                  tus.ts          
+-a----         9/26/2025   7:16 PM          12327 useDocuments.ts 
+-a----         9/26/2025   7:16 PM           7065 useMonitoring.ts
+-a----         9/26/2025   7:16 PM           9157 useSocketConnect
+                                                  ion.ts          
+-a----         9/26/2025   7:16 PM          13563 useTraining.ts  
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\archive\2025-09-14_21-01\components-legacy\lib
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           1570 api.ts          
+-a----         9/26/2025   7:16 PM            880 theme.ts        
+-a----         9/26/2025   7:16 PM            366 ws.ts           
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\archive\2025-09-14_21-01\components-legacy\pages
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM            810 DashboardPage.ts
+                                                  x               
+-a----         9/26/2025   7:16 PM           5745 DocumentsPage.ts
+                                                  x               
+-a----         9/26/2025   7:16 PM            820 DownloadPage.tsx
+-a----         9/26/2025   7:16 PM           5137 LoginPage.tsx   
+-a----         9/26/2025   7:16 PM           1540 NotFoundPage.tsx
+-a----         9/26/2025   7:16 PM            825 TrainingPage.tsx
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\archive\2025-09-14_21-01\components-legacy\route
+    r
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           4957 index.tsx       
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\archive\2025-09-14_21-01\components-legacy\state
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           5189 store.ts        
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\archive\2025-09-14_21-01\components-legacy\store
+    s
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           6882 authStore.ts    
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\archive\2025-09-14_21-01\root-legacy
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           1271 index.css       
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\archive\2025-09-14_21-15
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/26/2025   7:16 PM                components-legac
+                                                  y               
+d-----         9/22/2025   4:20 AM                db              
+-a----         9/26/2025   7:16 PM           1020 phase2-backup-ma
+                                                  nifest.json     
+-a----         9/22/2025   4:20 AM        3894993 project-backup-p
+                                                  hase2.zip       
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\archive\2025-09-14_21-15\components-legacy
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM          18807 Overview.old.tsx
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\archive\2025-09-14_21-15\db
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/22/2025   4:20 AM        3358720 persian_legal_ai
+                                                  _backup.db      
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\archive\docs_legacy
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           7626 ACCESSIBILITY_TE
+                                                  ST.md           
+-a----         9/26/2025   7:16 PM          13662 API_REFERENCE.md
+-a----         9/26/2025   7:16 PM          18793 ARCHITECTURE.md 
+-a----         9/26/2025   7:16 PM          10548 COMPLETE_APPLICA
+                                                  TION_FLOW_VERIFI
+                                                  CATION_REPORT.md
+-a----         9/26/2025   7:16 PM           9057 COMPLETION_REPOR
+                                                  T.md            
+-a----         9/26/2025   7:16 PM           2285 COMPONENTS_READM
+                                                  E.md            
+-a----         9/26/2025   7:16 PM           7445 COMPREHENSIVE-TE
+                                                  ST-VALIDATION-SU
+                                                  MMARY.md        
+-a----         9/26/2025   7:16 PM           8856 CONTRIBUTING.md 
+-a----         9/26/2025   7:16 PM           8445 DASHBOARD_IMPLEM
+                                                  ENTATION_STATUS.
+                                                  md              
+-a----         9/26/2025   7:16 PM           7013 DEPLOYMENT_SUCCE
+                                                  SS.md           
+-a----         9/26/2025   7:16 PM          27206 DOCUMENTATION.md
+-a----         9/26/2025   7:16 PM           3018 FINAL-TEST-REPOR
+                                                  T.md            
+-a----         9/26/2025   7:16 PM           6330 IMPLEMENTATION_C
+                                                  OMPLETE.md      
+-a----         9/26/2025   7:16 PM           4857 INTEGRATION_TEST
+                                                  .md             
+-a----         9/26/2025   7:16 PM           9935 MIGRATION_REPORT
+                                                  .md             
+-a----         9/26/2025   7:16 PM           9360 OPERATIONS.md   
+-a----         9/26/2025   7:16 PM           6712 PHASE2_COMPLETIO
+                                                  N_REPORT.md     
+-a----         9/26/2025   7:16 PM           5936 PHASE2_IMPLEMENT
+                                                  ATION_COMPLETE.m
+                                                  d               
+-a----         9/26/2025   7:16 PM           8465 PHASE2_PLAN.md  
+-a----         9/26/2025   7:16 PM           8810 PHASE3_COMPLETIO
+                                                  N_REPORT.md     
+-a----         9/26/2025   7:16 PM          11882 PHASE4_COMPLETIO
+                                                  N_REPORT.md     
+-a----         9/26/2025   7:16 PM           7535 PRODUCTION_SECUR
+                                                  ITY_CHECKLIST.md
+-a----         9/26/2025   7:16 PM          12105 PROOF.md        
+-a----         9/26/2025   7:16 PM           7184 README-PHASE2.md
+-a----         9/26/2025   7:16 PM           9366 README-WORKER-TH
+                                                  READS.md        
+-a----         9/26/2025   7:16 PM          11027 REFACTORING_SUMM
+                                                  ARY.md          
+-a----         9/26/2025   7:16 PM           5593 SECURITY.md     
+-a----         9/26/2025   7:16 PM           9315 TESTING.md      
+-a----         9/26/2025   7:16 PM           3717 TEST_REPORT.md  
+-a----         9/26/2025   7:16 PM           7128 UNIFIED_ARCHITEC
+                                                  TURE_SUMMARY.md 
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\archive\INCOMPLETE
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           3467 App.tsx         
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\audit
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM          14661 usage-report-202
+                                                  5-09-22T18-05-08
+                                                  -054Z.md        
+-a----         9/26/2025   7:16 PM          14661 usage-report-202
+                                                  5-09-22T18-06-49
+                                                  -501Z.md        
+-a----         9/26/2025   7:16 PM          17812 usage-report-202
+                                                  5-09-22T18-07-35
+                                                  -649Z.md        
+-a----         9/26/2025   7:16 PM          26464 usage-summary-20
+                                                  25-09-22T18-05-0
+                                                  8-054Z.json     
+-a----         9/26/2025   7:16 PM          26464 usage-summary-20
+                                                  25-09-22T18-06-4
+                                                  9-501Z.json     
+-a----         9/26/2025   7:16 PM          31209 usage-summary-20
+                                                  25-09-22T18-07-3
+                                                  5-649Z.json     
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\backups
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/22/2025   4:20 AM        7237632 database-backup-
+                                                  2025-09-16T04-58
+                                                  -10-933Z.db     
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\checkpoints
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/22/2025   4:20 AM                model_1_epoch_2_
+                                                  final           
+d-----         9/22/2025   4:20 AM                model_8         
+-a----         9/22/2025   4:20 AM            847 tokenizer_vocab.
+                                                  json            
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\checkpoints\model_1_epoch_2_final
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/22/2025   4:20 AM           4374 model.json      
+-a----         9/22/2025   4:20 AM         547340 weights.bin     
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\checkpoints\model_8
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/22/2025   4:20 AM                model_final_1757
+                                                  752344322       
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\checkpoints\model_8\model_final_1757752344322
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/22/2025   4:20 AM           4168 model.json      
+-a----         9/22/2025   4:20 AM         516108 weights.bin     
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\cursor-memory
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/23/2025  11:02 AM              2 cursor-commands.
+                                                  json            
+-a----         9/23/2025  11:02 AM          13256 cursor-memory.js
+                                                  on              
+-a----         9/23/2025  11:02 AM            191 cursor-preferenc
+                                                  es.json         
+-a----         9/26/2025   7:16 PM           2573 installation-sum
+                                                  mary.md         
+-a----         9/23/2025  10:30 AM           1663 mcp-commands.jso
+                                                  n               
+-a----         9/23/2025  10:30 AM            665 mcp-memory.json 
+-a----         9/23/2025  10:30 AM              2 mcp-preferences.
+                                                  json            
+-a----         9/26/2025   7:16 PM           2449 mcp-server-memor
+                                                  y.json          
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\cursor-outputs
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/23/2025  10:28 AM            824 button-175861073
+                                                  9150.html       
+-a----         9/23/2025  10:29 AM            860 button-175861078
+                                                  9294.html       
+-a----         9/23/2025  10:30 AM            860 button-175861082
+                                                  4799.html       
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\data
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/22/2025   5:26 AM         131072 database.sqlite 
+-a----         9/23/2025  12:40 AM          32768 database.sqlite-
+                                                  shm             
+-a----         9/23/2025  12:40 AM        1165992 database.sqlite-
+                                                  wal             
+-a----         9/25/2025   4:05 AM          94208 persian_legal_ai
+                                                  .db             
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\database
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/24/2025   6:09 PM                backups         
+d-----         9/24/2025   6:23 PM                migrations      
+d-----         9/24/2025   6:26 PM                scripts         
+-a----         9/24/2025   6:11 PM           8111 indexes-triggers
+                                                  .sql            
+-a----         9/24/2025   6:10 PM           7600 schema-validatio
+                                                  n.sql           
+-a----         9/24/2025   6:14 PM          16340 seed-data.sql   
+-a----         9/22/2025   4:20 AM          12288 sessions.db     
+-a----         9/24/2025   6:18 PM          13611 validate-databas
+                                                  e.js            
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\database\migrations
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/24/2025   6:23 PM           7163 001_initial_sche
+                                                  ma.sql          
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\database\scripts
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/25/2025  12:12 AM          14161 backup-database.
+                                                  js              
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\datasets
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/22/2025   7:28 PM                files           
+d-----         9/26/2025   7:16 PM                test-dataset    
+-a----         9/26/2025   7:16 PM           1764 catalog.json    
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\datasets\files
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/22/2025   7:28 PM             78 legal-classifica
+                                                  tion.zip        
+-a----         9/22/2025   7:28 PM             60 persian-qa-datas
+                                                  et.zip          
+-a----         9/22/2025   7:26 PM             62 sample-legal-min
+                                                  i.zip           
+-a----         9/22/2025   7:28 PM             58 sample-ner-mini.
+                                                  zip             
+-a----         9/22/2025   7:28 PM             74 sentiment-analys
+                                                  is-fa.zip       
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\datasets\test-dataset
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           1769 data.json       
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\deploy-reports
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           1528 deployment-statu
+                                                  s.txt           
+-a----         9/26/2025   7:16 PM           7390 enhanced-deploym
+                                                  ent-complete.txt
+-a----         9/26/2025   7:16 PM           3311 final.txt       
+-a----         9/26/2025   7:16 PM          79378 preflight.txt   
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\dist
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/25/2025  12:09 AM         256956 .tsbuildinfo    
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\docs
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/26/2025   5:27 PM                assets          
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\docs\assets
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/26/2025   5:27 PM                css             
+d-----         9/26/2025   5:27 PM                js              
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\docs\assets\css
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/22/2025   4:20 AM          13957 base.css        
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\docs\assets\js
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/22/2025   4:20 AM           8882 focus-management
+                                                  .js             
+-a----         9/22/2025   4:20 AM           6801 modal.js        
+-a----         9/22/2025   4:20 AM           9270 tabs.js         
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\nginx
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/26/2025   7:16 PM                conf.d          
+-a----         9/26/2025   7:16 PM           1845 nginx.conf      
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\nginx\conf.d
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           6964 newboltailearn.c
+                                                  onf             
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\playwright-report
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM         461622 index.html      
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\public
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/22/2025   4:20 AM                assets          
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\public\assets
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/26/2025   7:16 PM                css             
+d-----         9/26/2025   7:16 PM                js              
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\public\assets\css
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM          13957 base.css        
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\public\assets\js
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           8882 focus-management
+                                                  .js             
+-a----         9/26/2025   7:16 PM           6801 modal.js        
+-a----         9/26/2025   7:16 PM           9270 tabs.js         
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\scripts
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/26/2025   7:16 PM                util            
+-a----         9/26/2025   7:16 PM            791 audit-routes.ts 
+-a----         9/26/2025   7:16 PM           8819 audit-usage.mjs 
+-a----         9/26/2025   7:16 PM           1458 backup-db.js    
+-a----         9/26/2025   7:16 PM           1204 copy-to-docs.mjs
+-a----         9/26/2025   7:16 PM           6798 db-backup.ts    
+-a----         9/25/2025  12:56 AM           4415 docker-build.sh 
+-a----         9/25/2025  12:57 AM           7414 docker-deploy.sh
+-a----         9/26/2025   7:16 PM           9251 integrate-enterp
+                                                  rise-features.js
+-a----         9/26/2025   7:16 PM          13214 integrate-reliab
+                                                  ility-systems.js
+-a----         9/26/2025   7:16 PM            460 make-404.js     
+-a----         9/26/2025   7:16 PM           6078 migrate-db-schem
+                                                  a.js            
+-a----         9/26/2025   7:16 PM           7151 monitor-deployme
+                                                  nt.js           
+-a----         9/26/2025   7:16 PM           4967 run-security-tes
+                                                  ts.js           
+-a----         9/26/2025   7:16 PM           8586 security-check.j
+                                                  s               
+-a----         9/26/2025   7:16 PM           8154 validate-db-sche
+                                                  ma.js           
+-a----         9/26/2025   7:16 PM          11343 validate-deploym
+                                                  ent.js          
+-a----         9/26/2025   7:16 PM           4656 validate-deploym
+                                                  ent.sh          
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\scripts\util
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM            602 fs-scan.mjs     
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/24/2025  10:56 PM                auth            
+d-----         9/26/2025   7:16 PM                cache           
+d-----         9/26/2025   7:16 PM                database        
+d-----         9/26/2025   7:16 PM                middleware      
+d-----         9/26/2025   7:16 PM                modules         
+d-----         9/26/2025   7:16 PM                routes          
+d-----         9/26/2025   7:16 PM                scripts         
+d-----         9/22/2025   4:20 AM                server          
+d-----         9/26/2025   7:16 PM                services        
+d-----         9/22/2025   4:20 AM                src             
+d-----         9/26/2025   7:16 PM                tests           
+d-----         9/26/2025   7:16 PM                training        
+d-----         9/26/2025   7:16 PM                utils           
+-a----         9/26/2025   7:16 PM           7229 index.js        
+-a----         9/26/2025   8:23 PM          83911 index.ts        
+-a----         9/26/2025   5:53 PM          32091 main.js         
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\auth
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/24/2025  10:56 PM              0 real-auth.ts    
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\cache
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM          11967 redis-cache.js  
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\database
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/26/2025   7:16 PM                migrations      
+d-----         9/26/2025   7:16 PM                utils           
+-a----         9/26/2025   7:16 PM          13433 connection-pool.
+                                                  js              
+-a----         9/26/2025   7:16 PM           4049 DatabaseManager.
+                                                  js              
+-a----         9/26/2025   7:16 PM           1822 index.js        
+-a----         9/26/2025   7:16 PM            868 init.js         
+-a----         9/26/2025   7:16 PM          12841 migrate.js      
+-a----         9/26/2025   7:16 PM           5582 schema.sql      
+-a----         9/26/2025   7:16 PM           1875 seed.js         
+-a----         9/26/2025   7:16 PM           2643 seed.sql        
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\database\migrations
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           1419 001_fix_datasets
+                                                  _schema.sql     
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\database\utils
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           1561 columns.js      
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\middleware
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM          14237 api-monitoring.j
+                                                  s               
+-a----         9/26/2025   7:16 PM           3740 auth.js         
+-a----         9/26/2025   7:16 PM           3964 auth.ts         
+-a----         9/26/2025   7:16 PM          13887 security.js     
+-a----         9/26/2025   7:16 PM            748 spaFallback.js  
+-a----         9/26/2025   7:16 PM            819 spaFallback.ts  
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\modules
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/26/2025   7:16 PM                controllers     
+d-----         9/26/2025   7:16 PM                metrics         
+d-----         9/26/2025   7:16 PM                monitoring      
+d-----         9/26/2025   7:16 PM                routes          
+d-----         9/26/2025   7:16 PM                security        
+d-----         9/26/2025   7:16 PM                services        
+d-----         9/26/2025   7:16 PM                sockets         
+d-----         9/26/2025   7:16 PM                utils           
+d-----         9/26/2025   7:16 PM                workers         
+-a----         9/26/2025   7:16 PM           2757 setup.js        
+-a----         9/26/2025   7:16 PM           2652 setup.ts        
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\modules\controllers
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/26/2025   7:16 PM                controllers     
+d-----         9/24/2025  10:56 PM                security        
+-a----         9/26/2025   7:16 PM           5021 analytics.contro
+                                                  ller.js         
+-a----         9/26/2025   7:16 PM           5069 analytics.contro
+                                                  ller.ts         
+-a----         9/26/2025   7:16 PM           7318 auth.controller.
+                                                  js              
+-a----         9/26/2025   7:16 PM           6604 auth.controller.
+                                                  ts              
+-a----         9/26/2025   7:16 PM           7539 datasets.control
+                                                  ler.js          
+-a----         9/26/2025   7:16 PM           7094 datasets.control
+                                                  ler.ts          
+-a----         9/26/2025   7:16 PM          10760 export.controlle
+                                                  r.ts            
+-a----         9/26/2025   7:16 PM          14003 models.controlle
+                                                  r.js            
+-a----         9/26/2025   7:16 PM          13102 models.controlle
+                                                  r.ts            
+-a----         9/26/2025   7:16 PM           7214 monitoring.contr
+                                                  oller.js        
+-a----         9/26/2025   7:16 PM           6707 monitoring.contr
+                                                  oller.ts        
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\modules\controllers\controllers
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           7755 datasets.control
+                                                  ler.js          
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\modules\controllers\security
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/24/2025  10:56 PM           5030 config.js       
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\modules\metrics
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           2728 prom.js         
+-a----         9/26/2025   7:16 PM           2663 prom.ts         
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\modules\monitoring
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           8857 metrics.js      
+-a----         9/26/2025   7:16 PM           9472 metrics.ts      
+-a----         9/26/2025   7:16 PM           5374 realMetrics.ts  
+-a----         9/26/2025   7:16 PM          13086 workerMetrics.ts
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\modules\routes
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           1087 auth.routes.js  
+-a----         9/26/2025   7:16 PM           1280 auth.routes.ts  
+-a----         9/26/2025   7:16 PM           1779 models.routes.js
+-a----         9/26/2025   7:16 PM           2079 models.routes.ts
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\modules\security
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           4189 config.js       
+-a----         9/26/2025   7:16 PM           4385 config.ts       
+-a----         9/26/2025   7:16 PM           2921 csrf.js         
+-a----         9/26/2025   7:16 PM           7453 csrf.ts         
+-a----         9/26/2025   7:16 PM           1080 helmet.js       
+-a----         9/26/2025   7:16 PM           1033 helmet.ts       
+-a----         9/26/2025   7:16 PM           3127 index.js        
+-a----         9/26/2025   7:16 PM           2739 index.ts        
+-a----         9/26/2025   7:16 PM           2372 rateLimiter.js  
+-a----         9/26/2025   7:16 PM           2631 rateLimiter.ts  
+-a----         9/26/2025   7:16 PM           1909 routeProtection.
+                                                  js              
+-a----         9/26/2025   7:16 PM           1924 routeProtection.
+                                                  ts              
+-a----         9/26/2025   7:16 PM           7152 validators.js   
+-a----         9/26/2025   7:16 PM           6614 validators.ts   
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\modules\services
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           9963 dataService.ts  
+-a----         9/26/2025   7:16 PM          15674 trainingService.
+                                                  js              
+-a----         9/26/2025   7:16 PM          15764 trainingService.
+                                                  ts              
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\modules\sockets
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           3318 auth.js         
+-a----         9/26/2025   7:16 PM           3632 auth.ts         
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\modules\utils
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           4175 database.ts     
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\modules\workers
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM          11919 errorHandler.ts 
+-a----         9/26/2025   7:16 PM           8439 trainingWorker.j
+                                                  s               
+-a----         9/26/2025   7:16 PM           9364 trainingWorker.t
+                                                  s               
+-a----         9/26/2025   7:16 PM            126 types.js        
+-a----         9/26/2025   7:16 PM           3936 types.ts        
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\routes
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM            768 analytics.routes
+                                                  .js             
+-a----         9/26/2025   7:16 PM            862 analytics.routes
+                                                  .ts             
+-a----         9/26/2025   7:16 PM           1256 auth.routes.js  
+-a----         9/26/2025   7:16 PM           1319 auth.routes.ts  
+-a----         9/26/2025   7:16 PM          18632 datasets.js     
+-a----         9/26/2025   7:16 PM           5182 datasets.routes.
+                                                  js              
+-a----         9/26/2025   7:16 PM           1574 datasets.routes.
+                                                  ts              
+-a----         9/26/2025   7:16 PM           1434 export.routes.ts
+-a----         9/26/2025   7:16 PM           5244 index.js        
+-a----         9/26/2025   7:16 PM           4761 index.ts        
+-a----         9/26/2025   7:16 PM           2169 models.routes.js
+-a----         9/26/2025   7:16 PM           2265 models.routes.ts
+-a----         9/26/2025   7:16 PM            737 monitoring.route
+                                                  s.js            
+-a----         9/26/2025   7:16 PM            834 monitoring.route
+                                                  s.ts            
+-a----         9/26/2025   7:16 PM           4720 reliability.js  
+-a----         9/26/2025   7:16 PM           5593 simple-api.js   
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\scripts
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           5819 populate-databas
+                                                  e.js            
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\server
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/26/2025   7:16 PM                utils           
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\server\utils
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           3591 decode.js.cjs   
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\services
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM          10058 authService.js  
+-a----         9/26/2025   7:16 PM          10349 authService.ts  
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\src
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/22/2025   4:20 AM                services        
+d-----         9/26/2025   7:16 PM                types           
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\src\services
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/26/2025   7:16 PM                datasets        
+d-----         9/26/2025   7:16 PM                training        
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\src\services\datasets
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM          13017 HuggingFaceAPI.j
+                                                  s               
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\src\services\training
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM          18759 RealTrainingEngi
+                                                  ne.js           
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\src\types
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM             79 training.js     
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\tests
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM          11597 analytics.spec.t
+                                                  s               
+-a----         9/26/2025   7:16 PM           7879 datasets.spec.ts
+-a----         9/26/2025   7:16 PM          14194 models.spec.ts  
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\training
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           6369 index.js        
+-a----         9/26/2025   7:16 PM           6040 index.ts        
+-a----         9/26/2025   7:16 PM           7025 RealTrainingEngi
+                                                  ne.js           
+-a----         9/26/2025   7:16 PM           7131 RealTrainingEngi
+                                                  ne.ts           
+-a----         9/26/2025   7:16 PM           6769 RealTrainingEngi
+                                                  neImpl.js       
+-a----         9/26/2025   7:16 PM          10925 RealTrainingEngi
+                                                  neImpl.ts       
+-a----         9/26/2025   7:16 PM           4453 tokenizer.js    
+-a----         9/26/2025   7:16 PM           4199 tokenizer.ts    
+-a----         9/26/2025   7:16 PM          10057 TrainingEngine.t
+                                                  s               
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\server\utils
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           1610 decode.js       
+-a----         9/26/2025   7:16 PM           1657 decode.ts       
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\src
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/22/2025   4:20 AM                assets          
+d-----         9/26/2025   7:16 PM                components      
+d-----         9/26/2025   7:16 PM                context         
+d-----         9/26/2025   7:16 PM                hooks           
+d-----         9/26/2025   7:16 PM                lib             
+d-----         9/26/2025   7:16 PM                selectors       
+d-----         9/26/2025   7:16 PM                services        
+d-----         9/26/2025   7:16 PM                styles          
+d-----         9/26/2025   7:16 PM                types           
+d-----         9/26/2025   7:16 PM                utils           
+-a----         9/25/2025   2:20 AM           4519 App.tsx         
+-a----         9/26/2025   4:49 PM           8552 index.css       
+-a----         9/25/2025   3:44 AM           7185 index.css.backup
+-a----         9/26/2025   7:16 PM            798 main.tsx        
+-a----         9/26/2025   7:16 PM             39 vite-env.d.ts   
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\src\assets
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/26/2025   7:16 PM                fonts           
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\src\assets\fonts
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           1641 Vazirmatn-Bold.w
+                                                  off2            
+-a----         9/26/2025   7:16 PM           1641 Vazirmatn-Regula
+                                                  r.woff2         
+-a----         9/22/2025   4:20 AM              9 vazirmatn.zip   
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\src\components
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/26/2025   7:16 PM                charts          
+d-----         9/26/2025   7:16 PM                layout          
+d-----         9/26/2025   7:16 PM                ui              
+-a----         9/25/2025   3:47 AM             92 AnalyticsPage.ts
+                                                  x               
+-a----         9/24/2025  12:12 PM          21455 Dashboard.tsx   
+-a----         9/26/2025   7:16 PM          18218 DashboardAdvance
+                                                  d.tsx           
+-a----         9/25/2025   3:34 AM          19908 DataPage.tsx    
+-a----         9/26/2025   7:16 PM           2079 DatasetCard.tsx 
+-a----         9/23/2025   8:14 AM          23489 DatasetGallery.t
+                                                  sx              
+-a----         9/25/2025   3:47 AM          22936 EnhancedAnalytic
+                                                  sPage.tsx       
+-a----         9/25/2025   2:00 AM          34335 EnhancedDashboar
+                                                  d.tsx           
+-a----         9/24/2025  11:46 AM          18204 EnhancedLandingP
+                                                  age.tsx         
+-a----         9/25/2025   3:49 AM          35194 EnhancedModelsPa
+                                                  ge.tsx          
+-a----         9/25/2025   3:49 AM          26887 EnhancedMonitori
+                                                  ngPage.tsx      
+-a----         9/25/2025   3:45 AM          28340 EnhancedOverview
+                                                  .tsx            
+-a----         9/22/2025  10:44 PM           8491 ErrorBoundary.ts
+                                                  x               
+-a----         9/26/2025   7:16 PM           8327 LandingPage.tsx 
+-a----         9/26/2025   7:16 PM            660 LoadingSpinner.t
+                                                  sx              
+-a----         9/26/2025   7:16 PM          10856 LogsPage.tsx    
+-a----         9/25/2025   3:49 AM             86 ModelsPage.tsx  
+-a----         9/25/2025   3:50 AM             94 MonitoringPage.t
+                                                  sx              
+-a----         9/26/2025   7:16 PM          11437 NotificationSyst
+                                                  em.tsx          
+-a----         9/25/2025   3:45 AM             91 Overview.tsx    
+-a----         9/26/2025   7:16 PM          42728 ProjectDownloade
+                                                  r.tsx           
+-a----         9/26/2025   7:16 PM          12630 ReliabilityDashb
+                                                  oard.tsx        
+-a----         9/26/2025   7:16 PM          25930 SettingsPage.tsx
+-a----         9/26/2025   7:16 PM          11103 SystemStatus.tsx
+-a----         9/26/2025   7:16 PM          16486 TeamPage.tsx    
+-a----         9/26/2025   7:16 PM           4872 TestPage.tsx    
+-a----         9/26/2025   7:16 PM          22406 TrainingManageme
+                                                  nt.tsx          
+-a----         9/25/2025   3:46 AM          27970 UltimatePersianD
+                                                  ashboard.tsx    
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\src\components\charts
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           4685 ChartJSWrapper.t
+                                                  sx              
+-a----         9/26/2025   7:16 PM           8850 ChartSelector.ts
+                                                  x               
+-a----         9/25/2025   3:44 AM          13866 EnhancedCharts.t
+                                                  sx              
+-a----         9/26/2025   7:16 PM           4184 index.ts        
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\src\components\layout
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/23/2025   8:14 AM           2472 AppLayout.tsx   
+-a----         9/26/2025   7:16 PM          13486 CreativeSidebar.
+                                                  tsx             
+-a----         9/26/2025   5:56 PM          18018 EnhancedAppLayou
+                                                  t.tsx           
+-a----         9/25/2025   1:57 AM          53378 enhanced_persian
+                                                  _dashboard.tsx  
+-a----         9/26/2025   7:16 PM           2003 Header.tsx      
+-a----         9/26/2025   7:16 PM           1086 Layout.tsx      
+-a----         9/26/2025   5:58 PM          26886 ModernSidebar.ts
+                                                  x               
+-a----         9/26/2025   7:16 PM           7992 Sidebar.tsx     
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\src\components\ui
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           1114 Badge.tsx       
+-a----         9/26/2025   7:16 PM           2160 Button.tsx      
+-a----         9/26/2025   7:16 PM           1844 Card.tsx        
+-a----         9/26/2025   7:16 PM          12450 DataTable.tsx   
+-a----         9/25/2025   3:43 AM           9974 EnhancedCard.tsx
+-a----         9/25/2025   3:43 AM          13990 EnhancedNavigati
+                                                  on.tsx          
+-a----         9/26/2025   7:16 PM           1443 icons.tsx       
+-a----         9/22/2025   4:20 AM           1056 Input.tsx       
+-a----         9/26/2025   7:16 PM           3327 LoadableSection.
+                                                  tsx             
+-a----         9/26/2025   7:16 PM           1046 ModernCard.tsx  
+-a----         9/26/2025   7:16 PM           2092 OrganicCard.tsx 
+-a----         9/26/2025   7:16 PM            935 PageHeader.tsx  
+-a----         9/26/2025   7:16 PM           4846 PageSkeleton.tsx
+-a----         9/26/2025   7:16 PM           8949 PremiumHeader.ts
+                                                  x               
+-a----         9/26/2025   7:16 PM           1174 Progress.tsx    
+-a----         9/26/2025   7:16 PM           1395 SlimBadge.tsx   
+-a----         9/26/2025   7:16 PM           6556 Toast.tsx       
+-a----         9/26/2025   7:16 PM           8257 VirtualizedList.
+                                                  tsx             
+-a----         9/26/2025   7:16 PM           2723 ZenHeader.tsx   
+-a----         9/26/2025   7:16 PM           2263 ZenProgress.tsx 
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\src\context
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           4492 SystemContext.ts
+                                                  x               
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\src\hooks
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM            758 useApi.ts       
+-a----         9/26/2025   7:16 PM            639 useAuth.ts      
+-a----         9/26/2025   7:16 PM            782 useTheme.ts     
+-a----         9/26/2025   7:16 PM           3733 useThrottledWebS
+                                                  ocket.ts        
+-a----         9/26/2025   7:16 PM           1285 useWebSocket.ts 
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\src\lib
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           2960 api-config.ts   
+-a----         9/26/2025   7:16 PM           1495 api.ts          
+-a----         9/26/2025   7:16 PM            291 charts.ts       
+-a----         9/26/2025   7:16 PM            783 config.ts       
+-a----         9/24/2025  11:55 AM          15860 enhanced-api.ts 
+-a----         9/26/2025   7:16 PM           3372 websocket.ts    
+-a----         9/26/2025   7:16 PM           2001 ws-events.ts    
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\src\selectors
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/26/2025   7:16 PM                __tests__       
+-a----         9/26/2025   7:16 PM           2699 dashboard.ts    
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\src\selectors\__tests__
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           4491 dashboard.spec.t
+                                                  s               
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\src\services
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/26/2025   7:16 PM                ai              
+d-----         9/26/2025   7:16 PM                database        
+d-----         9/26/2025   7:16 PM                datasets        
+d-----         9/26/2025   7:16 PM                optimization    
+d-----         9/26/2025   7:16 PM                persian         
+d-----         9/26/2025   7:16 PM                simulation      
+d-----         9/26/2025   7:16 PM                training        
+-a----         9/26/2025   7:16 PM           4827 analytics.ts    
+-a----         9/26/2025   7:16 PM           8115 api.ts          
+-a----         9/26/2025   7:16 PM           8258 datasets.ts     
+-a----         9/26/2025   7:16 PM           5804 export.ts       
+-a----         9/26/2025   7:16 PM          13827 FallbackSystemMa
+                                                  nager.ts        
+-a----         9/26/2025   7:16 PM           4074 models.ts       
+-a----         9/26/2025   7:16 PM           6101 monitoring.ts   
+-a----         9/25/2025  12:50 AM           4307 reliability-inte
+                                                  gration.ts      
+-a----         9/26/2025   7:16 PM          11766 ReliabilityMonit
+                                                  or.ts           
+-a----         9/26/2025   7:16 PM          11252 training.ts     
+-a----         9/26/2025   7:16 PM           6055 websocket.ts    
+-a----         9/26/2025   7:16 PM           4889 wsClient.ts     
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\src\services\ai
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/24/2025   5:29 PM          14271 DoRATrainer.ts  
+-a----         9/25/2025  12:26 AM          18035 PersianBertProce
+                                                  ssor.ts         
+-a----         9/26/2025   7:16 PM          13085 PersianBertProce
+                                                  ssorUpdated.ts  
+-a----         9/26/2025   7:16 PM          13334 QRAdaptor.ts    
+-a----         9/26/2025   7:16 PM          11507 TensorFlowCompat
+                                                  ibilityLayer.ts 
+-a----         9/26/2025   7:16 PM           9220 TensorFlowFallba
+                                                  ck.ts           
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\src\services\database
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM          10631 index.ts        
+-a----         9/26/2025   7:16 PM          15436 SQLiteService.ts
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\src\services\datasets
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           8689 HuggingFaceAPI.t
+                                                  s               
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\src\services\optimization
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM          15055 ModelOptimizer.t
+                                                  s               
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\src\services\persian
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM          11483 PersianUtils.ts 
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\src\services\simulation
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM          11481 TrainingSimulato
+                                                  r.ts            
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\src\services\training
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM          16945 RealTrainingEngi
+                                                  ne.ts           
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\src\styles
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           7295 animations.css  
+-a----         9/26/2025   4:34 PM          11256 components.css  
+-a----         9/25/2025   3:42 AM          10897 theme.css       
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\src\types
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/22/2025   4:20 AM            308 custom.d.ts     
+-a----         9/26/2025   7:16 PM            446 datasets.ts     
+-a----         9/26/2025   7:16 PM           2466 documents.ts    
+-a----         9/26/2025   7:16 PM           2783 training.ts     
+-a----         9/26/2025   7:16 PM           1542 user.ts         
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\src\utils
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/25/2025   3:44 AM            168 cn.ts           
+-a----         9/26/2025   7:16 PM           1324 testHelpers.ts  
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\test-results
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/22/2025   4:20 AM             48 .last-run.json  
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\tests
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/26/2025   7:16 PM                api             
+d-----         9/26/2025   7:16 PM                e2e             
+d-----         9/26/2025   7:16 PM                integration     
+d-----         9/26/2025   7:16 PM                stress          
+d-----         9/26/2025   7:16 PM                unit            
+-a----         9/26/2025   7:16 PM           1118 setup.ts        
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\tests\api
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           8622 analytics.test.t
+                                                  s               
+-a----         9/26/2025   7:16 PM           5078 auth.test.ts    
+-a----         9/26/2025   7:16 PM           4425 datasets.test.ts
+-a----         9/26/2025   7:16 PM           8954 models.test.ts  
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\tests\e2e
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           2318 auth.spec.ts    
+-a----         9/26/2025   7:16 PM           2146 dashboard.spec.t
+                                                  s               
+-a----         9/26/2025   7:16 PM           2640 datasets.spec.ts
+-a----         9/26/2025   7:16 PM           4746 routes.spec.ts  
+-a----         9/26/2025   7:16 PM           8548 security-flow.sp
+                                                  ec.ts           
+-a----         9/26/2025   7:16 PM           7333 training-workflo
+                                                  w.spec.ts       
+-a----         9/26/2025   7:16 PM           3849 training.spec.ts
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\tests\integration
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           5328 basic-security.t
+                                                  est.ts          
+-a----         9/26/2025   7:16 PM           6504 csrf-integration
+                                                  .test.ts        
+-a----         9/26/2025   7:16 PM           7469 environment-vali
+                                                  dation.test.ts  
+-a----         9/26/2025   7:16 PM          14998 phase3-integrati
+                                                  on.test.js      
+-a----         9/26/2025   7:16 PM           3400 security-simple.
+                                                  test.ts         
+-a----         9/26/2025   7:16 PM           4358 security.test.ts
+-a----         9/26/2025   7:16 PM          12185 training.test.ts
+-a----         9/26/2025   7:16 PM          14636 workerIntegratio
+                                                  n.test.ts       
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\tests\stress
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM           1473 database-free-st
+                                                  ress.test.js    
+-a----         9/26/2025   7:16 PM           6931 dataset-download
+                                                  .test.ts        
+-a----         9/26/2025   7:16 PM          10734 training-session
+                                                  s.test.ts       
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\tests\unit
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+d-----         9/26/2025   7:16 PM                workers         
+-a----         9/26/2025   7:16 PM           6252 api.test.ts     
+-a----         9/26/2025   7:16 PM           7152 auth.test.ts    
+-a----         9/26/2025   7:16 PM           7279 security.test.ts
+-a----         9/26/2025   7:16 PM           7674 training.test.ts
+
+
+    Directory: C:\Users\Dreammaker\Downloads\newboltailearn-main\n
+    ewboltailearn\tests\unit\workers
+
+
+Mode                 LastWriteTime         Length Name            
+----                 -------------         ------ ----            
+-a----         9/26/2025   7:16 PM          13701 trainingWorker.t
+                                                  est.ts          
+
+
