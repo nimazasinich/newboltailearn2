@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ModernSidebar } from './ModernSidebar';
+import { AuthOverlay } from '../Auth/AuthOverlay';
 import { 
-  Bell, Search, User, Settings, LogOut, Globe, Wifi, WifiOff,
-  Sun, Moon, Monitor, ChevronDown, Sparkles, Brain, Shield
+  Bell, Search, Wifi, WifiOff,
+  Sun, Moon, Monitor, Sparkles, Brain, Shield
 } from 'lucide-react';
 
 interface SystemNotification {
@@ -27,7 +28,6 @@ export function EnhancedAppLayout() {
   const [searchQuery, setSearchQuery] = useState('');
   const [notifications, setNotifications] = useState<SystemNotification[]>([]);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [showUserMenu, setShowUserMenu] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>({
     backend: false,
     websocket: false,
@@ -278,62 +278,8 @@ export function EnhancedAppLayout() {
                   </AnimatePresence>
                 </div>
 
-                {/* User Menu */}
-                <div className="relative">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setShowUserMenu(!showUserMenu)}
-                    className="flex items-center gap-3 p-2 bg-slate-700/50 hover:bg-slate-600/50 rounded-xl transition-all"
-                  >
-                    <div className="w-8 h-8 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center">
-                      <User className="w-4 h-4 text-white" />
-                    </div>
-                    <div className="text-right hidden sm:block">
-                      <div className="text-sm font-medium text-white">مدیر سیستم</div>
-                      <div className="text-xs text-slate-400">ادمین</div>
-                    </div>
-                    <ChevronDown className="w-4 h-4 text-slate-400" />
-                  </motion.button>
-
-                  {/* User Dropdown */}
-                  <AnimatePresence>
-                    {showUserMenu && (
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.95, y: -10 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.95, y: -10 }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute left-0 mt-2 w-56 bg-slate-800/95 backdrop-blur-xl rounded-2xl border border-slate-600/50 shadow-2xl z-50"
-                      >
-                        <div className="p-2">
-                          {[
-                            { label: 'پروفایل کاربری', icon: User, action: () => {} },
-                            { label: 'تنظیمات حساب', icon: Settings, action: () => {} },
-                            { label: 'تغییر زبان', icon: Globe, action: () => {} },
-                            { label: 'خروج از سیستم', icon: LogOut, action: () => {}, danger: true }
-                          ].map((item, index) => (
-                            <motion.button
-                              key={item.label}
-                              initial={{ opacity: 0, x: -10 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              transition={{ duration: 0.2, delay: index * 0.05 }}
-                              onClick={item.action}
-                              className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl transition-all text-right ${
-                                item.danger 
-                                  ? 'hover:bg-red-500/20 text-red-300 hover:text-red-200' 
-                                  : 'hover:bg-slate-700/50 text-slate-300 hover:text-white'
-                              }`}
-                            >
-                              <item.icon className="w-4 h-4" />
-                              <span className="text-sm">{item.label}</span>
-                            </motion.button>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
+                {/* Authentication Overlay */}
+                <AuthOverlay />
               </div>
             </div>
           </div>

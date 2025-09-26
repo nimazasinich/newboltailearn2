@@ -7,6 +7,7 @@ import { ErrorBoundary } from './components/ErrorBoundary'
 import { ToastProvider } from './components/ui/Toast'
 import { SystemProvider } from './context/SystemContext'
 import { NotificationProvider } from './components/NotificationSystem'
+import { AuthProvider } from './contexts/AuthContext'
 
 const lazyCompat = <T extends Record<string, any>>(imp: () => Promise<T>, key: string) =>
   lazy(async () => { const m = await imp(); return { default: m.default ?? m[key] } })
@@ -44,11 +45,12 @@ function AppLoading() {
 export default function App() {
   return (
     <ErrorBoundary>
-      <SystemProvider>
-        <NotificationProvider>
-          <ToastProvider>
-            <Suspense fallback={<AppLoading />}>
-              <Routes>
+      <AuthProvider>
+        <SystemProvider>
+          <NotificationProvider>
+            <ToastProvider>
+              <Suspense fallback={<AppLoading />}>
+                <Routes>
                 <Route path="/" element={<EnhancedLandingPage />} />
                 <Route element={<EnhancedAppLayout />}>
                   <Route path="/overview" element={<Overview />} />
@@ -71,11 +73,12 @@ export default function App() {
                   <Route path="/import" element={<DataPage />} />
                 </Route>
                 <Route path="*" element={<Navigate to="/overview" replace />} />
-              </Routes>
-            </Suspense>
-          </ToastProvider>
-        </NotificationProvider>
-      </SystemProvider>
+                </Routes>
+              </Suspense>
+            </ToastProvider>
+          </NotificationProvider>
+        </SystemProvider>
+      </AuthProvider>
     </ErrorBoundary>
   )
 }
