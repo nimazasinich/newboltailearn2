@@ -112,6 +112,7 @@
     "postcss": "^8.4.32",
     "supertest": "^6.3.3",
     "tailwindcss": "^3.3.6",
+    "terser": "^5.44.0",
     "typescript": "^5.2.2",
     "vite": "^4.5.3",
     "vitest": "^3.2.4"

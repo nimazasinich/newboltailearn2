@@ -1,0 +1,578 @@
+{
+  "meta": {
+    "repo": "/workspace",
+    "branch": "main",
+    "commit": "local-analysis",
+    "generatedAt": "2025-01-26T17:52:51.000Z",
+    "auditor": "Senior Full-Stack Security Auditor",
+    "analysisType": "comprehensive-security-code-quality-audit"
+  },
+  "architecture": {
+    "layers": [
+      {
+        "name": "Frontend",
+        "technology": "React 18 + TypeScript + Vite",
+        "port": 5173,
+        "deployment": "GitHub Pages"
+      },
+      {
+        "name": "Backend",
+        "technology": "Node.js + Express + Socket.io",
+        "port": 8080,
+        "deployment": "Render.com"
+      },
+      {
+        "name": "Database",
+        "technology": "SQLite + Better-SQLite3",
+        "type": "file-based",
+        "persistence": "volume-mounted"
+      },
+      {
+        "name": "Cache",
+        "technology": "Redis",
+        "status": "optional",
+        "deployment": "Docker container"
+      }
+    ],
+    "services": [
+      {
+        "name": "AI/ML Training",
+        "technology": "TensorFlow.js + Persian BERT + DoRA",
+        "status": "implemented"
+      },
+      {
+        "name": "Real-time Communication",
+        "technology": "WebSocket + Socket.io",
+        "status": "implemented"
+      },
+      {
+        "name": "Security Middleware",
+        "technology": "Helmet + CORS + Rate Limiting + CSRF",
+        "status": "implemented"
+      }
+    ],
+    "risks": [
+      {
+        "severity": "medium",
+        "description": "Large bundle sizes affecting performance",
+        "impact": "Slow initial load times"
+      },
+      {
+        "severity": "low",
+        "description": "SQLite single-point-of-failure",
+        "impact": "No horizontal scaling for database"
+      }
+    ]
+  },
+  "build": {
+    "commands": [
+      "npm run dev",
+      "npm run build",
+      "npm run start:dev",
+      "npm run docker:build"
+    ],
+    "status": "warn",
+    "errors": [
+      {
+        "type": "missing-dependency",
+        "package": "terser",
+        "impact": "build-failure",
+        "resolved": true
+      },
+      {
+        "type": "bundle-size",
+        "chunk": "index-4616d54e.js",
+        "size": "1636.15 kB",
+        "recommendation": "code-splitting"
+      }
+    ]
+  },
+  "dependencies": {
+    "outdated": [
+      {
+        "package": "supertest",
+        "current": "6.3.4",
+        "latest": "7.1.3+",
+        "severity": "deprecation"
+      },
+      {
+        "package": "multer",
+        "current": "1.4.5-lts.2",
+        "latest": "2.x",
+        "severity": "security"
+      },
+      {
+        "package": "eslint",
+        "current": "8.57.1",
+        "latest": "9.x",
+        "severity": "deprecation"
+      }
+    ],
+    "vulns": [
+      {
+        "package": "esbuild",
+        "version": "<=0.24.2",
+        "severity": "moderate",
+        "cve": "GHSA-67mh-4wv8-2f99",
+        "description": "Development server vulnerability"
+      },
+      {
+        "package": "vite",
+        "version": "<=6.1.6",
+        "severity": "moderate",
+        "dependency": "esbuild",
+        "description": "Depends on vulnerable esbuild"
+      }
+    ],
+    "deprecated": [
+      "rimraf@2.7.1",
+      "npmlog@5.0.1",
+      "inflight@1.0.6",
+      "gauge@3.0.2",
+      "are-we-there-yet@2.0.0",
+      "superagent@8.1.2"
+    ],
+    "licenses": [
+      {
+        "package": "iranian-legal-archive",
+        "license": "MIT",
+        "status": "compliant"
+      }
+    ]
+  },
+  "security": {
+    "secrets": [
+      {
+        "type": "environment-variable",
+        "name": "JWT_SECRET",
+        "status": "configured",
+        "location": "CI/CD secrets"
+      },
+      {
+        "type": "environment-variable",
+        "name": "SESSION_SECRET",
+        "status": "configured",
+        "location": "CI/CD secrets"
+      },
+      {
+        "type": "environment-variable",
+        "name": "CSRF_SECRET",
+        "status": "configured",
+        "location": "CI/CD secrets"
+      }
+    ],
+    "misconfigurations": [
+      {
+        "type": "missing-dependency",
+        "package": "jsonwebtoken",
+        "impact": "authentication-failure",
+        "severity": "high"
+      },
+      {
+        "type": "missing-dependency",
+        "package": "bcryptjs",
+        "impact": "password-hashing-failure",
+        "severity": "high"
+      },
+      {
+        "type": "missing-dependency",
+        "package": "csrf",
+        "impact": "csrf-protection-disabled",
+        "severity": "medium"
+      }
+    ],
+    "headers": [
+      {
+        "name": "Helmet",
+        "status": "configured",
+        "features": ["CSP", "HSTS", "X-Frame-Options", "X-Content-Type-Options"]
+      },
+      {
+        "name": "CORS",
+        "status": "configured",
+        "origins": ["GitHub Pages domain", "localhost:5173"]
+      }
+    ],
+    "auth": {
+      "jwt": {
+        "status": "implemented",
+        "middleware": "server/middleware/auth.js",
+        "issue": "missing-jsonwebtoken-package"
+      },
+      "session": {
+        "status": "implemented",
+        "store": "connect-sqlite3",
+        "issue": "missing-connect-sqlite3-package"
+      },
+      "password": {
+        "hashing": "bcryptjs",
+        "issue": "missing-bcryptjs-package"
+      }
+    },
+    "cors": {
+      "enabled": true,
+      "origins": ["http://localhost:5173", "GitHub Pages domain"],
+      "credentials": true,
+      "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    }
+  },
+  "codeQuality": {
+    "lint": {
+      "tool": "ESLint",
+      "config": "eslint.config.js",
+      "errors": 58,
+      "warnings": 0,
+      "status": "failed"
+    },
+    "tsc": {
+      "tool": "TypeScript",
+      "version": "5.9.2",
+      "strict": false,
+      "errors": 20,
+      "status": "failed"
+    },
+    "smells": [
+      {
+        "file": "src/components/layout/enhanced_persian_dashboard.tsx",
+        "line": 47,
+        "type": "jsx-syntax-error",
+        "description": "JSX element 'div' has no corresponding closing tag"
+      },
+      {
+        "file": "server/main.js",
+        "line": 19,
+        "type": "async-await-error",
+        "description": "Cannot use 'await' outside async function"
+      },
+      {
+        "file": "src/services/ai/PersianBertProcessor.ts",
+        "line": 39,
+        "type": "undefined-variable",
+        "description": "'tf' is not defined"
+      }
+    ]
+  },
+  "testing": {
+    "coverage": {
+      "tool": "Vitest",
+      "provider": "v8",
+      "thresholds": {
+        "branches": 70,
+        "functions": 70,
+        "lines": 70,
+        "statements": 70
+      },
+      "status": "not-measured"
+    },
+    "gaps": [
+      {
+        "type": "missing-dependencies",
+        "impact": "31-failed-tests",
+        "packages": ["jsonwebtoken", "bcryptjs", "csrf", "connect-sqlite3"]
+      },
+      {
+        "type": "worker-implementation",
+        "impact": "worker-tests-failing",
+        "description": "TrainingWorkerPool and WorkerManager not properly implemented"
+      },
+      {
+        "type": "api-testing",
+        "impact": "api-tests-failing",
+        "description": "API client tests failing due to missing dependencies"
+      }
+    ],
+    "flaky": [
+      {
+        "test": "Worker Integration Tests",
+        "reason": "Missing worker implementations",
+        "impact": "18-failed-tests"
+      },
+      {
+        "test": "Training Service Integration",
+        "reason": "Missing training engine methods",
+        "impact": "training-tests-failing"
+      }
+    ]
+  },
+  "performance": {
+    "bundle": {
+      "totalSize": "2.5MB",
+      "gzippedSize": "500KB",
+      "largestChunk": {
+        "name": "index-4616d54e.js",
+        "size": "1636.15 kB",
+        "gzipped": "284.24 kB"
+      },
+      "recommendations": [
+        "Implement dynamic imports",
+        "Optimize TensorFlow.js imports",
+        "Add code splitting for large components"
+      ]
+    },
+    "a11y": [
+      {
+        "feature": "RTL Support",
+        "status": "implemented",
+        "description": "Full right-to-left language support for Persian content"
+      },
+      {
+        "feature": "Screen Reader",
+        "status": "needs-audit",
+        "recommendation": "Add eslint-plugin-jsx-a11y"
+      }
+    ],
+    "hotspots": [
+      {
+        "component": "TensorFlow.js",
+        "impact": "large-bundle-size",
+        "recommendation": "Lazy load AI components"
+      },
+      {
+        "component": "Chart.js",
+        "impact": "340KB-chunk",
+        "recommendation": "Dynamic import charts"
+      }
+    ]
+  },
+  "ciCd": {
+    "workflows": [
+      {
+        "name": "CI/CD Pipeline",
+        "file": ".github/workflows/ci-cd.yml",
+        "jobs": 8,
+        "status": "comprehensive"
+      },
+      {
+        "name": "Security Check",
+        "file": ".github/workflows/security-check.yml",
+        "schedule": "daily",
+        "status": "active"
+      },
+      {
+        "name": "Docker Build",
+        "file": ".github/workflows/docker-build.yml",
+        "platforms": ["linux/amd64", "linux/arm64"],
+        "status": "active"
+      }
+    ],
+    "permissions": [
+      {
+        "workflow": "docker-build",
+        "permissions": {
+          "contents": "read",
+          "packages": "write"
+        },
+        "status": "minimal-privilege"
+      }
+    ],
+    "antiPatterns": [
+      {
+        "type": "continue-on-error",
+        "impact": "may-mask-issues",
+        "recommendation": "Review and fix underlying issues"
+      },
+      {
+        "type": "missing-dependency-install",
+        "impact": "ci-failures",
+        "recommendation": "Add missing package installation"
+      }
+    ]
+  },
+  "docker": {
+    "images": [
+      {
+        "name": "persian-legal-ai",
+        "base": "node:20-alpine",
+        "size": "optimized",
+        "security": "non-root-user"
+      }
+    ],
+    "issues": [
+      {
+        "type": "health-check",
+        "status": "implemented",
+        "interval": "30s",
+        "timeout": "10s"
+      },
+      {
+        "type": "user-context",
+        "status": "secure",
+        "user": "appuser:appgroup",
+        "uid": 1001
+      }
+    ],
+    "suggestions": [
+      {
+        "type": "multi-stage",
+        "status": "implemented",
+        "benefit": "reduced-image-size"
+      },
+      {
+        "type": "volume-mounts",
+        "status": "implemented",
+        "benefit": "data-persistence"
+      }
+    ]
+  },
+  "docs": {
+    "readme": {
+      "status": "comprehensive",
+      "sections": [
+        "Features",
+        "Technology Stack",
+        "Installation",
+        "API Endpoints",
+        "Docker Deployment",
+        "Troubleshooting"
+      ],
+      "missing": ["API Documentation", "Architecture Diagrams"]
+    },
+    "envSample": {
+      "status": "missing",
+      "recommendation": "Create .env.sample with all required variables"
+    },
+    "runbooks": {
+      "status": "missing",
+      "recommendation": "Create incident response and operational procedures"
+    }
+  },
+  "actions": [
+    {
+      "id": "fix-001",
+      "title": "Fix TypeScript JSX syntax errors",
+      "severity": "P0",
+      "effort": "S",
+      "files": ["src/components/layout/enhanced_persian_dashboard.tsx"],
+      "description": "Fix unclosed JSX tags and syntax errors in enhanced_persian_dashboard.tsx",
+      "steps": [
+        "Fix unclosed div tag at line 47",
+        "Validate all JSX syntax",
+        "Run type-check to verify fixes"
+      ]
+    },
+    {
+      "id": "fix-002",
+      "title": "Install missing critical dependencies",
+      "severity": "P0",
+      "effort": "S",
+      "files": ["package.json"],
+      "description": "Install missing packages required for authentication and security",
+      "steps": [
+        "npm install jsonwebtoken bcryptjs csrf connect-sqlite3 --save",
+        "npm install terser --save-dev",
+        "Update package-lock.json"
+      ]
+    },
+    {
+      "id": "fix-003",
+      "title": "Fix server async/await syntax",
+      "severity": "P0",
+      "effort": "S",
+      "files": ["server/main.js"],
+      "description": "Wrap await calls in async function",
+      "steps": [
+        "Wrap line 19 await call in async function",
+        "Test server startup",
+        "Verify functionality"
+      ]
+    },
+    {
+      "id": "fix-004",
+      "title": "Restore test functionality",
+      "severity": "P1",
+      "effort": "M",
+      "files": ["tests/**/*.ts", "server/tests/**/*.ts"],
+      "description": "Fix test imports and restore test suite functionality",
+      "steps": [
+        "Fix missing dependency imports in tests",
+        "Update test configurations",
+        "Resolve worker implementation issues",
+        "Run full test suite"
+      ]
+    },
+    {
+      "id": "fix-005",
+      "title": "Update deprecated dependencies",
+      "severity": "P1",
+      "effort": "M",
+      "files": ["package.json"],
+      "description": "Upgrade deprecated packages to latest versions",
+      "steps": [
+        "npm install supertest@latest --save-dev",
+        "npm install multer@latest --save",
+        "npm install eslint@latest --save-dev",
+        "Test compatibility and update configurations"
+      ]
+    },
+    {
+      "id": "fix-006",
+      "title": "Implement code splitting for large bundles",
+      "severity": "P1",
+      "effort": "M",
+      "files": ["vite.config.ts", "src/**/*.tsx"],
+      "description": "Optimize bundle sizes with dynamic imports and code splitting",
+      "steps": [
+        "Implement dynamic imports for large components",
+        "Optimize TensorFlow.js imports",
+        "Add lazy loading for charts and AI components",
+        "Update Vite configuration for better chunking"
+      ]
+    },
+    {
+      "id": "fix-007",
+      "title": "Complete security configuration",
+      "severity": "P2",
+      "effort": "M",
+      "files": ["server/middleware/security.js", "server/modules/security/**"],
+      "description": "Complete CSRF and security middleware setup",
+      "steps": [
+        "Configure CSRF protection properly",
+        "Add security headers",
+        "Implement rate limiting",
+        "Test security features"
+      ]
+    },
+    {
+      "id": "fix-008",
+      "title": "Improve test coverage and quality",
+      "severity": "P2",
+      "effort": "L",
+      "files": ["tests/**/*.ts", "vitest.config.ts"],
+      "description": "Add comprehensive test coverage and fix failing tests",
+      "steps": [
+        "Add missing test cases",
+        "Implement E2E scenarios",
+        "Add performance tests",
+        "Achieve coverage thresholds"
+      ]
+    },
+    {
+      "id": "fix-009",
+      "title": "Create comprehensive documentation",
+      "severity": "P2",
+      "effort": "M",
+      "files": ["docs/**", ".env.sample"],
+      "description": "Add missing documentation and operational procedures",
+      "steps": [
+        "Create .env.sample file",
+        "Add API documentation",
+        "Create architecture diagrams",
+        "Write operational runbooks"
+      ]
+    },
+    {
+      "id": "fix-010",
+      "title": "Performance optimization and monitoring",
+      "severity": "P3",
+      "effort": "L",
+      "files": ["src/**/*.tsx", "server/**/*.js"],
+      "description": "Implement comprehensive performance optimization",
+      "steps": [
+        "Bundle optimization",
+        "Caching strategy implementation",
+        "CDN setup",
+        "Performance monitoring"
+      ]
+    }
+  ]
+}
