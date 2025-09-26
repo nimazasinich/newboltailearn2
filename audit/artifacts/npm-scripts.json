@@ -1,0 +1,1 @@
+{"dev":"cross-env NODE_NO_WARNINGS=1 vite --config vite.config.ts","build":"vite build --config vite.config.ts","start":"NODE_ENV=production PORT=8000 node server/main.js","lint":"eslint . --report-unused-disable-directives --max-warnings 0","type-check":"tsc --noEmit --project tsconfig.app.json"}

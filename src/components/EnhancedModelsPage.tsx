@@ -38,7 +38,7 @@ import {
   ChevronUp
 } from 'lucide-react';
 import { EnhancedCard, MetricCard, ProgressCard } from './ui/EnhancedCard';
-import { EnhancedSidebar, TopNavigation } from './ui/EnhancedNavigation';
+import { TopNavigation } from './ui/EnhancedNavigation';
 import { PerformanceChart, CategoryDistribution, SystemMetrics, RadialProgress } from './charts/EnhancedCharts';
 import { cn } from '../utils/cn';
 

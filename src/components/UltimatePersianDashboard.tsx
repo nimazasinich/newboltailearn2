@@ -17,7 +17,7 @@ import {
   LineChart as RechartsLine, Line, PieChart as RechartsPie, Pie, Cell, Area, AreaChart
 } from 'recharts';
 import { EnhancedCard, MetricCard, ProgressCard } from './ui/EnhancedCard';
-import { EnhancedSidebar, TopNavigation } from './ui/EnhancedNavigation';
+import { TopNavigation } from './ui/EnhancedNavigation';
 import { PerformanceChart, CategoryDistribution, SystemMetrics as SystemMetricsChart, RadialProgress } from './charts/EnhancedCharts';
 import { cn } from '../utils/cn';
 
@@ -205,15 +205,8 @@ export default function UltimatePersianDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800" dir="rtl">
-      {/* Enhanced Sidebar */}
-      <EnhancedSidebar 
-        collapsed={sidebarCollapsed}
-        onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
-        currentPath="/dashboard-ultimate"
-      />
-
       {/* Main Content */}
-      <div className={cn('transition-all duration-300', sidebarCollapsed ? 'mr-16' : 'mr-72')}>
+      <div className="w-full">
         {/* Top Navigation */}
         <TopNavigation 
           onMenuToggle={() => setSidebarCollapsed(!sidebarCollapsed)}

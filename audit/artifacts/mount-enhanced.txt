@@ -1,0 +1,4 @@
+src/components/UltimatePersianDashboard.tsx:209:      <EnhancedSidebar 
+src/components/EnhancedAnalyticsPage.tsx:169:      <EnhancedSidebar 
+src/components/EnhancedOverview.tsx:295:      <EnhancedSidebar 
+src/components/EnhancedMonitoringPage.tsx:210:      <EnhancedSidebar
