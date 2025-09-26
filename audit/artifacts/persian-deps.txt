@@ -1,0 +1,14 @@
+=== TensorFlow.js for Persian BERT ===
+iranian-legal-archive@1.0.0 /workspace
+├─┬ @tensorflow/tfjs-node@4.22.0
+│ └── @tensorflow/tfjs@4.22.0 deduped
+└── @tensorflow/tfjs@4.22.0
+
+=== Better-SQLite3 for Persian legal data ===
+iranian-legal-archive@1.0.0 /workspace
+└── better-sqlite3@9.6.0
+
+=== React Router for Persian navigation ===
+iranian-legal-archive@1.0.0 /workspace
+└── react-router-dom@6.30.1
+

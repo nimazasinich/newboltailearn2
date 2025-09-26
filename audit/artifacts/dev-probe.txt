@@ -1,0 +1,18 @@
+=== Development Server Response ===
+HTTP/1.1 200 OK
+Vary: Origin
+Content-Type: text/html
+Cache-Control: no-cache
+Etag: W/"2f6-JL3DDCVKmZd68WX7SJStre68Pd4"
+Date: Fri, 26 Sep 2025 22:12:56 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+Content-Length: 758
+
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <script type="module">import { injectIntoGlobalHook } from "/@react-refresh";
+injectIntoGlobalHook(window);
+=== Response Size ===
+758

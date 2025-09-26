@@ -1,0 +1,2 @@
+=== SIDEBAR IMPORT INTEGRITY ===
+Extracting all sidebar import paths:

@@ -1,0 +1,7 @@
+=== Persian Legal AI Assets ===
+src/assets/fonts/Vazirmatn-Regular.woff2
+src/assets/fonts/Vazirmatn-Bold.woff2
+7
+=== Component Structure ===
+57
+9

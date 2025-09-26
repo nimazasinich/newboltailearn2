@@ -1,0 +1,23 @@
+=== Build Artifacts Analysis ===
+20M	docs
+ 13052772  docs/assets/tensorflow-DZGbYn8l.js.map
+  1680698  docs/assets/charts-nDm-MEKH.js.map
+  1475091  docs/assets/tensorflow-DZGbYn8l.js
+   747506  docs/assets/index-Iv_AuQn0.js.map
+   701738  docs/assets/ui-BiXeI1pf.js.map
+   348355  docs/assets/vendor-ugrJR1sR.js.map
+   341565  docs/assets/charts-nDm-MEKH.js
+   294960  docs/assets/ProjectDownloader-BSw3Neap.js.map
+   287493  docs/assets/api-CWMsErSS.js.map
+   158650  docs/assets/index-pP7BvH1n.css
+   140168  docs/assets/vendor-ugrJR1sR.js
+   138961  docs/assets/index-Iv_AuQn0.js
+   135610  docs/assets/ProjectDownloader-BSw3Neap.js
+   132099  docs/assets/ui-BiXeI1pf.js
+    59449  docs/assets/TrainingManagement-DU996G_J.js.map
+    54871  docs/assets/EnhancedCharts-CNhzIQrl.js.map
+    50050  docs/assets/api-CWMsErSS.js
+    49309  docs/assets/EnhancedDashboard-C-uWwrda.js.map
+    47700  docs/assets/LogsPage-D3QqjPJW.js.map
+    43123  docs/assets/Overview-CFePCKXL.js.map
+=== Persian Assets in Build ===
