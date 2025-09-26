@@ -1,0 +1,5 @@
+total 24K
+drwxr-xr-x  3 ubuntu ubuntu 4.0K Sep 26 22:25 .
+drwxr-xr-x 23 ubuntu ubuntu  12K Sep 26 22:25 ..
+drwxr-xr-x  4 ubuntu ubuntu 4.0K Sep 26 22:25 assets
+-rw-r--r--  1 ubuntu ubuntu 1.1K Sep 26 22:25 index.html
