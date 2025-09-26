@@ -1,0 +1,40 @@
+[33m095e9b0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;32mtempbranch[m[33m)[m HEAD@{0}: reset: moving to HEAD
+[33m095e9b0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;32mtempbranch[m[33m)[m HEAD@{1}: checkout: moving from main to main
+[33m095e9b0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;32mtempbranch[m[33m)[m HEAD@{2}: checkout: moving from main to main
+[33m095e9b0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;32mtempbranch[m[33m)[m HEAD@{3}: checkout: moving from main to main
+[33m095e9b0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;32mtempbranch[m[33m)[m HEAD@{4}: checkout: moving from tempbranch to main
+[33m095e9b0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;32mtempbranch[m[33m)[m HEAD@{5}: checkout: moving from main to tempbranch
+[33m095e9b0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;32mtempbranch[m[33m)[m HEAD@{6}: Branch: renamed refs/heads/main to refs/heads/main
+[33m095e9b0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;32mtempbranch[m[33m)[m HEAD@{8}: Branch: renamed refs/heads/main to refs/heads/main
+[33m095e9b0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;32mtempbranch[m[33m)[m HEAD@{10}: Branch: renamed refs/heads/main to refs/heads/main
+[33m095e9b0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;32mtempbranch[m[33m)[m HEAD@{12}: Branch: renamed refs/heads/main to refs/heads/main
+[33m095e9b0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;32mtempbranch[m[33m)[m HEAD@{14}: Branch: renamed refs/heads/main to refs/heads/main
+[33m095e9b0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;32mtempbranch[m[33m)[m HEAD@{16}: Branch: renamed refs/heads/main to refs/heads/main
+[33m095e9b0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;32mtempbranch[m[33m)[m HEAD@{18}: Branch: renamed refs/heads/main to refs/heads/main
+[33m095e9b0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;32mtempbranch[m[33m)[m HEAD@{20}: Branch: renamed refs/heads/main to refs/heads/main
+[33m095e9b0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;32mtempbranch[m[33m)[m HEAD@{22}: commit: Sanitize .env.sample (remove Hugging Face token)
+[33mc56aefd[m HEAD@{23}: Branch: renamed refs/heads/main to refs/heads/main
+[33mc56aefd[m HEAD@{25}: Branch: renamed refs/heads/fix/enterprise-audit to refs/heads/main
+[33mc56aefd[m HEAD@{27}: commit: Persian Legal AI: Complete application with enhanced sidebar and fixed layer conflicts
+[33mf5f9d0f[m HEAD@{28}: commit: feat: implement real API endpoints and replace mock data with live data
+[33m961d943[m HEAD@{29}: commit: fix: resolve JSX structure and make sidebar tabs dynamic and compact
+[33m22f28d6[m HEAD@{30}: commit: fix: add missing HardDrive import to resolve runtime error
+[33mde649d3[m HEAD@{31}: commit: feat: clean up sidebar by removing redundant cards and collapse button
+[33mf3b4712[m HEAD@{32}: commit: feat: significantly reduce height of system status and training cards
+[33mf4c018e[m HEAD@{33}: commit: feat: optimize sidebar tabs height and enhance visual appeal
+[33m71e349c[m HEAD@{34}: commit: feat: redesign sidebar buttons to match modern UI design
+[33mffaf190[m HEAD@{35}: commit: feat: enhanced sidebar bottom tabs with system health and model status
+[33m6952352[m HEAD@{36}: commit: feat: integrated Ultimate Persian Dashboard from desktop file
+[33m7a17271[m HEAD@{37}: commit: feat: enhanced Persian dashboard with advanced UI components
+[33m0ba5804[m HEAD@{38}: commit: feat: enhanced system status design and progress bar colors - System status now matches active training section design - Added colored glow borders to metric cards - Updated progress bars with green-to-teal-to-blue gradient - Full height sidebar with consistent visual theme
+[33me0933f5[m HEAD@{39}: commit: feat: enhanced system status with mini icons and bottom tabs
+[33m543112b[m HEAD@{40}: commit: feat: enhanced UI/UX with collapsible training, model management, and improved proportions
+[33mef13cda[m HEAD@{41}: commit: feat: enhanced sidebar design and improved UI/UX
+[33m2adb352[m HEAD@{42}: commit: fix: Windows compatibility and application startup issues
+[33md05f461[m HEAD@{43}: commit: fix: Docker configuration and deployment improvements
+[33me4d2734[m HEAD@{44}: commit: feat: comprehensive reliability systems - enterprise-grade fallback mechanisms
+[33m037cdba[m HEAD@{45}: commit: feat: complete enterprise transformation - all problems solved
+[33mf7ae9d5[m HEAD@{46}: commit: feat: complete enterprise audit - AI pipeline, E2E tests, deployment validation
+[33mc6bd8b6[m HEAD@{47}: commit: fix: enterprise audit - resolve ESLint errors, add security middleware, improve dev experience
+[33m4384313[m HEAD@{48}: checkout: moving from main to fix/enterprise-audit
+[33m4384313[m HEAD@{49}: clone: from https://github.com/nimazasinich/newboltailearn.git
