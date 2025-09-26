@@ -109,8 +109,8 @@ export const trainingService = {
         accuracy: 0,
         loss: 0,
         epochs: 0,
-        currentEpoch: 0,
-        datasetId: '',
+        current_epoch: 0,
+        dataset_id: '',
         config: {},
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
@@ -143,7 +143,7 @@ export const trainingService = {
         accuracy: 0,
         loss: 0,
         epochs: 0,
-        currentEpoch: 0,
+        current_epoch: 0,
         datasetId: model.datasetId || '',
         config: model.config || {},
         createdAt: new Date().toISOString(),
@@ -157,14 +157,17 @@ export const trainingService = {
    */
   async updateModel(modelId: number, updates: Partial<ModelInfo>): Promise<{ success: boolean; message: string }> {
     try {
-      const response = await apiRequest<{ success: boolean; message: string }>(
+      const response = await apiRequest(
         joinApiPath(API_BASE, `/models/${modelId}`),
         {
           method: 'PUT',
           body: JSON.stringify(updates),
         }
       );
-      return response;
+      return {
+        success: response.ok,
+        message: response.ok ? 'Model updated successfully' : 'Failed to update model'
+      };
     } catch (error) {
       console.error('Update model failed:', error);
       throw new Error('خطا در به‌روزرسانی مدل');
@@ -176,13 +179,16 @@ export const trainingService = {
    */
   async deleteModel(modelId: number): Promise<{ success: boolean; message: string }> {
     try {
-      const response = await apiRequest<{ success: boolean; message: string }>(
+      const response = await apiRequest(
         joinApiPath(API_BASE, `/models/${modelId}`),
         {
           method: 'DELETE',
         }
       );
-      return response;
+      return {
+        success: response.ok,
+        message: response.ok ? 'Model deleted successfully' : 'Failed to delete model'
+      };
     } catch (error) {
       console.error('Delete model failed:', error);
       throw new Error('خطا در حذف مدل');
@@ -225,7 +231,7 @@ export const trainingService = {
    */
   async pauseTraining(modelId: number): Promise<{ success: boolean; message: string }> {
     try {
-      const response = await apiRequest<{ success: boolean; message: string }>(
+      const response = await apiRequest(
         joinApiPath(API_BASE, `/models/${modelId}/pause`),
         {
           method: 'POST',
@@ -276,7 +282,7 @@ export const trainingService = {
         ? `/models/${modelId}/sessions`
         : '/training/sessions';
 
-      const response = await apiRequest<TrainingSession[]>(
+      const response = await apiRequest(
         joinApiPath(API_BASE, endpoint)
       );
       return response;
@@ -291,7 +297,7 @@ export const trainingService = {
    */
   async getTrainingSession(sessionId: string): Promise<TrainingSession> {
     try {
-      const response = await apiRequest<TrainingSession>(
+      const response = await apiRequest(
         joinApiPath(API_BASE, `/training/sessions/${sessionId}`)
       );
       return response;

@@ -131,12 +131,18 @@ export default function UltimatePersianDashboard() {
 
       // Mock metrics
       setMetrics({
-        cpu_usage: Math.floor(Math.random() * 30 + 40),
-        memory_usage: Math.floor(Math.random() * 20 + 60),
-        gpu_usage: Math.floor(Math.random() * 40 + 50),
-        disk_usage: Math.floor(Math.random() * 15 + 75),
-        active_connections: Math.floor(Math.random() * 10 + 15),
-        uptime: Math.floor(Math.random() * 86400 + 3600)
+        cpuUsage: Math.floor(Math.random() * 30 + 40),
+        memoryUsage: Math.floor(Math.random() * 20 + 60),
+        gpuUsage: Math.floor(Math.random() * 40 + 50),
+        diskUsage: Math.floor(Math.random() * 15 + 75),
+        activeConnections: Math.floor(Math.random() * 10 + 15),
+        storageUsage: Math.floor(Math.random() * 20 + 30),
+        networkUsage: Math.floor(Math.random() * 15 + 25),
+        activeTrainingSessions: Math.floor(Math.random() * 3 + 1),
+        totalDocuments: Math.floor(Math.random() * 1000 + 500),
+        systemHealth: 'good' as const,
+        uptime: Math.floor(Math.random() * 86400 + 3600),
+        lastUpdate: new Date()
       });
 
       setLastUpdate(new Date());

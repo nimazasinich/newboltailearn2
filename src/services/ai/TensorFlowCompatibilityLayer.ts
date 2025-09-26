@@ -71,10 +71,10 @@ export class TensorFlowCompatibilityLayer {
     const browser = this.detectBrowser();
     
     this.compatibilityReport = {
-      webgl: await tf.ENV.getAsync('WEBGL_VERSION') || 0,
+      webgl: Number(await tf.ENV.getAsync('WEBGL_VERSION')) || 0,
       wasm: typeof WebAssembly === 'object',
-      simd: await tf.ENV.getAsync('WASM_HAS_SIMD_SUPPORT') || false,
-      memory: await tf.ENV.getAsync('WEBGL_MAX_TEXTURE_SIZE') || 0,
+      simd: Boolean(await tf.ENV.getAsync('WASM_HAS_SIMD_SUPPORT')) || false,
+      memory: Number(await tf.ENV.getAsync('WEBGL_MAX_TEXTURE_SIZE')) || 0,
       device: isMobile ? 'mobile' : 'desktop',
       browser,
       optimalBackend: 'unknown'
@@ -214,7 +214,7 @@ export class TensorFlowCompatibilityLayer {
         return;
         
       } catch (error) {
-        console.warn(`⚠️ Backend ${backend} initialization failed:`, error.message);
+        console.warn(`⚠️ Backend ${backend} initialization failed:`, error instanceof Error ? error.message : String(error));
         continue;
       }
     }

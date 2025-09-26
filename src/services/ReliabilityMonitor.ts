@@ -253,6 +253,9 @@ export class ReliabilityMonitor {
     try {
       // Simulate file system check
       // In a real implementation, this would check disk space, permissions, etc.
+      if (Math.random() < 0.1) {
+        throw new Error('Simulated file system failure');
+      }
       return 'healthy';
     } catch (error) {
       return 'failed';
@@ -266,6 +269,9 @@ export class ReliabilityMonitor {
     try {
       // Check external API dependencies
       // This would check HuggingFace API, etc.
+      if (Math.random() < 0.1) {
+        throw new Error('Simulated API failure');
+      }
       return 'healthy';
     } catch (error) {
       return 'failed';

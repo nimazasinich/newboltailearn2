@@ -39,7 +39,7 @@ export interface ServiceHealth {
 
 export interface PerformanceMetrics {
   timestamp: string;
-  memoryUsage: NodeJS.MemoryUsage;
+  memoryUsage: any;
   cpuUsage: number;
   activeConnections: number;
   totalRequests: number;

@@ -235,7 +235,7 @@ export async function downloadDatasetById(id: string, onProgress?: (progress: nu
       }
     }
 
-    return new Blob(chunks);
+    return new Blob(chunks as any[]);
   } catch (error) {
     console.error('Failed to download dataset:', error);
     throw error;

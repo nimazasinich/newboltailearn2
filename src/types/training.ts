@@ -128,6 +128,9 @@ export interface QueuedTraining {
 export interface SystemMetrics {
   cpuUsage: number;
   memoryUsage: number;
+  gpuUsage: number;
+  diskUsage: number;
+  activeConnections: number;
   storageUsage: number;
   networkUsage: number;
   activeTrainingSessions: number;

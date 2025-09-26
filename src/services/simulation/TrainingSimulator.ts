@@ -22,28 +22,47 @@ export class TrainingSimulator {
       let trainer: DoRATrainer | QRAdaptor | PersianBertProcessor;
       
       switch (session.modelType) {
-        case 'dora':
-          trainer = new DoRATrainer(session.configuration.doraConfig!);
+        case 'dora': {
+          const doraConfig = {
+            rank: session.configuration.doraConfig!.rank,
+            alpha: session.configuration.doraConfig!.alpha,
+            dropout: 0.1,
+            learningRate: 0.001,
+            batchSize: 32,
+            epochs: 10,
+            validationSplit: 0.2
+          };
+          trainer = new DoRATrainer(doraConfig);
           break;
+        }
         case 'qr-adaptor':
           trainer = new QRAdaptor(session.configuration.qrConfig!);
           break;
-        case 'persian-bert':
-          trainer = new PersianBertProcessor(session.configuration.bertConfig!);
+        case 'persian-bert': {
+          const bertConfig = {
+            ...session.configuration.bertConfig!,
+            intermediateSize: 3072,
+            dropout: 0.1,
+            learningRate: 0.0001
+          };
+          trainer = new PersianBertProcessor(bertConfig);
           break;
+        }
         default:
           throw new Error(`Unsupported model type: ${session.modelType}`);
       }
 
-      // Initialize trainer with a dummy base model
-      const dummyModel = tf.sequential({
-        layers: [
-          tf.layers.dense({ units: 128, inputShape: [100] }),
-          tf.layers.dense({ units: 64, activation: 'relu' }),
-          tf.layers.dense({ units: 1, activation: 'sigmoid' })
-        ]
-      });
-      await trainer.initialize(dummyModel);
+      // Initialize trainer (if it has an initialize method)
+      if ('initialize' in trainer && typeof trainer.initialize === 'function') {
+        const dummyModel = tf.sequential({
+          layers: [
+            tf.layers.dense({ units: 128, inputShape: [100] }),
+            tf.layers.dense({ units: 64, activation: 'relu' }),
+            tf.layers.dense({ units: 1, activation: 'sigmoid' })
+          ]
+        });
+        await (trainer as any).initialize(dummyModel);
+      }
       
       // Store active session
       this.activeSessions.set(session.id, {
@@ -67,15 +86,25 @@ export class TrainingSimulator {
       const { trainData, validationData } = this.generateTrainingData(session.modelType);
 
       // Start training with progress callbacks
-      await trainer.train(
-        trainData,
-        validationData,
-        session.configuration.epochs,
+      const mockDocuments = this.generateMockDocuments(session.modelType);
+      await (trainer as any).train(
+        mockDocuments,
         (progress: TrainingProgress) => {
           const sessionData = this.activeSessions.get(session.id);
           if (sessionData) {
             sessionData.progress = progress;
-            const metrics = trainer.getTrainingMetrics();
+            const metrics = ('getTrainingMetrics' in trainer && typeof trainer.getTrainingMetrics === 'function') 
+              ? (trainer as any).getTrainingMetrics() 
+              : { 
+            trainingSpeed: 0, 
+            memoryUsage: 0, 
+            cpuUsage: 0, 
+            gpuUsage: 0, 
+            batchSize: 0, 
+            throughput: 0, 
+            convergenceRate: 0, 
+            efficiency: 0 
+          };
             onProgress(session.id, progress, metrics);
           }
         }
@@ -175,7 +204,9 @@ export class TrainingSimulator {
   stopTraining(sessionId: string): void {
     const sessionData = this.activeSessions.get(sessionId);
     if (sessionData) {
-      sessionData.trainer.stop();
+      if ('stop' in sessionData.trainer && typeof sessionData.trainer.stop === 'function') {
+        (sessionData.trainer as any).stop();
+      }
       this.activeSessions.delete(sessionId);
     }
   }
@@ -183,7 +214,9 @@ export class TrainingSimulator {
   pauseTraining(sessionId: string): boolean {
     const sessionData = this.activeSessions.get(sessionId);
     if (sessionData) {
-      sessionData.trainer.stop();
+      if ('stop' in sessionData.trainer && typeof sessionData.trainer.stop === 'function') {
+        (sessionData.trainer as any).stop();
+      }
       return true;
     }
     return false;
@@ -198,7 +231,18 @@ export class TrainingSimulator {
   getActiveSessionMetrics(sessionId: string): TrainingMetrics | null {
     const sessionData = this.activeSessions.get(sessionId);
     if (sessionData) {
-      return sessionData.trainer.getTrainingMetrics();
+      return ('getTrainingMetrics' in sessionData.trainer && typeof sessionData.trainer.getTrainingMetrics === 'function') 
+        ? (sessionData.trainer as any).getTrainingMetrics() 
+        : { 
+            trainingSpeed: 0, 
+            memoryUsage: 0, 
+            cpuUsage: 0, 
+            gpuUsage: 0, 
+            batchSize: 0, 
+            throughput: 0, 
+            convergenceRate: 0, 
+            efficiency: 0 
+          };
     }
     return null;
   }
@@ -313,6 +357,27 @@ export class TrainingSimulator {
       trainingSpeed: activeSessionCount > 0 ? Math.random() * 100 + 50 : 0,
       throughput: activeSessionCount > 0 ? Math.random() * 1000 + 500 : 0
     };
+  }
+
+  private generateMockDocuments(modelType: string): any[] {
+    // Generate mock Persian legal documents for training
+    const categories = ['قانون', 'آیین‌نامه', 'بخشنامه', 'دستورالعمل'];
+    const documents = [];
+    
+    for (let i = 0; i < 100; i++) {
+      documents.push({
+        id: `doc_${i}`,
+        title: `سند حقوقی ${i}`,
+        content: `محتوای سند حقوقی شماره ${i} که شامل متن فارسی است.`,
+        category: categories[i % categories.length],
+        classification: {
+          category: categories[i % categories.length],
+          confidence: Math.random() * 0.3 + 0.7
+        }
+      });
+    }
+    
+    return documents;
   }
 
   dispose(): void {

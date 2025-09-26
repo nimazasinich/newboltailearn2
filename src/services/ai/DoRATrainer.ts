@@ -369,7 +369,8 @@ export class DoRATrainer {
             return 'Model not initialized';
         }
         
-        return this.model.summary();
+        this.model.summary();
+        return 'Model summary printed to console';
     }
 
     // Get training statistics
