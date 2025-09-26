@@ -1,22 +1,20 @@
 {
-  "commit": "04daceb72292dd459f2126a34562b902498f799e",
-  "branch": "cursor/automated-repo-audit-for-production-readiness-a5f3",
-  "build": "FAILED",
+  "commit": "540de94bf9b9e10f6ca76af3c7c2d06259916c36",
+  "branch": "work",
+  "build": "SUCCESS",
   "typescript": "FAIL",
   "eslint": "PASS",
-  "prod_server": "UP",
-  "health": "UNKNOWN",
+  "prod_server": "DOWN",
+  "health": "FAIL",
   "dev_server": "SIGNAL",
-  "sidebar_overlap_risk": "HIGH",
+  "sidebar_overlap_risk": "LOW",
   "essential_files_deleted": false,
   "notes": [
-    "Build failed due to Vite configuration issue with NODE_ENV=production",
-    "TypeScript compilation failed with 17 errors in src/services/training.ts",
-    "ESLint passed with no errors detected",
-    "Production server started successfully on port 8000 with database connection",
-    "Dev server started successfully on port 5173",
-    "HIGH sidebar overlap risk: ModernSidebar and EnhancedSidebar both mounted in different components",
-    "No essential files deleted since previous commit",
-    "Server has ES module compatibility issues with require() statements"
+    "TypeScript no-emit check reports multiple errors in src/services/training.ts; see audit/artifacts/tsc.log.",
+    "Vite production build finishes with output written to docs/; see audit/artifacts/build.log.",
+    "npm start under production exits because require is not defined in ES module scope; see audit/artifacts/server.log.",
+    "Health probes to port 3000 fail with connection refused; see audit/artifacts/curl-errors.txt.",
+    "Vite dev server banner confirms localhost:5173 availability; see audit/artifacts/dev.log.",
+    "Only ModernSidebar mounts inside EnhancedAppLayout, no evidence of multiple sidebars simultaneously; see audit/artifacts/mount-modern.txt."
   ]
 }

@@ -1,0 +1,20 @@
+src/components/ui/EnhancedNavigation.tsx:98:interface EnhancedSidebarProps {
+src/components/ui/EnhancedNavigation.tsx:104:export function EnhancedSidebar({ 
+src/components/ui/EnhancedNavigation.tsx:108:}: EnhancedSidebarProps) {
+src/styles/theme.css:314:/* Sidebar Enhancements */
+src/styles/components.css:157:  /* Enhanced Sidebar */
+src/components/layout/EnhancedAppLayout.tsx:4:import { ModernSidebar } from './ModernSidebar';
+src/components/layout/EnhancedAppLayout.tsx:136:      <ModernSidebar />
+src/components/layout/ModernSidebar.tsx:29:export function ModernSidebar() {
+src/components/layout/ModernSidebar.tsx:46:    console.log('🔧 ModernSidebar: Component mounted successfully');
+src/components/layout/ModernSidebar.tsx:47:    console.log('🔧 ModernSidebar: Current location:', location.pathname);
+src/components/layout/ModernSidebar.tsx:48:    console.log('🔧 ModernSidebar: Collapsed state:', collapsed);
+src/components/layout/ModernSidebar.tsx:564:    console.error('❌ ModernSidebar rendering error:', error);
+src/components/layout/CreativeSidebar.tsx:123:export function CreativeSidebar() {
+src/components/SettingsPage.tsx:118:          {/* Sidebar */}
+src/components/layout/Sidebar.tsx:43:export function Sidebar({ isOpen, onClose }: SidebarProps) {
+src/components/EnhancedDashboard.tsx:72:  // Sidebar menu items
+src/components/EnhancedDashboard.tsx:205:      {/* Modern Sidebar */}
+src/components/EnhancedDashboard.tsx:214:          {/* Sidebar Header */}
+src/components/EnhancedDashboard.tsx:288:          {/* Sidebar Footer - System Status */}
+src/components/EnhancedModelsPage.tsx:309:        {/* Sidebar */}

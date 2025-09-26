@@ -1,1 +1,1 @@
-Dockerfile:31:COPY .env* ./
+No Dockerfile entries copying .env* patterns were found.

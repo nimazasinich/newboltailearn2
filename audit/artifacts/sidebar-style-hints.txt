@@ -1,4 +1,14 @@
-src/components/layout/CreativeSidebar.tsx:140:      className="relative bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-700 shadow-xl"
-src/components/layout/Sidebar.tsx:49:      <div className="hidden lg:flex lg:flex-col lg:w-80 lg:fixed lg:inset-y-0 bg-white/80 backdrop-blur-xl border-l border-slate-200/50 shadow-2xl">
 src/components/layout/ModernSidebar.tsx:138:      } h-screen bg-gradient-to-b from-slate-800/95 to-slate-900/95 backdrop-blur-xl border-l border-slate-600/50 transition-all duration-300 flex flex-col overflow-hidden relative z-50`}
 src/components/layout/ModernSidebar.tsx:139:      dir="rtl"
+src/components/layout/ModernSidebar.tsx:388:                  <div className="relative z-10 flex items-center justify-center gap-1.5">
+src/components/layout/ModernSidebar.tsx:410:                  <div className="relative z-10 flex items-center justify-center gap-1.5">
+src/components/layout/ModernSidebar.tsx:551:          border-radius: 10px;
+src/components/layout/ModernSidebar.tsx:555:          border-radius: 10px;
+src/components/layout/ModernSidebar.tsx:566:      <div className="w-80 h-screen bg-gradient-to-b from-slate-800/95 to-slate-900/95 backdrop-blur-xl border-l border-slate-600/50 flex items-center justify-center" dir="rtl">
+src/components/layout/CreativeSidebar.tsx:140:      className="relative bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-700 shadow-xl"
+src/components/layout/CreativeSidebar.tsx:235:                    <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} rounded-2xl blur-lg opacity-30 -z-10`} />
+src/components/layout/CreativeSidebar.tsx:272:                    className="absolute left-full ml-4 top-1/2 transform -translate-y-1/2 z-50"
+src/components/layout/Sidebar.tsx:49:      <div className="hidden lg:flex lg:flex-col lg:w-80 lg:fixed lg:inset-y-0 bg-white/80 backdrop-blur-xl border-l border-slate-200/50 shadow-2xl">
+src/components/layout/Sidebar.tsx:82:                      ? 'bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 text-blue-600 dark:text-blue-400 border-l-4 border-blue-500 shadow-sm'
+src/components/layout/Sidebar.tsx:105:        'fixed inset-y-0 right-0 z-50 w-80 bg-white dark:bg-gray-800 transform transition-transform duration-300 ease-in-out lg:hidden',
+src/components/layout/Sidebar.tsx:148:                      ? 'bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 text-blue-600 dark:text-blue-400 border-l-4 border-blue-500 shadow-sm'

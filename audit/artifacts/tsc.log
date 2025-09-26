@@ -1,0 +1,15 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+src/services/training.ts(268,9): error TS2322: Type 'Partial<TrainingConfig>' is not assignable to type 'TrainingConfig'.
+  Types of property 'epochs' are incompatible.
+    Type 'number | undefined' is not assignable to type 'number'.
+      Type 'undefined' is not assignable to type 'number'.
+src/services/training.ts(288,14): error TS2352: Conversion of type 'Response' to type 'TrainingSession[]' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type 'Response' is missing the following properties from type 'TrainingSession[]': length, pop, push, concat, and 29 more.
+src/services/training.ts(303,14): error TS2352: Conversion of type 'Response' to type 'TrainingSession' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type 'Response' is missing the following properties from type 'TrainingSession': id, modelId, sessionId, progress, and 10 more.
+src/services/training.ts(334,14): error TS2352: Conversion of type 'Response' to type '{ logs: { id: number; level: string; message: string; epoch?: number | undefined; loss?: number | undefined; accuracy?: number | undefined; timestamp: string; }[]; pagination: any; }' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type 'Response' is missing the following properties from type '{ logs: { id: number; level: string; message: string; epoch?: number | undefined; loss?: number | undefined; accuracy?: number | undefined; timestamp: string; }[]; pagination: any; }': logs, pagination
+src/services/training.ts(367,14): error TS2352: Conversion of type 'Response' to type '{ id: number; epoch: number; accuracy: number; loss: number; filePath: string; createdAt: string; }[]' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type 'Response' is missing the following properties from type '{ id: number; epoch: number; accuracy: number; loss: number; filePath: string; createdAt: string; }[]': length, pop, push, concat, and 29 more.
+src/services/training.ts(458,14): error TS2352: Conversion of type 'Response' to type '{ totalModels: number; activeTraining: number; completedTraining: number; averageAccuracy: number; totalTrainingHours: number; }' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Type 'Response' is missing the following properties from type '{ totalModels: number; activeTraining: number; completedTraining: number; averageAccuracy: number; totalTrainingHours: number; }': totalModels, activeTraining, completedTraining, averageAccuracy, totalTrainingHours

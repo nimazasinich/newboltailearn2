@@ -1,0 +1,20 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> iranian-legal-archive@1.0.0 start
+> NODE_ENV=production PORT=8000 node server/main.js
+
+🔧 Initializing enterprise components...
+✅ Enterprise components initialized successfully
+🧠 Starting Persian Legal AI Server
+=====================================
+✅ Persian Legal AI Database connected
+✅ Database schema initialized
+🌱 Seeding initial Persian legal documents...
+✅ Seeded 5 Persian legal documents
+🚀 Persian Legal AI Server running on port 8000
+📊 WebSocket server ready for real-time updates
+🗄️  Database: Connected
+✅ Database initialization complete
+⚠️ Enterprise components not available, using fallback mode
+Error: require is not defined in ES module scope, you can use import instead
+This file is being treated as an ES module because it has a '.js' file extension and '/workspace/newboltailearn2/package.json' contains "type": "module". To treat it as a CommonJS script, rename it to use the '.cjs' file extension.
