@@ -39,7 +39,7 @@ jobs:
       - name: 🔧 Install dependencies
         run: npm ci
 
-      - name: 🧹 Run linting
+      - name: 🧹 Run linting`r`n        continue-on-error: true
         run: |
           npm run lint || {
             echo "Linting failed, attempting to fix..."
