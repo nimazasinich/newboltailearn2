@@ -1,0 +1,2 @@
+import{j as r}from"./ui-b8d29e0a.js";function e({children:e,className:a="",variant:o="flat",size:s="md",hover:d=!0}){const n=d?"hover:scale-[1.02] hover:shadow-lg cursor-pointer":"";return r.jsx("div",{className:`\n      bg-white dark:bg-slate-900 rounded-2xl transition-all duration-200 \n      ${{flat:"border-0",outlined:"border border-slate-200 dark:border-slate-700",elevated:"shadow-sm hover:shadow-md"}[o]} \n      ${{sm:"p-4",md:"p-6",lg:"p-8"}[s]} \n      ${n} \n      ${a}\n    `,children:e})}export{e as M};
+//# sourceMappingURL=ModernCard-00131242.js.map
