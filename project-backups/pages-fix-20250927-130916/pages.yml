@@ -40,25 +40,8 @@ jobs:
             echo "VITE_BASE_PATH=/${{ github.event.repository.name }}/" >> $GITHUB_ENV
           fi
           
-      - name: Setup production environment for Pages
-        run: |
-          # Copy production environment template
-          if [ -f .env.production.pages ]; then
-            cp .env.production.pages .env.production
-            echo "Using Pages-specific environment configuration"
-          else
-            echo "VITE_API_BASE=/api" >> .env.production
-            echo "VITE_WS_URL=/ws" >> .env.production
-            echo "Created basic production environment"
-          fi
-          
       - name: Build
         run: npm run build
-        
-      - name: Ensure SPA fallback files
-        run: |
-          [ -f docs/.nojekyll ] || touch docs/.nojekyll
-          [ -f docs/404.html ] || cp docs/index.html docs/404.html
         
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
