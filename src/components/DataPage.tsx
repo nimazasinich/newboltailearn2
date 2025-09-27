@@ -33,89 +33,10 @@ interface Dataset {
   description: string;
   created_at: string;
   updated_at: string;
-  download_count: number;
-  usage_count: number;
-  quality_score: number;
+  download_count?: number;
+  usage_count?: number;
+  quality_score?: number;
 }
-
-// Mock Data برای Datasets
-const MOCK_DATASETS = [
-  {
-    id: 'legal-qa-persian',
-    name: 'Persian Legal QA Dataset',
-    source: 'Internal',
-    samples: 15000,
-    size_mb: 45.2,
-    status: 'available',
-    type: 'qa',
-    description: 'مجموعه داده پرسش و پاسخ حقوقی فارسی شامل 15 هزار جفت پرسش و پاسخ',
-    created_at: new Date(Date.now() - 86400000 * 7).toISOString(),
-    updated_at: new Date(Date.now() - 3600000).toISOString(),
-    download_count: 45,
-    usage_count: 12,
-    quality_score: 94
-  },
-  {
-    id: 'court-decisions',
-    name: 'Court Decisions Dataset',
-    source: 'Public',
-    samples: 8500,
-    size_mb: 32.1,
-    status: 'available',
-    type: 'classification',
-    description: 'مجموعه تصمیمات دادگاه شامل رای‌های مختلف دادگاه‌های کشور',
-    created_at: new Date(Date.now() - 86400000 * 14).toISOString(),
-    updated_at: new Date(Date.now() - 86400000 * 2).toISOString(),
-    download_count: 78,
-    usage_count: 23,
-    quality_score: 89
-  },
-  {
-    id: 'legal-docs',
-    name: 'Legal Documents Collection',
-    source: 'Mixed',
-    samples: 12000,
-    size_mb: 67.8,
-    status: 'processing',
-    type: 'text',
-    description: 'مجموعه اسناد حقوقی متنوع شامل قراردادها، وصیت‌نامه‌ها و سایر اسناد',
-    created_at: new Date(Date.now() - 86400000 * 3).toISOString(),
-    updated_at: new Date(Date.now() - 1800000).toISOString(),
-    download_count: 23,
-    usage_count: 5,
-    quality_score: 76
-  },
-  {
-    id: 'contracts-dataset',
-    name: 'Contracts Analysis Dataset',
-    source: 'Internal',
-    samples: 6500,
-    size_mb: 28.4,
-    status: 'available',
-    type: 'analysis',
-    description: 'مجموعه داده تحلیل قراردادها برای شناسایی بندهای مهم',
-    created_at: new Date(Date.now() - 86400000 * 21).toISOString(),
-    updated_at: new Date(Date.now() - 86400000 * 5).toISOString(),
-    download_count: 34,
-    usage_count: 8,
-    quality_score: 91
-  },
-  {
-    id: 'case-law-db',
-    name: 'Case Law Database',
-    source: 'External',
-    samples: 9800,
-    size_mb: 54.6,
-    status: 'error',
-    type: 'reference',
-    description: 'پایگاه داده رویه قضایی و سوابق دادگاهی',
-    created_at: new Date(Date.now() - 86400000 * 10).toISOString(),
-    updated_at: new Date(Date.now() - 86400000 * 1).toISOString(),
-    download_count: 12,
-    usage_count: 2,
-    quality_score: 65
-  }
-];
 
 export default function DataPage() {
   const [datasets, setDatasets] = useState<Dataset[]>([]);
@@ -142,8 +63,8 @@ export default function DataPage() {
       } catch (err) {
         console.error('Error loading datasets:', err);
         setError('خطا در بارگذاری دیتاست‌ها');
-        // Fallback to mock data
-        setDatasets(MOCK_DATASETS);
+        // Fallback to empty array
+        setDatasets([]);
       } finally {
         setLoading(false);
       }

@@ -26,20 +26,10 @@ const TrainingManagement = lazyCompat(() => import('./components/TrainingManagem
 const ProjectDownloader  = lazyCompat(() => import('./components/ProjectDownloader'), 'ProjectDownloader')
 const DatasetGallery     = lazyCompat(() => import('./components/DatasetGallery'), 'DatasetGallery')
 
+import { LoadingScreen } from './components/ui/LoadingScreen';
+
 function AppLoading() {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800" dir="rtl">
-      <div className="text-center space-y-4">
-        <div className="w-16 h-16 rounded-full border-4 border-blue-500 border-t-transparent animate-spin mx-auto" />
-        <div className="text-white font-persian text-lg">
-          در حال بارگذاری سیستم هوش مصنوعی حقوقی...
-        </div>
-        <div className="text-slate-400 text-sm">
-          لطفاً صبر کنید
-        </div>
-      </div>
-    </div>
-  )
+  return <LoadingScreen />
 }
 
 export default function App() {
