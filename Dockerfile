@@ -1,71 +1,65 @@
-# Persian Legal AI - Enterprise Docker Container
-FROM node:20-alpine
+# Frontend Multi-Stage Build Dockerfile
+# Production-ready React/Vite application with optimized build
 
-# Install system dependencies for native modules and utilities
-RUN apk add --no-cache \
-    python3 \
-    make \
-    g++ \
-    sqlite \
-    curl \
-    su-exec \
-    bash
-
-# Create app user and group for security
-RUN addgroup -g 1001 -S appgroup && \
-    adduser -S -D -u 1001 -G appgroup appuser
-
-# Set working directory
+# Stage 1: Dependencies
+FROM node:20-bullseye-slim AS deps
 WORKDIR /app
 
-# Copy package files first for better caching
+# Copy package files
 COPY package*.json ./
 
-# Install dependencies with production optimizations
-RUN npm ci --only=production --legacy-peer-deps && \
+# Install dependencies with clean install
+RUN npm ci --only=production && \
     npm cache clean --force
 
-# Copy application code
-COPY server/ ./server/
-COPY docs/ ./docs/
-COPY .env* ./
+# Stage 2: Build
+FROM node:20-bullseye-slim AS builder
+WORKDIR /app
 
-# Create necessary directories with proper permissions
-RUN mkdir -p /app/data /app/logs && \
-    chown -R appuser:appgroup /app && \
-    chmod 755 /app/data /app/logs
+# Copy package files and install all dependencies (including dev)
+COPY package*.json ./
+RUN npm ci && \
+    npm cache clean --force
 
-# Create entrypoint script
-RUN echo '#!/bin/bash' > /usr/local/bin/docker-entrypoint.sh && \
-    echo 'set -e' >> /usr/local/bin/docker-entrypoint.sh && \
-    echo 'echo "Starting Persian Legal AI Server..."' >> /usr/local/bin/docker-entrypoint.sh && \
-    echo 'mkdir -p /app/data' >> /usr/local/bin/docker-entrypoint.sh && \
-    echo 'chown -R appuser:appgroup /app/data' >> /usr/local/bin/docker-entrypoint.sh && \
-    echo 'chmod 755 /app/data' >> /usr/local/bin/docker-entrypoint.sh && \
-    echo 'echo "Performing health checks..."' >> /usr/local/bin/docker-entrypoint.sh && \
-    echo 'node -e "console.log(\"Node.js version:\", process.version)"' >> /usr/local/bin/docker-entrypoint.sh && \
-    echo 'echo "Starting server as appuser on port 8080..."' >> /usr/local/bin/docker-entrypoint.sh && \
-    echo 'exec su-exec appuser:appgroup node server/main.js' >> /usr/local/bin/docker-entrypoint.sh
+# Copy source code
+COPY . .
 
-# Make entrypoint executable
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-
-# Set environment variables
+# Build the application
 ENV NODE_ENV=production
-ENV DATABASE_PATH=/app/data/database.sqlite
-ENV SERVER_PORT=8080
-ENV PORT=8080
-ENV LOG_LEVEL=info
+ENV VITE_API_URL=/api
+ENV VITE_WS_URL=/
+RUN npm run build
+
+# Stage 3: Production Runtime with Node serve
+FROM node:20-bullseye-slim AS runtime
+WORKDIR /app
+
+# Create non-root user
+RUN groupadd -r appuser && \
+    useradd -r -g appuser -s /bin/false appuser && \
+    mkdir -p /app && \
+    chown -R appuser:appuser /app
+
+# Install serve globally
+RUN npm install -g serve@14.2.1 && \
+    npm cache clean --force
+
+# Copy built assets from builder
+COPY --from=builder --chown=appuser:appuser /app/dist ./dist
+
+# Health check script
+COPY --chown=appuser:appuser docker/scripts/health-check.sh /usr/local/bin/health-check
+RUN chmod +x /usr/local/bin/health-check
+
+# Switch to non-root user
+USER appuser
 
 # Expose port
-EXPOSE 8080
-
-# Create volume for data persistence
-VOLUME ["/app/data", "/app/logs"]
+EXPOSE 3000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD curl --fail http://localhost:8080/health || exit 1
+    CMD ["/usr/local/bin/health-check"]
 
-# Use the entrypoint
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+# Start serve
+CMD ["serve", "-s", "dist", "-l", "3000", "--no-clipboard", "--no-port-switching"]

@@ -1,0 +1,95 @@
+# Backend Multi-Stage Build Dockerfile
+# Production-ready Node.js/Express server with SQLite support
+
+# Stage 1: Dependencies
+FROM node:20-bullseye-slim AS deps
+WORKDIR /app
+
+# Install build dependencies for better-sqlite3
+RUN apt-get update && \
+    apt-get install -y python3 make g++ && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy package files
+COPY package*.json ./
+
+# Install production dependencies
+RUN npm ci --only=production && \
+    npm rebuild better-sqlite3 && \
+    npm cache clean --force
+
+# Stage 2: Build
+FROM node:20-bullseye-slim AS builder
+WORKDIR /app
+
+# Install build dependencies
+RUN apt-get update && \
+    apt-get install -y python3 make g++ && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy package files and install all dependencies
+COPY package*.json ./
+RUN npm ci && \
+    npm rebuild better-sqlite3 && \
+    npm cache clean --force
+
+# Copy source code
+COPY . .
+
+# TypeScript compilation if needed (skipped if using JS directly)
+RUN npm run compile-server || echo "No compilation needed"
+
+# Stage 3: Production Runtime
+FROM node:20-bullseye-slim AS runtime
+WORKDIR /app
+
+# Install runtime dependencies for SQLite
+RUN apt-get update && \
+    apt-get install -y sqlite3 curl && \
+    rm -rf /var/lib/apt/lists/*
+
+# Create non-root user and necessary directories
+RUN groupadd -r appuser && \
+    useradd -r -g appuser -s /bin/false appuser && \
+    mkdir -p /app /data /logs /app/docker/scripts && \
+    chown -R appuser:appuser /app /data /logs
+
+# Copy production dependencies from deps stage
+COPY --from=deps --chown=appuser:appuser /app/node_modules ./node_modules
+
+# Copy package files
+COPY --chown=appuser:appuser package*.json ./
+
+# Copy server code
+COPY --chown=appuser:appuser server ./server
+COPY --chown=appuser:appuser public ./public
+
+# Copy database directory structure
+COPY --chown=appuser:appuser server/database ./server/database
+
+# Copy Docker scripts
+COPY --chown=appuser:appuser docker/scripts/*.sh /app/docker/scripts/
+RUN chmod +x /app/docker/scripts/*.sh
+
+# Create necessary directories with proper permissions
+RUN mkdir -p /data/database && \
+    chown -R appuser:appuser /data
+
+# Switch to non-root user
+USER appuser
+
+# Environment variables
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV DATABASE_PATH=/data/database.sqlite
+ENV SQLITE_PATH=/data/database.sqlite
+
+# Expose port
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:3000/health || exit 1
+
+# Start server with wait-for-it if needed
+CMD ["/app/docker/scripts/wait-for-it.sh", "--", "node", "server/main.js"]
