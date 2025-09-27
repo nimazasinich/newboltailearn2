@@ -287,7 +287,7 @@ export function EnhancedAppLayout() {
         </motion.header>
 
         {/* Main Content Area */}
-        <main className="flex-1 min-w-0 relative">
+        <main className="flex-1 min-w-0 relative flex flex-col">
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-[0.02]">
             <div 
