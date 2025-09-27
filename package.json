@@ -12,6 +12,7 @@
     "dev": "cross-env NODE_NO_WARNINGS=1 vite --config vite.config.ts",
     "build": "cross-env NODE_ENV=production vite build --config vite.config.ts",
     "build:gh": "cross-env VITE_BASE_PATH=/newboltailearn/ vite build --config vite.config.ts && node scripts/make-404.js",
+    "ensure:spa": "node scripts/ensure-spa-fallback.mjs",
     "preview": "vite preview --config vite.config.ts",
     "start": "cross-env NODE_ENV=production node server/main.js",
     "start:dev": "cross-env NODE_ENV=development node server/main.js",
