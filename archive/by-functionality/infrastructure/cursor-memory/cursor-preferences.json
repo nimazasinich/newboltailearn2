@@ -1,0 +1,12 @@
+{
+  "colors": {
+    "primary": "#667eea",
+    "secondary": "#764ba2",
+    "accent": "#e74c3c"
+  },
+  "styles": [
+    "modern"
+  ],
+  "preferredLanguage": "auto",
+  "responsiveDefault": true
+}

@@ -1,0 +1,5023 @@
+﻿
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.bolt
+Name          : .bolt
+Length        : 
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.github
+Name          : .github
+Length        : 
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive
+Name          : archive
+Length        : 
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\audit
+Name          : audit
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\backups
+Name          : backups
+Length        : 
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\checkpoints
+Name          : checkpoints
+Length        : 
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\cursor-memory
+Name          : cursor-memory
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\cursor-outputs
+Name          : cursor-outputs
+Length        : 
+LastWriteTime : 9/23/2025 10:30:24 AM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\cursor-templates
+Name          : cursor-templates
+Length        : 
+LastWriteTime : 9/23/2025 9:00:36 AM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\data
+Name          : data
+Length        : 
+LastWriteTime : 9/25/2025 4:05:46 AM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\database
+Name          : database
+Length        : 
+LastWriteTime : 9/24/2025 6:18:50 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\datasets
+Name          : datasets
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\deploy-reports
+Name          : deploy-reports
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\dist
+Name          : dist
+Length        : 
+LastWriteTime : 9/22/2025 9:31:23 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\docs
+Name          : docs
+Length        : 
+LastWriteTime : 9/26/2025 5:27:12 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\generated-forms
+Name          : generated-forms
+Length        : 
+LastWriteTime : 9/23/2025 8:28:31 AM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\nginx
+Name          : nginx
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\playwright-report
+Name          : playwright-report
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\public
+Name          : public
+Length        : 
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\scripts
+Name          : scripts
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server
+Name          : server
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src
+Name          : src
+Length        : 
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\test-results
+Name          : test-results
+Length        : 
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests
+Name          : tests
+Length        : 
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.dockerignore
+Name          : .dockerignore
+Length        : 816
+LastWriteTime : 9/25/2025 12:55:52 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.engines
+Name          : .engines
+Length        : 7
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.env
+Name          : .env
+Length        : 1021
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.env.development
+Name          : .env.development
+Length        : 789
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.env.example
+Name          : .env.example
+Length        : 380
+LastWriteTime : 9/25/2025 12:23:04 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.env.production
+Name          : .env.production
+Length        : 833
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.env.production.example
+Name          : .env.production.example
+Length        : 145
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.env.sample
+Name          : .env.sample
+Length        : 4413
+LastWriteTime : 9/26/2025 8:23:31 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.env.test
+Name          : .env.test
+Length        : 622
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.eslintignore
+Name          : .eslintignore
+Length        : 425
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.eslintrc.js
+Name          : .eslintrc.js
+Length        : 658
+LastWriteTime : 9/25/2025 12:23:11 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.eslintrc.json
+Name          : .eslintrc.json
+Length        : 1122
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.gitignore
+Name          : .gitignore
+Length        : 515
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.node-version
+Name          : .node-version
+Length        : 7
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.nvmrc
+Name          : .nvmrc
+Length        : 6
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.prettierrc
+Name          : .prettierrc
+Length        : 295
+LastWriteTime : 9/25/2025 12:04:40 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\404.html
+Name          : 404.html
+Length        : 252
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\clean-install.js
+Name          : clean-install.js
+Length        : 783
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\complete-fix.sh
+Name          : complete-fix.sh
+Length        : 42780
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\COMPLETE-INTEGRATION-SUMMARY.md
+Name          : COMPLETE-INTEGRATION-SUMMARY.md
+Length        : 7748
+LastWriteTime : 9/24/2025 12:24:02 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\complete-mcp-config.json
+Name          : complete-mcp-config.json
+Length        : 450
+LastWriteTime : 9/23/2025 10:31:10 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\complete-mcp-server.js
+Name          : complete-mcp-server.js
+Length        : 30354
+LastWriteTime : 9/25/2025 12:10:31 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\complete-mcp-server.mjs
+Name          : complete-mcp-server.mjs
+Length        : 22365
+LastWriteTime : 9/23/2025 10:31:10 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\complete_file_list.txt
+Name          : complete_file_list.txt
+Length        : 0
+LastWriteTime : 9/26/2025 8:59:12 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\COMPLETE_MCP_GUIDE.md
+Name          : COMPLETE_MCP_GUIDE.md
+Length        : 8937
+LastWriteTime : 9/23/2025 10:01:15 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\COMPLETE_MISSION.sh
+Name          : COMPLETE_MISSION.sh
+Length        : 0
+LastWriteTime : 9/24/2025 6:00:56 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\COMPREHENSIVE-INTEGRATION.md
+Name          : COMPREHENSIVE-INTEGRATION.md
+Length        : 5895
+LastWriteTime : 9/24/2025 12:03:23 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\create-cursor-install-link.js
+Name          : create-cursor-install-link.js
+Length        : 6542
+LastWriteTime : 9/23/2025 10:41:41 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\create-enhanced-install-link.js
+Name          : create-enhanced-install-link.js
+Length        : 10396
+LastWriteTime : 9/23/2025 10:54:41 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\create_runflare_branch.sh
+Name          : create_runflare_branch.sh
+Length        : 6250
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\cursor-install-link.txt
+Name          : cursor-install-link.txt
+Length        : 693
+LastWriteTime : 9/23/2025 10:40:23 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\cursor-install.html
+Name          : cursor-install.html
+Length        : 5250
+LastWriteTime : 9/23/2025 10:40:23 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\cursor-mcp-config.json
+Name          : cursor-mcp-config.json
+Length        : 462
+LastWriteTime : 9/23/2025 10:41:41 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\cursor-mcp-server.mjs
+Name          : cursor-mcp-server.mjs
+Length        : 24506
+LastWriteTime : 9/23/2025 10:41:41 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\CURSOR_MCP_FINAL_GUIDE.md
+Name          : CURSOR_MCP_FINAL_GUIDE.md
+Length        : 5584
+LastWriteTime : 9/23/2025 10:41:41 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\CURSOR_MCP_INSTALLATION_GUIDE.md
+Name          : CURSOR_MCP_INSTALLATION_GUIDE.md
+Length        : 3625
+LastWriteTime : 9/23/2025 10:21:15 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\database.sqlite
+Name          : database.sqlite
+Length        : 147456
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\database.sqlite-shm
+Name          : database.sqlite-shm
+Length        : 32768
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\database.sqlite-wal
+Name          : database.sqlite-wal
+Length        : 28872
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\DATABASE_FIX_SUMMARY.md
+Name          : DATABASE_FIX_SUMMARY.md
+Length        : 7917
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\DATABASE_VALIDATION_COMPLETE.sh
+Name          : DATABASE_VALIDATION_COMPLETE.sh
+Length        : 4744
+LastWriteTime : 9/24/2025 6:29:44 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\DATABASE_VALIDATION_REPORT.md
+Name          : DATABASE_VALIDATION_REPORT.md
+Length        : 7652
+LastWriteTime : 9/24/2025 6:31:31 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\db-healer.js
+Name          : db-healer.js
+Length        : 5600
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\deploy-enhanced.sh
+Name          : deploy-enhanced.sh
+Length        : 17996
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\deploy-to-liara.sh
+Name          : deploy-to-liara.sh
+Length        : 9019
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\DEPLOYMENT.md
+Name          : DEPLOYMENT.md
+Length        : 9305
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\DEPLOY_OR_DIE.sh
+Name          : DEPLOY_OR_DIE.sh
+Length        : 0
+LastWriteTime : 9/24/2025 6:00:56 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\docker-autofix.sh
+Name          : docker-autofix.sh
+Length        : 9334
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\docker-build.sh
+Name          : docker-build.sh
+Length        : 4494
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\docker-compose-dev.yml
+Name          : docker-compose-dev.yml
+Length        : 1672
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\docker-compose.dev.yml
+Name          : docker-compose.dev.yml
+Length        : 1568
+LastWriteTime : 9/25/2025 12:56:19 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\docker-compose.yml
+Name          : docker-compose.yml
+Length        : 1044
+LastWriteTime : 9/25/2025 12:56:06 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\docker-run.sh
+Name          : docker-run.sh
+Length        : 5700
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\Dockerfile
+Name          : Dockerfile
+Length        : 2380
+LastWriteTime : 9/25/2025 12:55:37 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\Dockerfile.bak
+Name          : Dockerfile.bak
+Length        : 489
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\DOCKER_COMMANDS.md
+Name          : DOCKER_COMMANDS.md
+Length        : 5230
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\DOCKER_FIX_SUMMARY.md
+Name          : DOCKER_FIX_SUMMARY.md
+Length        : 5118
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\DOCKER_GUIDE.md
+Name          : DOCKER_GUIDE.md
+Length        : 7140
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\DOCKER_REWRITE_SUMMARY.md
+Name          : DOCKER_REWRITE_SUMMARY.md
+Length        : 6844
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\DOCKER_SETUP.md
+Name          : DOCKER_SETUP.md
+Length        : 8651
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\DOCKER_TROUBLESHOOTING.md
+Name          : DOCKER_TROUBLESHOOTING.md
+Length        : 6122
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\e2e-test-runner.js
+Name          : e2e-test-runner.js
+Length        : 11195
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\enhanced-cursor-mcp-config.json
+Name          : enhanced-cursor-mcp-config.json
+Length        : 480
+LastWriteTime : 9/23/2025 10:54:46 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\enhanced-cursor-mcp-server.mjs
+Name          : enhanced-cursor-mcp-server.mjs
+Length        : 32999
+LastWriteTime : 9/23/2025 10:53:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\enhanced-install-link.txt
+Name          : enhanced-install-link.txt
+Length        : 726
+LastWriteTime : 9/23/2025 10:54:46 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\enhanced-install.html
+Name          : enhanced-install.html
+Length        : 8111
+LastWriteTime : 9/23/2025 10:54:46 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\ENHANCEMENT-SUMMARY.md
+Name          : ENHANCEMENT-SUMMARY.md
+Length        : 7323
+LastWriteTime : 9/24/2025 11:57:39 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\enterprise-config.json
+Name          : enterprise-config.json
+Length        : 591
+LastWriteTime : 9/25/2025 12:34:31 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\env-healer.js
+Name          : env-healer.js
+Length        : 4172
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\eslint.config.js
+Name          : eslint.config.js
+Length        : 2436
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\et --soft c56aefd
+Name          : et --soft c56aefd
+Length        : 5126
+LastWriteTime : 9/26/2025 7:21:17 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\example_usage.txt
+Name          : example_usage.txt
+Length        : 1352
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\file_list.txt
+Name          : file_list.txt
+Length        : 95716
+LastWriteTime : 9/26/2025 8:37:07 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\FINAL_MCP_INSTALLATION_GUIDE.md
+Name          : FINAL_MCP_INSTALLATION_GUIDE.md
+Length        : 5206
+LastWriteTime : 9/23/2025 10:31:10 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\FINAL_VERIFICATION.sh
+Name          : FINAL_VERIFICATION.sh
+Length        : 3927
+LastWriteTime : 9/24/2025 6:01:26 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\FIX_SUMMARY.md
+Name          : FIX_SUMMARY.md
+Length        : 4305
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\fix_typescript_imports.md
+Name          : fix_typescript_imports.md
+Length        : 3639
+LastWriteTime : 9/24/2025 11:05:00 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\get-docker.sh
+Name          : get-docker.sh
+Length        : 21733
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\git-safety.js
+Name          : git-safety.js
+Length        : 8965
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\githu.txt
+Name          : githu.txt
+Length        : 24686
+LastWriteTime : 9/26/2025 8:41:45 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\IMPLEMENTATION_COMPLETE.md
+Name          : IMPLEMENTATION_COMPLETE.md
+Length        : 6883
+LastWriteTime : 9/24/2025 5:34:12 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\IMPLEMENTATION_SUMMARY.md
+Name          : IMPLEMENTATION_SUMMARY.md
+Length        : 11806
+LastWriteTime : 9/22/2025 10:26:44 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\index.html
+Name          : index.html
+Length        : 517
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\integrated-server.js
+Name          : integrated-server.js
+Length        : 22129
+LastWriteTime : 9/25/2025 12:04:40 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\integration-test-runner.js
+Name          : integration-test-runner.js
+Length        : 8190
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\intelligent-persian-mcp-server.js
+Name          : intelligent-persian-mcp-server.js
+Length        : 48329
+LastWriteTime : 9/25/2025 12:12:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\INTELLIGENT_MCP_GUIDE.md
+Name          : INTELLIGENT_MCP_GUIDE.md
+Length        : 9626
+LastWriteTime : 9/23/2025 9:10:04 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\jest.config.js
+Name          : jest.config.js
+Length        : 741
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\k8s-debug-script.sh
+Name          : k8s-debug-script.sh
+Length        : 6398
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\launch-enhanced-app.bat
+Name          : launch-enhanced-app.bat
+Length        : 3415
+LastWriteTime : 9/24/2025 11:56:55 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\launch-real-system.bat
+Name          : launch-real-system.bat
+Length        : 5060
+LastWriteTime : 9/24/2025 12:09:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\master-test-runner.js
+Name          : master-test-runner.js
+Length        : 10285
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\MCP_ENHANCEMENTS_SUMMARY.md
+Name          : MCP_ENHANCEMENTS_SUMMARY.md
+Length        : 6627
+LastWriteTime : 9/23/2025 8:51:48 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\merge_all_branches.sh
+Name          : merge_all_branches.sh
+Length        : 3219
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\nginx.conf
+Name          : nginx.conf
+Length        : 956
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\package-lock.json
+Name          : package-lock.json
+Length        : 374356
+LastWriteTime : 9/26/2025 5:28:59 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\package.json
+Name          : package.json
+Length        : 6186
+LastWriteTime : 9/26/2025 5:28:57 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\package.json.backup
+Name          : package.json.backup
+Length        : 4720
+LastWriteTime : 9/24/2025 5:34:46 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\persian-mcp-server-enhanced.js
+Name          : persian-mcp-server-enhanced.js
+Length        : 47537
+LastWriteTime : 9/25/2025 12:12:18 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\persian-mcp-server.js
+Name          : persian-mcp-server.js
+Length        : 21509
+LastWriteTime : 9/23/2025 8:40:12 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\persian_legal_ai.db
+Name          : persian_legal_ai.db
+Length        : 7237632
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\persian_legal_ai.db.backup
+Name          : persian_legal_ai.db.backup
+Length        : 7237632
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\playwright.config.ts
+Name          : playwright.config.ts
+Length        : 1199
+LastWriteTime : 9/25/2025 12:19:33 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\postcss.config.cjs
+Name          : postcss.config.cjs
+Length        : 87
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\postcss.config.js.backup
+Name          : postcss.config.js.backup
+Length        : 107
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\PROPER-INTEGRATION-PLAN.md
+Name          : PROPER-INTEGRATION-PLAN.md
+Length        : 5827
+LastWriteTime : 9/24/2025 12:07:21 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\quick-fix.sh
+Name          : quick-fix.sh
+Length        : 3666
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\README.md
+Name          : README.md
+Length        : 15643
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\reliability-config.json
+Name          : reliability-config.json
+Length        : 1057
+LastWriteTime : 9/25/2025 12:48:15 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\render.yaml
+Name          : render.yaml
+Length        : 737
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\RENDER_DEPLOYMENT_GUIDE.md
+Name          : RENDER_DEPLOYMENT_GUIDE.md
+Length        : 10236
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\replace_branch_with_main.sh
+Name          : replace_branch_with_main.sh
+Length        : 4548
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\run-tests.js
+Name          : run-tests.js
+Length        : 8042
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server.js
+Name          : server.js
+Length        : 2540
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\SERVER_FIX_SUMMARY.md
+Name          : SERVER_FIX_SUMMARY.md
+Length        : 5235
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\setup-cursor-mcp.bat
+Name          : setup-cursor-mcp.bat
+Length        : 853
+LastWriteTime : 9/23/2025 10:21:57 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\SETUP_SUMMARY.md
+Name          : SETUP_SUMMARY.md
+Length        : 4434
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\simple-server.js
+Name          : simple-server.js
+Length        : 15742
+LastWriteTime : 9/25/2025 12:06:57 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\smart-persian-mcp-bundle.mjs
+Name          : smart-persian-mcp-bundle.mjs
+Length        : 42735
+LastWriteTime : 9/23/2025 10:06:20 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\smart-persian-mcp-server.js
+Name          : smart-persian-mcp-server.js
+Length        : 71513
+LastWriteTime : 9/25/2025 12:12:25 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\SMART_MCP_GUIDE.md
+Name          : SMART_MCP_GUIDE.md
+Length        : 7672
+LastWriteTime : 9/23/2025 9:00:24 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\start-server.js
+Name          : start-server.js
+Length        : 811
+LastWriteTime : 9/22/2025 5:18:14 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\start-unified.js
+Name          : start-unified.js
+Length        : 1981
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\start.js
+Name          : start.js
+Length        : 1565
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\stress-test-runner.js
+Name          : stress-test-runner.js
+Length        : 18995
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tailwind.config.cjs
+Name          : tailwind.config.cjs
+Length        : 2279
+LastWriteTime : 9/26/2025 4:33:52 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tailwind.config.js.backup
+Name          : tailwind.config.js.backup
+Length        : 1022
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\test-complete-mcp.js
+Name          : test-complete-mcp.js
+Length        : 3521
+LastWriteTime : 9/23/2025 10:31:10 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\test-database-fixes.js
+Name          : test-database-fixes.js
+Length        : 4313
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\test-enhanced-app.js
+Name          : test-enhanced-app.js
+Length        : 5182
+LastWriteTime : 9/24/2025 11:56:28 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\test-frontend.html
+Name          : test-frontend.html
+Length        : 10023
+LastWriteTime : 9/26/2025 5:30:13 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\test-mcp-installation.js
+Name          : test-mcp-installation.js
+Length        : 3499
+LastWriteTime : 9/23/2025 10:21:29 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\test-phase2.js
+Name          : test-phase2.js
+Length        : 8899
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\test-results-complete.json
+Name          : test-results-complete.json
+Length        : 552
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\test-results-integration.json
+Name          : test-results-integration.json
+Length        : 442
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\test-results-stress.json
+Name          : test-results-stress.json
+Length        : 1371
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\test-training.js
+Name          : test-training.js
+Length        : 2050
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\test-worker-credentials.js
+Name          : test-worker-credentials.js
+Length        : 8217
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\test-worker-login.html
+Name          : test-worker-login.html
+Length        : 17716
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\test_complete_flow.js
+Name          : test_complete_flow.js
+Length        : 11486
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\test_dashboard_flow.js
+Name          : test_dashboard_flow.js
+Length        : 11637
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\TEST_EVERYTHING.sh
+Name          : TEST_EVERYTHING.sh
+Length        : 0
+LastWriteTime : 9/24/2025 6:00:56 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\test_migration.db
+Name          : test_migration.db
+Length        : 147456
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\test_page_content.js
+Name          : test_page_content.js
+Length        : 9848
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tree_structure.txt
+Name          : tree_structure.txt
+Length        : 41882
+LastWriteTime : 9/26/2025 8:58:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tsconfig.app.json
+Name          : tsconfig.app.json
+Length        : 768
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tsconfig.app.tsbuildinfo
+Name          : tsconfig.app.tsbuildinfo
+Length        : 1804
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tsconfig.json
+Name          : tsconfig.json
+Length        : 1062
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tsconfig.node.json
+Name          : tsconfig.node.json
+Length        : 529
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tsconfig.server.json
+Name          : tsconfig.server.json
+Length        : 728
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\ultimate-persian-mcp-server.mjs
+Name          : ultimate-persian-mcp-server.mjs
+Length        : 42792
+LastWriteTime : 9/23/2025 10:10:35 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\ULTIMATE_MCP_GUIDE.md
+Name          : ULTIMATE_MCP_GUIDE.md
+Length        : 9023
+LastWriteTime : 9/23/2025 10:12:11 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\validate-dashboard.js
+Name          : validate-dashboard.js
+Length        : 5269
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\vite.config.ts
+Name          : vite.config.ts
+Length        : 1243
+LastWriteTime : 9/25/2025 12:38:42 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\vitest.config.ts
+Name          : vitest.config.ts
+Length        : 871
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\ync local with remote
+Name          : ync local with remote
+Length        : 16465
+LastWriteTime : 9/26/2025 7:30:03 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.bolt\config.json
+Name          : config.json
+Length        : 42
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.bolt\prompt
+Name          : prompt
+Length        : 406
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.github\workflows
+Name          : workflows
+Length        : 
+LastWriteTime : 9/26/2025 8:26:06 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.github\workflows\ci-cd.yml
+Name          : ci-cd.yml
+Length        : 8214
+LastWriteTime : 9/26/2025 8:18:22 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.github\workflows\ci-cd.yml.bak
+Name          : ci-cd.yml.bak
+Length        : 8212
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.github\workflows\ci.yml
+Name          : ci.yml
+Length        : 10230
+LastWriteTime : 9/26/2025 8:18:22 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.github\workflows\ci.yml.bak
+Name          : ci.yml.bak
+Length        : 10228
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.github\workflows\deploy-liara.yml
+Name          : deploy-liara.yml
+Length        : 10941
+LastWriteTime : 9/26/2025 8:26:06 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.github\workflows\deploy-liara.yml.
+                bak
+Name          : deploy-liara.yml.bak
+Length        : 10904
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.github\workflows\docker-build.yml
+Name          : docker-build.yml
+Length        : 2441
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\.github\workflows\security-check.ym
+                l
+Name          : security-check.yml
+Length        : 5353
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01
+Name          : 2025-09-14_21-01
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-15
+Name          : 2025-09-14_21-15
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy
+Name          : docs_legacy
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\INCOMPLETE
+Name          : INCOMPLETE
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\project_backup_20250915_084
+                9.zip
+Name          : project_backup_20250915_0849.zip
+Length        : 1238975
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\project_backup_20250915_091
+                1.zip
+Name          : project_backup_20250915_0911.zip
+Length        : 2147540
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\project_backup_20250915_101
+                4.zip
+Name          : project_backup_20250915_1014.zip
+Length        : 2149216
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\project_backup_20250915_175
+                518.zip
+Name          : project_backup_20250915_175518.zip
+Length        : 2890472
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy
+Name          : components-legacy
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\root-legac
+                y
+Name          : root-legacy
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\App-legacy
+                .tsx
+Name          : App-legacy.tsx
+Length        : 3422
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\backup-man
+                ifest.json
+Name          : backup-manifest.json
+Length        : 789
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\manifest.j
+                son
+Name          : manifest.json
+Length        : 3612
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\project-ba
+                ckup.zip
+Name          : project-backup.zip
+Length        : 1942430
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\analytics
+Name          : analytics
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\dashboard
+Name          : dashboard
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\hooks
+Name          : hooks
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\lib
+Name          : lib
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\pages
+Name          : pages
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\router
+Name          : router
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\state
+Name          : state
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\stores
+Name          : stores
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\AuthGuard.tsx
+Name          : AuthGuard.tsx
+Length        : 2720
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\Dashboard.backup.tsx
+Name          : Dashboard.backup.tsx
+Length        : 53354
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\LeaderboardPage.tsx
+Name          : LeaderboardPage.tsx
+Length        : 19213
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\Loading.tsx
+Name          : Loading.tsx
+Length        : 6263
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\ModelManagementPage.tsx
+Name          : ModelManagementPage.tsx
+Length        : 23102
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\router.tsx
+Name          : router.tsx
+Length        : 1805
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\Sidebar.tsx
+Name          : Sidebar.tsx
+Length        : 14449
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\SocketIntegration.tsx
+Name          : SocketIntegration.tsx
+Length        : 4911
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\SocketStatus.tsx
+Name          : SocketStatus.tsx
+Length        : 1360
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\TrainingControlPanel.tsx
+Name          : TrainingControlPanel.tsx
+Length        : 33448
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\TrainingHistoryPage.tsx
+Name          : TrainingHistoryPage.tsx
+Length        : 22957
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\analytics\AdvancedAnalyticsDashboard.tsx
+Name          : AdvancedAnalyticsDashboard.tsx
+Length        : 22485
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\dashboard\Overview.tsx
+Name          : Overview.tsx
+Length        : 22196
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\dashboard\TrainingManagement.tsx
+Name          : TrainingManagement.tsx
+Length        : 29189
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\hooks\useAnalytics.ts
+Name          : useAnalytics.ts
+Length        : 12590
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\hooks\useAuth.ts
+Name          : useAuth.ts
+Length        : 7939
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\hooks\useConnectionStatus.ts
+Name          : useConnectionStatus.ts
+Length        : 1521
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\hooks\useDocuments.ts
+Name          : useDocuments.ts
+Length        : 12327
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\hooks\useMonitoring.ts
+Name          : useMonitoring.ts
+Length        : 7065
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\hooks\useSocketConnection.ts
+Name          : useSocketConnection.ts
+Length        : 9157
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\hooks\useTraining.ts
+Name          : useTraining.ts
+Length        : 13563
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\lib\api.ts
+Name          : api.ts
+Length        : 1570
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\lib\theme.ts
+Name          : theme.ts
+Length        : 880
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\lib\ws.ts
+Name          : ws.ts
+Length        : 366
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\pages\DashboardPage.tsx
+Name          : DashboardPage.tsx
+Length        : 810
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\pages\DocumentsPage.tsx
+Name          : DocumentsPage.tsx
+Length        : 5745
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\pages\DownloadPage.tsx
+Name          : DownloadPage.tsx
+Length        : 820
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\pages\LoginPage.tsx
+Name          : LoginPage.tsx
+Length        : 5137
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\pages\NotFoundPage.tsx
+Name          : NotFoundPage.tsx
+Length        : 1540
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\pages\TrainingPage.tsx
+Name          : TrainingPage.tsx
+Length        : 825
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\router\index.tsx
+Name          : index.tsx
+Length        : 4957
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\state\store.ts
+Name          : store.ts
+Length        : 5189
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\components
+                -legacy\stores\authStore.ts
+Name          : authStore.ts
+Length        : 6882
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-01\root-legac
+                y\index.css
+Name          : index.css
+Length        : 1271
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-15\components
+                -legacy
+Name          : components-legacy
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-15\db
+Name          : db
+Length        : 
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-15\phase2-bac
+                kup-manifest.json
+Name          : phase2-backup-manifest.json
+Length        : 1020
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-15\project-ba
+                ckup-phase2.zip
+Name          : project-backup-phase2.zip
+Length        : 3894993
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-15\components
+                -legacy\Overview.old.tsx
+Name          : Overview.old.tsx
+Length        : 18807
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\2025-09-14_21-15\db\persian
+                _legal_ai_backup.db
+Name          : persian_legal_ai_backup.db
+Length        : 3358720
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\ACCESSIBILITY_T
+                EST.md
+Name          : ACCESSIBILITY_TEST.md
+Length        : 7626
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\API_REFERENCE.m
+                d
+Name          : API_REFERENCE.md
+Length        : 13662
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\ARCHITECTURE.md
+Name          : ARCHITECTURE.md
+Length        : 18793
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\COMPLETE_APPLIC
+                ATION_FLOW_VERIFICATION_REPORT.md
+Name          : COMPLETE_APPLICATION_FLOW_VERIFICATION_REPORT.md
+Length        : 10548
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\COMPLETION_REPO
+                RT.md
+Name          : COMPLETION_REPORT.md
+Length        : 9057
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\COMPONENTS_READ
+                ME.md
+Name          : COMPONENTS_README.md
+Length        : 2285
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\COMPREHENSIVE-T
+                EST-VALIDATION-SUMMARY.md
+Name          : COMPREHENSIVE-TEST-VALIDATION-SUMMARY.md
+Length        : 7445
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\CONTRIBUTING.md
+Name          : CONTRIBUTING.md
+Length        : 8856
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\DASHBOARD_IMPLE
+                MENTATION_STATUS.md
+Name          : DASHBOARD_IMPLEMENTATION_STATUS.md
+Length        : 8445
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\DEPLOYMENT_SUCC
+                ESS.md
+Name          : DEPLOYMENT_SUCCESS.md
+Length        : 7013
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\DOCUMENTATION.m
+                d
+Name          : DOCUMENTATION.md
+Length        : 27206
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\FINAL-TEST-REPO
+                RT.md
+Name          : FINAL-TEST-REPORT.md
+Length        : 3018
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\IMPLEMENTATION_
+                COMPLETE.md
+Name          : IMPLEMENTATION_COMPLETE.md
+Length        : 6330
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\INTEGRATION_TES
+                T.md
+Name          : INTEGRATION_TEST.md
+Length        : 4857
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\MIGRATION_REPOR
+                T.md
+Name          : MIGRATION_REPORT.md
+Length        : 9935
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\OPERATIONS.md
+Name          : OPERATIONS.md
+Length        : 9360
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\PHASE2_COMPLETI
+                ON_REPORT.md
+Name          : PHASE2_COMPLETION_REPORT.md
+Length        : 6712
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\PHASE2_IMPLEMEN
+                TATION_COMPLETE.md
+Name          : PHASE2_IMPLEMENTATION_COMPLETE.md
+Length        : 5936
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\PHASE2_PLAN.md
+Name          : PHASE2_PLAN.md
+Length        : 8465
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\PHASE3_COMPLETI
+                ON_REPORT.md
+Name          : PHASE3_COMPLETION_REPORT.md
+Length        : 8810
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\PHASE4_COMPLETI
+                ON_REPORT.md
+Name          : PHASE4_COMPLETION_REPORT.md
+Length        : 11882
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\PRODUCTION_SECU
+                RITY_CHECKLIST.md
+Name          : PRODUCTION_SECURITY_CHECKLIST.md
+Length        : 7535
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\PROOF.md
+Name          : PROOF.md
+Length        : 12105
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\README-PHASE2.m
+                d
+Name          : README-PHASE2.md
+Length        : 7184
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\README-WORKER-T
+                HREADS.md
+Name          : README-WORKER-THREADS.md
+Length        : 9366
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\REFACTORING_SUM
+                MARY.md
+Name          : REFACTORING_SUMMARY.md
+Length        : 11027
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\SECURITY.md
+Name          : SECURITY.md
+Length        : 5593
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\TESTING.md
+Name          : TESTING.md
+Length        : 9315
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\TEST_REPORT.md
+Name          : TEST_REPORT.md
+Length        : 3717
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\docs_legacy\UNIFIED_ARCHITE
+                CTURE_SUMMARY.md
+Name          : UNIFIED_ARCHITECTURE_SUMMARY.md
+Length        : 7128
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\archive\INCOMPLETE\App.tsx
+Name          : App.tsx
+Length        : 3467
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\audit\usage-report-2025-09-22T18-05
+                -08-054Z.md
+Name          : usage-report-2025-09-22T18-05-08-054Z.md
+Length        : 14661
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\audit\usage-report-2025-09-22T18-06
+                -49-501Z.md
+Name          : usage-report-2025-09-22T18-06-49-501Z.md
+Length        : 14661
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\audit\usage-report-2025-09-22T18-07
+                -35-649Z.md
+Name          : usage-report-2025-09-22T18-07-35-649Z.md
+Length        : 17812
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\audit\usage-summary-2025-09-22T18-0
+                5-08-054Z.json
+Name          : usage-summary-2025-09-22T18-05-08-054Z.json
+Length        : 26464
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\audit\usage-summary-2025-09-22T18-0
+                6-49-501Z.json
+Name          : usage-summary-2025-09-22T18-06-49-501Z.json
+Length        : 26464
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\audit\usage-summary-2025-09-22T18-0
+                7-35-649Z.json
+Name          : usage-summary-2025-09-22T18-07-35-649Z.json
+Length        : 31209
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\backups\database-backup-2025-09-16T
+                04-58-10-933Z.db
+Name          : database-backup-2025-09-16T04-58-10-933Z.db
+Length        : 7237632
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\checkpoints\model_1_epoch_2_final
+Name          : model_1_epoch_2_final
+Length        : 
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\checkpoints\model_8
+Name          : model_8
+Length        : 
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\checkpoints\tokenizer_vocab.json
+Name          : tokenizer_vocab.json
+Length        : 847
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\checkpoints\model_1_epoch_2_final\m
+                odel.json
+Name          : model.json
+Length        : 4374
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\checkpoints\model_1_epoch_2_final\w
+                eights.bin
+Name          : weights.bin
+Length        : 547340
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\checkpoints\model_8\model_final_175
+                7752344322
+Name          : model_final_1757752344322
+Length        : 
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\checkpoints\model_8\model_final_175
+                7752344322\model.json
+Name          : model.json
+Length        : 4168
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\checkpoints\model_8\model_final_175
+                7752344322\weights.bin
+Name          : weights.bin
+Length        : 516108
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\cursor-memory\cursor-commands.json
+Name          : cursor-commands.json
+Length        : 2
+LastWriteTime : 9/23/2025 11:02:53 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\cursor-memory\cursor-memory.json
+Name          : cursor-memory.json
+Length        : 13256
+LastWriteTime : 9/23/2025 11:02:53 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\cursor-memory\cursor-preferences.js
+                on
+Name          : cursor-preferences.json
+Length        : 191
+LastWriteTime : 9/23/2025 11:02:53 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\cursor-memory\installation-summary.
+                md
+Name          : installation-summary.md
+Length        : 2573
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\cursor-memory\mcp-commands.json
+Name          : mcp-commands.json
+Length        : 1663
+LastWriteTime : 9/23/2025 10:30:25 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\cursor-memory\mcp-memory.json
+Name          : mcp-memory.json
+Length        : 665
+LastWriteTime : 9/23/2025 10:30:25 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\cursor-memory\mcp-preferences.json
+Name          : mcp-preferences.json
+Length        : 2
+LastWriteTime : 9/23/2025 10:30:25 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\cursor-memory\mcp-server-memory.jso
+                n
+Name          : mcp-server-memory.json
+Length        : 2449
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\cursor-outputs\button-1758610739150
+                .html
+Name          : button-1758610739150.html
+Length        : 824
+LastWriteTime : 9/23/2025 10:28:59 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\cursor-outputs\button-1758610789294
+                .html
+Name          : button-1758610789294.html
+Length        : 860
+LastWriteTime : 9/23/2025 10:29:49 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\cursor-outputs\button-1758610824799
+                .html
+Name          : button-1758610824799.html
+Length        : 860
+LastWriteTime : 9/23/2025 10:30:25 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\data\database.sqlite
+Name          : database.sqlite
+Length        : 131072
+LastWriteTime : 9/22/2025 5:26:20 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\data\database.sqlite-shm
+Name          : database.sqlite-shm
+Length        : 32768
+LastWriteTime : 9/23/2025 12:40:57 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\data\database.sqlite-wal
+Name          : database.sqlite-wal
+Length        : 1165992
+LastWriteTime : 9/23/2025 12:40:58 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\data\persian_legal_ai.db
+Name          : persian_legal_ai.db
+Length        : 94208
+LastWriteTime : 9/25/2025 4:05:46 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\database\backups
+Name          : backups
+Length        : 
+LastWriteTime : 9/24/2025 6:09:20 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\database\migrations
+Name          : migrations
+Length        : 
+LastWriteTime : 9/24/2025 6:23:17 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\database\scripts
+Name          : scripts
+Length        : 
+LastWriteTime : 9/24/2025 6:26:52 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\database\indexes-triggers.sql
+Name          : indexes-triggers.sql
+Length        : 8111
+LastWriteTime : 9/24/2025 6:11:27 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\database\schema-validation.sql
+Name          : schema-validation.sql
+Length        : 7600
+LastWriteTime : 9/24/2025 6:10:26 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\database\seed-data.sql
+Name          : seed-data.sql
+Length        : 16340
+LastWriteTime : 9/24/2025 6:14:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\database\sessions.db
+Name          : sessions.db
+Length        : 12288
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\database\validate-database.js
+Name          : validate-database.js
+Length        : 13611
+LastWriteTime : 9/24/2025 6:18:50 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\database\migrations\001_initial_sch
+                ema.sql
+Name          : 001_initial_schema.sql
+Length        : 7163
+LastWriteTime : 9/24/2025 6:23:17 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\database\scripts\backup-database.js
+Name          : backup-database.js
+Length        : 14161
+LastWriteTime : 9/25/2025 12:12:08 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\datasets\files
+Name          : files
+Length        : 
+LastWriteTime : 9/22/2025 7:28:58 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\datasets\test-dataset
+Name          : test-dataset
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\datasets\catalog.json
+Name          : catalog.json
+Length        : 1764
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\datasets\files\legal-classification
+                .zip
+Name          : legal-classification.zip
+Length        : 78
+LastWriteTime : 9/22/2025 7:28:53 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\datasets\files\persian-qa-dataset.z
+                ip
+Name          : persian-qa-dataset.zip
+Length        : 60
+LastWriteTime : 9/22/2025 7:28:49 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\datasets\files\sample-legal-mini.zi
+                p
+Name          : sample-legal-mini.zip
+Length        : 62
+LastWriteTime : 9/22/2025 7:26:27 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\datasets\files\sample-ner-mini.zip
+Name          : sample-ner-mini.zip
+Length        : 58
+LastWriteTime : 9/22/2025 7:28:45 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\datasets\files\sentiment-analysis-f
+                a.zip
+Name          : sentiment-analysis-fa.zip
+Length        : 74
+LastWriteTime : 9/22/2025 7:28:58 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\datasets\test-dataset\data.json
+Name          : data.json
+Length        : 1769
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\deploy-reports\deployment-status.tx
+                t
+Name          : deployment-status.txt
+Length        : 1528
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\deploy-reports\enhanced-deployment-
+                complete.txt
+Name          : enhanced-deployment-complete.txt
+Length        : 7390
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\deploy-reports\final.txt
+Name          : final.txt
+Length        : 3311
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\deploy-reports\preflight.txt
+Name          : preflight.txt
+Length        : 79378
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\dist\.tsbuildinfo
+Name          : .tsbuildinfo
+Length        : 256956
+LastWriteTime : 9/25/2025 12:09:19 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\docs\assets
+Name          : assets
+Length        : 
+LastWriteTime : 9/26/2025 5:27:12 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\docs\assets\css
+Name          : css
+Length        : 
+LastWriteTime : 9/26/2025 5:27:12 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\docs\assets\js
+Name          : js
+Length        : 
+LastWriteTime : 9/26/2025 5:27:12 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\docs\assets\css\base.css
+Name          : base.css
+Length        : 13957
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\docs\assets\js\focus-management.js
+Name          : focus-management.js
+Length        : 8882
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\docs\assets\js\modal.js
+Name          : modal.js
+Length        : 6801
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\docs\assets\js\tabs.js
+Name          : tabs.js
+Length        : 9270
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\nginx\conf.d
+Name          : conf.d
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\nginx\nginx.conf
+Name          : nginx.conf
+Length        : 1845
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\nginx\conf.d\newboltailearn.conf
+Name          : newboltailearn.conf
+Length        : 6964
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\playwright-report\index.html
+Name          : index.html
+Length        : 461622
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\public\assets
+Name          : assets
+Length        : 
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\public\assets\css
+Name          : css
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\public\assets\js
+Name          : js
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\public\assets\css\base.css
+Name          : base.css
+Length        : 13957
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\public\assets\js\focus-management.j
+                s
+Name          : focus-management.js
+Length        : 8882
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\public\assets\js\modal.js
+Name          : modal.js
+Length        : 6801
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\public\assets\js\tabs.js
+Name          : tabs.js
+Length        : 9270
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\scripts\util
+Name          : util
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\scripts\audit-routes.ts
+Name          : audit-routes.ts
+Length        : 791
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\scripts\audit-usage.mjs
+Name          : audit-usage.mjs
+Length        : 8819
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\scripts\backup-db.js
+Name          : backup-db.js
+Length        : 1458
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\scripts\copy-to-docs.mjs
+Name          : copy-to-docs.mjs
+Length        : 1204
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\scripts\db-backup.ts
+Name          : db-backup.ts
+Length        : 6798
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\scripts\docker-build.sh
+Name          : docker-build.sh
+Length        : 4415
+LastWriteTime : 9/25/2025 12:56:43 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\scripts\docker-deploy.sh
+Name          : docker-deploy.sh
+Length        : 7414
+LastWriteTime : 9/25/2025 12:57:18 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\scripts\integrate-enterprise-featur
+                es.js
+Name          : integrate-enterprise-features.js
+Length        : 9251
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\scripts\integrate-reliability-syste
+                ms.js
+Name          : integrate-reliability-systems.js
+Length        : 13214
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\scripts\make-404.js
+Name          : make-404.js
+Length        : 460
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\scripts\migrate-db-schema.js
+Name          : migrate-db-schema.js
+Length        : 6078
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\scripts\monitor-deployment.js
+Name          : monitor-deployment.js
+Length        : 7151
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\scripts\run-security-tests.js
+Name          : run-security-tests.js
+Length        : 4967
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\scripts\security-check.js
+Name          : security-check.js
+Length        : 8586
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\scripts\validate-db-schema.js
+Name          : validate-db-schema.js
+Length        : 8154
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\scripts\validate-deployment.js
+Name          : validate-deployment.js
+Length        : 11343
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\scripts\validate-deployment.sh
+Name          : validate-deployment.sh
+Length        : 4656
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\scripts\util\fs-scan.mjs
+Name          : fs-scan.mjs
+Length        : 602
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\auth
+Name          : auth
+Length        : 
+LastWriteTime : 9/24/2025 10:56:34 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\cache
+Name          : cache
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\database
+Name          : database
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\middleware
+Name          : middleware
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules
+Name          : modules
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\routes
+Name          : routes
+Length        : 
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\scripts
+Name          : scripts
+Length        : 
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\server
+Name          : server
+Length        : 
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\services
+Name          : services
+Length        : 
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\src
+Name          : src
+Length        : 
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\tests
+Name          : tests
+Length        : 
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\training
+Name          : training
+Length        : 
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\utils
+Name          : utils
+Length        : 
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\index.js
+Name          : index.js
+Length        : 7229
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\index.ts
+Name          : index.ts
+Length        : 83911
+LastWriteTime : 9/26/2025 8:23:31 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\main.js
+Name          : main.js
+Length        : 32091
+LastWriteTime : 9/26/2025 5:53:25 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\auth\real-auth.ts
+Name          : real-auth.ts
+Length        : 0
+LastWriteTime : 9/24/2025 10:56:34 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\cache\redis-cache.js
+Name          : redis-cache.js
+Length        : 11967
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\database\migrations
+Name          : migrations
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\database\utils
+Name          : utils
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\database\connection-pool.js
+Name          : connection-pool.js
+Length        : 13433
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\database\DatabaseManager.js
+Name          : DatabaseManager.js
+Length        : 4049
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\database\index.js
+Name          : index.js
+Length        : 1822
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\database\init.js
+Name          : init.js
+Length        : 868
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\database\migrate.js
+Name          : migrate.js
+Length        : 12841
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\database\schema.sql
+Name          : schema.sql
+Length        : 5582
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\database\seed.js
+Name          : seed.js
+Length        : 1875
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\database\seed.sql
+Name          : seed.sql
+Length        : 2643
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\database\migrations\001_fix_
+                datasets_schema.sql
+Name          : 001_fix_datasets_schema.sql
+Length        : 1419
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\database\utils\columns.js
+Name          : columns.js
+Length        : 1561
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\middleware\api-monitoring.js
+Name          : api-monitoring.js
+Length        : 14237
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\middleware\auth.js
+Name          : auth.js
+Length        : 3740
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\middleware\auth.ts
+Name          : auth.ts
+Length        : 3964
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\middleware\security.js
+Name          : security.js
+Length        : 13887
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\middleware\spaFallback.js
+Name          : spaFallback.js
+Length        : 748
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\middleware\spaFallback.ts
+Name          : spaFallback.ts
+Length        : 819
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\controllers
+Name          : controllers
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\metrics
+Name          : metrics
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\monitoring
+Name          : monitoring
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\routes
+Name          : routes
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\security
+Name          : security
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\services
+Name          : services
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\sockets
+Name          : sockets
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\utils
+Name          : utils
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\workers
+Name          : workers
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\setup.js
+Name          : setup.js
+Length        : 2757
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\setup.ts
+Name          : setup.ts
+Length        : 2652
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\controllers\controll
+                ers
+Name          : controllers
+Length        : 
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\controllers\security
+Name          : security
+Length        : 
+LastWriteTime : 9/24/2025 10:56:34 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\controllers\analytic
+                s.controller.js
+Name          : analytics.controller.js
+Length        : 5021
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\controllers\analytic
+                s.controller.ts
+Name          : analytics.controller.ts
+Length        : 5069
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\controllers\auth.con
+                troller.js
+Name          : auth.controller.js
+Length        : 7318
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\controllers\auth.con
+                troller.ts
+Name          : auth.controller.ts
+Length        : 6604
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\controllers\datasets
+                .controller.js
+Name          : datasets.controller.js
+Length        : 7539
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\controllers\datasets
+                .controller.ts
+Name          : datasets.controller.ts
+Length        : 7094
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\controllers\export.c
+                ontroller.ts
+Name          : export.controller.ts
+Length        : 10760
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\controllers\models.c
+                ontroller.js
+Name          : models.controller.js
+Length        : 14003
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\controllers\models.c
+                ontroller.ts
+Name          : models.controller.ts
+Length        : 13102
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\controllers\monitori
+                ng.controller.js
+Name          : monitoring.controller.js
+Length        : 7214
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\controllers\monitori
+                ng.controller.ts
+Name          : monitoring.controller.ts
+Length        : 6707
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\controllers\controll
+                ers\datasets.controller.js
+Name          : datasets.controller.js
+Length        : 7755
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\controllers\security
+                \config.js
+Name          : config.js
+Length        : 5030
+LastWriteTime : 9/24/2025 10:56:34 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\metrics\prom.js
+Name          : prom.js
+Length        : 2728
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\metrics\prom.ts
+Name          : prom.ts
+Length        : 2663
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\monitoring\metrics.j
+                s
+Name          : metrics.js
+Length        : 8857
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\monitoring\metrics.t
+                s
+Name          : metrics.ts
+Length        : 9472
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\monitoring\realMetri
+                cs.ts
+Name          : realMetrics.ts
+Length        : 5374
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\monitoring\workerMet
+                rics.ts
+Name          : workerMetrics.ts
+Length        : 13086
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\routes\auth.routes.j
+                s
+Name          : auth.routes.js
+Length        : 1087
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\routes\auth.routes.t
+                s
+Name          : auth.routes.ts
+Length        : 1280
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\routes\models.routes
+                .js
+Name          : models.routes.js
+Length        : 1779
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\routes\models.routes
+                .ts
+Name          : models.routes.ts
+Length        : 2079
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\security\config.js
+Name          : config.js
+Length        : 4189
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\security\config.ts
+Name          : config.ts
+Length        : 4385
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\security\csrf.js
+Name          : csrf.js
+Length        : 2921
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\security\csrf.ts
+Name          : csrf.ts
+Length        : 7453
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\security\helmet.js
+Name          : helmet.js
+Length        : 1080
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\security\helmet.ts
+Name          : helmet.ts
+Length        : 1033
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\security\index.js
+Name          : index.js
+Length        : 3127
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\security\index.ts
+Name          : index.ts
+Length        : 2739
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\security\rateLimiter
+                .js
+Name          : rateLimiter.js
+Length        : 2372
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\security\rateLimiter
+                .ts
+Name          : rateLimiter.ts
+Length        : 2631
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\security\routeProtec
+                tion.js
+Name          : routeProtection.js
+Length        : 1909
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\security\routeProtec
+                tion.ts
+Name          : routeProtection.ts
+Length        : 1924
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\security\validators.
+                js
+Name          : validators.js
+Length        : 7152
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\security\validators.
+                ts
+Name          : validators.ts
+Length        : 6614
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\services\dataService
+                .ts
+Name          : dataService.ts
+Length        : 9963
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\services\trainingSer
+                vice.js
+Name          : trainingService.js
+Length        : 15674
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\services\trainingSer
+                vice.ts
+Name          : trainingService.ts
+Length        : 15764
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\sockets\auth.js
+Name          : auth.js
+Length        : 3318
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\sockets\auth.ts
+Name          : auth.ts
+Length        : 3632
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\utils\database.ts
+Name          : database.ts
+Length        : 4175
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\workers\errorHandler
+                .ts
+Name          : errorHandler.ts
+Length        : 11919
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\workers\trainingWork
+                er.js
+Name          : trainingWorker.js
+Length        : 8439
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\workers\trainingWork
+                er.ts
+Name          : trainingWorker.ts
+Length        : 9364
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\workers\types.js
+Name          : types.js
+Length        : 126
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\modules\workers\types.ts
+Name          : types.ts
+Length        : 3936
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\routes\analytics.routes.js
+Name          : analytics.routes.js
+Length        : 768
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\routes\analytics.routes.ts
+Name          : analytics.routes.ts
+Length        : 862
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\routes\auth.routes.js
+Name          : auth.routes.js
+Length        : 1256
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\routes\auth.routes.ts
+Name          : auth.routes.ts
+Length        : 1319
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\routes\datasets.js
+Name          : datasets.js
+Length        : 18632
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\routes\datasets.routes.js
+Name          : datasets.routes.js
+Length        : 5182
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\routes\datasets.routes.ts
+Name          : datasets.routes.ts
+Length        : 1574
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\routes\export.routes.ts
+Name          : export.routes.ts
+Length        : 1434
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\routes\index.js
+Name          : index.js
+Length        : 5244
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\routes\index.ts
+Name          : index.ts
+Length        : 4761
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\routes\models.routes.js
+Name          : models.routes.js
+Length        : 2169
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\routes\models.routes.ts
+Name          : models.routes.ts
+Length        : 2265
+LastWriteTime : 9/26/2025 7:16:28 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\routes\monitoring.routes.js
+Name          : monitoring.routes.js
+Length        : 737
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\routes\monitoring.routes.ts
+Name          : monitoring.routes.ts
+Length        : 834
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\routes\reliability.js
+Name          : reliability.js
+Length        : 4720
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\routes\simple-api.js
+Name          : simple-api.js
+Length        : 5593
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\scripts\populate-database.js
+Name          : populate-database.js
+Length        : 5819
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\server\utils
+Name          : utils
+Length        : 
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\server\utils\decode.js.cjs
+Name          : decode.js.cjs
+Length        : 3591
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\services\authService.js
+Name          : authService.js
+Length        : 10058
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\services\authService.ts
+Name          : authService.ts
+Length        : 10349
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\src\services
+Name          : services
+Length        : 
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\src\types
+Name          : types
+Length        : 
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\src\services\datasets
+Name          : datasets
+Length        : 
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\src\services\training
+Name          : training
+Length        : 
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\src\services\datasets\Huggin
+                gFaceAPI.js
+Name          : HuggingFaceAPI.js
+Length        : 13017
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\src\services\training\RealTr
+                ainingEngine.js
+Name          : RealTrainingEngine.js
+Length        : 18759
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\src\types\training.js
+Name          : training.js
+Length        : 79
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\tests\analytics.spec.ts
+Name          : analytics.spec.ts
+Length        : 11597
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\tests\datasets.spec.ts
+Name          : datasets.spec.ts
+Length        : 7879
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\tests\models.spec.ts
+Name          : models.spec.ts
+Length        : 14194
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\training\index.js
+Name          : index.js
+Length        : 6369
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\training\index.ts
+Name          : index.ts
+Length        : 6040
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\training\RealTrainingEngine.
+                js
+Name          : RealTrainingEngine.js
+Length        : 7025
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\training\RealTrainingEngine.
+                ts
+Name          : RealTrainingEngine.ts
+Length        : 7131
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\training\RealTrainingEngineI
+                mpl.js
+Name          : RealTrainingEngineImpl.js
+Length        : 6769
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\training\RealTrainingEngineI
+                mpl.ts
+Name          : RealTrainingEngineImpl.ts
+Length        : 10925
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\training\tokenizer.js
+Name          : tokenizer.js
+Length        : 4453
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\training\tokenizer.ts
+Name          : tokenizer.ts
+Length        : 4199
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\training\TrainingEngine.ts
+Name          : TrainingEngine.ts
+Length        : 10057
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\utils\decode.js
+Name          : decode.js
+Length        : 1610
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\server\utils\decode.ts
+Name          : decode.ts
+Length        : 1657
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\assets
+Name          : assets
+Length        : 
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components
+Name          : components
+Length        : 
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\context
+Name          : context
+Length        : 
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\hooks
+Name          : hooks
+Length        : 
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\lib
+Name          : lib
+Length        : 
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\selectors
+Name          : selectors
+Length        : 
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services
+Name          : services
+Length        : 
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\styles
+Name          : styles
+Length        : 
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\types
+Name          : types
+Length        : 
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\utils
+Name          : utils
+Length        : 
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\App.tsx
+Name          : App.tsx
+Length        : 4519
+LastWriteTime : 9/25/2025 2:20:40 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\index.css
+Name          : index.css
+Length        : 8552
+LastWriteTime : 9/26/2025 4:49:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\index.css.backup
+Name          : index.css.backup
+Length        : 7185
+LastWriteTime : 9/25/2025 3:44:40 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\main.tsx
+Name          : main.tsx
+Length        : 798
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\vite-env.d.ts
+Name          : vite-env.d.ts
+Length        : 39
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\assets\fonts
+Name          : fonts
+Length        : 
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\assets\fonts\Vazirmatn-Bold.wof
+                f2
+Name          : Vazirmatn-Bold.woff2
+Length        : 1641
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\assets\fonts\Vazirmatn-Regular.
+                woff2
+Name          : Vazirmatn-Regular.woff2
+Length        : 1641
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\assets\fonts\vazirmatn.zip
+Name          : vazirmatn.zip
+Length        : 9
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\charts
+Name          : charts
+Length        : 
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\layout
+Name          : layout
+Length        : 
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ui
+Name          : ui
+Length        : 
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\AnalyticsPage.tsx
+Name          : AnalyticsPage.tsx
+Length        : 92
+LastWriteTime : 9/25/2025 3:47:43 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\Dashboard.tsx
+Name          : Dashboard.tsx
+Length        : 21455
+LastWriteTime : 9/24/2025 12:12:05 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\DashboardAdvanced.ts
+                x
+Name          : DashboardAdvanced.tsx
+Length        : 18218
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\DataPage.tsx
+Name          : DataPage.tsx
+Length        : 19908
+LastWriteTime : 9/25/2025 3:34:07 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\DatasetCard.tsx
+Name          : DatasetCard.tsx
+Length        : 2079
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\DatasetGallery.tsx
+Name          : DatasetGallery.tsx
+Length        : 23489
+LastWriteTime : 9/23/2025 8:14:47 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\EnhancedAnalyticsPag
+                e.tsx
+Name          : EnhancedAnalyticsPage.tsx
+Length        : 22936
+LastWriteTime : 9/25/2025 3:47:38 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\EnhancedDashboard.ts
+                x
+Name          : EnhancedDashboard.tsx
+Length        : 34335
+LastWriteTime : 9/25/2025 2:00:58 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\EnhancedLandingPage.
+                tsx
+Name          : EnhancedLandingPage.tsx
+Length        : 18204
+LastWriteTime : 9/24/2025 11:46:43 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\EnhancedModelsPage.t
+                sx
+Name          : EnhancedModelsPage.tsx
+Length        : 35194
+LastWriteTime : 9/25/2025 3:49:05 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\EnhancedMonitoringPa
+                ge.tsx
+Name          : EnhancedMonitoringPage.tsx
+Length        : 26887
+LastWriteTime : 9/25/2025 3:49:58 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\EnhancedOverview.tsx
+Name          : EnhancedOverview.tsx
+Length        : 28340
+LastWriteTime : 9/25/2025 3:45:26 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ErrorBoundary.tsx
+Name          : ErrorBoundary.tsx
+Length        : 8491
+LastWriteTime : 9/22/2025 10:44:03 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\LandingPage.tsx
+Name          : LandingPage.tsx
+Length        : 8327
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\LoadingSpinner.tsx
+Name          : LoadingSpinner.tsx
+Length        : 660
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\LogsPage.tsx
+Name          : LogsPage.tsx
+Length        : 10856
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ModelsPage.tsx
+Name          : ModelsPage.tsx
+Length        : 86
+LastWriteTime : 9/25/2025 3:49:09 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\MonitoringPage.tsx
+Name          : MonitoringPage.tsx
+Length        : 94
+LastWriteTime : 9/25/2025 3:50:03 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\NotificationSystem.t
+                sx
+Name          : NotificationSystem.tsx
+Length        : 11437
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\Overview.tsx
+Name          : Overview.tsx
+Length        : 91
+LastWriteTime : 9/25/2025 3:45:36 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ProjectDownloader.ts
+                x
+Name          : ProjectDownloader.tsx
+Length        : 42728
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ReliabilityDashboard
+                .tsx
+Name          : ReliabilityDashboard.tsx
+Length        : 12630
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\SettingsPage.tsx
+Name          : SettingsPage.tsx
+Length        : 25930
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\SystemStatus.tsx
+Name          : SystemStatus.tsx
+Length        : 11103
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\TeamPage.tsx
+Name          : TeamPage.tsx
+Length        : 16486
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\TestPage.tsx
+Name          : TestPage.tsx
+Length        : 4872
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\TrainingManagement.t
+                sx
+Name          : TrainingManagement.tsx
+Length        : 22406
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\UltimatePersianDashb
+                oard.tsx
+Name          : UltimatePersianDashboard.tsx
+Length        : 27970
+LastWriteTime : 9/25/2025 3:46:46 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\charts\ChartJSWrappe
+                r.tsx
+Name          : ChartJSWrapper.tsx
+Length        : 4685
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\charts\ChartSelector
+                .tsx
+Name          : ChartSelector.tsx
+Length        : 8850
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\charts\EnhancedChart
+                s.tsx
+Name          : EnhancedCharts.tsx
+Length        : 13866
+LastWriteTime : 9/25/2025 3:44:08 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\charts\index.ts
+Name          : index.ts
+Length        : 4184
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\layout\AppLayout.tsx
+Name          : AppLayout.tsx
+Length        : 2472
+LastWriteTime : 9/23/2025 8:14:44 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\layout\CreativeSideb
+                ar.tsx
+Name          : CreativeSidebar.tsx
+Length        : 13486
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\layout\EnhancedAppLa
+                yout.tsx
+Name          : EnhancedAppLayout.tsx
+Length        : 18018
+LastWriteTime : 9/26/2025 5:56:40 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\layout\enhanced_pers
+                ian_dashboard.tsx
+Name          : enhanced_persian_dashboard.tsx
+Length        : 53378
+LastWriteTime : 9/25/2025 1:57:19 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\layout\Header.tsx
+Name          : Header.tsx
+Length        : 2003
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\layout\Layout.tsx
+Name          : Layout.tsx
+Length        : 1086
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\layout\ModernSidebar
+                .tsx
+Name          : ModernSidebar.tsx
+Length        : 26886
+LastWriteTime : 9/26/2025 5:58:24 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\layout\Sidebar.tsx
+Name          : Sidebar.tsx
+Length        : 7992
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ui\Badge.tsx
+Name          : Badge.tsx
+Length        : 1114
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ui\Button.tsx
+Name          : Button.tsx
+Length        : 2160
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ui\Card.tsx
+Name          : Card.tsx
+Length        : 1844
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ui\DataTable.tsx
+Name          : DataTable.tsx
+Length        : 12450
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ui\EnhancedCard.tsx
+Name          : EnhancedCard.tsx
+Length        : 9974
+LastWriteTime : 9/25/2025 3:43:19 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ui\EnhancedNavigatio
+                n.tsx
+Name          : EnhancedNavigation.tsx
+Length        : 13990
+LastWriteTime : 9/25/2025 3:43:43 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ui\icons.tsx
+Name          : icons.tsx
+Length        : 1443
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ui\Input.tsx
+Name          : Input.tsx
+Length        : 1056
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ui\LoadableSection.t
+                sx
+Name          : LoadableSection.tsx
+Length        : 3327
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ui\ModernCard.tsx
+Name          : ModernCard.tsx
+Length        : 1046
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ui\OrganicCard.tsx
+Name          : OrganicCard.tsx
+Length        : 2092
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ui\PageHeader.tsx
+Name          : PageHeader.tsx
+Length        : 935
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ui\PageSkeleton.tsx
+Name          : PageSkeleton.tsx
+Length        : 4846
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ui\PremiumHeader.tsx
+Name          : PremiumHeader.tsx
+Length        : 8949
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ui\Progress.tsx
+Name          : Progress.tsx
+Length        : 1174
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ui\SlimBadge.tsx
+Name          : SlimBadge.tsx
+Length        : 1395
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ui\Toast.tsx
+Name          : Toast.tsx
+Length        : 6556
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ui\VirtualizedList.t
+                sx
+Name          : VirtualizedList.tsx
+Length        : 8257
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ui\ZenHeader.tsx
+Name          : ZenHeader.tsx
+Length        : 2723
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\components\ui\ZenProgress.tsx
+Name          : ZenProgress.tsx
+Length        : 2263
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\context\SystemContext.tsx
+Name          : SystemContext.tsx
+Length        : 4492
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\hooks\useApi.ts
+Name          : useApi.ts
+Length        : 758
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\hooks\useAuth.ts
+Name          : useAuth.ts
+Length        : 639
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\hooks\useTheme.ts
+Name          : useTheme.ts
+Length        : 782
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\hooks\useThrottledWebSocket.ts
+Name          : useThrottledWebSocket.ts
+Length        : 3733
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\hooks\useWebSocket.ts
+Name          : useWebSocket.ts
+Length        : 1285
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\lib\api-config.ts
+Name          : api-config.ts
+Length        : 2960
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\lib\api.ts
+Name          : api.ts
+Length        : 1495
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\lib\charts.ts
+Name          : charts.ts
+Length        : 291
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\lib\config.ts
+Name          : config.ts
+Length        : 783
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\lib\enhanced-api.ts
+Name          : enhanced-api.ts
+Length        : 15860
+LastWriteTime : 9/24/2025 11:55:42 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\lib\websocket.ts
+Name          : websocket.ts
+Length        : 3372
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\lib\ws-events.ts
+Name          : ws-events.ts
+Length        : 2001
+LastWriteTime : 9/26/2025 7:16:29 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\selectors\__tests__
+Name          : __tests__
+Length        : 
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\selectors\dashboard.ts
+Name          : dashboard.ts
+Length        : 2699
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\selectors\__tests__\dashboard.s
+                pec.ts
+Name          : dashboard.spec.ts
+Length        : 4491
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\ai
+Name          : ai
+Length        : 
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\database
+Name          : database
+Length        : 
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\datasets
+Name          : datasets
+Length        : 
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\optimization
+Name          : optimization
+Length        : 
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\persian
+Name          : persian
+Length        : 
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\simulation
+Name          : simulation
+Length        : 
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\training
+Name          : training
+Length        : 
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\analytics.ts
+Name          : analytics.ts
+Length        : 4827
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\api.ts
+Name          : api.ts
+Length        : 8115
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\datasets.ts
+Name          : datasets.ts
+Length        : 8258
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\export.ts
+Name          : export.ts
+Length        : 5804
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\FallbackSystemManager.
+                ts
+Name          : FallbackSystemManager.ts
+Length        : 13827
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\models.ts
+Name          : models.ts
+Length        : 4074
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\monitoring.ts
+Name          : monitoring.ts
+Length        : 6101
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\reliability-integratio
+                n.ts
+Name          : reliability-integration.ts
+Length        : 4307
+LastWriteTime : 9/25/2025 12:50:56 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\ReliabilityMonitor.ts
+Name          : ReliabilityMonitor.ts
+Length        : 11766
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\training.ts
+Name          : training.ts
+Length        : 11252
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\websocket.ts
+Name          : websocket.ts
+Length        : 6055
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\wsClient.ts
+Name          : wsClient.ts
+Length        : 4889
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\ai\DoRATrainer.ts
+Name          : DoRATrainer.ts
+Length        : 14271
+LastWriteTime : 9/24/2025 5:29:21 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\ai\PersianBertProcesso
+                r.ts
+Name          : PersianBertProcessor.ts
+Length        : 18035
+LastWriteTime : 9/25/2025 12:26:45 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\ai\PersianBertProcesso
+                rUpdated.ts
+Name          : PersianBertProcessorUpdated.ts
+Length        : 13085
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\ai\QRAdaptor.ts
+Name          : QRAdaptor.ts
+Length        : 13334
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\ai\TensorFlowCompatibi
+                lityLayer.ts
+Name          : TensorFlowCompatibilityLayer.ts
+Length        : 11507
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\ai\TensorFlowFallback.
+                ts
+Name          : TensorFlowFallback.ts
+Length        : 9220
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\database\index.ts
+Name          : index.ts
+Length        : 10631
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\database\SQLiteService
+                .ts
+Name          : SQLiteService.ts
+Length        : 15436
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\datasets\HuggingFaceAP
+                I.ts
+Name          : HuggingFaceAPI.ts
+Length        : 8689
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\optimization\ModelOpti
+                mizer.ts
+Name          : ModelOptimizer.ts
+Length        : 15055
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\persian\PersianUtils.t
+                s
+Name          : PersianUtils.ts
+Length        : 11483
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\simulation\TrainingSim
+                ulator.ts
+Name          : TrainingSimulator.ts
+Length        : 11481
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\services\training\RealTrainingE
+                ngine.ts
+Name          : RealTrainingEngine.ts
+Length        : 16945
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\styles\animations.css
+Name          : animations.css
+Length        : 7295
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\styles\components.css
+Name          : components.css
+Length        : 11256
+LastWriteTime : 9/26/2025 4:34:21 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\styles\theme.css
+Name          : theme.css
+Length        : 10897
+LastWriteTime : 9/25/2025 3:42:53 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\types\custom.d.ts
+Name          : custom.d.ts
+Length        : 308
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\types\datasets.ts
+Name          : datasets.ts
+Length        : 446
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\types\documents.ts
+Name          : documents.ts
+Length        : 2466
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\types\training.ts
+Name          : training.ts
+Length        : 2783
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\types\user.ts
+Name          : user.ts
+Length        : 1542
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\utils\cn.ts
+Name          : cn.ts
+Length        : 168
+LastWriteTime : 9/25/2025 3:44:12 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\src\utils\testHelpers.ts
+Name          : testHelpers.ts
+Length        : 1324
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\test-results\.last-run.json
+Name          : .last-run.json
+Length        : 48
+LastWriteTime : 9/22/2025 4:20:21 AM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\api
+Name          : api
+Length        : 
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\e2e
+Name          : e2e
+Length        : 
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\integration
+Name          : integration
+Length        : 
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\stress
+Name          : stress
+Length        : 
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\unit
+Name          : unit
+Length        : 
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\setup.ts
+Name          : setup.ts
+Length        : 1118
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\api\analytics.test.ts
+Name          : analytics.test.ts
+Length        : 8622
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\api\auth.test.ts
+Name          : auth.test.ts
+Length        : 5078
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\api\datasets.test.ts
+Name          : datasets.test.ts
+Length        : 4425
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\api\models.test.ts
+Name          : models.test.ts
+Length        : 8954
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\e2e\auth.spec.ts
+Name          : auth.spec.ts
+Length        : 2318
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\e2e\dashboard.spec.ts
+Name          : dashboard.spec.ts
+Length        : 2146
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\e2e\datasets.spec.ts
+Name          : datasets.spec.ts
+Length        : 2640
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\e2e\routes.spec.ts
+Name          : routes.spec.ts
+Length        : 4746
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\e2e\security-flow.spec.ts
+Name          : security-flow.spec.ts
+Length        : 8548
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\e2e\training-workflow.spec.ts
+Name          : training-workflow.spec.ts
+Length        : 7333
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\e2e\training.spec.ts
+Name          : training.spec.ts
+Length        : 3849
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\integration\basic-security.te
+                st.ts
+Name          : basic-security.test.ts
+Length        : 5328
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\integration\csrf-integration.
+                test.ts
+Name          : csrf-integration.test.ts
+Length        : 6504
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\integration\environment-valid
+                ation.test.ts
+Name          : environment-validation.test.ts
+Length        : 7469
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\integration\phase3-integratio
+                n.test.js
+Name          : phase3-integration.test.js
+Length        : 14998
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\integration\security-simple.t
+                est.ts
+Name          : security-simple.test.ts
+Length        : 3400
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\integration\security.test.ts
+Name          : security.test.ts
+Length        : 4358
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\integration\training.test.ts
+Name          : training.test.ts
+Length        : 12185
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\integration\workerIntegration
+                .test.ts
+Name          : workerIntegration.test.ts
+Length        : 14636
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\stress\database-free-stress.t
+                est.js
+Name          : database-free-stress.test.js
+Length        : 1473
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\stress\dataset-download.test.
+                ts
+Name          : dataset-download.test.ts
+Length        : 6931
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\stress\training-sessions.test
+                .ts
+Name          : training-sessions.test.ts
+Length        : 10734
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\unit\workers
+Name          : workers
+Length        : 
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Directory
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\unit\api.test.ts
+Name          : api.test.ts
+Length        : 6252
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\unit\auth.test.ts
+Name          : auth.test.ts
+Length        : 7152
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\unit\security.test.ts
+Name          : security.test.ts
+Length        : 7279
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\unit\training.test.ts
+Name          : training.test.ts
+Length        : 7674
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+FullName      : C:\Users\Dreammaker\Downloads\newboltailearn-main\
+                newboltailearn\tests\unit\workers\trainingWorker.t
+                est.ts
+Name          : trainingWorker.test.ts
+Length        : 13701
+LastWriteTime : 9/26/2025 7:16:30 PM
+Attributes    : Archive
+
+
+
