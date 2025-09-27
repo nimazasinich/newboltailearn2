@@ -141,7 +141,7 @@ export default function EnhancedModelsPage() {
   const handleDeleteModel = async (modelId: number) => {
     try {
       await trainingService.deleteModel(modelId);
-      setModels(prev => prev.filter(m => m.id !== modelId));
+      setModels(prev => prev.filter(m => String(m.id) !== String(modelId)));
     } catch (err) {
       console.error('Failed to delete model:', err);
       setError('خطا در حذف مدل');
@@ -150,18 +150,19 @@ export default function EnhancedModelsPage() {
 
   // Filter models based on search and filters
   const filteredModels = models.filter(model => {
+    const typeValue = (model.type ?? '').toLowerCase();
     const matchesSearch = model.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         model.type.toLowerCase().includes(searchTerm.toLowerCase());
+                         typeValue.includes(searchTerm.toLowerCase());
     const matchesStatus = filterStatus === 'all' || model.status === filterStatus;
     const matchesType = filterType === 'all' || model.type === filterType;
-    
+
     return matchesSearch && matchesStatus && matchesType;
   });
 
 // Mock Data (fallback)
 const MOCK_MODELS: Model[] = [
   {
-    id: 1,
+    id: '1',
     name: 'Persian BERT Legal v2.1',
     type: 'persian-bert',
     status: 'training',
@@ -182,7 +183,7 @@ const MOCK_MODELS: Model[] = [
     }
   },
   {
-    id: 2,
+    id: '2',
     name: 'Legal QA Model Pro',
     type: 'dora',
     status: 'completed',
@@ -203,7 +204,7 @@ const MOCK_MODELS: Model[] = [
     }
   },
   {
-    id: 3,
+    id: '3',
     name: 'Document Classifier Advanced',
     type: 'qr-adaptor',
     status: 'paused',
@@ -224,7 +225,7 @@ const MOCK_MODELS: Model[] = [
     }
   },
   {
-    id: 4,
+    id: '4',
     name: 'Court Decision Analyzer',
     type: 'persian-bert',
     status: 'idle',

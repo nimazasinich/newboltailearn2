@@ -3,6 +3,10 @@
  * Provides high-performance caching with in-memory fallback when Redis is unavailable
  */
 
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+
 class RedisCacheManager {
     constructor(options = {}) {
         this.config = {

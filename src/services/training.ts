@@ -1,5 +1,5 @@
-import { API_BASE, joinApiPath, apiRequest, API_ENDPOINTS } from '../lib/api-config';
 import { z } from 'zod';
+import { API_BASE, joinApiPath, apiRequest, API_ENDPOINTS } from '../lib/api-config';
 
 export interface TrainingConfig {
   epochs: number;
@@ -12,31 +12,56 @@ export interface TrainingConfig {
   datasetId?: string;
 }
 
+export type ModelStatus = 'idle' | 'training' | 'paused' | 'completed' | 'failed' | 'error';
+
+export interface ModelInfo {
+  id: string;
+  name: string;
+  type?: string;
+  status?: ModelStatus;
+  accuracy?: number;
+  loss?: number;
+  epochs?: number;
+  currentEpoch?: number;
+  datasetId?: string;
+  config?: Record<string, unknown>;
+  createdAt?: string;
+  updatedAt?: string;
+  description?: string;
+  category?: string;
+}
+
+export const TRAINING_SESSION_STATUSES = [
+  'running',
+  'paused',
+  'completed',
+  'failed',
+  'pending',
+  'training',
+  'idle'
+] as const;
+
+export type TrainingSessionStatus = typeof TRAINING_SESSION_STATUSES[number];
+
 export interface TrainingSession {
   id: number;
-  modelId: number;
   sessionId: string;
-  status: 'running' | 'paused' | 'completed' | 'failed' | 'pending' | 'training';
-  startTime: string;
-  endTime?: string;
+  modelId?: number;
+  status: TrainingSessionStatus;
+  startTime?: string;
+  endTime?: string | null;
   totalEpochs?: number;
   currentEpoch?: number;
+  config?: Record<string, unknown>;
+  metrics?: Record<string, unknown> | null;
   progress?: number;
-  currentStep?: number;
-  totalSteps?: number;
   loss?: number;
   accuracy?: number;
-  validationLoss?: number;
-  validationAccuracy?: number;
-  learningRate?: number;
-  batchSize?: number;
-  estimatedCompletion?: string;
-  errorMessage?: string;
-  config?: TrainingConfig;
-  metrics?: Record<string, unknown> | null;
-  modelName?: string;
-  modelType?: string;
-  userId?: number | null;
+  modelName?: string | null;
+  modelType?: string | null;
+  datasetId?: string | number | null;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface TrainingProgress {
@@ -49,68 +74,29 @@ export interface TrainingProgress {
   progress: number;
 }
 
-type ModelStatus = 'idle' | 'training' | 'paused' | 'completed' | 'failed' | 'error';
-type ModelType = 'persian-bert' | 'dora' | 'qr-adaptor';
-
-export interface ModelConfig extends Record<string, unknown> {}
-
-export interface ModelInfo {
-  id: number;
-  name: string;
-  type: ModelType;
-  status: ModelStatus;
-  accuracy: number;
-  loss: number;
-  epochs: number;
-  current_epoch: number;
-  dataset_id?: string | null;
-  config: ModelConfig | null;
-  created_at: string;
-  updated_at: string;
-  description?: string | null;
-  category?: string | null;
-  created_by?: number | null;
-}
-
-export interface ModelListResponse {
-  models: ModelInfo[];
-  pagination: Pagination;
-}
-
-export interface DatasetInfo {
-  id: string;
-  name: string;
-  source: string | null;
-  status: 'available' | 'downloading' | 'processing' | 'error';
-  type?: string | null;
-  description?: string | null;
-  huggingface_id?: string | null;
-  samples: number;
-  size_mb: number;
-  local_path?: string | null;
-  created_at?: string | null;
-  updated_at?: string | null;
-  last_used?: string | null;
-}
-
-export interface TrainingLogEntry {
+export interface ModelLogEntry {
   id: number;
   level: string;
   message: string;
-  timestamp: string;
   epoch?: number;
   loss?: number;
   accuracy?: number;
+  timestamp: string;
 }
 
-export interface Pagination {
+export interface PaginationInfo {
   page: number;
   limit: number;
   total: number;
   pages: number;
 }
 
-export interface ModelCheckpointEntry {
+export interface ModelLogsResponse {
+  logs: ModelLogEntry[];
+  pagination: PaginationInfo;
+}
+
+export interface ModelCheckpoint {
   id: number;
   epoch: number;
   accuracy?: number;
@@ -127,503 +113,570 @@ export interface TrainingStats {
   totalTrainingHours: number;
 }
 
-const trainingConfigBaseSchema = z.object({
-  epochs: z.number(),
-  batchSize: z.number(),
-  learningRate: z.number(),
-  validationSplit: z.number().optional(),
-  earlyStopping: z.boolean().optional(),
-  patience: z.number().optional(),
-  modelType: z.string().optional(),
-  datasetId: z.string().optional(),
-}) satisfies z.ZodType<TrainingConfig>;
+export interface DatasetSummary {
+  id: string;
+  name: string;
+  type?: string;
+  status?: string;
+  size?: number;
+  records?: number;
+  description?: string | null;
+  source?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+}
 
-const trainingConfigResponseSchema = trainingConfigBaseSchema;
-
-const storedTrainingConfigSchema: z.ZodType<Partial<TrainingConfig>> = trainingConfigBaseSchema.partial();
-
-const rawTrainingSessionSchema = z.object({
-  id: z.number(),
-  model_id: z.number(),
-  user_id: z.number().nullable().optional(),
-  session_id: z.string(),
-  status: z.string(),
-  start_time: z.string(),
-  end_time: z.string().nullable().optional(),
-  total_epochs: z.number().nullable().optional(),
-  current_epoch: z.number().nullable().optional(),
-  config: z.union([z.string(), z.record(z.string(), z.unknown())]).nullable().optional(),
-  metrics: z.union([z.string(), z.record(z.string(), z.unknown())]).nullable().optional(),
-  model_name: z.string().nullable().optional(),
-  model_type: z.string().nullable().optional(),
-  progress: z.number().nullable().optional(),
-  loss: z.number().nullable().optional(),
-  accuracy: z.number().nullable().optional(),
-  estimated_completion: z.string().nullable().optional(),
-  learning_rate: z.number().nullable().optional(),
-  batch_size: z.number().nullable().optional(),
-}).passthrough();
-
-type RawTrainingSession = z.infer<typeof rawTrainingSessionSchema>;
-
-const trainingSessionsSchema = z.array(rawTrainingSessionSchema);
-
-const metricsSchema: z.ZodType<Record<string, unknown>> = z.record(z.string(), z.unknown());
-const modelConfigSchema: z.ZodType<ModelConfig> = z.record(z.string(), z.unknown());
-
-const rawModelSchema = z
-  .object({
-    id: z.number(),
-    name: z.string(),
-    type: z.string(),
-    status: z.string(),
-    accuracy: z.number().nullable().optional(),
-    loss: z.number().nullable().optional(),
-    epochs: z.number().nullable().optional(),
-    current_epoch: z.number().nullable().optional(),
-    dataset_id: z.union([z.string(), z.number()]).nullable().optional(),
-    config: z.union([z.string(), z.record(z.string(), z.unknown())]).nullable().optional(),
-    created_at: z.string(),
-    updated_at: z.string(),
-    description: z.string().nullable().optional(),
-    category: z.string().nullable().optional(),
-    created_by: z.number().nullable().optional(),
-  })
-  .passthrough();
-
-const rawModelListEnvelopeSchema = z
-  .object({
-    models: z.array(rawModelSchema),
-    pagination: z
-      .object({
-        page: z.number().optional(),
-        limit: z.number().optional(),
-        total: z.number().optional(),
-        pages: z.number().optional(),
-      })
-      .partial()
-      .optional(),
-  })
-  .passthrough();
-
-const rawDatasetSchema = z
-  .object({
-    id: z.union([z.string(), z.number()]),
-    name: z.string(),
-    source: z.string().nullable().optional(),
-    status: z.string().nullable().optional(),
-    type: z.string().nullable().optional(),
-    description: z.string().nullable().optional(),
-    huggingface_id: z.string().nullable().optional(),
-    samples: z.number().nullable().optional(),
-    size_mb: z.number().nullable().optional(),
-    local_path: z.string().nullable().optional(),
-    created_at: z.string().nullable().optional(),
-    updated_at: z.string().nullable().optional(),
-    last_used: z.string().nullable().optional(),
-  })
-  .passthrough();
-
-const rawDatasetListEnvelopeSchema = z
-  .object({
-    datasets: z.array(rawDatasetSchema),
-  })
-  .passthrough();
-
-type RawModel = z.infer<typeof rawModelSchema>;
-type RawDataset = z.infer<typeof rawDatasetSchema>;
-
-const paginationSchema: z.ZodType<Pagination> = z.object({
+const paginationSchema = z.object({
   page: z.number(),
   limit: z.number(),
   total: z.number(),
-  pages: z.number(),
+  pages: z.number()
 });
 
-const modelLogsResponseSchema = z.object({
-  logs: z.array(
-    z.object({
-      id: z.number(),
-      level: z.string(),
-      message: z.string(),
-      epoch: z.number().nullable(),
-      loss: z.number().nullable(),
-      accuracy: z.number().nullable(),
-      timestamp: z.string(),
-    })
-  ),
-  pagination: paginationSchema,
-});
+const modelSchema = z
+  .object({
+    id: z.union([z.string(), z.number()]),
+    name: z.string(),
+    type: z.string().optional(),
+    status: z.string().optional(),
+    accuracy: z.union([z.number(), z.null()]).optional(),
+    loss: z.union([z.number(), z.null()]).optional(),
+    epochs: z.union([z.number(), z.null()]).optional(),
+    current_epoch: z.union([z.number(), z.string(), z.null()]).optional(),
+    currentEpoch: z.union([z.number(), z.string(), z.null()]).optional(),
+    dataset_id: z.union([z.string(), z.number(), z.null()]).optional(),
+    config: z.union([z.string(), z.record(z.string(), z.unknown()), z.null()]).optional(),
+    created_at: z.string().optional(),
+    updated_at: z.string().optional(),
+    createdAt: z.string().optional(),
+    updatedAt: z.string().optional(),
+    description: z.union([z.string(), z.null()]).optional(),
+    category: z.union([z.string(), z.null()]).optional()
+  })
+  .passthrough();
 
-const modelCheckpointSchema = z.object({
-  id: z.number(),
-  epoch: z.number(),
-  accuracy: z.number().nullable(),
-  loss: z.number().nullable(),
-  file_path: z.string(),
-  created_at: z.string(),
-});
+const modelListSchema = z
+  .object({
+    models: z.array(modelSchema),
+    pagination: paginationSchema.optional()
+  })
+  .passthrough();
 
-const modelCheckpointsSchema = z.array(modelCheckpointSchema);
+const trainingSessionSchema = z
+  .object({
+    id: z.union([z.string(), z.number()]),
+    session_id: z.string().optional(),
+    model_id: z.union([z.string(), z.number(), z.null()]).optional(),
+    status: z.string().optional(),
+    start_time: z.string().optional(),
+    end_time: z.union([z.string(), z.null()]).optional(),
+    total_epochs: z.union([z.string(), z.number(), z.null()]).optional(),
+    current_epoch: z.union([z.string(), z.number(), z.null()]).optional(),
+    config: z.union([z.string(), z.record(z.string(), z.unknown()), z.null()]).optional(),
+    metrics: z.union([z.string(), z.record(z.string(), z.unknown()), z.null()]).optional(),
+    progress: z.union([z.string(), z.number(), z.null()]).optional(),
+    loss: z.union([z.string(), z.number(), z.null()]).optional(),
+    accuracy: z.union([z.string(), z.number(), z.null()]).optional(),
+    model_name: z.union([z.string(), z.null()]).optional(),
+    model_type: z.union([z.string(), z.null()]).optional(),
+    dataset_id: z.union([z.string(), z.number(), z.null()]).optional(),
+    created_at: z.string().optional(),
+    updated_at: z.string().optional()
+  })
+  .passthrough();
 
-const trainingStatsSchema: z.ZodType<TrainingStats> = z.object({
-  totalModels: z.number(),
-  activeTraining: z.number(),
-  completedTraining: z.number(),
-  averageAccuracy: z.number(),
-  totalTrainingHours: z.number(),
-});
+const trainingSessionListSchema = z.array(trainingSessionSchema);
 
-const stopTrainingResponseSchema = z.object({
-  success: z.boolean(),
-  message: z.string(),
-});
+const modelLogSchema = z
+  .object({
+    id: z.union([z.string(), z.number()]),
+    level: z.string(),
+    message: z.string(),
+    epoch: z.union([z.string(), z.number(), z.null()]).optional(),
+    loss: z.union([z.string(), z.number(), z.null()]).optional(),
+    accuracy: z.union([z.string(), z.number(), z.null()]).optional(),
+    timestamp: z.string()
+  })
+  .passthrough();
 
-const startTrainingResponseSchema = z.object({
-  success: z.boolean(),
-  message: z.string(),
-  sessionId: z.union([z.string(), z.number()]),
-  config: trainingConfigResponseSchema,
-});
+const modelLogsResponseSchema = z
+  .object({
+    logs: z.array(modelLogSchema),
+    pagination: paginationSchema
+  })
+  .passthrough();
+
+const checkpointSchema = z
+  .object({
+    id: z.union([z.string(), z.number()]),
+    epoch: z.union([z.string(), z.number()]),
+    accuracy: z.union([z.string(), z.number(), z.null()]).optional(),
+    loss: z.union([z.string(), z.number(), z.null()]).optional(),
+    file_path: z.string(),
+    created_at: z.string()
+  })
+  .passthrough();
+
+const trainingStatsSchema = z
+  .object({
+    totalModels: z.number(),
+    activeTraining: z.number(),
+    completedTraining: z.number(),
+    averageAccuracy: z.number(),
+    totalTrainingHours: z.number()
+  })
+  .passthrough();
+
+const datasetSchema = z
+  .object({
+    id: z.union([z.string(), z.number()]),
+    name: z.string(),
+    type: z.string().optional(),
+    status: z.string().optional(),
+    size: z.union([z.string(), z.number(), z.null()]).optional(),
+    size_mb: z.union([z.string(), z.number(), z.null()]).optional(),
+    records: z.union([z.string(), z.number(), z.null()]).optional(),
+    samples: z.union([z.string(), z.number(), z.null()]).optional(),
+    description: z.union([z.string(), z.null()]).optional(),
+    source: z.union([z.string(), z.null()]).optional(),
+    created_at: z.string().optional(),
+    updated_at: z.string().optional()
+  })
+  .passthrough();
+
+const datasetListSchema = z
+  .object({
+    datasets: z.array(datasetSchema),
+    pagination: paginationSchema.optional()
+  })
+  .passthrough();
+
+const startTrainingResponseSchema = z
+  .object({
+    success: z.boolean(),
+    message: z.string().optional(),
+    sessionId: z.union([z.string(), z.number()]).optional(),
+    config: z.unknown().optional()
+  })
+  .passthrough();
+
+const optimizationResponseSchema = z
+  .object({
+    success: z.boolean(),
+    message: z.string().optional(),
+    optimizationId: z.string().optional(),
+    type: z.string().optional(),
+    parameters: z.unknown().optional()
+  })
+  .passthrough();
+
+const simpleSuccessSchema = z
+  .object({
+    success: z.boolean(),
+    message: z.string().optional()
+  })
+  .passthrough();
+
+const loadModelResponseSchema = z
+  .object({
+    success: z.boolean(),
+    message: z.string().optional(),
+    modelId: z.union([z.string(), z.number()]).optional(),
+    checkpointPath: z.string().optional()
+  })
+  .passthrough();
 
 function toOptionalNumber(value: unknown): number | undefined {
-  if (value === null || value === undefined) {
-    return undefined;
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    return value;
   }
-
-  if (typeof value === 'number') {
-    return Number.isFinite(value) ? value : undefined;
-  }
-
   if (typeof value === 'string') {
-    const trimmed = value.trim();
-    if (!trimmed) {
-      return undefined;
-    }
-    const parsed = Number(trimmed);
+    const parsed = Number(value);
     return Number.isFinite(parsed) ? parsed : undefined;
   }
-
   return undefined;
 }
 
-function parseOptionalJson<T>(value: unknown, schema: z.ZodType<T>): T | undefined {
-  if (value === null || value === undefined) {
-    return undefined;
+function toOptionalString(value: unknown): string | undefined {
+  if (typeof value === 'string') {
+    return value;
   }
+  if (typeof value === 'number') {
+    return value.toString();
+  }
+  return undefined;
+}
 
-  let data: unknown = value;
+function safeParseRecord(value: unknown): Record<string, unknown> | undefined {
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    return value as Record<string, unknown>;
+  }
   if (typeof value === 'string') {
     try {
-      data = JSON.parse(value);
-    } catch (error) {
-      console.warn('Failed to parse JSON payload', error);
+      const parsed = JSON.parse(value);
+      if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+        return parsed as Record<string, unknown>;
+      }
+    } catch {
       return undefined;
     }
   }
-
-  const parsed = schema.safeParse(data);
-  if (!parsed.success) {
-    console.warn('Invalid payload received from API', parsed.error.flatten());
-    return undefined;
-  }
-
-  return parsed.data;
+  return undefined;
 }
 
-function normalizeTrainingStatus(status: unknown): TrainingSession['status'] {
-  if (typeof status !== 'string') {
+function normalizeStatus(value?: string): TrainingSessionStatus {
+  if (!value) {
     return 'pending';
   }
-
-  const normalized = status.toLowerCase();
-  const statusMap: Record<string, TrainingSession['status']> = {
-    running: 'training',
-    training: 'training',
-    paused: 'paused',
-    completed: 'completed',
-    failed: 'failed',
-    pending: 'pending',
-  };
-
-  return statusMap[normalized] ?? 'pending';
+  const lower = value.toLowerCase() as TrainingSessionStatus;
+  return TRAINING_SESSION_STATUSES.includes(lower) ? lower : 'pending';
 }
 
-function normalizeTrainingConfig(raw: unknown): TrainingConfig | undefined {
-  const parsed = parseOptionalJson(raw, storedTrainingConfigSchema);
-  if (!parsed) {
-    return undefined;
-  }
-
-  if (
-    parsed.epochs === undefined ||
-    parsed.batchSize === undefined ||
-    parsed.learningRate === undefined
-  ) {
-    return undefined;
-  }
-
-  return {
-    epochs: parsed.epochs,
-    batchSize: parsed.batchSize,
-    learningRate: parsed.learningRate,
-    validationSplit: parsed.validationSplit,
-    earlyStopping: parsed.earlyStopping,
-    patience: parsed.patience,
-    modelType: parsed.modelType,
-    datasetId: parsed.datasetId,
-  };
-}
-
-function normalizeModelType(type: unknown): ModelType {
-  if (typeof type === 'string') {
-    const normalized = type.toLowerCase();
-    if (normalized === 'persian-bert' || normalized === 'dora' || normalized === 'qr-adaptor') {
-      return normalized;
-    }
-  }
-
-  return 'persian-bert';
-}
-
-function normalizeModelStatus(status: unknown): ModelStatus {
-  if (typeof status === 'string') {
-    const normalized = status.toLowerCase();
-    const statusMap: Record<string, ModelStatus> = {
-      idle: 'idle',
-      training: 'training',
-      running: 'training',
-      paused: 'paused',
-      completed: 'completed',
-      finished: 'completed',
-      failed: 'failed',
-      error: 'error',
-    };
-
-    if (statusMap[normalized]) {
-      return statusMap[normalized];
-    }
-  }
-
-  return 'idle';
-}
-
-function buildPagination(page: number, limit: number, total: number, pagesOverride?: number): Pagination {
-  const safeLimit = Number.isFinite(limit) && limit > 0 ? limit : total || 1;
-  const computedPages = safeLimit > 0 ? Math.max(1, Math.ceil(total / safeLimit)) : 1;
-
+function defaultPagination(count: number, page: number, limit: number): PaginationInfo {
   return {
     page,
-    limit: safeLimit,
-    total,
-    pages: pagesOverride && pagesOverride > 0 ? pagesOverride : computedPages,
+    limit,
+    total: count,
+    pages: Math.max(1, Math.ceil(count / Math.max(limit, 1)))
   };
 }
 
-function mapModel(raw: RawModel): ModelInfo {
-  const datasetId = raw.dataset_id;
-  const config = parseOptionalJson(raw.config, modelConfigSchema) ?? null;
-
+function adaptModel(record: z.infer<typeof modelSchema>): ModelInfo {
+  const config = safeParseRecord(record.config);
+  const currentEpoch = toOptionalNumber(record.currentEpoch ?? record.current_epoch);
+  const datasetIdValue = record.dataset_id;
   return {
-    id: raw.id,
-    name: raw.name,
-    type: normalizeModelType(raw.type),
-    status: normalizeModelStatus(raw.status),
-    accuracy: toOptionalNumber(raw.accuracy) ?? 0,
-    loss: toOptionalNumber(raw.loss) ?? 0,
-    epochs: toOptionalNumber(raw.epochs) ?? 0,
-    current_epoch: toOptionalNumber(raw.current_epoch) ?? 0,
-    dataset_id:
-      datasetId === undefined
-        ? undefined
-        : datasetId === null
-        ? null
-        : String(datasetId),
-    config,
-    created_at: raw.created_at,
-    updated_at: raw.updated_at,
-    description: raw.description ?? null,
-    category: raw.category ?? null,
-    created_by: raw.created_by ?? null,
+    id: toOptionalString(record.id) ?? String(record.id),
+    name: record.name,
+    type: record.type,
+    status: record.status as ModelStatus | undefined,
+    accuracy: typeof record.accuracy === 'number' ? record.accuracy : undefined,
+    loss: typeof record.loss === 'number' ? record.loss : undefined,
+    epochs: typeof record.epochs === 'number' ? record.epochs : undefined,
+    currentEpoch: currentEpoch,
+    datasetId: datasetIdValue === null || datasetIdValue === undefined ? undefined : String(datasetIdValue),
+    config: config,
+    createdAt: record.createdAt ?? record.created_at,
+    updatedAt: record.updatedAt ?? record.updated_at,
+    description: record.description ?? undefined,
+    category: record.category ?? undefined
   };
 }
 
-function normalizeDatasetStatus(status: unknown): DatasetInfo['status'] {
-  if (typeof status === 'string') {
-    const normalized = status.toLowerCase();
-    const statusMap: Record<string, DatasetInfo['status']> = {
-      available: 'available',
-      downloading: 'downloading',
-      processing: 'processing',
-      queued: 'processing',
-      error: 'error',
-      failed: 'error',
-    };
+function adaptTrainingSession(record: z.infer<typeof trainingSessionSchema>): TrainingSession {
+  const config = safeParseRecord(record.config);
+  const metrics = safeParseRecord(record.metrics);
+  return {
+    id: Number(record.id),
+    sessionId: record.session_id ?? toOptionalString(record.id) ?? String(record.id),
+    modelId: record.model_id === undefined || record.model_id === null ? undefined : Number(record.model_id),
+    status: normalizeStatus(record.status),
+    startTime: record.start_time,
+    endTime: record.end_time ?? undefined,
+    totalEpochs: toOptionalNumber(record.total_epochs),
+    currentEpoch: toOptionalNumber(record.current_epoch),
+    config: config,
+    metrics: metrics ?? null,
+    progress: toOptionalNumber(record.progress),
+    loss: toOptionalNumber(record.loss),
+    accuracy: toOptionalNumber(record.accuracy),
+    modelName: record.model_name ?? null,
+    modelType: record.model_type ?? null,
+    datasetId: record.dataset_id ?? null,
+    createdAt: record.created_at ?? record.start_time,
+    updatedAt: record.updated_at ?? undefined
+  };
+}
 
-    if (statusMap[normalized]) {
-      return statusMap[normalized];
+function adaptModelLog(entry: z.infer<typeof modelLogSchema>): ModelLogEntry {
+  return {
+    id: Number(entry.id),
+    level: entry.level,
+    message: entry.message,
+    epoch: toOptionalNumber(entry.epoch),
+    loss: toOptionalNumber(entry.loss),
+    accuracy: toOptionalNumber(entry.accuracy),
+    timestamp: entry.timestamp
+  };
+}
+
+function adaptCheckpoint(checkpoint: z.infer<typeof checkpointSchema>): ModelCheckpoint {
+  return {
+    id: Number(checkpoint.id),
+    epoch: Number(checkpoint.epoch),
+    accuracy: toOptionalNumber(checkpoint.accuracy),
+    loss: toOptionalNumber(checkpoint.loss),
+    filePath: checkpoint.file_path,
+    createdAt: checkpoint.created_at
+  };
+}
+
+function adaptDataset(dataset: z.infer<typeof datasetSchema>): DatasetSummary {
+  const size = toOptionalNumber(dataset.size ?? dataset.size_mb ?? dataset.samples);
+  const records = toOptionalNumber(dataset.records ?? dataset.samples);
+  return {
+    id: toOptionalString(dataset.id) ?? String(dataset.id),
+    name: dataset.name,
+    type: dataset.type,
+    status: dataset.status,
+    size: size,
+    records: records,
+    description: dataset.description ?? null,
+    source: dataset.source ?? null,
+    createdAt: dataset.created_at,
+    updatedAt: dataset.updated_at
+  };
+}
+
+function parseModelList(data: unknown, page: number, limit: number): { models: ModelInfo[]; pagination: PaginationInfo } {
+  const direct = modelListSchema.safeParse(data);
+  if (direct.success) {
+    return {
+      models: direct.data.models.map(adaptModel),
+      pagination: direct.data.pagination ?? defaultPagination(direct.data.models.length, page, limit)
+    };
+  }
+
+  if (Array.isArray(data)) {
+    const arrayParse = trainingSessionListSchema.safeParse(data);
+    const modelsArray = modelSchema.array().safeParse(data);
+    if (modelsArray.success) {
+      return {
+        models: modelsArray.data.map(adaptModel),
+        pagination: defaultPagination(modelsArray.data.length, page, limit)
+      };
+    }
+    if (arrayParse.success) {
+      // Some endpoints might return training sessions instead of models
+      return {
+        models: [],
+        pagination: defaultPagination(arrayParse.data.length, page, limit)
+      };
     }
   }
 
-  return 'available';
+  if (data && typeof data === 'object' && 'data' in (data as Record<string, unknown>)) {
+    return parseModelList((data as Record<string, unknown>).data, page, limit);
+  }
+
+  throw new Error('Invalid model list response format');
 }
 
-function mapDataset(raw: RawDataset): DatasetInfo {
-  return {
-    id: String(raw.id),
-    name: raw.name,
-    source: raw.source ?? null,
-    status: normalizeDatasetStatus(raw.status),
-    type: raw.type ?? null,
-    description: raw.description ?? null,
-    huggingface_id: raw.huggingface_id ?? null,
-    samples: toOptionalNumber(raw.samples) ?? 0,
-    size_mb: toOptionalNumber(raw.size_mb) ?? 0,
-    local_path: raw.local_path ?? null,
-    created_at: raw.created_at ?? null,
-    updated_at: raw.updated_at ?? null,
-    last_used: raw.last_used ?? null,
-  };
+function parseTrainingSessions(data: unknown): TrainingSession[] {
+  const directArray = trainingSessionListSchema.safeParse(data);
+  if (directArray.success) {
+    return directArray.data.map(adaptTrainingSession);
+  }
+
+  if (data && typeof data === 'object') {
+    const maybeSessions = (data as Record<string, unknown>).sessions;
+    if (Array.isArray(maybeSessions)) {
+      return parseTrainingSessions(maybeSessions);
+    }
+    if ('data' in (data as Record<string, unknown>)) {
+      return parseTrainingSessions((data as Record<string, unknown>).data);
+    }
+  }
+
+  throw new Error('Invalid training sessions response format');
 }
 
-function mapTrainingSession(raw: RawTrainingSession): TrainingSession {
-  const config = normalizeTrainingConfig(raw.config);
-  const metrics = parseOptionalJson(raw.metrics, metricsSchema);
+function parseTrainingSession(data: unknown): TrainingSession {
+  const direct = trainingSessionSchema.safeParse(data);
+  if (direct.success) {
+    return adaptTrainingSession(direct.data);
+  }
 
-  const accuracyFromMetrics =
-    metrics && typeof metrics.accuracy === 'number' ? metrics.accuracy : undefined;
-  const lossFromMetrics = metrics && typeof metrics.loss === 'number' ? metrics.loss : undefined;
-  const progressFromMetrics =
-    metrics && typeof metrics.progress === 'number' ? metrics.progress : undefined;
-  const currentStepFromMetrics =
-    metrics && typeof metrics.currentStep === 'number' ? metrics.currentStep : undefined;
-  const totalStepsFromMetrics =
-    metrics && typeof metrics.totalSteps === 'number' ? metrics.totalSteps : undefined;
-  const validationLossFromMetrics =
-    metrics && typeof metrics.validationLoss === 'number' ? metrics.validationLoss : undefined;
-  const validationAccuracyFromMetrics =
-    metrics && typeof metrics.validationAccuracy === 'number'
-      ? metrics.validationAccuracy
-      : undefined;
+  if (data && typeof data === 'object' && 'data' in (data as Record<string, unknown>)) {
+    return parseTrainingSession((data as Record<string, unknown>).data);
+  }
 
-  return {
-    id: raw.id,
-    modelId: raw.model_id,
-    sessionId: raw.session_id,
-    status: normalizeTrainingStatus(raw.status),
-    startTime: raw.start_time,
-    endTime: raw.end_time ?? undefined,
-    totalEpochs: toOptionalNumber(raw.total_epochs) ?? config?.epochs,
-    currentEpoch: toOptionalNumber(raw.current_epoch),
-    progress: toOptionalNumber(raw.progress) ?? progressFromMetrics,
-    currentStep: currentStepFromMetrics,
-    totalSteps: totalStepsFromMetrics,
-    loss: toOptionalNumber(raw.loss) ?? lossFromMetrics,
-    accuracy: toOptionalNumber(raw.accuracy) ?? accuracyFromMetrics,
-    validationLoss: validationLossFromMetrics,
-    validationAccuracy: validationAccuracyFromMetrics,
-    learningRate: toOptionalNumber(raw.learning_rate) ?? config?.learningRate,
-    batchSize: toOptionalNumber(raw.batch_size) ?? config?.batchSize,
-    estimatedCompletion: raw.estimated_completion ?? undefined,
-    config,
-    metrics: metrics ?? null,
-    modelName: raw.model_name ?? undefined,
-    modelType: raw.model_type ?? undefined,
-    userId: raw.user_id ?? undefined,
-  };
+  throw new Error('Invalid training session response format');
+}
+
+function parseModelLogs(data: unknown): ModelLogsResponse {
+  const direct = modelLogsResponseSchema.safeParse(data);
+  if (direct.success) {
+    return {
+      logs: direct.data.logs.map(adaptModelLog),
+      pagination: direct.data.pagination
+    };
+  }
+
+  if (data && typeof data === 'object' && 'data' in (data as Record<string, unknown>)) {
+    return parseModelLogs((data as Record<string, unknown>).data);
+  }
+
+  throw new Error('Invalid model logs response format');
+}
+
+function parseCheckpoints(data: unknown): ModelCheckpoint[] {
+  if (Array.isArray(data)) {
+    const direct = checkpointSchema.array().safeParse(data);
+    if (direct.success) {
+      return direct.data.map(adaptCheckpoint);
+    }
+  }
+
+  if (data && typeof data === 'object' && 'data' in (data as Record<string, unknown>)) {
+    return parseCheckpoints((data as Record<string, unknown>).data);
+  }
+
+  throw new Error('Invalid checkpoint response format');
+}
+
+function parseDatasets(data: unknown, page: number, limit: number): { datasets: DatasetSummary[]; pagination: PaginationInfo } {
+  const direct = datasetListSchema.safeParse(data);
+  if (direct.success) {
+    return {
+      datasets: direct.data.datasets.map(adaptDataset),
+      pagination: direct.data.pagination ?? defaultPagination(direct.data.datasets.length, page, limit)
+    };
+  }
+
+  if (Array.isArray(data)) {
+    const arrParse = datasetSchema.array().safeParse(data);
+    if (arrParse.success) {
+      return {
+        datasets: arrParse.data.map(adaptDataset),
+        pagination: defaultPagination(arrParse.data.length, page, limit)
+      };
+    }
+  }
+
+  if (data && typeof data === 'object' && 'data' in (data as Record<string, unknown>)) {
+    return parseDatasets((data as Record<string, unknown>).data, page, limit);
+  }
+
+  throw new Error('Invalid dataset response format');
+}
+
+function parseTrainingStats(data: unknown): TrainingStats {
+  const direct = trainingStatsSchema.safeParse(data);
+  if (direct.success) {
+    return direct.data;
+  }
+
+  if (data && typeof data === 'object' && 'data' in (data as Record<string, unknown>)) {
+    return parseTrainingStats((data as Record<string, unknown>).data);
+  }
+
+  throw new Error('Invalid training stats response format');
+}
+
+function parseStartTrainingResponse(data: unknown) {
+  const parsed = startTrainingResponseSchema.safeParse(data);
+  if (parsed.success) {
+    return parsed.data;
+  }
+  if (data && typeof data === 'object' && 'data' in (data as Record<string, unknown>)) {
+    return parseStartTrainingResponse((data as Record<string, unknown>).data);
+  }
+  throw new Error('Invalid training response format');
+}
+
+function parseOptimizationResponse(data: unknown) {
+  const parsed = optimizationResponseSchema.safeParse(data);
+  if (parsed.success) {
+    return parsed.data;
+  }
+  if (data && typeof data === 'object' && 'data' in (data as Record<string, unknown>)) {
+    return parseOptimizationResponse((data as Record<string, unknown>).data);
+  }
+  throw new Error('Invalid optimization response format');
+}
+
+function parseSimpleSuccess(data: unknown) {
+  const parsed = simpleSuccessSchema.safeParse(data);
+  if (parsed.success) {
+    return parsed.data;
+  }
+  if (data && typeof data === 'object' && 'data' in (data as Record<string, unknown>)) {
+    return parseSimpleSuccess((data as Record<string, unknown>).data);
+  }
+  throw new Error('Invalid success response format');
+}
+
+function parseLoadModelResponse(data: unknown) {
+  const parsed = loadModelResponseSchema.safeParse(data);
+  if (parsed.success) {
+    return parsed.data;
+  }
+  if (data && typeof data === 'object' && 'data' in (data as Record<string, unknown>)) {
+    return parseLoadModelResponse((data as Record<string, unknown>).data);
+  }
+  throw new Error('Invalid load model response format');
+}
+
+function parseModel(data: unknown): ModelInfo {
+  const direct = modelSchema.safeParse(data);
+  if (direct.success) {
+    return adaptModel(direct.data);
+  }
+
+  if (data && typeof data === 'object') {
+    const maybeModel = (data as Record<string, unknown>).model;
+    if (maybeModel) {
+      return parseModel(maybeModel);
+    }
+    if ('data' in (data as Record<string, unknown>)) {
+      return parseModel((data as Record<string, unknown>).data);
+    }
+  }
+
+  throw new Error('Invalid model response format');
 }
 
 export const trainingService = {
-  /**
-   * Get all models
-   */
-  async getModels(page = 1, limit = 10): Promise<ModelListResponse> {
+  async getModels(page = 1, limit = 10): Promise<{ models: ModelInfo[]; pagination: PaginationInfo }> {
     try {
       const params = new URLSearchParams({
-        page: page.toString(),
-        limit: limit.toString()
+        page: String(page),
+        limit: String(limit)
       });
 
       const response = await apiRequest(
         joinApiPath(API_BASE, `${API_ENDPOINTS.MODELS}?${params.toString()}`)
       );
-      const payload = await response.json();
-
-      const envelope = rawModelListEnvelopeSchema.safeParse(payload);
-      if (envelope.success) {
-        const models = envelope.data.models.map(mapModel);
-        const paginationInput = envelope.data.pagination ?? {};
-        const total = paginationInput.total ?? models.length;
-        const pages = paginationInput.pages;
-        const normalized = buildPagination(page, limit, total, pages);
-
-        return {
-          models,
-          pagination: normalized,
-        };
-      }
-
-      const arrayResult = z.array(rawModelSchema).safeParse(payload);
-      if (arrayResult.success) {
-        const models = arrayResult.data.map(mapModel);
-        return {
-          models,
-          pagination: buildPagination(page, limit, models.length),
-        };
-      }
-
-      console.warn('Unexpected models payload shape', payload);
-      return {
-        models: [],
-        pagination: buildPagination(page, limit, 0),
-      };
+      const data = await response.json();
+      return parseModelList(data, page, limit);
     } catch (error) {
       console.error('Get models failed:', error);
       return {
         models: [],
-        pagination: buildPagination(page, limit, 0),
+        pagination: defaultPagination(0, page, limit)
       };
     }
   },
 
-  /**
-   * Get specific model
-   */
-  async getModel(modelId: number): Promise<ModelInfo> {
+  async getModel(modelId: number | string): Promise<ModelInfo> {
     try {
       const response = await apiRequest(
-        joinApiPath(API_BASE, API_ENDPOINTS.MODEL_BY_ID(modelId.toString()))
+        joinApiPath(API_BASE, API_ENDPOINTS.MODEL_BY_ID(String(modelId)))
       );
-      const payload = await response.json();
-      const parsed = rawModelSchema.parse(payload);
-      return mapModel(parsed);
+      const data = await response.json();
+      return parseModel(data);
     } catch (error) {
       console.error('Get model failed:', error);
-      // Return fallback model data
+      const now = new Date().toISOString();
       return {
-        id: modelId,
+        id: String(modelId),
         name: 'مدل پیش‌فرض',
         type: 'persian-bert',
         status: 'idle',
         accuracy: 0,
         loss: 0,
         epochs: 0,
-        current_epoch: 0,
-        dataset_id: '',
-        config: {} as ModelConfig,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        description: null,
-        category: null,
-        created_by: null,
+        currentEpoch: 0,
+        datasetId: undefined,
+        config: {},
+        createdAt: now,
+        updatedAt: now
       };
     }
   },
 
-  /**
-   * Create new model
-   */
-  async createModel(model: { name: string; type: ModelType; datasetId?: string; config?: ModelConfig }): Promise<ModelInfo> {
+  async createModel(model: { name: string; type: string; datasetId?: string; config?: Record<string, unknown> }): Promise<ModelInfo> {
     try {
       const payload: Record<string, unknown> = {
         name: model.name,
@@ -639,50 +692,45 @@ export const trainingService = {
         joinApiPath(API_BASE, API_ENDPOINTS.MODELS),
         {
           method: 'POST',
-          body: JSON.stringify(payload),
+          body: JSON.stringify(model)
         }
       );
       const data = await response.json();
-      const parsed = rawModelSchema.parse(data);
-      return mapModel(parsed);
+      return parseModel(data);
     } catch (error) {
       console.error('Create model failed:', error);
-      // Return a mock created model for offline mode
+      const now = new Date().toISOString();
       return {
-        id: Date.now(),
+        id: String(Date.now()),
         name: model.name,
         type: model.type,
         status: 'idle',
         accuracy: 0,
         loss: 0,
         epochs: 0,
-        current_epoch: 0,
-        dataset_id: model.datasetId ?? null,
-        config: (model.config ?? {}) as ModelConfig,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        description: null,
-        category: null,
-        created_by: null,
+        currentEpoch: 0,
+        datasetId: model.datasetId,
+        config: model.config ?? {},
+        createdAt: now,
+        updatedAt: now
       };
     }
   },
 
-  /**
-   * Update model
-   */
-  async updateModel(modelId: number, updates: Partial<ModelInfo>): Promise<{ success: boolean; message: string }> {
+  async updateModel(modelId: number | string, updates: Partial<ModelInfo>): Promise<{ success: boolean; message: string }> {
     try {
       const response = await apiRequest(
-        joinApiPath(API_BASE, `/models/${modelId}`),
+        joinApiPath(API_BASE, API_ENDPOINTS.MODEL_BY_ID(String(modelId))),
         {
-          method: 'PUT',
-          body: JSON.stringify(updates),
+          method: 'PATCH',
+          body: JSON.stringify(updates)
         }
       );
+      const data = await response.json();
+      const parsed = parseSimpleSuccess(data);
       return {
-        success: response.ok,
-        message: response.ok ? 'Model updated successfully' : 'Failed to update model'
+        success: parsed.success,
+        message: parsed.message ?? (parsed.success ? 'Model updated successfully' : 'Failed to update model')
       };
     } catch (error) {
       console.error('Update model failed:', error);
@@ -690,20 +738,19 @@ export const trainingService = {
     }
   },
 
-  /**
-   * Delete model
-   */
-  async deleteModel(modelId: number): Promise<{ success: boolean; message: string }> {
+  async deleteModel(modelId: number | string): Promise<{ success: boolean; message: string }> {
     try {
       const response = await apiRequest(
-        joinApiPath(API_BASE, `/models/${modelId}`),
+        joinApiPath(API_BASE, API_ENDPOINTS.MODEL_BY_ID(String(modelId))),
         {
-          method: 'DELETE',
+          method: 'DELETE'
         }
       );
+      const data = await response.json();
+      const parsed = parseSimpleSuccess(data);
       return {
-        success: response.ok,
-        message: response.ok ? 'Model deleted successfully' : 'Failed to delete model'
+        success: parsed.success,
+        message: parsed.message ?? (parsed.success ? 'Model deleted successfully' : 'Failed to delete model')
       };
     } catch (error) {
       console.error('Delete model failed:', error);
@@ -711,34 +758,30 @@ export const trainingService = {
     }
   },
 
-  /**
-   * Start training
-   */
   async startTraining(modelId: number, config: TrainingConfig): Promise<{
     success: boolean;
-    message: string;
-    sessionId: string;
-    config: TrainingConfig;
+    message?: string;
+    sessionId?: string;
+    config?: unknown;
   }> {
     try {
       const response = await apiRequest(
         joinApiPath(API_BASE, API_ENDPOINTS.MODEL_TRAIN(modelId.toString())),
         {
           method: 'POST',
-          body: JSON.stringify(config),
+          body: JSON.stringify(config)
         }
       );
-      const payload = await response.json();
-      const parsed = startTrainingResponseSchema.parse(payload);
+      const data = await response.json();
+      const parsed = parseStartTrainingResponse(data);
       return {
         success: parsed.success,
         message: parsed.message,
-        sessionId: String(parsed.sessionId),
-        config: parsed.config,
+        sessionId: parsed.sessionId ? String(parsed.sessionId) : undefined,
+        config: parsed.config
       };
     } catch (error) {
       console.error('Start training failed:', error);
-      // Return mock training session for offline mode
       return {
         success: true,
         message: 'آموزش در حالت آفلاین شروع شد',
@@ -748,49 +791,47 @@ export const trainingService = {
     }
   },
 
-  /**
-   * Pause training
-   */
-  async pauseTraining(modelId: number): Promise<{ success: boolean; message: string }> {
+  async pauseTraining(modelId: number): Promise<{ success: boolean; message?: string }> {
     try {
       const response = await apiRequest(
-        joinApiPath(API_BASE, `/models/${modelId}/pause`),
+        joinApiPath(API_BASE, API_ENDPOINTS.MODEL_PAUSE(modelId.toString())),
         {
-          method: 'POST',
+          method: 'POST'
         }
       );
-      const payload = await response.json();
-      return stopTrainingResponseSchema.parse(payload);
+      const data = await response.json();
+      const parsed = parseSimpleSuccess(data);
+      return {
+        success: parsed.success,
+        message: parsed.message ?? (parsed.success ? 'آموزش متوقف شد' : 'Failed to pause training')
+      };
     } catch (error) {
       console.error('Pause training failed:', error);
       throw new Error('خطا در توقف آموزش');
     }
   },
 
-  /**
-   * Resume training
-   */
-  async resumeTraining(modelId: number, config?: Partial<TrainingConfig>): Promise<{
+  async resumeTraining(modelId: number, config: Partial<TrainingConfig> = {}): Promise<{
     success: boolean;
-    message: string;
-    sessionId: string;
-    config: TrainingConfig;
+    message?: string;
+    sessionId?: string;
+    config?: unknown;
   }> {
     try {
       const response = await apiRequest(
-        joinApiPath(API_BASE, `/models/${modelId}/resume`),
+        joinApiPath(API_BASE, API_ENDPOINTS.MODEL_RESUME(modelId.toString())),
         {
           method: 'POST',
-          body: JSON.stringify(config || {}),
+          body: JSON.stringify(config)
         }
       );
-      const payload = await response.json();
-      const parsed = startTrainingResponseSchema.parse(payload);
+      const data = await response.json();
+      const parsed = parseStartTrainingResponse(data);
       return {
         success: parsed.success,
-        message: parsed.message,
-        sessionId: String(parsed.sessionId),
-        config: parsed.config,
+        message: parsed.message ?? 'آموزش از سر گرفته شد',
+        sessionId: parsed.sessionId ? String(parsed.sessionId) : `session_${Date.now()}`,
+        config: parsed.config ?? config
       };
     } catch (error) {
       console.error('Resume training failed:', error);
@@ -798,160 +839,109 @@ export const trainingService = {
     }
   },
 
-  /**
-   * Get training sessions
-   */
   async getTrainingSessions(modelId?: number): Promise<TrainingSession[]> {
     try {
-      const endpoint = modelId 
+      const endpoint = modelId
         ? `/models/${modelId}/sessions`
         : '/training/sessions';
 
-      const response = await apiRequest(
-        joinApiPath(API_BASE, endpoint)
-      );
-      const payload = await response.json();
-      const parsed = trainingSessionsSchema.parse(payload);
-      return parsed.map(mapTrainingSession);
+      const response = await apiRequest(joinApiPath(API_BASE, endpoint));
+      const data = await response.json();
+      return parseTrainingSessions(data);
     } catch (error) {
       console.error('Get training sessions failed:', error);
       throw new Error('خطا در دریافت جلسات آموزش');
     }
   },
 
-  /**
-   * Get training session by ID
-   */
   async getTrainingSession(sessionId: string): Promise<TrainingSession> {
     try {
       const response = await apiRequest(
         joinApiPath(API_BASE, `/training/sessions/${sessionId}`)
       );
-      const payload = await response.json();
-      const parsed = rawTrainingSessionSchema.parse(payload);
-      return mapTrainingSession(parsed);
+      const data = await response.json();
+      return parseTrainingSession(data);
     } catch (error) {
       console.error('Get training session failed:', error);
       throw new Error('خطا در دریافت جلسه آموزش');
     }
   },
 
-  /**
-   * Get model logs
-   */
-  async getModelLogs(modelId: number, page = 1, limit = 50): Promise<{
-    logs: TrainingLogEntry[];
-    pagination: Pagination;
-  }> {
+  async getModelLogs(modelId: number, page = 1, limit = 50): Promise<ModelLogsResponse> {
     try {
       const params = new URLSearchParams({
-        page: page.toString(),
-        limit: limit.toString()
+        page: String(page),
+        limit: String(limit)
       });
 
       const response = await apiRequest(
         joinApiPath(API_BASE, `/models/${modelId}/logs?${params.toString()}`)
       );
-      const payload = await response.json();
-      const parsed = modelLogsResponseSchema.parse(payload);
-      return {
-        logs: parsed.logs.map(log => ({
-          id: log.id,
-          level: log.level,
-          message: log.message,
-          timestamp: log.timestamp,
-          epoch: log.epoch ?? undefined,
-          loss: log.loss ?? undefined,
-          accuracy: log.accuracy ?? undefined,
-        })),
-        pagination: parsed.pagination,
-      };
+      const data = await response.json();
+      return parseModelLogs(data);
     } catch (error) {
       console.error('Get model logs failed:', error);
       throw new Error('خطا در دریافت لاگ‌های مدل');
     }
   },
 
-  /**
-   * Get model checkpoints
-   */
-  async getModelCheckpoints(modelId: number): Promise<ModelCheckpointEntry[]> {
+  async getModelCheckpoints(modelId: number): Promise<ModelCheckpoint[]> {
     try {
       const response = await apiRequest(
         joinApiPath(API_BASE, `/models/${modelId}/checkpoints`)
       );
-      const payload = await response.json();
-      const parsed = modelCheckpointsSchema.parse(payload);
-      return parsed.map(checkpoint => ({
-        id: checkpoint.id,
-        epoch: checkpoint.epoch,
-        accuracy: checkpoint.accuracy ?? undefined,
-        loss: checkpoint.loss ?? undefined,
-        filePath: checkpoint.file_path,
-        createdAt: checkpoint.created_at,
-      }));
+      const data = await response.json();
+      return parseCheckpoints(data);
     } catch (error) {
       console.error('Get model checkpoints failed:', error);
       throw new Error('خطا در دریافت checkpoint های مدل');
     }
   },
 
-  /**
-   * Start hyperparameter optimization
-   */
-  async startOptimization(modelId: number, options: {
-    optimizationType?: string;
-    parameters?: Record<string, unknown>;
-  } = {}): Promise<{
+  async startOptimization(modelId: number, options: { optimizationType?: string; parameters?: Record<string, unknown> } = {}): Promise<{
     success: boolean;
-    message: string;
-    optimizationId: string;
-    type: string;
-    parameters: Record<string, unknown>;
+    message?: string;
+    optimizationId?: string;
+    type?: string;
+    parameters?: unknown;
   }> {
     try {
       const response = await apiRequest(
         joinApiPath(API_BASE, `/models/${modelId}/optimize`),
         {
           method: 'POST',
-          body: JSON.stringify(options),
+          body: JSON.stringify(options)
         }
       );
-      return {
-        success: true,
-        message: 'بهینه‌سازی شروع شد',
-        optimizationId: 'opt_' + Date.now(),
-        type: options.optimizationType || 'grid_search',
-        parameters: options.parameters || {}
-      };
+      const data = await response.json();
+      return parseOptimizationResponse(data);
     } catch (error) {
       console.error('Start optimization failed:', error);
       throw new Error('خطا در شروع بهینه‌سازی');
     }
   },
 
-  /**
-   * Load model from checkpoint
-   */
   async loadModel(modelId: number, checkpointPath: string): Promise<{
     success: boolean;
-    message: string;
-    modelId: number;
-    checkpointPath: string;
+    message?: string;
+    modelId?: string;
+    checkpointPath?: string;
   }> {
     try {
       const response = await apiRequest(
         joinApiPath(API_BASE, `/models/${modelId}/load`),
         {
           method: 'POST',
-          body: JSON.stringify({ checkpointPath }),
+          body: JSON.stringify({ checkpointPath })
         }
       );
+      const data = await response.json();
+      const parsed = parseLoadModelResponse(data);
       return {
-        success: true,
-        message: 'مدل با موفقیت بارگذاری شد',
-        modelId: modelId,
-        checkpointPath: checkpointPath
+        success: parsed.success,
+        message: parsed.message ?? 'مدل با موفقیت بارگذاری شد',
+        modelId: parsed.modelId ? String(parsed.modelId) : String(modelId),
+        checkpointPath: parsed.checkpointPath ?? checkpointPath
       };
     } catch (error) {
       console.error('Load model failed:', error);
@@ -959,19 +949,13 @@ export const trainingService = {
     }
   },
 
-  /**
-   * Get training statistics
-   */
   async getTrainingStats(): Promise<TrainingStats> {
     try {
-      const response = await apiRequest(
-        joinApiPath(API_BASE, '/training/stats')
-      );
-      const payload = await response.json();
-      return trainingStatsSchema.parse(payload);
+      const response = await apiRequest(joinApiPath(API_BASE, '/training/stats'));
+      const data = await response.json();
+      return parseTrainingStats(data);
     } catch (error) {
       console.error('Get training stats failed:', error);
-      // Return fallback data
       return {
         totalModels: 0,
         activeTraining: 0,
@@ -982,43 +966,37 @@ export const trainingService = {
     }
   },
 
-  /**
-   * Get datasets
-   */
-  async getDatasets(): Promise<{ datasets: DatasetInfo[] }> {
+  async getDatasets(page = 1, limit = 10): Promise<{ datasets: DatasetSummary[]; pagination: PaginationInfo }> {
     try {
-      const response = await apiRequest(joinApiPath(API_BASE, '/datasets'));
-      const payload = await response.json();
+      const params = new URLSearchParams({
+        page: String(page),
+        limit: String(limit)
+      });
 
-      const envelope = rawDatasetListEnvelopeSchema.safeParse(payload);
-      if (envelope.success) {
-        return { datasets: envelope.data.datasets.map(mapDataset) };
-      }
-
-      const arrayResult = z.array(rawDatasetSchema).safeParse(payload);
-      if (arrayResult.success) {
-        return { datasets: arrayResult.data.map(mapDataset) };
-      }
-
-      console.warn('Unexpected datasets payload shape', payload);
-      return { datasets: [] };
+      const response = await apiRequest(joinApiPath(API_BASE, `/datasets?${params.toString()}`));
+      const data = await response.json();
+      return parseDatasets(data, page, limit);
     } catch (error) {
       console.error('Get datasets failed:', error);
-      return { datasets: [] };
+      return {
+        datasets: [],
+        pagination: defaultPagination(0, page, limit)
+      };
     }
   },
 
-  /**
-   * Stop training
-   */
   async stopTraining(sessionId: string): Promise<{ success: boolean; message: string }> {
     try {
       const response = await apiRequest(
         joinApiPath(API_BASE, `/training/${sessionId}/stop`),
         { method: 'POST' }
       );
-      const payload = await response.json();
-      return stopTrainingResponseSchema.parse(payload);
+      const data = await response.json();
+      const parsed = parseSimpleSuccess(data);
+      return {
+        success: parsed.success,
+        message: parsed.message ?? (parsed.success ? 'Training stopped successfully' : 'Failed to stop training')
+      };
     } catch (error) {
       console.error('Stop training failed:', error);
       return { success: false, message: 'Failed to stop training' };
