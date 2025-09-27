@@ -1,20 +1,15 @@
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 
-export default ({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), '');
-  // Use VITE_BASE_PATH if provided (e.g. '/newboltailearn/'), otherwise '/'
-  const base = env.VITE_BASE_PATH && env.VITE_BASE_PATH.trim() !== '' ? env.VITE_BASE_PATH : '/';
-
-  return defineConfig({
-    resolve: { 
-      alias: { 
-        '@': path.resolve(__dirname, 'src') 
-      } 
+export default defineConfig({
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, 'src')
+      }
     },
     plugins: [react()],
-    base,
+    base: '/newboltailearn2/',
     server: {
       port: 5173,
       strictPort: true,
@@ -26,7 +21,7 @@ export default ({ mode }) => {
       }
     },
     build: {
-      outDir: 'docs',
+      outDir: 'dist',
       sourcemap: true,
       emptyOutDir: true,
       minify: 'terser',
@@ -44,4 +39,3 @@ export default ({ mode }) => {
       }
     }
   });
-};

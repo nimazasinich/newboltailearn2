@@ -18,8 +18,8 @@ This document describes the complete integration of GitHub Pages deployment with
 
 #### 2. Build Configuration
 - **Vite Config**: `vite.config.ts`
-  - Dynamic base path configuration (`/newboltailearn/`)
-  - Optimized build output to `docs/` directory
+  - Static base path configuration (`/newboltailearn2/`)
+  - Optimized build output to `dist/` directory
   - Code splitting for better performance
   - Source maps for debugging
 
@@ -39,19 +39,19 @@ This document describes the complete integration of GitHub Pages deployment with
 
 #### GitHub Pages Settings
 - **Source**: Deploy from a branch
-- **Branch**: `main` (or `gh-pages` if using separate branch)
-- **Folder**: `/docs`
+- **Branch**: `gh-pages`
+- **Folder**: `/ (root)`
 - **Custom Domain**: Not configured (uses default GitHub Pages URL)
 
 #### Build Process
 1. **Trigger**: Push to main branch
-2. **Build**: `npm run build:gh` (with `/newboltailearn/` base path)
+2. **Build**: `npm run build:gh`
 3. **SPA Setup**: `npm run ensure:spa` (creates 404.html and .nojekyll)
-4. **Deploy**: Upload to GitHub Pages
+4. **Deploy**: Upload the `dist/` directory to GitHub Pages
 
 ### File Structure
 ```
-docs/
+dist/
 ├── index.html          # Main application entry point
 ├── 404.html           # SPA fallback (mirrors index.html)
 ├── .nojekyll          # Disables Jekyll processing
@@ -72,7 +72,7 @@ npm run build:gh
 npm run ensure:spa
 
 # Check build output
-ls -la docs/
+ls -la dist/
 ```
 
 #### Deployment Testing
@@ -108,7 +108,7 @@ ls -la docs/
 #### Debug Commands
 ```bash
 # Check build output
-npm run build:gh && ls -la docs/
+npm run build:gh && ls -la dist/
 
 # Verify SPA fallback
 npm run ensure:spa
