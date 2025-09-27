@@ -3,6 +3,10 @@
  * Provides high-performance caching with in-memory fallback when Redis is unavailable
  */
 
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+
 class RedisCacheManager {
     constructor(options = {}) {
         this.config = {
@@ -48,7 +52,7 @@ class RedisCacheManager {
         try {
             // Try to import redis
             const redis = require('redis');
-            
+
             this.redis = redis.createClient({
                 host: this.config.host,
                 port: this.config.port,
@@ -357,4 +361,4 @@ class RedisCacheManager {
     }
 }
 
-module.exports = RedisCacheManager;
+export default RedisCacheManager;
