@@ -1,68 +1,77 @@
-version: '3.8'
+version: '3.9'
 
+# Development overrides for hot-reload and debugging
 services:
-  persian-legal-ai-dev:
+  # Backend with hot reload
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+      target: builder
+    volumes:
+      - ./server:/app/server:ro
+      - ./public:/app/public:ro
+      - ./package.json:/app/package.json:ro
+      - ./package-lock.json:/app/package-lock.json:ro
+      - node_modules_be:/app/node_modules
+      - sqlite_data:/data
+      - app_logs:/logs
+    environment:
+      NODE_ENV: development
+      PORT: 3000
+      DATABASE_PATH: /data/database.sqlite
+      SQLITE_PATH: /data/database.sqlite
+      JWT_SECRET: dev_jwt_secret_not_for_production
+      CORS_ORIGIN: http://localhost:5173,http://localhost:3000,http://localhost
+      DEBUG: "express:*"
+    command: ["npx", "nodemon", "--watch", "server", "--ext", "js,ts,json", "server/main.js"]
+    profiles:
+      - dev
+
+  # Frontend with Vite HMR
+  frontend-dev:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: persian-legal-ai-dev
-    ports:
-      - "8080:8080"
-      - "5173:5173"  # Vite dev server
+      target: builder
+    volumes:
+      - ./src:/app/src:ro
+      - ./public:/app/public:ro
+      - ./index.html:/app/index.html:ro
+      - ./vite.config.ts:/app/vite.config.ts:ro
+      - ./tsconfig.json:/app/tsconfig.json:ro
+      - ./tsconfig.app.json:/app/tsconfig.app.json:ro
+      - ./tailwind.config.cjs:/app/tailwind.config.cjs:ro
+      - ./postcss.config.cjs:/app/postcss.config.cjs:ro
+      - node_modules_fe:/app/node_modules
     environment:
-      - NODE_ENV=development
-      - DATABASE_PATH=/app/data/database.sqlite
-      - PORT=8080
-      - LOG_LEVEL=debug
-      - VITE_API_BASE=http://localhost:8080/api
-    volumes:
-      - .:/app
-      - /app/node_modules
-      - ./data:/app/data
-      - ./logs:/app/logs
-    restart: unless-stopped
-    command: ["npm", "run", "dev"]
-    networks:
-      - persian-legal-dev-network
+      NODE_ENV: development
+      VITE_API_URL: http://localhost:3000
+      VITE_WS_URL: ws://localhost:3000
+      CHOKIDAR_USEPOLLING: true
+      WATCHPACK_POLLING: true
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173"]
+    stdin_open: true
+    tty: true
+    profiles:
+      - dev
 
-  # Development database
-  postgres-dev:
-    image: postgres:15-alpine
-    container_name: persian-legal-postgres-dev
-    ports:
-      - "5432:5432"
+  # Redis for development
+  redis:
     environment:
-      - POSTGRES_DB=persian_legal_dev
-      - POSTGRES_USER=dev_user
-      - POSTGRES_PASSWORD=dev_password
-    volumes:
-      - postgres-dev-data:/var/lib/postgresql/data
-    restart: unless-stopped
-    networks:
-      - persian-legal-dev-network
+      REDIS_LOGLEVEL: debug
+    command: redis-server --appendonly yes --loglevel debug
     profiles:
-      - with-postgres
-
-  # Development Redis
-  redis-dev:
-    image: redis:7-alpine
-    container_name: persian-legal-redis-dev
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis-dev-data:/data
-    restart: unless-stopped
-    networks:
-      - persian-legal-dev-network
-    profiles:
-      - with-redis
+      - dev
 
 volumes:
-  postgres-dev-data:
+  sqlite_data:
     driver: local
-  redis-dev-data:
+  app_logs:
     driver: local
-
-networks:
-  persian-legal-dev-network:
-    driver: bridge
+  redis_data:
+    driver: local
+  node_modules_be:
+    driver: local
+  node_modules_fe:
+    driver: local
