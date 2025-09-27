@@ -141,6 +141,7 @@ try {
 }
 
 const app = express();
+let db = null;
 
 const { dbPool, apiMonitor, cacheManager, securityManager } = await initializeEnterpriseComponents();
 
@@ -632,52 +633,6 @@ io.on('connection', (socket) => {
 });
 
 // API Routes
-const buildHealthPayload = () => ({
-    status: 'ok',
-    uptime: process.uptime(),
-    now: new Date().toISOString()
-});
-
-app.get('/health', (_req, res) => {
-    res.status(200).json(buildHealthPayload());
-});
-
-app.get('/api/health', (_req, res) => {
-    const payload = {
-        ...buildHealthPayload(),
-        services: {
-            database: 'disconnected'
-        }
-    };
-
-    if (db) {
-        try {
-            db.prepare('SELECT 1').get();
-            payload.services.database = 'connected';
-        } catch (error) {
-            payload.services.database = 'error';
-            payload.services.databaseError = error instanceof Error ? error.message : String(error);
-        }
-    }
-
-    res.status(200).json(payload);
-});
-
-// Enhanced health check with enterprise metrics
-app.get('/api/health/enterprise', (_req, res) => {
-    const healthData = {
-        ...buildHealthPayload(),
-        services: {
-            database: db ? 'connected' : 'disconnected',
-            databasePool: dbPool && typeof dbPool.getStats === 'function' ? dbPool.getStats() : null,
-            apiMonitor: apiMonitor && typeof apiMonitor.getHealthStatus === 'function' ? apiMonitor.getHealthStatus() : null,
-            cacheManager: cacheManager && typeof cacheManager.getStats === 'function' ? cacheManager.getStats() : null,
-            securityManager: securityManager && typeof securityManager.getSecurityMetrics === 'function' ? securityManager.getSecurityMetrics() : null
-        }
-    };
-
-    res.status(200).json(healthData);
-});
 
 // Documents API
 app.get('/api/documents', (req, res) => {
