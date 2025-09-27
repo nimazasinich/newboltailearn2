@@ -19,7 +19,7 @@
     "start:enhanced": "node simple-server.js",
     "start:real": "node integrated-server.js",
     "start:sophisticated": "node server/index.js",
-    "start:new": "cross-env NODE_ENV=development PORT=8080 npx ts-node server/main.ts",
+    "start:new": "cross-env NODE_ENV=development npx ts-node server/main.ts",
     "test:enhanced": "node test-enhanced-app.js",
     "start:safe": "npm run check:permissions && npm run render:verify-abi && npm run start",
     "preinstall": "node -e \"console.log('Node:', process.version, 'ABI:', process.versions.modules)\"",

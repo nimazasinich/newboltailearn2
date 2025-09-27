@@ -13,6 +13,10 @@ import { Server } from 'socket.io';
 import Database from 'better-sqlite3';
 import createSimpleApiRouter from './routes/simple-api.js';
 
+if (!process.env.NODE_ENV) {
+    process.env.NODE_ENV = 'production';
+}
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -188,7 +192,57 @@ const io = new Server(server, {
   }
 });
 
-const PORT = process.env.PORT || 8080;
+const portFromEnv = Number.parseInt(process.env.PORT ?? '', 10);
+const PORT = Number.isFinite(portFromEnv) && portFromEnv > 0 ? portFromEnv : 8080;
+
+const buildHealthPayload = (extra = {}) => ({
+    status: 'ok',
+    now: new Date().toISOString(),
+    uptime: process.uptime(),
+    ...extra,
+});
+
+app.get('/health', (_req, res) => {
+    res.json(buildHealthPayload());
+});
+
+app.get('/api/health', (_req, res) => {
+    const payload = buildHealthPayload({
+        memory: process.memoryUsage(),
+        version: process.env.npm_package_version || '1.0.0',
+        environment: process.env.NODE_ENV || 'development',
+        database: 'disconnected',
+    });
+
+    if (db) {
+        try {
+            db.prepare('SELECT 1').get();
+            payload.database = 'connected';
+        } catch (error) {
+            payload.database = 'error';
+            payload.databaseError = error instanceof Error ? error.message : String(error);
+        }
+    }
+
+    res.json(payload);
+});
+
+app.get('/api/health/enterprise', (_req, res) => {
+    const payload = buildHealthPayload({
+        memory: process.memoryUsage(),
+        database: db ? 'connected' : 'disconnected',
+    });
+
+    res.json({
+        ...payload,
+        enterprise: {
+            databasePool: dbPool ? dbPool.getStats() : null,
+            apiMonitor: apiMonitor ? apiMonitor.getHealthStatus() : null,
+            cacheManager: cacheManager ? cacheManager.getStats() : null,
+            securityManager: securityManager ? securityManager.getSecurityMetrics() : null,
+        },
+    });
+});
 
 console.log('🧠 Starting Persian Legal AI Server');
 console.log('=====================================');
@@ -281,7 +335,6 @@ if (cacheManager && typeof cacheManager.middleware === 'function') {
 app.use(express.static('dist'));
 
 // Database Setup
-let db = null;
 try {
     const dataDir = path.join(__dirname, '..', 'data');
     if (!fs.existsSync(dataDir)) {
