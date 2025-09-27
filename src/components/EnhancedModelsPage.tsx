@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { trainingService } from '../services/training';
+import { trainingService, type ModelInfo } from '../services/training';
 import { getDatasets } from '../services/datasets';
 import { 
   Plus, 
@@ -42,27 +42,13 @@ import { TopNavigation } from './ui/EnhancedNavigation';
 import { PerformanceChart, CategoryDistribution, SystemMetrics, RadialProgress } from './charts/EnhancedCharts';
 import { cn } from '../utils/cn';
 
-interface Model {
-  id: string | number;
-  name: string;
-  type: string;
-  status: 'idle' | 'training' | 'paused' | 'completed' | 'error';
-  accuracy?: number;
-  loss?: number;
-  epochs?: number;
-  current_epoch?: number;
-  dataset_id?: string | number;
-  config?: string;
-  created_at: string;
-  updated_at: string;
-  description?: string;
-  category?: string;
+type Model = ModelInfo & {
   performance?: {
     precision: number;
     recall: number;
     f1_score: number;
   };
-}
+};
 
 interface Dataset {
   id: string | number;
@@ -163,7 +149,7 @@ export default function EnhancedModelsPage() {
   const handleDeleteModel = async (modelId: number) => {
     try {
       await trainingService.deleteModel(modelId);
-      setModels(prev => prev.filter(m => m.id !== modelId));
+      setModels(prev => prev.filter(m => String(m.id) !== String(modelId)));
     } catch (err) {
       console.error('Failed to delete model:', err);
       setError('خطا در حذف مدل');
@@ -172,28 +158,29 @@ export default function EnhancedModelsPage() {
 
   // Filter models based on search and filters
   const filteredModels = models.filter(model => {
+    const typeValue = (model.type ?? '').toLowerCase();
     const matchesSearch = model.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         model.type.toLowerCase().includes(searchTerm.toLowerCase());
+                         typeValue.includes(searchTerm.toLowerCase());
     const matchesStatus = filterStatus === 'all' || model.status === filterStatus;
     const matchesType = filterType === 'all' || model.type === filterType;
-    
+
     return matchesSearch && matchesStatus && matchesType;
   });
 
 // Mock Data (fallback)
 const MOCK_MODELS: Model[] = [
   {
-    id: 1,
+    id: '1',
     name: 'Persian BERT Legal v2.1',
     type: 'persian-bert',
     status: 'training',
     accuracy: 0.892,
     loss: 0.234,
     epochs: 50,
-    current_epoch: 32,
-    dataset_id: 1,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
+    currentEpoch: 32,
+    datasetId: '1',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
     description: 'مدل پیشرفته برای تحلیل اسناد حقوقی فارسی',
     category: 'قوانین مدنی',
     performance: {
@@ -203,17 +190,17 @@ const MOCK_MODELS: Model[] = [
     }
   },
   {
-    id: 2,
+    id: '2',
     name: 'Legal QA Model Pro',
     type: 'dora',
     status: 'completed',
     accuracy: 0.943,
     loss: 0.156,
     epochs: 30,
-    current_epoch: 30,
-    dataset_id: 2,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
+    currentEpoch: 30,
+    datasetId: '2',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
     description: 'مدل تخصصی برای پاسخ‌دهی به سوالات حقوقی',
     category: 'قوانین جزایی',
     performance: {
@@ -223,17 +210,17 @@ const MOCK_MODELS: Model[] = [
     }
   },
   {
-    id: 3,
+    id: '3',
     name: 'Document Classifier Advanced',
     type: 'qr-adaptor',
     status: 'paused',
     accuracy: 0.768,
     loss: 0.345,
     epochs: 40,
-    current_epoch: 18,
-    dataset_id: 3,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
+    currentEpoch: 18,
+    datasetId: '3',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
     description: 'دسته‌بندی کننده اسناد حقوقی',
     category: 'قوانین تجاری',
     performance: {
@@ -243,17 +230,17 @@ const MOCK_MODELS: Model[] = [
     }
   },
   {
-    id: 4,
+    id: '4',
     name: 'Court Decision Analyzer',
     type: 'persian-bert',
     status: 'idle',
     accuracy: 0,
     loss: 0,
     epochs: 25,
-    current_epoch: 0,
-    dataset_id: 4,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
+    currentEpoch: 0,
+    datasetId: '4',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
     description: 'تحلیلگر تصمیمات دادگاه',
     category: 'قوانین قضایی',
     performance: {

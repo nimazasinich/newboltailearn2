@@ -495,53 +495,51 @@ io.on('connection', (socket) => {
 });
 
 // API Routes
-app.get('/api/health', (req, res) => {
-    const healthStatus = {
-        status: 'healthy',
-        timestamp: new Date().toISOString(),
-        uptime: process.uptime(),
-        memory: process.memoryUsage(),
-        database: db ? 'connected' : 'disconnected',
-        version: process.env.npm_package_version || '1.0.0',
-        environment: process.env.NODE_ENV || 'development'
+const buildHealthPayload = () => ({
+    status: 'ok',
+    uptime: process.uptime(),
+    now: new Date().toISOString()
+});
+
+app.get('/health', (_req, res) => {
+    res.status(200).json(buildHealthPayload());
+});
+
+app.get('/api/health', (_req, res) => {
+    const payload = {
+        ...buildHealthPayload(),
+        services: {
+            database: 'disconnected'
+        }
     };
-    
-    // Check if database is accessible
+
     if (db) {
         try {
             db.prepare('SELECT 1').get();
-            healthStatus.database = 'connected';
+            payload.services.database = 'connected';
         } catch (error) {
-            healthStatus.database = 'error';
-            healthStatus.databaseError = error.message;
+            payload.services.database = 'error';
+            payload.services.databaseError = error instanceof Error ? error.message : String(error);
         }
     }
-    
-    res.json(healthStatus);
+
+    res.status(200).json(payload);
 });
 
-// Root health check for Docker
-app.get('/health', (req, res) => {
-    res.json({ status: 'healthy', timestamp: new Date().toISOString() });
 // Enhanced health check with enterprise metrics
-app.get('/api/health/enterprise', (req, res) => {
+app.get('/api/health/enterprise', (_req, res) => {
     const healthData = {
-        status: 'healthy',
-        timestamp: new Date().toISOString(),
-        uptime: process.uptime(),
-        memory: process.memoryUsage(),
-        database: db ? 'connected' : 'disconnected',
-        enterprise: {
+        ...buildHealthPayload(),
+        services: {
+            database: db ? 'connected' : 'disconnected',
             databasePool: dbPool ? dbPool.getStats() : null,
             apiMonitor: apiMonitor ? apiMonitor.getHealthStatus() : null,
             cacheManager: cacheManager ? cacheManager.getStats() : null,
             securityManager: securityManager ? securityManager.getSecurityMetrics() : null
         }
     };
-    
-    res.json(healthData);
-});
 
+    res.status(200).json(healthData);
 });
 
 // Documents API
