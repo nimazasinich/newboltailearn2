@@ -127,11 +127,8 @@ class SecurityManager {
         return slowDown({
             windowMs: 15 * 60 * 1000, // 15 minutes
             delayAfter: 50, // Allow 50 requests per 15 minutes, then...
-            delayMs: 500, // Add 500ms delay per request above 50
-            maxDelayMs: 20000, // Maximum delay of 20 seconds
-            onLimitReached: (req, res, options) => {
-                console.warn(`⚠️ Slow down triggered for IP: ${req.ip}`);
-            }
+            delayMs: () => 500, // Add 500ms delay per request above 50
+            maxDelayMs: 20000 // Maximum delay of 20 seconds
         });
     }
 

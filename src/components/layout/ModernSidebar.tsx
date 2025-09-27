@@ -129,16 +129,15 @@ export function ModernSidebar() {
   // Error boundary for sidebar rendering
   try {
     return (
-    <motion.div
+      <motion.div
       initial={{ x: -300 }}
       animate={{ x: 0 }}
       transition={{ duration: 0.5, type: "spring", stiffness: 120 }}
       className={`${
         collapsed ? 'w-20' : 'w-80'
-      } h-screen bg-gradient-to-b from-slate-800/95 to-slate-900/95 backdrop-blur-xl border-l border-slate-600/50 transition-all duration-300 flex flex-col overflow-hidden relative z-50`}
+      } h-screen bg-gradient-to-b from-slate-800/95 to-slate-900/95 backdrop-blur-xl border-r border-slate-600/50 transition-all duration-300 flex flex-col overflow-hidden relative z-40`}
       dir="rtl"
-      style={{ zIndex: 50 }}
-    >
+      >
       {/* Header */}
       <div className="p-6 border-b border-slate-600/50 flex-shrink-0">
         <motion.div

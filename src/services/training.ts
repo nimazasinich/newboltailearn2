@@ -162,6 +162,8 @@ const modelListSchema = z
   })
   .passthrough();
 
+type ModelListSchema = z.infer<typeof modelListSchema>;
+
 const trainingSessionSchema = z
   .object({
     id: z.union([z.string(), z.number()]),
@@ -187,6 +189,9 @@ const trainingSessionSchema = z
 
 const trainingSessionListSchema = z.array(trainingSessionSchema);
 
+type TrainingSessionSchema = z.infer<typeof trainingSessionSchema>;
+type TrainingSessionListSchema = z.infer<typeof trainingSessionListSchema>;
+
 const modelLogSchema = z
   .object({
     id: z.union([z.string(), z.number()]),
@@ -206,6 +211,8 @@ const modelLogsResponseSchema = z
   })
   .passthrough();
 
+type ModelLogsResponseSchema = z.infer<typeof modelLogsResponseSchema>;
+
 const checkpointSchema = z
   .object({
     id: z.union([z.string(), z.number()]),
@@ -216,6 +223,8 @@ const checkpointSchema = z
     created_at: z.string()
   })
   .passthrough();
+
+type CheckpointSchema = z.infer<typeof checkpointSchema>;
 
 const trainingStatsSchema = z
   .object({
@@ -251,6 +260,9 @@ const datasetListSchema = z
   })
   .passthrough();
 
+type DatasetSchema = z.infer<typeof datasetSchema>;
+type DatasetListSchema = z.infer<typeof datasetListSchema>;
+
 const startTrainingResponseSchema = z
   .object({
     success: z.boolean(),
@@ -259,6 +271,8 @@ const startTrainingResponseSchema = z
     config: z.unknown().optional()
   })
   .passthrough();
+
+type StartTrainingResponseSchema = z.infer<typeof startTrainingResponseSchema>;
 
 const optimizationResponseSchema = z
   .object({
@@ -270,12 +284,16 @@ const optimizationResponseSchema = z
   })
   .passthrough();
 
+type OptimizationResponseSchema = z.infer<typeof optimizationResponseSchema>;
+
 const simpleSuccessSchema = z
   .object({
     success: z.boolean(),
     message: z.string().optional()
   })
   .passthrough();
+
+type SimpleSuccessSchema = z.infer<typeof simpleSuccessSchema>;
 
 const loadModelResponseSchema = z
   .object({
@@ -285,6 +303,8 @@ const loadModelResponseSchema = z
     checkpointPath: z.string().optional()
   })
   .passthrough();
+
+type LoadModelResponseSchema = z.infer<typeof loadModelResponseSchema>;
 
 function toOptionalNumber(value: unknown): number | undefined {
   if (typeof value === 'number' && Number.isFinite(value)) {
@@ -341,7 +361,9 @@ function defaultPagination(count: number, page: number, limit: number): Paginati
   };
 }
 
-function adaptModel(record: z.infer<typeof modelSchema>): ModelInfo {
+type ModelSchema = z.infer<typeof modelSchema>;
+
+function adaptModel(record: ModelSchema): ModelInfo {
   const config = safeParseRecord(record.config);
   const currentEpoch = toOptionalNumber(record.currentEpoch ?? record.current_epoch);
   const datasetIdValue = record.dataset_id;
@@ -363,7 +385,7 @@ function adaptModel(record: z.infer<typeof modelSchema>): ModelInfo {
   };
 }
 
-function adaptTrainingSession(record: z.infer<typeof trainingSessionSchema>): TrainingSession {
+function adaptTrainingSession(record: TrainingSessionSchema): TrainingSession {
   const config = safeParseRecord(record.config);
   const metrics = safeParseRecord(record.metrics);
   return {
@@ -400,7 +422,7 @@ function adaptModelLog(entry: z.infer<typeof modelLogSchema>): ModelLogEntry {
   };
 }
 
-function adaptCheckpoint(checkpoint: z.infer<typeof checkpointSchema>): ModelCheckpoint {
+function adaptCheckpoint(checkpoint: CheckpointSchema): ModelCheckpoint {
   return {
     id: Number(checkpoint.id),
     epoch: Number(checkpoint.epoch),
@@ -411,7 +433,7 @@ function adaptCheckpoint(checkpoint: z.infer<typeof checkpointSchema>): ModelChe
   };
 }
 
-function adaptDataset(dataset: z.infer<typeof datasetSchema>): DatasetSummary {
+function adaptDataset(dataset: DatasetSchema): DatasetSummary {
   const size = toOptionalNumber(dataset.size ?? dataset.size_mb ?? dataset.samples);
   const records = toOptionalNumber(dataset.records ?? dataset.samples);
   return {
@@ -431,26 +453,30 @@ function adaptDataset(dataset: z.infer<typeof datasetSchema>): DatasetSummary {
 function parseModelList(data: unknown, page: number, limit: number): { models: ModelInfo[]; pagination: PaginationInfo } {
   const direct = modelListSchema.safeParse(data);
   if (direct.success) {
+    const parsed: ModelListSchema = direct.data;
     return {
-      models: direct.data.models.map(adaptModel),
-      pagination: direct.data.pagination ?? defaultPagination(direct.data.models.length, page, limit)
+      models: parsed.models.map(adaptModel),
+      pagination: parsed.pagination ?? defaultPagination(parsed.models.length, page, limit)
     };
   }
 
   if (Array.isArray(data)) {
-    const arrayParse = trainingSessionListSchema.safeParse(data);
     const modelsArray = modelSchema.array().safeParse(data);
     if (modelsArray.success) {
+      const parsed = modelsArray.data;
       return {
-        models: modelsArray.data.map(adaptModel),
-        pagination: defaultPagination(modelsArray.data.length, page, limit)
+        models: parsed.map(adaptModel),
+        pagination: defaultPagination(parsed.length, page, limit)
       };
     }
+
+    const arrayParse = trainingSessionListSchema.safeParse(data);
     if (arrayParse.success) {
+      const parsedSessions: TrainingSessionListSchema = arrayParse.data;
       // Some endpoints might return training sessions instead of models
       return {
         models: [],
-        pagination: defaultPagination(arrayParse.data.length, page, limit)
+        pagination: defaultPagination(parsedSessions.length, page, limit)
       };
     }
   }
@@ -465,16 +491,18 @@ function parseModelList(data: unknown, page: number, limit: number): { models: M
 function parseTrainingSessions(data: unknown): TrainingSession[] {
   const directArray = trainingSessionListSchema.safeParse(data);
   if (directArray.success) {
-    return directArray.data.map(adaptTrainingSession);
+    const parsed: TrainingSessionListSchema = directArray.data;
+    return parsed.map(adaptTrainingSession);
   }
 
   if (data && typeof data === 'object') {
-    const maybeSessions = (data as Record<string, unknown>).sessions;
+    const recordData = data as Record<string, unknown>;
+    const maybeSessions = recordData.sessions;
     if (Array.isArray(maybeSessions)) {
       return parseTrainingSessions(maybeSessions);
     }
-    if ('data' in (data as Record<string, unknown>)) {
-      return parseTrainingSessions((data as Record<string, unknown>).data);
+    if ('data' in recordData) {
+      return parseTrainingSessions(recordData.data);
     }
   }
 
@@ -484,7 +512,8 @@ function parseTrainingSessions(data: unknown): TrainingSession[] {
 function parseTrainingSession(data: unknown): TrainingSession {
   const direct = trainingSessionSchema.safeParse(data);
   if (direct.success) {
-    return adaptTrainingSession(direct.data);
+    const parsed: TrainingSessionSchema = direct.data;
+    return adaptTrainingSession(parsed);
   }
 
   if (data && typeof data === 'object' && 'data' in (data as Record<string, unknown>)) {
@@ -497,9 +526,10 @@ function parseTrainingSession(data: unknown): TrainingSession {
 function parseModelLogs(data: unknown): ModelLogsResponse {
   const direct = modelLogsResponseSchema.safeParse(data);
   if (direct.success) {
+    const parsed: ModelLogsResponseSchema = direct.data;
     return {
-      logs: direct.data.logs.map(adaptModelLog),
-      pagination: direct.data.pagination
+      logs: parsed.logs.map(adaptModelLog),
+      pagination: parsed.pagination
     };
   }
 
@@ -514,7 +544,8 @@ function parseCheckpoints(data: unknown): ModelCheckpoint[] {
   if (Array.isArray(data)) {
     const direct = checkpointSchema.array().safeParse(data);
     if (direct.success) {
-      return direct.data.map(adaptCheckpoint);
+      const parsed: CheckpointSchema[] = direct.data;
+      return parsed.map(adaptCheckpoint);
     }
   }
 
@@ -525,21 +556,27 @@ function parseCheckpoints(data: unknown): ModelCheckpoint[] {
   throw new Error('Invalid checkpoint response format');
 }
 
-function parseDatasets(data: unknown, page: number, limit: number): { datasets: DatasetSummary[]; pagination: PaginationInfo } {
+function parseDatasets(
+  data: unknown,
+  page: number,
+  limit: number
+): { datasets: DatasetSummary[]; pagination: PaginationInfo } {
   const direct = datasetListSchema.safeParse(data);
   if (direct.success) {
+    const parsed: DatasetListSchema = direct.data;
     return {
-      datasets: direct.data.datasets.map(adaptDataset),
-      pagination: direct.data.pagination ?? defaultPagination(direct.data.datasets.length, page, limit)
+      datasets: parsed.datasets.map(adaptDataset),
+      pagination: parsed.pagination ?? defaultPagination(parsed.datasets.length, page, limit)
     };
   }
 
   if (Array.isArray(data)) {
     const arrParse = datasetSchema.array().safeParse(data);
     if (arrParse.success) {
+      const parsed: DatasetSchema[] = arrParse.data;
       return {
-        datasets: arrParse.data.map(adaptDataset),
-        pagination: defaultPagination(arrParse.data.length, page, limit)
+        datasets: parsed.map(adaptDataset),
+        pagination: defaultPagination(parsed.length, page, limit)
       };
     }
   }
@@ -564,7 +601,7 @@ function parseTrainingStats(data: unknown): TrainingStats {
   throw new Error('Invalid training stats response format');
 }
 
-function parseStartTrainingResponse(data: unknown) {
+function parseStartTrainingResponse(data: unknown): StartTrainingResponseSchema {
   const parsed = startTrainingResponseSchema.safeParse(data);
   if (parsed.success) {
     return parsed.data;
@@ -575,7 +612,7 @@ function parseStartTrainingResponse(data: unknown) {
   throw new Error('Invalid training response format');
 }
 
-function parseOptimizationResponse(data: unknown) {
+function parseOptimizationResponse(data: unknown): OptimizationResponseSchema {
   const parsed = optimizationResponseSchema.safeParse(data);
   if (parsed.success) {
     return parsed.data;
@@ -586,7 +623,7 @@ function parseOptimizationResponse(data: unknown) {
   throw new Error('Invalid optimization response format');
 }
 
-function parseSimpleSuccess(data: unknown) {
+function parseSimpleSuccess(data: unknown): SimpleSuccessSchema {
   const parsed = simpleSuccessSchema.safeParse(data);
   if (parsed.success) {
     return parsed.data;
@@ -597,7 +634,7 @@ function parseSimpleSuccess(data: unknown) {
   throw new Error('Invalid success response format');
 }
 
-function parseLoadModelResponse(data: unknown) {
+function parseLoadModelResponse(data: unknown): LoadModelResponseSchema {
   const parsed = loadModelResponseSchema.safeParse(data);
   if (parsed.success) {
     return parsed.data;
