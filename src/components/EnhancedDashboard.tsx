@@ -49,6 +49,7 @@ export default function EnhancedPersianDashboard() {
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const showStandaloneSidebar = false;
 
   // Legal categories specific to Iranian law
   const legalCategories: LegalCategory[] = [
@@ -202,112 +203,113 @@ export default function EnhancedPersianDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800" dir="rtl">
-      {/* Modern Sidebar */}
-      <motion.div
-        initial={{ x: sidebarCollapsed ? -300 : 0 }}
-        animate={{ x: sidebarCollapsed ? -240 : 0 }}
-        className={`fixed right-0 top-0 h-full z-30 transition-all duration-300 ${
-          sidebarCollapsed ? 'w-16' : 'w-72'
-        }`}
-      >
-        <div className="h-full bg-gradient-to-b from-slate-800/95 via-slate-900/95 to-slate-800/95 backdrop-blur-xl border-l border-slate-600/50 shadow-2xl">
-          {/* Sidebar Header */}
-          <div className="p-6 border-b border-slate-600/50">
-            <div className="flex items-center justify-between">
-              {!sidebarCollapsed && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="flex items-center gap-3"
-                >
-                  <div className="w-10 h-10 bg-gradient-to-r from-emerald-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <Brain className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <h2 className="text-lg font-bold text-white">AI حقوقی ایران</h2>
-                    <p className="text-xs text-slate-300">سامانه یادگیری عمیق</p>
-                  </div>
-                </motion.div>
-              )}
-              <button
-                onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                className="p-2 hover:bg-slate-700/50 rounded-lg transition-all"
-              >
-                <ArrowLeft className={`w-5 h-5 text-slate-300 transition-transform ${
-                  sidebarCollapsed ? 'rotate-180' : ''
-                }`} />
-              </button>
-            </div>
-          </div>
-
-          {/* Navigation Menu */}
-          <div className="p-4">
-            <div className="space-y-2">
-              {sidebarMenuItems.map((item, index) => (
-                <motion.button
-                  key={index}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all ${
-                    item.active 
-                      ? 'bg-gradient-to-r from-emerald-500/20 to-blue-500/20 border border-emerald-500/30 shadow-lg' 
-                      : 'hover:bg-slate-700/50 border border-transparent'
-                  }`}
-                >
-                  <div className={`p-2 rounded-lg ${
-                    item.active 
-                      ? 'bg-gradient-to-r from-emerald-500 to-blue-600 shadow-lg' 
-                      : 'bg-slate-700/50'
-                  }`}>
-                    <item.icon className={`w-4 h-4 ${
-                      item.active ? 'text-white' : 'text-slate-300'
-                    }`} />
-                  </div>
-                  {!sidebarCollapsed && (
-                    <div className="flex-1 text-right">
-                      <span className={`text-sm font-medium ${
-                        item.active ? 'text-white' : 'text-slate-300'
-                      }`}>
-                        {item.label}
-                      </span>
-                      {item.badge && (
-                        <span className="float-left bg-gradient-to-r from-emerald-500 to-blue-600 text-white text-xs px-2 py-1 rounded-full">
-                          {item.badge}
-                        </span>
-                      )}
+      {showStandaloneSidebar && (
+        <motion.div
+          initial={{ x: sidebarCollapsed ? -300 : 0 }}
+          animate={{ x: sidebarCollapsed ? -240 : 0 }}
+          className={`fixed right-0 top-0 h-full z-30 transition-all duration-300 ${
+            sidebarCollapsed ? 'w-16' : 'w-72'
+          }`}
+        >
+          <div className="h-full bg-gradient-to-b from-slate-800/95 via-slate-900/95 to-slate-800/95 backdrop-blur-xl border-r border-slate-600/50 shadow-2xl">
+            {/* Sidebar Header */}
+            <div className="p-6 border-b border-slate-600/50">
+              <div className="flex items-center justify-between">
+                {!sidebarCollapsed && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="flex items-center gap-3"
+                  >
+                    <div className="w-10 h-10 bg-gradient-to-r from-emerald-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
+                      <Brain className="w-6 h-6 text-white" />
                     </div>
-                  )}
-                  {!sidebarCollapsed && (
-                    <ChevronRight className="w-4 h-4 text-slate-400" />
-                  )}
-                </motion.button>
-              ))}
-            </div>
-          </div>
-
-          {/* Sidebar Footer - System Status */}
-          {!sidebarCollapsed && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="absolute bottom-4 left-4 right-4"
-            >
-              <div className="bg-gradient-to-r from-emerald-500/20 to-blue-500/20 backdrop-blur-sm rounded-xl p-4 border border-emerald-500/30">
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-                  <span className="text-sm font-medium text-emerald-200">وضعیت سیستم: سالم</span>
-                </div>
-                <div className="text-xs text-slate-300">
-                  آموزش فعال: {models.filter(m => m.status === 'training').length}
-                </div>
+                    <div>
+                      <h2 className="text-lg font-bold text-white">AI حقوقی ایران</h2>
+                      <p className="text-xs text-slate-300">سامانه یادگیری عمیق</p>
+                    </div>
+                  </motion.div>
+                )}
+                <button
+                  onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                  className="p-2 hover:bg-slate-700/50 rounded-lg transition-all"
+                >
+                  <ArrowLeft className={`w-5 h-5 text-slate-300 transition-transform ${
+                    sidebarCollapsed ? 'rotate-180' : ''
+                  }`} />
+                </button>
               </div>
-            </motion.div>
-          )}
-        </div>
-      </motion.div>
+            </div>
+
+            {/* Navigation Menu */}
+            <div className="p-4">
+              <div className="space-y-2">
+                {sidebarMenuItems.map((item, index) => (
+                  <motion.button
+                    key={index}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={`w-full flex items-center gap-3 p-3 rounded-xl transition-all ${
+                      item.active
+                        ? 'bg-gradient-to-r from-emerald-500/20 to-blue-500/20 border border-emerald-500/30 shadow-lg'
+                        : 'hover:bg-slate-700/50 border border-transparent'
+                    }`}
+                  >
+                    <div className={`p-2 rounded-lg ${
+                      item.active
+                        ? 'bg-gradient-to-r from-emerald-500 to-blue-600 shadow-lg'
+                        : 'bg-slate-700/50'
+                    }`}>
+                      <item.icon className={`w-4 h-4 ${
+                        item.active ? 'text-white' : 'text-slate-300'
+                      }`} />
+                    </div>
+                    {!sidebarCollapsed && (
+                      <div className="flex-1 text-right">
+                        <span className={`text-sm font-medium ${
+                          item.active ? 'text-white' : 'text-slate-300'
+                        }`}>
+                          {item.label}
+                        </span>
+                        {item.badge && (
+                          <span className="float-left bg-gradient-to-r from-emerald-500 to-blue-600 text-white text-xs px-2 py-1 rounded-full">
+                            {item.badge}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                    {!sidebarCollapsed && (
+                      <ChevronRight className="w-4 h-4 text-slate-400" />
+                    )}
+                  </motion.button>
+                ))}
+              </div>
+            </div>
+
+            {/* Sidebar Footer - System Status */}
+            {!sidebarCollapsed && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="absolute bottom-4 left-4 right-4"
+              >
+                <div className="bg-gradient-to-r from-emerald-500/20 to-blue-500/20 backdrop-blur-sm rounded-xl p-4 border border-emerald-500/30">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
+                    <span className="text-sm font-medium text-emerald-200">وضعیت سیستم: سالم</span>
+                  </div>
+                  <div className="text-xs text-slate-300">
+                    آموزش فعال: {models.filter(m => m.status === 'training').length}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </div>
+        </motion.div>
+      )}
 
       {/* Main Content */}
-      <div className={`transition-all duration-300 ${sidebarCollapsed ? 'mr-16' : 'mr-72'}`}>
+      <div className={`transition-all duration-300 ${showStandaloneSidebar ? (sidebarCollapsed ? 'mr-16' : 'mr-72') : 'mr-0'}`}>
         {/* Top Header Bar */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}

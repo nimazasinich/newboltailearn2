@@ -1,4 +1,5 @@
 import { API_BASE, joinApiPath, apiRequest, API_ENDPOINTS } from '../lib/api-config';
+import { z } from 'zod';
 
 export interface TrainingConfig {
   epochs: number;
@@ -15,24 +16,27 @@ export interface TrainingSession {
   id: number;
   modelId: number;
   sessionId: string;
-  status: 'running' | 'paused' | 'completed' | 'failed' | 'pending';
-  progress: number;
-  currentEpoch: number;
-  totalEpochs: number;
-  currentStep: number;
-  totalSteps: number;
-  loss: number;
-  accuracy: number;
-  validationLoss?: number;
-  validationAccuracy?: number;
-  learningRate: number;
-  batchSize: number;
+  status: 'running' | 'paused' | 'completed' | 'failed' | 'pending' | 'training';
   startTime: string;
   endTime?: string;
+  totalEpochs?: number;
+  currentEpoch?: number;
+  progress?: number;
+  currentStep?: number;
+  totalSteps?: number;
+  loss?: number;
+  accuracy?: number;
+  validationLoss?: number;
+  validationAccuracy?: number;
+  learningRate?: number;
+  batchSize?: number;
   estimatedCompletion?: string;
   errorMessage?: string;
-  config: TrainingConfig;
-  metrics?: any;
+  config?: TrainingConfig;
+  metrics?: Record<string, unknown> | null;
+  modelName?: string;
+  modelType?: string;
+  userId?: number | null;
 }
 
 export interface TrainingProgress {
@@ -60,6 +64,272 @@ export interface ModelInfo {
   updated_at: string;
   description?: string;
   category?: string;
+}
+
+export interface TrainingLogEntry {
+  id: number;
+  level: string;
+  message: string;
+  timestamp: string;
+  epoch?: number;
+  loss?: number;
+  accuracy?: number;
+}
+
+export interface Pagination {
+  page: number;
+  limit: number;
+  total: number;
+  pages: number;
+}
+
+export interface ModelCheckpointEntry {
+  id: number;
+  epoch: number;
+  accuracy?: number;
+  loss?: number;
+  filePath: string;
+  createdAt: string;
+}
+
+export interface TrainingStats {
+  totalModels: number;
+  activeTraining: number;
+  completedTraining: number;
+  averageAccuracy: number;
+  totalTrainingHours: number;
+}
+
+const trainingConfigBaseSchema = z.object({
+  epochs: z.number(),
+  batchSize: z.number(),
+  learningRate: z.number(),
+  validationSplit: z.number().optional(),
+  earlyStopping: z.boolean().optional(),
+  patience: z.number().optional(),
+  modelType: z.string().optional(),
+  datasetId: z.string().optional(),
+}) satisfies z.ZodType<TrainingConfig>;
+
+const trainingConfigResponseSchema = trainingConfigBaseSchema;
+
+const storedTrainingConfigSchema: z.ZodType<Partial<TrainingConfig>> = trainingConfigBaseSchema.partial();
+
+const rawTrainingSessionSchema = z.object({
+  id: z.number(),
+  model_id: z.number(),
+  user_id: z.number().nullable().optional(),
+  session_id: z.string(),
+  status: z.string(),
+  start_time: z.string(),
+  end_time: z.string().nullable().optional(),
+  total_epochs: z.number().nullable().optional(),
+  current_epoch: z.number().nullable().optional(),
+  config: z.union([z.string(), z.record(z.string(), z.unknown())]).nullable().optional(),
+  metrics: z.union([z.string(), z.record(z.string(), z.unknown())]).nullable().optional(),
+  model_name: z.string().nullable().optional(),
+  model_type: z.string().nullable().optional(),
+  progress: z.number().nullable().optional(),
+  loss: z.number().nullable().optional(),
+  accuracy: z.number().nullable().optional(),
+  estimated_completion: z.string().nullable().optional(),
+  learning_rate: z.number().nullable().optional(),
+  batch_size: z.number().nullable().optional(),
+}).passthrough();
+
+type RawTrainingSession = z.infer<typeof rawTrainingSessionSchema>;
+
+const trainingSessionsSchema = z.array(rawTrainingSessionSchema);
+
+const metricsSchema: z.ZodType<Record<string, unknown>> = z.record(z.string(), z.unknown());
+
+const paginationSchema: z.ZodType<Pagination> = z.object({
+  page: z.number(),
+  limit: z.number(),
+  total: z.number(),
+  pages: z.number(),
+});
+
+const modelLogsResponseSchema = z.object({
+  logs: z.array(
+    z.object({
+      id: z.number(),
+      level: z.string(),
+      message: z.string(),
+      epoch: z.number().nullable(),
+      loss: z.number().nullable(),
+      accuracy: z.number().nullable(),
+      timestamp: z.string(),
+    })
+  ),
+  pagination: paginationSchema,
+});
+
+const modelCheckpointSchema = z.object({
+  id: z.number(),
+  epoch: z.number(),
+  accuracy: z.number().nullable(),
+  loss: z.number().nullable(),
+  file_path: z.string(),
+  created_at: z.string(),
+});
+
+const modelCheckpointsSchema = z.array(modelCheckpointSchema);
+
+const trainingStatsSchema: z.ZodType<TrainingStats> = z.object({
+  totalModels: z.number(),
+  activeTraining: z.number(),
+  completedTraining: z.number(),
+  averageAccuracy: z.number(),
+  totalTrainingHours: z.number(),
+});
+
+const stopTrainingResponseSchema = z.object({
+  success: z.boolean(),
+  message: z.string(),
+});
+
+const startTrainingResponseSchema = z.object({
+  success: z.boolean(),
+  message: z.string(),
+  sessionId: z.union([z.string(), z.number()]),
+  config: trainingConfigResponseSchema,
+});
+
+function toOptionalNumber(value: unknown): number | undefined {
+  if (value === null || value === undefined) {
+    return undefined;
+  }
+
+  if (typeof value === 'number') {
+    return Number.isFinite(value) ? value : undefined;
+  }
+
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    if (!trimmed) {
+      return undefined;
+    }
+    const parsed = Number(trimmed);
+    return Number.isFinite(parsed) ? parsed : undefined;
+  }
+
+  return undefined;
+}
+
+function parseOptionalJson<T>(value: unknown, schema: z.ZodType<T>): T | undefined {
+  if (value === null || value === undefined) {
+    return undefined;
+  }
+
+  let data: unknown = value;
+  if (typeof value === 'string') {
+    try {
+      data = JSON.parse(value);
+    } catch (error) {
+      console.warn('Failed to parse JSON payload', error);
+      return undefined;
+    }
+  }
+
+  const parsed = schema.safeParse(data);
+  if (!parsed.success) {
+    console.warn('Invalid payload received from API', parsed.error.flatten());
+    return undefined;
+  }
+
+  return parsed.data;
+}
+
+function normalizeTrainingStatus(status: unknown): TrainingSession['status'] {
+  if (typeof status !== 'string') {
+    return 'pending';
+  }
+
+  const normalized = status.toLowerCase();
+  const statusMap: Record<string, TrainingSession['status']> = {
+    running: 'training',
+    training: 'training',
+    paused: 'paused',
+    completed: 'completed',
+    failed: 'failed',
+    pending: 'pending',
+  };
+
+  return statusMap[normalized] ?? 'pending';
+}
+
+function normalizeTrainingConfig(raw: unknown): TrainingConfig | undefined {
+  const parsed = parseOptionalJson(raw, storedTrainingConfigSchema);
+  if (!parsed) {
+    return undefined;
+  }
+
+  if (
+    parsed.epochs === undefined ||
+    parsed.batchSize === undefined ||
+    parsed.learningRate === undefined
+  ) {
+    return undefined;
+  }
+
+  return {
+    epochs: parsed.epochs,
+    batchSize: parsed.batchSize,
+    learningRate: parsed.learningRate,
+    validationSplit: parsed.validationSplit,
+    earlyStopping: parsed.earlyStopping,
+    patience: parsed.patience,
+    modelType: parsed.modelType,
+    datasetId: parsed.datasetId,
+  };
+}
+
+function mapTrainingSession(raw: RawTrainingSession): TrainingSession {
+  const config = normalizeTrainingConfig(raw.config);
+  const metrics = parseOptionalJson(raw.metrics, metricsSchema);
+
+  const accuracyFromMetrics =
+    metrics && typeof metrics.accuracy === 'number' ? metrics.accuracy : undefined;
+  const lossFromMetrics = metrics && typeof metrics.loss === 'number' ? metrics.loss : undefined;
+  const progressFromMetrics =
+    metrics && typeof metrics.progress === 'number' ? metrics.progress : undefined;
+  const currentStepFromMetrics =
+    metrics && typeof metrics.currentStep === 'number' ? metrics.currentStep : undefined;
+  const totalStepsFromMetrics =
+    metrics && typeof metrics.totalSteps === 'number' ? metrics.totalSteps : undefined;
+  const validationLossFromMetrics =
+    metrics && typeof metrics.validationLoss === 'number' ? metrics.validationLoss : undefined;
+  const validationAccuracyFromMetrics =
+    metrics && typeof metrics.validationAccuracy === 'number'
+      ? metrics.validationAccuracy
+      : undefined;
+
+  return {
+    id: raw.id,
+    modelId: raw.model_id,
+    sessionId: raw.session_id,
+    status: normalizeTrainingStatus(raw.status),
+    startTime: raw.start_time,
+    endTime: raw.end_time ?? undefined,
+    totalEpochs: toOptionalNumber(raw.total_epochs) ?? config?.epochs,
+    currentEpoch: toOptionalNumber(raw.current_epoch),
+    progress: toOptionalNumber(raw.progress) ?? progressFromMetrics,
+    currentStep: currentStepFromMetrics,
+    totalSteps: totalStepsFromMetrics,
+    loss: toOptionalNumber(raw.loss) ?? lossFromMetrics,
+    accuracy: toOptionalNumber(raw.accuracy) ?? accuracyFromMetrics,
+    validationLoss: validationLossFromMetrics,
+    validationAccuracy: validationAccuracyFromMetrics,
+    learningRate: toOptionalNumber(raw.learning_rate) ?? config?.learningRate,
+    batchSize: toOptionalNumber(raw.batch_size) ?? config?.batchSize,
+    estimatedCompletion: raw.estimated_completion ?? undefined,
+    config,
+    metrics: metrics ?? null,
+    modelName: raw.model_name ?? undefined,
+    modelType: raw.model_type ?? undefined,
+    userId: raw.user_id ?? undefined,
+  };
 }
 
 export const trainingService = {
@@ -212,8 +482,14 @@ export const trainingService = {
           body: JSON.stringify(config),
         }
       );
-      const data = await response.json();
-      return data;
+      const payload = await response.json();
+      const parsed = startTrainingResponseSchema.parse(payload);
+      return {
+        success: parsed.success,
+        message: parsed.message,
+        sessionId: String(parsed.sessionId),
+        config: parsed.config,
+      };
     } catch (error) {
       console.error('Start training failed:', error);
       // Return mock training session for offline mode
@@ -237,7 +513,8 @@ export const trainingService = {
           method: 'POST',
         }
       );
-      return { success: true, message: 'آموزش متوقف شد' };
+      const payload = await response.json();
+      return stopTrainingResponseSchema.parse(payload);
     } catch (error) {
       console.error('Pause training failed:', error);
       throw new Error('خطا در توقف آموزش');
@@ -261,11 +538,13 @@ export const trainingService = {
           body: JSON.stringify(config || {}),
         }
       );
-      return { 
-        success: true, 
-        message: 'آموزش از سر گرفته شد', 
-        sessionId: 'session_' + Date.now(), 
-        config: config || {} as TrainingConfig 
+      const payload = await response.json();
+      const parsed = startTrainingResponseSchema.parse(payload);
+      return {
+        success: parsed.success,
+        message: parsed.message,
+        sessionId: String(parsed.sessionId),
+        config: parsed.config,
       };
     } catch (error) {
       console.error('Resume training failed:', error);
@@ -285,7 +564,9 @@ export const trainingService = {
       const response = await apiRequest(
         joinApiPath(API_BASE, endpoint)
       );
-      return response as TrainingSession[];
+      const payload = await response.json();
+      const parsed = trainingSessionsSchema.parse(payload);
+      return parsed.map(mapTrainingSession);
     } catch (error) {
       console.error('Get training sessions failed:', error);
       throw new Error('خطا در دریافت جلسات آموزش');
@@ -300,7 +581,9 @@ export const trainingService = {
       const response = await apiRequest(
         joinApiPath(API_BASE, `/training/sessions/${sessionId}`)
       );
-      return response as TrainingSession;
+      const payload = await response.json();
+      const parsed = rawTrainingSessionSchema.parse(payload);
+      return mapTrainingSession(parsed);
     } catch (error) {
       console.error('Get training session failed:', error);
       throw new Error('خطا در دریافت جلسه آموزش');
@@ -311,16 +594,8 @@ export const trainingService = {
    * Get model logs
    */
   async getModelLogs(modelId: number, page = 1, limit = 50): Promise<{
-    logs: Array<{
-      id: number;
-      level: string;
-      message: string;
-      epoch?: number;
-      loss?: number;
-      accuracy?: number;
-      timestamp: string;
-    }>;
-    pagination: any;
+    logs: TrainingLogEntry[];
+    pagination: Pagination;
   }> {
     try {
       const params = new URLSearchParams({
@@ -331,17 +606,19 @@ export const trainingService = {
       const response = await apiRequest(
         joinApiPath(API_BASE, `/models/${modelId}/logs?${params.toString()}`)
       );
-      return response as {
-        logs: Array<{
-          id: number;
-          level: string;
-          message: string;
-          epoch?: number;
-          loss?: number;
-          accuracy?: number;
-          timestamp: string;
-        }>;
-        pagination: any;
+      const payload = await response.json();
+      const parsed = modelLogsResponseSchema.parse(payload);
+      return {
+        logs: parsed.logs.map(log => ({
+          id: log.id,
+          level: log.level,
+          message: log.message,
+          timestamp: log.timestamp,
+          epoch: log.epoch ?? undefined,
+          loss: log.loss ?? undefined,
+          accuracy: log.accuracy ?? undefined,
+        })),
+        pagination: parsed.pagination,
       };
     } catch (error) {
       console.error('Get model logs failed:', error);
@@ -352,26 +629,21 @@ export const trainingService = {
   /**
    * Get model checkpoints
    */
-  async getModelCheckpoints(modelId: number): Promise<Array<{
-    id: number;
-    epoch: number;
-    accuracy: number;
-    loss: number;
-    filePath: string;
-    createdAt: string;
-  }>> {
+  async getModelCheckpoints(modelId: number): Promise<ModelCheckpointEntry[]> {
     try {
       const response = await apiRequest(
         joinApiPath(API_BASE, `/models/${modelId}/checkpoints`)
       );
-      return response as Array<{
-        id: number;
-        epoch: number;
-        accuracy: number;
-        loss: number;
-        filePath: string;
-        createdAt: string;
-      }>;
+      const payload = await response.json();
+      const parsed = modelCheckpointsSchema.parse(payload);
+      return parsed.map(checkpoint => ({
+        id: checkpoint.id,
+        epoch: checkpoint.epoch,
+        accuracy: checkpoint.accuracy ?? undefined,
+        loss: checkpoint.loss ?? undefined,
+        filePath: checkpoint.file_path,
+        createdAt: checkpoint.created_at,
+      }));
     } catch (error) {
       console.error('Get model checkpoints failed:', error);
       throw new Error('خطا در دریافت checkpoint های مدل');
@@ -444,24 +716,13 @@ export const trainingService = {
   /**
    * Get training statistics
    */
-  async getTrainingStats(): Promise<{
-    totalModels: number;
-    activeTraining: number;
-    completedTraining: number;
-    averageAccuracy: number;
-    totalTrainingHours: number;
-  }> {
+  async getTrainingStats(): Promise<TrainingStats> {
     try {
       const response = await apiRequest(
         joinApiPath(API_BASE, '/training/stats')
       );
-      return response as {
-        totalModels: number;
-        activeTraining: number;
-        completedTraining: number;
-        averageAccuracy: number;
-        totalTrainingHours: number;
-      };
+      const payload = await response.json();
+      return trainingStatsSchema.parse(payload);
     } catch (error) {
       console.error('Get training stats failed:', error);
       // Return fallback data
@@ -498,8 +759,8 @@ export const trainingService = {
         joinApiPath(API_BASE, `/training/${sessionId}/stop`),
         { method: 'POST' }
       );
-      const data = await response.json();
-      return data;
+      const payload = await response.json();
+      return stopTrainingResponseSchema.parse(payload);
     } catch (error) {
       console.error('Stop training failed:', error);
       return { success: false, message: 'Failed to stop training' };

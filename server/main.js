@@ -13,6 +13,10 @@ import { Server } from 'socket.io';
 import Database from 'better-sqlite3';
 import createSimpleApiRouter from './routes/simple-api.js';
 
+if (!process.env.NODE_ENV) {
+    process.env.NODE_ENV = 'production';
+}
+
 // Enterprise Components (optional - will fallback if not available)
 let DatabaseConnectionPool, APIMonitor, RedisCacheManager, SecurityManager;
 
@@ -49,6 +53,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+let db = null;
 // Enterprise Components Initialization
 let dbPool = null;
 let apiMonitor = null;
@@ -120,7 +125,57 @@ const io = new Server(server, {
   }
 });
 
-const PORT = process.env.PORT || 8080;
+const portFromEnv = Number.parseInt(process.env.PORT ?? '', 10);
+const PORT = Number.isFinite(portFromEnv) && portFromEnv > 0 ? portFromEnv : 8080;
+
+const buildHealthPayload = (extra = {}) => ({
+    status: 'ok',
+    now: new Date().toISOString(),
+    uptime: process.uptime(),
+    ...extra,
+});
+
+app.get('/health', (_req, res) => {
+    res.json(buildHealthPayload());
+});
+
+app.get('/api/health', (_req, res) => {
+    const payload = buildHealthPayload({
+        memory: process.memoryUsage(),
+        version: process.env.npm_package_version || '1.0.0',
+        environment: process.env.NODE_ENV || 'development',
+        database: 'disconnected',
+    });
+
+    if (db) {
+        try {
+            db.prepare('SELECT 1').get();
+            payload.database = 'connected';
+        } catch (error) {
+            payload.database = 'error';
+            payload.databaseError = error instanceof Error ? error.message : String(error);
+        }
+    }
+
+    res.json(payload);
+});
+
+app.get('/api/health/enterprise', (_req, res) => {
+    const payload = buildHealthPayload({
+        memory: process.memoryUsage(),
+        database: db ? 'connected' : 'disconnected',
+    });
+
+    res.json({
+        ...payload,
+        enterprise: {
+            databasePool: dbPool ? dbPool.getStats() : null,
+            apiMonitor: apiMonitor ? apiMonitor.getHealthStatus() : null,
+            cacheManager: cacheManager ? cacheManager.getStats() : null,
+            securityManager: securityManager ? securityManager.getSecurityMetrics() : null,
+        },
+    });
+});
 
 console.log('🧠 Starting Persian Legal AI Server');
 console.log('=====================================');
@@ -197,7 +252,6 @@ if (cacheManager) {
 }
 
 // Database Setup
-let db = null;
 try {
     const dataDir = path.join(__dirname, '..', 'data');
     if (!fs.existsSync(dataDir)) {
@@ -495,54 +549,6 @@ io.on('connection', (socket) => {
 });
 
 // API Routes
-app.get('/api/health', (req, res) => {
-    const healthStatus = {
-        status: 'healthy',
-        timestamp: new Date().toISOString(),
-        uptime: process.uptime(),
-        memory: process.memoryUsage(),
-        database: db ? 'connected' : 'disconnected',
-        version: process.env.npm_package_version || '1.0.0',
-        environment: process.env.NODE_ENV || 'development'
-    };
-    
-    // Check if database is accessible
-    if (db) {
-        try {
-            db.prepare('SELECT 1').get();
-            healthStatus.database = 'connected';
-        } catch (error) {
-            healthStatus.database = 'error';
-            healthStatus.databaseError = error.message;
-        }
-    }
-    
-    res.json(healthStatus);
-});
-
-// Root health check for Docker
-app.get('/health', (req, res) => {
-    res.json({ status: 'healthy', timestamp: new Date().toISOString() });
-// Enhanced health check with enterprise metrics
-app.get('/api/health/enterprise', (req, res) => {
-    const healthData = {
-        status: 'healthy',
-        timestamp: new Date().toISOString(),
-        uptime: process.uptime(),
-        memory: process.memoryUsage(),
-        database: db ? 'connected' : 'disconnected',
-        enterprise: {
-            databasePool: dbPool ? dbPool.getStats() : null,
-            apiMonitor: apiMonitor ? apiMonitor.getHealthStatus() : null,
-            cacheManager: cacheManager ? cacheManager.getStats() : null,
-            securityManager: securityManager ? securityManager.getSecurityMetrics() : null
-        }
-    };
-    
-    res.json(healthData);
-});
-
-});
 
 // Documents API
 app.get('/api/documents', (req, res) => {

@@ -135,9 +135,9 @@ export function ModernSidebar() {
       transition={{ duration: 0.5, type: "spring", stiffness: 120 }}
       className={`${
         collapsed ? 'w-20' : 'w-80'
-      } h-screen bg-gradient-to-b from-slate-800/95 to-slate-900/95 backdrop-blur-xl border-l border-slate-600/50 transition-all duration-300 flex flex-col overflow-hidden relative z-50`}
+      } h-screen bg-gradient-to-b from-slate-800/95 to-slate-900/95 backdrop-blur-xl border-r border-slate-600/50 transition-all duration-300 flex flex-col overflow-hidden relative z-30`}
       dir="rtl"
-      style={{ zIndex: 50 }}
+      style={{ zIndex: 30 }}
     >
       {/* Header */}
       <div className="p-6 border-b border-slate-600/50 flex-shrink-0">
@@ -563,7 +563,7 @@ export function ModernSidebar() {
   } catch (error) {
     console.error('❌ ModernSidebar rendering error:', error);
     return (
-      <div className="w-80 h-screen bg-gradient-to-b from-slate-800/95 to-slate-900/95 backdrop-blur-xl border-l border-slate-600/50 flex items-center justify-center" dir="rtl">
+      <div className="w-80 h-screen bg-gradient-to-b from-slate-800/95 to-slate-900/95 backdrop-blur-xl border-r border-slate-600/50 flex items-center justify-center" dir="rtl">
         <div className="text-center text-white">
           <div className="text-red-400 mb-2">⚠️ خطا در بارگذاری منو</div>
           <div className="text-sm text-slate-300">لطفاً صفحه را رفرش کنید</div>
