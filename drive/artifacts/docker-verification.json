@@ -1,0 +1,18 @@
+{
+  "timestamp": "2025-09-27T11:08:57+00:00",
+  "files_checked": [
+    "Dockerfile"    "docker-compose.yml"    ".dockerignore"    "server/entry.mjs"    "server/main.js"    "package.json"
+  ],
+  "all_files_present": true,
+  "dockerfile_features": {
+    "multi_stage": true,
+    "non_root_user": true,
+    "healthcheck": true,
+    "production_env": true
+  },
+  "compose_features": {
+    "volumes": true,
+    "healthcheck": true,
+    "restart_policy": true
+  }
+}
