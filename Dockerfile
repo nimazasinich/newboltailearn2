@@ -1,71 +1,72 @@
-# Persian Legal AI - Enterprise Docker Container
-FROM node:20-alpine
+# Multi-stage Dockerfile for Persian Legal AI Application
+# Stage 1: Builder - Build frontend assets
+FROM node:20-alpine AS builder
 
-# Install system dependencies for native modules and utilities
-RUN apk add --no-cache \
-    python3 \
-    make \
-    g++ \
-    sqlite \
-    curl \
-    su-exec \
-    bash
+# Install build dependencies
+RUN apk add --no-cache python3 make g++ git
 
-# Create app user and group for security
-RUN addgroup -g 1001 -S appgroup && \
-    adduser -S -D -u 1001 -G appgroup appuser
-
-# Set working directory
 WORKDIR /app
 
-# Copy package files first for better caching
+# Copy package files
 COPY package*.json ./
 
-# Install dependencies with production optimizations
-RUN npm ci --only=production --legacy-peer-deps && \
+# Install all dependencies (including dev)
+RUN npm ci
+
+# Copy source code
+COPY . .
+
+# Ensure vite builds to docs directory
+RUN npm run build
+
+# Stage 2: Production runner
+FROM node:20-alpine AS runner
+
+# Install runtime dependencies
+RUN apk add --no-cache curl tini
+
+# Create non-root user
+RUN addgroup -g 1001 appuser && \
+    adduser -D -u 1001 -G appuser appuser
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install production dependencies only
+RUN npm ci --omit=dev && \
     npm cache clean --force
 
-# Copy application code
-COPY server/ ./server/
-COPY docs/ ./docs/
-COPY .env* ./
+# Copy server code and built frontend
+COPY --from=builder /app/docs ./docs
+COPY server ./server
+COPY scripts ./scripts
+COPY public ./public
+COPY src ./src
 
-# Create necessary directories with proper permissions
-RUN mkdir -p /app/data /app/logs && \
-    chown -R appuser:appgroup /app && \
-    chmod 755 /app/data /app/logs
+# Create data and logs directories
+RUN mkdir -p /data /logs && \
+    chown -R appuser:appuser /app /data /logs
 
-# Create entrypoint script
-RUN echo '#!/bin/bash' > /usr/local/bin/docker-entrypoint.sh && \
-    echo 'set -e' >> /usr/local/bin/docker-entrypoint.sh && \
-    echo 'echo "Starting Persian Legal AI Server..."' >> /usr/local/bin/docker-entrypoint.sh && \
-    echo 'mkdir -p /app/data' >> /usr/local/bin/docker-entrypoint.sh && \
-    echo 'chown -R appuser:appgroup /app/data' >> /usr/local/bin/docker-entrypoint.sh && \
-    echo 'chmod 755 /app/data' >> /usr/local/bin/docker-entrypoint.sh && \
-    echo 'echo "Performing health checks..."' >> /usr/local/bin/docker-entrypoint.sh && \
-    echo 'node -e "console.log(\"Node.js version:\", process.version)"' >> /usr/local/bin/docker-entrypoint.sh && \
-    echo 'echo "Starting server as appuser on port 8080..."' >> /usr/local/bin/docker-entrypoint.sh && \
-    echo 'exec su-exec appuser:appgroup node server/main.js' >> /usr/local/bin/docker-entrypoint.sh
-
-# Make entrypoint executable
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-
-# Set environment variables
-ENV NODE_ENV=production
-ENV DATABASE_PATH=/app/data/database.sqlite
-ENV SERVER_PORT=8080
-ENV PORT=8080
-ENV LOG_LEVEL=info
-
-# Expose port
-EXPOSE 8080
-
-# Create volume for data persistence
-VOLUME ["/app/data", "/app/logs"]
+# Environment variables
+ENV NODE_ENV=production \
+    PORT=3000 \
+    DATABASE_PATH=/data/persian_legal_ai.sqlite \
+    SQLITE_PATH=/data/persian_legal_ai.sqlite
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD curl --fail http://localhost:8080/health || exit 1
+HEALTHCHECK --interval=15s --timeout=5s --start-period=20s --retries=5 \
+  CMD curl -fsS --max-time 5 http://localhost:3000/health || exit 1
 
-# Use the entrypoint
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+# Expose port
+EXPOSE 3000
+
+# Switch to non-root user
+USER appuser
+
+# Use tini as entrypoint for proper signal handling
+ENTRYPOINT ["/sbin/tini", "--"]
+
+# Start the server
+CMD ["node", "server/main.js"]

@@ -1,76 +1,94 @@
+# Git
+.git
+.gitignore
+
 # Dependencies
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+node_modules
+.npm
+.cache
+.pnpm-store
+
+# Environment files
+.env
+.env.*
+*.env
+
+# Build artifacts and reports
+drive
+var
+docs/*.map
+dist/*.map
+*.log
+coverage
+playwright-report
+test-results
 
 # Development files
-.git/
-.gitignore
-README.md
-.env.local
-.env.development
-.env.test
-
-# Build artifacts
-dist/
-build/
-coverage/
-.nyc_output/
-
-# IDE files
-.vscode/
-.idea/
+.vscode
+.idea
 *.swp
 *.swo
-*~
-
-# OS files
+*.swn
 .DS_Store
 Thumbs.db
 
-# Logs
-logs/
-*.log
-
-# Runtime data
-pids/
-*.pid
-*.seed
-*.pid.lock
-
-# Test files
-tests/
-test/
-__tests__/
-*.test.js
-*.test.ts
-*.spec.js
-*.spec.ts
-
-# Documentation
-docs/
-*.md
-!docs/assets/
-
-# Scripts (keep only essential ones)
-scripts/
-!scripts/docker-*.sh
-
-# Backup files
-*.backup
-*.bak
-*.tmp
-
-# Database files (will be created in container)
+# Database files (use volumes instead)
+*.db
 *.sqlite
 *.sqlite-shm
 *.sqlite-wal
-
-# Cache directories
-.cache/
-.parcel-cache/
+database.sqlite*
+persian_legal_ai.db*
 
 # Temporary files
-tmp/
-temp/
+tmp
+temp
+*.tmp
+*.bak
+*.backup
+*.patch
+
+# Test files
+tests
+test-*.js
+*-test.js
+*.spec.js
+*.spec.ts
+e2e
+
+# CI/CD
+.github
+.gitlab-ci.yml
+.travis.yml
+.circleci
+
+# Documentation
+*.md
+docs-source
+DOCKER_*.md
+*_GUIDE.md
+*_SUMMARY.md
+
+# Scripts not needed in container
+deploy-*.sh
+merge-*.sh
+fix-*.sh
+create-*.sh
+validate-*.sh
+audit-*.sh
+backup-*.sh
+
+# Kubernetes
+k8s
+*.yaml
+*.yml
+!package*.json
+
+# Archives
+*.tar
+*.tar.gz
+*.zip
+*.7z
+archive
+backups
+checkpoints

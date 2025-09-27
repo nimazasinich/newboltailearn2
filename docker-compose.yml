@@ -1,49 +1,47 @@
 version: '3.8'
 
 services:
-  persian-legal-ai:
+  app:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
+    image: persian-legal-ai:latest
     container_name: persian-legal-ai
-    ports:
-      - "8080:8080"
     environment:
       - NODE_ENV=production
-      - DATABASE_PATH=/app/data/database.sqlite
-      - PORT=8080
-      - LOG_LEVEL=info
+      - PORT=3000
+      - DATABASE_PATH=/data/persian_legal_ai.sqlite
+      - SQLITE_PATH=/data/persian_legal_ai.sqlite
+      - ALLOWED_ORIGINS=http://localhost:3000,http://localhost:5173
     volumes:
-      - ./data:/app/data
-      - ./logs:/app/logs
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-    networks:
-      - persian-legal-network
-
-  # Optional: Redis for caching (if available)
-  redis:
-    image: redis:7-alpine
-    container_name: persian-legal-redis
+      - ./var/data:/data
+      - ./var/logs:/logs
     ports:
-      - "6379:6379"
-    volumes:
-      - redis-data:/data
+      - "3000:3000"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS --max-time 5 http://localhost:3000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
     restart: unless-stopped
     networks:
-      - persian-legal-network
-    profiles:
-      - with-redis
-
-volumes:
-  redis-data:
-    driver: local
+      - persian-legal-net
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 networks:
-  persian-legal-network:
+  persian-legal-net:
     driver: bridge
+    name: persian-legal-network
+
+volumes:
+  data:
+    driver: local
+  logs:
+    driver: local
