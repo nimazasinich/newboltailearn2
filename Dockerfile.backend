@@ -1,5 +1,5 @@
-# Multi-stage build for React frontend
-FROM node:20-bullseye-slim AS frontend-builder
+# Multi-stage build for backend only
+FROM node:20-bullseye-slim AS backend-builder
 
 # Install build dependencies
 RUN apt-get update && apt-get install -y \
@@ -14,16 +14,13 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production --silent
+# Install all dependencies (including dev dependencies for building)
+RUN npm ci --silent
 
 # Copy source code
 COPY . .
 
-# Build frontend
-RUN npm run build
-
-# Production stage - Node.js server with built frontend
+# Production stage - Backend only
 FROM node:20-bullseye-slim AS production
 
 # Install runtime dependencies
@@ -42,11 +39,8 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install production dependencies
+# Install production dependencies only
 RUN npm ci --only=production --silent && npm cache clean --force
-
-# Copy built frontend from builder stage
-COPY --from=frontend-builder /app/docs ./docs
 
 # Copy server code
 COPY server/ ./server/
