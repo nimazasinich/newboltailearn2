@@ -3,9 +3,9 @@ import { ModernCard } from './ui/ModernCard';
 import { SlimBadge } from './ui/SlimBadge';
 import { Progress } from './ui/Progress';
 import { Button } from './ui/Button';
-import { trainingService } from '../services/training';
+import { trainingService, ModelInfo, DatasetInfo } from '../services/training';
 import { tensorFlowEngine, TensorFlowTrainingConfig, TrainingProgress } from '../services/ai/TensorFlowIntegration';
-import { TrainingSession, QueuedTraining } from '../types/training';
+import { QueuedTraining } from '../types/training';
 import * as tf from '@tensorflow/tfjs';
 import { 
   Play, 
@@ -47,11 +47,11 @@ import {
 // Enhanced Training Management Component with Real API Integration
 export default function TrainingManagement() {
   const [trainingSessions, setTrainingSessions] = useState<any[]>([]);
-  const [models, setModels] = useState<any[]>([]);
-  const [datasets, setDatasets] = useState<any[]>([]);
+  const [models, setModels] = useState<ModelInfo[]>([]);
+  const [datasets, setDatasets] = useState<DatasetInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedModel, setSelectedModel] = useState<any>(null);
+  const [selectedModel, setSelectedModel] = useState<ModelInfo | null>(null);
   const [trainingConfig, setTrainingConfig] = useState<TensorFlowTrainingConfig>({
     epochs: 50,
     batchSize: 32,
@@ -63,7 +63,7 @@ export default function TrainingManagement() {
   const [isTraining, setIsTraining] = useState(false);
   const [trainingProgress, setTrainingProgress] = useState<TrainingProgress | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [activeSessions, setActiveSessions] = useState<TrainingSession[]>([]);
+  const [activeSessions, setActiveSessions] = useState<any[]>([]);
   const [trainingQueue, setTrainingQueue] = useState<QueuedTraining[]>([]);
 
   // Load initial data
