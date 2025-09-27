@@ -1,7 +1,16 @@
 #!/bin/bash
 # Phase 1: Archive existing backups and archives
 
-source /workspace/intelligent-archive.sh 2>/dev/null
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+HELPER_SCRIPT="$SCRIPT_DIR/intelligent-archive.sh"
+
+if [ -f "$HELPER_SCRIPT" ]; then
+    # shellcheck source=/dev/null
+    source "$HELPER_SCRIPT"
+else
+    echo "Helper script not found: $HELPER_SCRIPT" >&2
+    exit 1
+fi
 
 echo -e "${GREEN}═══════════════════════════════════════════════${NC}"
 echo -e "${GREEN}   Phase 1: Organizing Existing Archives${NC}"
