@@ -134,8 +134,8 @@ export function EnhancedAppLayout() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex" dir="rtl">
       <ModernSidebar />
-      
-      <div className="flex-1 flex flex-col min-h-screen">
+
+      <div className="flex-1 min-w-0 flex flex-col min-h-screen">
         {/* Enhanced Header */}
         <motion.header
           initial={{ opacity: 0, y: -20 }}
@@ -287,7 +287,7 @@ export function EnhancedAppLayout() {
         </motion.header>
 
         {/* Main Content Area */}
-        <main className="flex-1 relative">
+        <main className="flex-1 min-w-0 relative">
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-[0.02]">
             <div 

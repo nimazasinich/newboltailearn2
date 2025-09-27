@@ -678,6 +678,16 @@ export const trainingService = {
 
   async createModel(model: { name: string; type: string; datasetId?: string; config?: Record<string, unknown> }): Promise<ModelInfo> {
     try {
+      const payload: Record<string, unknown> = {
+        name: model.name,
+        type: model.type,
+        config: model.config ?? {},
+      };
+
+      if (model.datasetId) {
+        payload.dataset_id = model.datasetId;
+      }
+
       const response = await apiRequest(
         joinApiPath(API_BASE, API_ENDPOINTS.MODELS),
         {
