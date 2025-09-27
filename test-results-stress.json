@@ -1,8 +1,0 @@
-{
-  "exitCode": 1,
-  "stdout": "\n> iranian-legal-archive@1.0.0 test:stress\n> vitest run tests/stress/\n\n\n RUN  v1.6.1 /workspace\n\n ❯ tests/stress/training-sessions.test.ts  (5 tests) 9ms\n ❯ tests/stress/dataset-download.test.ts  (5 tests) 9ms\n\n Test Files  2 failed (2)\n      Tests   (10)\n   Start at  16:20:46\n   Duration  403ms (transform 60ms, setup 0ms, collect 105ms, tests 18ms, environment 0ms, prepare 375ms)\n\n",
-  "stderr": "⎯⎯⎯⎯⎯⎯ Failed Suites 2 ⎯⎯⎯⎯⎯⎯⎯\n\n FAIL  tests/stress/dataset-download.test.ts [ tests/stress/dataset-download.test.ts ]\n FAIL  tests/stress/training-sessions.test.ts [ tests/stress/training-sessions.test.ts ]\nSqliteError: attempt to write a readonly database\n ❯ Database.exec node_modules/better-sqlite3/lib/methods/wrappers.js:9:14\n ❯ tests/setup.ts:33:10\n     31|   \n     32|   // Create test tables\n     33|   testDb.exec(`\n       |          ^\n     34|     CREATE TABLE IF NOT EXISTS models (\n     35|       id INTEGER PRIMARY KEY AUTOINCREMENT,\n\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯\nSerialized Error: { code: 'SQLITE_READONLY_DBMOVED' }\n⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯\n\n",
-  "timestamp": "2025-09-13T16:20:47.345Z",
-  "testType": "stress",
-  "testFiles": 3
-}

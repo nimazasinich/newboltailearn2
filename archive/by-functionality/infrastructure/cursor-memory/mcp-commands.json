@@ -1,0 +1,50 @@
+{
+  "dc9561c9-641d-41dd-8558-7a07863611b2": {
+    "command": "create_button",
+    "parameters": {
+      "text": "???? ???",
+      "color": "#e74c3c",
+      "size": "large"
+    },
+    "timestamp": "2025-09-23T06:58:59.150Z",
+    "status": "completed",
+    "result": {
+      "success": true,
+      "file": "button-1758610739150.html",
+      "path": "C:\\Users\\Dreammaker\\Downloads\\newboltailearn-main\\newboltailearn\\cursor-outputs\\button-1758610739150.html",
+      "message": "دکمه \"???? ???\" ساخته شد"
+    }
+  },
+  "124c4c6e-141a-4976-b573-858ed0c76559": {
+    "command": "create_button",
+    "parameters": {
+      "text": "دکمه تست فارسی",
+      "color": "#2ecc71",
+      "size": "medium"
+    },
+    "timestamp": "2025-09-23T06:59:49.294Z",
+    "status": "completed",
+    "result": {
+      "success": true,
+      "file": "button-1758610789294.html",
+      "path": "C:\\Users\\Dreammaker\\Downloads\\newboltailearn-main\\newboltailearn\\cursor-outputs\\button-1758610789294.html",
+      "message": "دکمه \"دکمه تست فارسی\" ساخته شد"
+    }
+  },
+  "4d691fd8-0cfb-4045-bdfe-a0112e2f58fd": {
+    "command": "create_button",
+    "parameters": {
+      "text": "دکمه تست فارسی",
+      "color": "#2ecc71",
+      "size": "medium"
+    },
+    "timestamp": "2025-09-23T07:00:24.799Z",
+    "status": "completed",
+    "result": {
+      "success": true,
+      "file": "button-1758610824799.html",
+      "path": "C:\\Users\\Dreammaker\\Downloads\\newboltailearn-main\\newboltailearn\\cursor-outputs\\button-1758610824799.html",
+      "message": "دکمه \"دکمه تست فارسی\" ساخته شد"
+    }
+  }
+}

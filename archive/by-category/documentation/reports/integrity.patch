@@ -1,0 +1,38 @@
+--- a/src/components/TrainingManagement.tsx
++++ b/src/components/TrainingManagement.tsx
+@@ -45,6 +45,9 @@
+ export default function TrainingManagement() {
+   const [trainingSessions, setTrainingSessions] = useState<any[]>([]);
+   const [models, setModels] = useState<any[]>([]);
+   const [datasets, setDatasets] = useState<any[]>([]);
++  const [activeSessions, setActiveSessions] = useState<any[]>([]);
++  const [trainingQueue, setTrainingQueue] = useState<any[]>([]);
+   const [isLoading, setIsLoading] = useState(true);
+   const [error, setError] = useState<string | null>(null);
+   const [selectedModel, setSelectedModel] = useState<string>('');
+@@ -288,7 +291,7 @@
+   const stopTraining = async (sessionId: string) => {
+     try {
+       await trainingService.stopTraining(sessionId);
+-      setActiveSessions(trainingSessions.filter(session => 
++      setActiveSessions(activeSessions.filter(session => 
+         session.id !== sessionId
+       ));
+       toast.success('Training stopped successfully');
+@@ -334,13 +337,13 @@
+   const trainingStats = {
+     active: activeSessions.filter(s => s.status === 'training').length,
+     paused: activeSessions.filter(s => s.status === 'paused').length,
+-    queued: trainingQueue.length,
++    queued: trainingQueue.length,
+     avgAccuracy: activeSessions.reduce((sum, s) => sum + s.accuracy, 0) / activeSessions.length * 100,
+     totalGpuUsage: activeSessions.reduce((sum, s) => sum + s.gpu_usage, 0),
+     totalMemoryUsage: activeSessions.reduce((sum, s) => sum + s.memory_usage, 0)
+   };
+ 
+   const queueStats = {
+-    total: trainingQueue.length,
++    total: trainingQueue.length,
+     pending: trainingQueue.filter(item => item.status === 'pending').length,
+     processing: trainingQueue.filter(item => item.status === 'processing').length
+   };

@@ -1,0 +1,53 @@
+{
+  "monitoring": {
+    "healthCheckInterval": 30000,
+    "reportInterval": 60000,
+    "alertThresholds": {
+      "errorRate": 0.1,
+      "responseTime": 5000,
+      "uptime": 0.95
+    }
+  },
+  "fallbacks": {
+    "tensorflow": {
+      "enabled": true,
+      "activationThreshold": 0.1,
+      "deactivationThreshold": 0.05,
+      "maxRetries": 3,
+      "retryDelay": 5000
+    },
+    "database": {
+      "enabled": true,
+      "activationThreshold": 0.2,
+      "deactivationThreshold": 0.1,
+      "maxRetries": 5,
+      "retryDelay": 2000
+    },
+    "cache": {
+      "enabled": true,
+      "activationThreshold": 0.15,
+      "deactivationThreshold": 0.08,
+      "maxRetries": 3,
+      "retryDelay": 1000
+    },
+    "websocket": {
+      "enabled": true,
+      "activationThreshold": 0.3,
+      "deactivationThreshold": 0.15,
+      "maxRetries": 5,
+      "retryDelay": 3000
+    }
+  },
+  "notifications": {
+    "enabled": true,
+    "channels": [
+      "console",
+      "api"
+    ],
+    "alertLevels": [
+      "critical",
+      "warning",
+      "info"
+    ]
+  }
+}
