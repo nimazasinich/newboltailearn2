@@ -4,8 +4,8 @@ import path from 'path';
 
 export default ({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-  // Use VITE_BASE_PATH if provided (e.g. '/newboltailearn/'), otherwise '/'
-  const base = env.VITE_BASE_PATH && env.VITE_BASE_PATH.trim() !== '' ? env.VITE_BASE_PATH : '/';
+  // Use VITE_BASE_PATH if provided (e.g. '/newboltailearn2/'), otherwise '/'
+  const base = env.VITE_BASE_PATH && env.VITE_BASE_PATH.trim() !== '' ? env.VITE_BASE_PATH : '/newboltailearn2/';
 
   return defineConfig({
     resolve: { 
