@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy GitHub Pages (Vite SPA)
 
 on:
   push:
@@ -18,50 +18,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: npm
-          
-      - name: Install
-        run: npm ci
-        
-      - name: Configure base path for Pages
-        run: |
-          if [ -f CNAME ]; then 
-            echo "Using CNAME => base=/"
-            echo "VITE_BASE_PATH=/" >> $GITHUB_ENV
-          else 
-            echo "Using project pages => base=/${{ github.event.repository.name }}/"
-            echo "VITE_BASE_PATH=/${{ github.event.repository.name }}/" >> $GITHUB_ENV
-          fi
-          
-      - name: Setup production environment for Pages
-        run: |
-          # Copy production environment template
-          if [ -f .env.production.pages ]; then
-            cp .env.production.pages .env.production
-            echo "Using Pages-specific environment configuration"
-          else
-            echo "VITE_API_BASE=/api" >> .env.production
-            echo "VITE_WS_URL=/ws" >> .env.production
-            echo "Created basic production environment"
-          fi
-          
-      - name: Build
-        run: npm run build
-        
-      - name: Ensure SPA fallback files
-        run: |
-          [ -f docs/.nojekyll ] || touch docs/.nojekyll
-          [ -f docs/404.html ] || cp docs/index.html docs/404.html
-        
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Enforce SPA fallback (.nojekyll + 404.html)
+        run: npm run ensure:spa
+
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: ./docs
 
@@ -72,6 +43,5 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4

@@ -63,7 +63,8 @@
     "reliability:status": "curl -s http://localhost:8080/api/reliability/status | jq",
     "reliability:health": "curl -s http://localhost:8080/api/reliability/health | jq",
     "reliability:test": "node scripts/test-reliability-systems.js",
-    "reliability:monitor": "node scripts/monitor-reliability.js"
+    "reliability:monitor": "node scripts/monitor-reliability.js",
+    "ensure:spa": "node scripts/ensure-spa-fallback.mjs"
   },
   "dependencies": {
     "@tensorflow/tfjs": "^4.22.0",
