@@ -90,6 +90,7 @@ npm run dev
 - `npm run preview` - Preview production build
 - `npm run type-check` - Run TypeScript type checking
 - `npm run lint` - Run ESLint
+- `npm run db:audit` - Run the non-destructive Persian database audit suite
 
 ## 🌐 API Endpoints
 

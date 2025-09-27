@@ -41,6 +41,7 @@
     "test:coverage": "vitest run --coverage",
     "audit:routes": "ts-node --transpile-only scripts/audit-routes.ts",
     "db:backup": "node scripts/backup-db.js",
+    "db:audit": "node scripts/persian-db-audit.mjs",
     "deploy:validate": "./scripts/validate-deployment.sh",
     "deploy:monitor": "node scripts/monitor-deployment.js",
     "security:check": "npm audit --omit=dev --audit-level=high || true",
