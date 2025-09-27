@@ -253,16 +253,39 @@ class DatabaseConnectionPool {
     async optimizeDatabase() {
         const connection = await this.getConnection();
         try {
-            // Create indexes for better performance
-            const indexes = [
-                'CREATE INDEX IF NOT EXISTS idx_documents_category ON documents(category)',
-                'CREATE INDEX IF NOT EXISTS idx_documents_status ON documents(status)',
-                'CREATE INDEX IF NOT EXISTS idx_documents_date ON documents(date_created)',
-                'CREATE INDEX IF NOT EXISTS idx_training_sessions_status ON training_sessions(status)',
-                'CREATE INDEX IF NOT EXISTS idx_models_status ON models(status)',
-                'CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)',
-                'CREATE INDEX IF NOT EXISTS idx_users_username ON users(username)'
-            ];
+            // Check which tables exist before creating indexes
+            const tables = connection.db.prepare(`
+                SELECT name FROM sqlite_master 
+                WHERE type='table' AND name NOT LIKE 'sqlite_%'
+            `).all();
+            
+            const tableNames = tables.map(t => t.name);
+            
+            // Create indexes only for tables that exist
+            const indexes = [];
+            
+            if (tableNames.includes('documents')) {
+                indexes.push(
+                    'CREATE INDEX IF NOT EXISTS idx_documents_category ON documents(category)',
+                    'CREATE INDEX IF NOT EXISTS idx_documents_status ON documents(status)',
+                    'CREATE INDEX IF NOT EXISTS idx_documents_date ON documents(date_issued)'
+                );
+            }
+            
+            if (tableNames.includes('training_sessions')) {
+                indexes.push('CREATE INDEX IF NOT EXISTS idx_training_sessions_status ON training_sessions(status)');
+            }
+            
+            if (tableNames.includes('models')) {
+                indexes.push('CREATE INDEX IF NOT EXISTS idx_models_status ON models(status)');
+            }
+            
+            if (tableNames.includes('users')) {
+                indexes.push(
+                    'CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)',
+                    'CREATE INDEX IF NOT EXISTS idx_users_username ON users(username)'
+                );
+            }
 
             for (const indexSQL of indexes) {
                 try {
