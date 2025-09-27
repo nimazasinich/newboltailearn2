@@ -49,21 +49,48 @@ export interface TrainingProgress {
   progress: number;
 }
 
+type ModelStatus = 'idle' | 'training' | 'paused' | 'completed' | 'failed' | 'error';
+type ModelType = 'persian-bert' | 'dora' | 'qr-adaptor';
+
+export interface ModelConfig extends Record<string, unknown> {}
+
 export interface ModelInfo {
   id: number;
   name: string;
-  type: string;
-  status: 'idle' | 'training' | 'paused' | 'completed' | 'error';
-  accuracy?: number;
-  loss?: number;
-  epochs?: number;
-  current_epoch?: number;
-  dataset_id?: string;
-  config?: any;
+  type: ModelType;
+  status: ModelStatus;
+  accuracy: number;
+  loss: number;
+  epochs: number;
+  current_epoch: number;
+  dataset_id?: string | null;
+  config: ModelConfig | null;
   created_at: string;
   updated_at: string;
-  description?: string;
-  category?: string;
+  description?: string | null;
+  category?: string | null;
+  created_by?: number | null;
+}
+
+export interface ModelListResponse {
+  models: ModelInfo[];
+  pagination: Pagination;
+}
+
+export interface DatasetInfo {
+  id: string;
+  name: string;
+  source: string | null;
+  status: 'available' | 'downloading' | 'processing' | 'error';
+  type?: string | null;
+  description?: string | null;
+  huggingface_id?: string | null;
+  samples: number;
+  size_mb: number;
+  local_path?: string | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+  last_used?: string | null;
 }
 
 export interface TrainingLogEntry {
@@ -142,6 +169,69 @@ type RawTrainingSession = z.infer<typeof rawTrainingSessionSchema>;
 const trainingSessionsSchema = z.array(rawTrainingSessionSchema);
 
 const metricsSchema: z.ZodType<Record<string, unknown>> = z.record(z.string(), z.unknown());
+const modelConfigSchema: z.ZodType<ModelConfig> = z.record(z.string(), z.unknown());
+
+const rawModelSchema = z
+  .object({
+    id: z.number(),
+    name: z.string(),
+    type: z.string(),
+    status: z.string(),
+    accuracy: z.number().nullable().optional(),
+    loss: z.number().nullable().optional(),
+    epochs: z.number().nullable().optional(),
+    current_epoch: z.number().nullable().optional(),
+    dataset_id: z.union([z.string(), z.number()]).nullable().optional(),
+    config: z.union([z.string(), z.record(z.string(), z.unknown())]).nullable().optional(),
+    created_at: z.string(),
+    updated_at: z.string(),
+    description: z.string().nullable().optional(),
+    category: z.string().nullable().optional(),
+    created_by: z.number().nullable().optional(),
+  })
+  .passthrough();
+
+const rawModelListEnvelopeSchema = z
+  .object({
+    models: z.array(rawModelSchema),
+    pagination: z
+      .object({
+        page: z.number().optional(),
+        limit: z.number().optional(),
+        total: z.number().optional(),
+        pages: z.number().optional(),
+      })
+      .partial()
+      .optional(),
+  })
+  .passthrough();
+
+const rawDatasetSchema = z
+  .object({
+    id: z.union([z.string(), z.number()]),
+    name: z.string(),
+    source: z.string().nullable().optional(),
+    status: z.string().nullable().optional(),
+    type: z.string().nullable().optional(),
+    description: z.string().nullable().optional(),
+    huggingface_id: z.string().nullable().optional(),
+    samples: z.number().nullable().optional(),
+    size_mb: z.number().nullable().optional(),
+    local_path: z.string().nullable().optional(),
+    created_at: z.string().nullable().optional(),
+    updated_at: z.string().nullable().optional(),
+    last_used: z.string().nullable().optional(),
+  })
+  .passthrough();
+
+const rawDatasetListEnvelopeSchema = z
+  .object({
+    datasets: z.array(rawDatasetSchema),
+  })
+  .passthrough();
+
+type RawModel = z.infer<typeof rawModelSchema>;
+type RawDataset = z.infer<typeof rawDatasetSchema>;
 
 const paginationSchema: z.ZodType<Pagination> = z.object({
   page: z.number(),
@@ -285,6 +375,117 @@ function normalizeTrainingConfig(raw: unknown): TrainingConfig | undefined {
   };
 }
 
+function normalizeModelType(type: unknown): ModelType {
+  if (typeof type === 'string') {
+    const normalized = type.toLowerCase();
+    if (normalized === 'persian-bert' || normalized === 'dora' || normalized === 'qr-adaptor') {
+      return normalized;
+    }
+  }
+
+  return 'persian-bert';
+}
+
+function normalizeModelStatus(status: unknown): ModelStatus {
+  if (typeof status === 'string') {
+    const normalized = status.toLowerCase();
+    const statusMap: Record<string, ModelStatus> = {
+      idle: 'idle',
+      training: 'training',
+      running: 'training',
+      paused: 'paused',
+      completed: 'completed',
+      finished: 'completed',
+      failed: 'failed',
+      error: 'error',
+    };
+
+    if (statusMap[normalized]) {
+      return statusMap[normalized];
+    }
+  }
+
+  return 'idle';
+}
+
+function buildPagination(page: number, limit: number, total: number, pagesOverride?: number): Pagination {
+  const safeLimit = Number.isFinite(limit) && limit > 0 ? limit : total || 1;
+  const computedPages = safeLimit > 0 ? Math.max(1, Math.ceil(total / safeLimit)) : 1;
+
+  return {
+    page,
+    limit: safeLimit,
+    total,
+    pages: pagesOverride && pagesOverride > 0 ? pagesOverride : computedPages,
+  };
+}
+
+function mapModel(raw: RawModel): ModelInfo {
+  const datasetId = raw.dataset_id;
+  const config = parseOptionalJson(raw.config, modelConfigSchema) ?? null;
+
+  return {
+    id: raw.id,
+    name: raw.name,
+    type: normalizeModelType(raw.type),
+    status: normalizeModelStatus(raw.status),
+    accuracy: toOptionalNumber(raw.accuracy) ?? 0,
+    loss: toOptionalNumber(raw.loss) ?? 0,
+    epochs: toOptionalNumber(raw.epochs) ?? 0,
+    current_epoch: toOptionalNumber(raw.current_epoch) ?? 0,
+    dataset_id:
+      datasetId === undefined
+        ? undefined
+        : datasetId === null
+        ? null
+        : String(datasetId),
+    config,
+    created_at: raw.created_at,
+    updated_at: raw.updated_at,
+    description: raw.description ?? null,
+    category: raw.category ?? null,
+    created_by: raw.created_by ?? null,
+  };
+}
+
+function normalizeDatasetStatus(status: unknown): DatasetInfo['status'] {
+  if (typeof status === 'string') {
+    const normalized = status.toLowerCase();
+    const statusMap: Record<string, DatasetInfo['status']> = {
+      available: 'available',
+      downloading: 'downloading',
+      processing: 'processing',
+      queued: 'processing',
+      error: 'error',
+      failed: 'error',
+    };
+
+    if (statusMap[normalized]) {
+      return statusMap[normalized];
+    }
+  }
+
+  return 'available';
+}
+
+function mapDataset(raw: RawDataset): DatasetInfo {
+  return {
+    id: String(raw.id),
+    name: raw.name,
+    source: raw.source ?? null,
+    status: normalizeDatasetStatus(raw.status),
+    type: raw.type ?? null,
+    description: raw.description ?? null,
+    huggingface_id: raw.huggingface_id ?? null,
+    samples: toOptionalNumber(raw.samples) ?? 0,
+    size_mb: toOptionalNumber(raw.size_mb) ?? 0,
+    local_path: raw.local_path ?? null,
+    created_at: raw.created_at ?? null,
+    updated_at: raw.updated_at ?? null,
+    last_used: raw.last_used ?? null,
+  };
+}
+
 function mapTrainingSession(raw: RawTrainingSession): TrainingSession {
   const config = normalizeTrainingConfig(raw.config);
   const metrics = parseOptionalJson(raw.metrics, metricsSchema);
@@ -336,7 +537,7 @@ export const trainingService = {
   /**
    * Get all models
    */
-  async getModels(page = 1, limit = 10): Promise<{ models: ModelInfo[]; pagination: any }> {
+  async getModels(page = 1, limit = 10): Promise<ModelListResponse> {
     try {
       const params = new URLSearchParams({
         page: page.toString(),
@@ -346,14 +547,41 @@ export const trainingService = {
       const response = await apiRequest(
         joinApiPath(API_BASE, `${API_ENDPOINTS.MODELS}?${params.toString()}`)
       );
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Get models failed:', error);
-      // Return fallback data for offline mode
+      const payload = await response.json();
+
+      const envelope = rawModelListEnvelopeSchema.safeParse(payload);
+      if (envelope.success) {
+        const models = envelope.data.models.map(mapModel);
+        const paginationInput = envelope.data.pagination ?? {};
+        const total = paginationInput.total ?? models.length;
+        const pages = paginationInput.pages;
+        const normalized = buildPagination(page, limit, total, pages);
+
+        return {
+          models,
+          pagination: normalized,
+        };
+      }
+
+      const arrayResult = z.array(rawModelSchema).safeParse(payload);
+      if (arrayResult.success) {
+        const models = arrayResult.data.map(mapModel);
+        return {
+          models,
+          pagination: buildPagination(page, limit, models.length),
+        };
+      }
+
+      console.warn('Unexpected models payload shape', payload);
       return {
         models: [],
-        pagination: { page, limit, total: 0, pages: 0 }
+        pagination: buildPagination(page, limit, 0),
+      };
+    } catch (error) {
+      console.error('Get models failed:', error);
+      return {
+        models: [],
+        pagination: buildPagination(page, limit, 0),
       };
     }
   },
@@ -366,8 +594,9 @@ export const trainingService = {
       const response = await apiRequest(
         joinApiPath(API_BASE, API_ENDPOINTS.MODEL_BY_ID(modelId.toString()))
       );
-      const data = await response.json();
-      return data;
+      const payload = await response.json();
+      const parsed = rawModelSchema.parse(payload);
+      return mapModel(parsed);
     } catch (error) {
       console.error('Get model failed:', error);
       // Return fallback model data
@@ -381,9 +610,12 @@ export const trainingService = {
         epochs: 0,
         current_epoch: 0,
         dataset_id: '',
-        config: {},
+        config: {} as ModelConfig,
         created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
+        description: null,
+        category: null,
+        created_by: null,
       };
     }
   },
@@ -391,17 +623,28 @@ export const trainingService = {
   /**
    * Create new model
    */
-  async createModel(model: { name: string; type: string; datasetId?: string; config?: any }): Promise<ModelInfo> {
+  async createModel(model: { name: string; type: ModelType; datasetId?: string; config?: ModelConfig }): Promise<ModelInfo> {
     try {
+      const payload: Record<string, unknown> = {
+        name: model.name,
+        type: model.type,
+        config: model.config ?? {},
+      };
+
+      if (model.datasetId) {
+        payload.dataset_id = model.datasetId;
+      }
+
       const response = await apiRequest(
         joinApiPath(API_BASE, API_ENDPOINTS.MODELS),
         {
           method: 'POST',
-          body: JSON.stringify(model),
+          body: JSON.stringify(payload),
         }
       );
       const data = await response.json();
-      return data;
+      const parsed = rawModelSchema.parse(data);
+      return mapModel(parsed);
     } catch (error) {
       console.error('Create model failed:', error);
       // Return a mock created model for offline mode
@@ -414,10 +657,13 @@ export const trainingService = {
         loss: 0,
         epochs: 0,
         current_epoch: 0,
-        dataset_id: model.datasetId || '',
-        config: model.config || {},
+        dataset_id: model.datasetId ?? null,
+        config: (model.config ?? {}) as ModelConfig,
         created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
+        updated_at: new Date().toISOString(),
+        description: null,
+        category: null,
+        created_by: null,
       };
     }
   },
@@ -655,13 +901,13 @@ export const trainingService = {
    */
   async startOptimization(modelId: number, options: {
     optimizationType?: string;
-    parameters?: any;
+    parameters?: Record<string, unknown>;
   } = {}): Promise<{
     success: boolean;
     message: string;
     optimizationId: string;
     type: string;
-    parameters: any;
+    parameters: Record<string, unknown>;
   }> {
     try {
       const response = await apiRequest(
@@ -739,11 +985,23 @@ export const trainingService = {
   /**
    * Get datasets
    */
-  async getDatasets(): Promise<{ datasets: any[] }> {
+  async getDatasets(): Promise<{ datasets: DatasetInfo[] }> {
     try {
       const response = await apiRequest(joinApiPath(API_BASE, '/datasets'));
-      const data = await response.json();
-      return data;
+      const payload = await response.json();
+
+      const envelope = rawDatasetListEnvelopeSchema.safeParse(payload);
+      if (envelope.success) {
+        return { datasets: envelope.data.datasets.map(mapDataset) };
+      }
+
+      const arrayResult = z.array(rawDatasetSchema).safeParse(payload);
+      if (arrayResult.success) {
+        return { datasets: arrayResult.data.map(mapDataset) };
+      }
+
+      console.warn('Unexpected datasets payload shape', payload);
+      return { datasets: [] };
     } catch (error) {
       console.error('Get datasets failed:', error);
       return { datasets: [] };

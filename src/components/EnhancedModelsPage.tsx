@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { trainingService } from '../services/training';
+import { trainingService, ModelInfo, DatasetInfo } from '../services/training';
 import { getDatasets } from '../services/datasets';
 import { 
   Plus, 
@@ -42,37 +42,15 @@ import { TopNavigation } from './ui/EnhancedNavigation';
 import { PerformanceChart, CategoryDistribution, SystemMetrics, RadialProgress } from './charts/EnhancedCharts';
 import { cn } from '../utils/cn';
 
-interface Model {
-  id: string | number;
-  name: string;
-  type: string;
-  status: 'idle' | 'training' | 'paused' | 'completed' | 'error';
-  accuracy?: number;
-  loss?: number;
-  epochs?: number;
-  current_epoch?: number;
-  dataset_id?: string | number;
-  config?: string;
-  created_at: string;
-  updated_at: string;
-  description?: string;
-  category?: string;
+type Model = ModelInfo & {
   performance?: {
     precision: number;
     recall: number;
     f1_score: number;
   };
-}
+};
 
-interface Dataset {
-  id: string | number;
-  name: string;
-  samples: number;
-  size_mb: number;
-  status: string;
-  type?: string;
-  description?: string;
-}
+type Dataset = DatasetInfo;
 
 // Enhanced Models Page with Real API Integration
 export default function EnhancedModelsPage() {
@@ -191,11 +169,12 @@ const MOCK_MODELS: Model[] = [
     loss: 0.234,
     epochs: 50,
     current_epoch: 32,
-    dataset_id: 1,
+    dataset_id: '1',
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
     description: 'مدل پیشرفته برای تحلیل اسناد حقوقی فارسی',
     category: 'قوانین مدنی',
+    config: null,
     performance: {
       precision: 0.89,
       recall: 0.91,
@@ -211,11 +190,12 @@ const MOCK_MODELS: Model[] = [
     loss: 0.156,
     epochs: 30,
     current_epoch: 30,
-    dataset_id: 2,
+    dataset_id: '2',
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
     description: 'مدل تخصصی برای پاسخ‌دهی به سوالات حقوقی',
     category: 'قوانین جزایی',
+    config: null,
     performance: {
       precision: 0.94,
       recall: 0.93,
@@ -231,11 +211,12 @@ const MOCK_MODELS: Model[] = [
     loss: 0.345,
     epochs: 40,
     current_epoch: 18,
-    dataset_id: 3,
+    dataset_id: '3',
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
     description: 'دسته‌بندی کننده اسناد حقوقی',
     category: 'قوانین تجاری',
+    config: null,
     performance: {
       precision: 0.77,
       recall: 0.76,
@@ -251,11 +232,12 @@ const MOCK_MODELS: Model[] = [
     loss: 0,
     epochs: 25,
     current_epoch: 0,
-    dataset_id: 4,
+    dataset_id: '4',
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
     description: 'تحلیلگر تصمیمات دادگاه',
     category: 'قوانین قضایی',
+    config: null,
     performance: {
       precision: 0,
       recall: 0,
@@ -266,31 +248,34 @@ const MOCK_MODELS: Model[] = [
 
 const MOCK_DATASETS: Dataset[] = [
   {
-    id: 1,
+    id: '1',
     name: 'Persian Legal Documents v3.0',
     samples: 15400,
     size_mb: 245.2,
     status: 'available',
     type: 'legal-documents',
-    description: 'مجموعه جامع اسناد حقوقی فارسی'
+    description: 'مجموعه جامع اسناد حقوقی فارسی',
+    source: null
   },
   {
-    id: 2,
+    id: '2',
     name: 'Legal QA Dataset Pro',
     samples: 12800,
     size_mb: 189.7,
     status: 'available',
     type: 'qa-pairs',
-    description: 'دیتاست پرسش و پاسخ حقوقی'
+    description: 'دیتاست پرسش و پاسخ حقوقی',
+    source: null
   },
   {
-    id: 3,
+    id: '3',
     name: 'Court Decisions Archive',
     samples: 8900,
     size_mb: 156.3,
     status: 'available',
     type: 'court-decisions',
-    description: 'آرشیو تصمیمات دادگاه'
+    description: 'آرشیو تصمیمات دادگاه',
+    source: null
   }
 ];
 
