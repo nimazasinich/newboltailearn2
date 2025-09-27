@@ -1,0 +1,8 @@
+{
+  "id": 1,
+  "name": "test-model-api",
+  "type": "persian-bert",
+  "config": "{\"batch_size\": 32, \"learning_rate\": 0.001, \"epochs\": 10}",
+  "status": "idle",
+  "created_at": "2025-09-27T03:27:40.524Z"
+}
