@@ -1,33 +1,41 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
-const idx = 'docs/index.html';
-const fb  = 'docs/404.html';
-const nj  = 'docs/.nojekyll';
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-if (!existsSync(idx)) {
-  console.error(`[ERROR] ${idx} not found. Build first (npm run build).`);
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const rootDir = `${__dirname}/..`;
+const indexPath = `${rootDir}/docs/index.html`;
+const fallbackPath = `${rootDir}/docs/404.html`;
+const noJekyllPath = `${rootDir}/docs/.nojekyll`;
+
+if (!existsSync(indexPath)) {
+  console.error(`[ERROR] ${indexPath} not found. Run the build before enforcing SPA fallback.`);
   process.exit(1);
 }
 
-// If 404.html missing or contains redirect, mirror index.html; else keep as-is
-const indexHtml = readFileSync(idx, 'utf8');
-let needsMirror = false;
-if (!existsSync(fb)) needsMirror = true;
-else {
-  const fbHtml = readFileSync(fb, 'utf8');
-  const looksLikeRedirect = /<meta\s+http-equiv=["']refresh["']|location\.(replace|href)|<script>.*location/i.test(fbHtml);
-  if (looksLikeRedirect) needsMirror = true;
-}
-if (needsMirror) {
-  writeFileSync(fb, indexHtml);
-  console.log(`[ok] Ensured SPA fallback: ${fb} ← ${idx}`);
+const indexHtml = readFileSync(indexPath, 'utf8');
+let shouldMirror = false;
+
+if (!existsSync(fallbackPath)) {
+  shouldMirror = true;
 } else {
-  console.log('[ok] 404.html exists and is not redirect-based');
+  const fallbackHtml = readFileSync(fallbackPath, 'utf8');
+  const redirectPattern = /<meta\s+http-equiv=["']refresh["']|location\.(replace|href)|<script>.*location/si;
+  if (redirectPattern.test(fallbackHtml)) {
+    shouldMirror = true;
+  }
 }
 
-// Ensure .nojekyll exists
-if (!existsSync(nj)) {
-  writeFileSync(nj, '');
+if (shouldMirror) {
+  writeFileSync(fallbackPath, indexHtml);
+  console.log(`[ok] Ensured SPA fallback: ${fallbackPath} mirrors ${indexPath}`);
+} else {
+  console.log('[ok] docs/404.html already provides SPA fallback');
+}
+
+if (!existsSync(noJekyllPath)) {
+  writeFileSync(noJekyllPath, '');
   console.log('[ok] Created docs/.nojekyll');
 } else {
-  console.log('[ok] docs/.nojekyll already present');
+  console.log('[ok] docs/.nojekyll already exists');
 }
