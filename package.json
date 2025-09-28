@@ -10,7 +10,8 @@
   },
   "scripts": {
     "dev": "cross-env NODE_NO_WARNINGS=1 vite --config vite.config.ts",
-    "build": "cross-env NODE_ENV=production vite build --config vite.config.ts",
+    "build": "vite build",
+    "postbuild": "node scripts/postbuild-gh-pages.mjs",
     "build:gh": "cross-env VITE_BASE_PATH=/newboltailearn2/ vite build --config vite.config.ts && node scripts/make-404.js",
     "ensure:spa": "node scripts/ensure-spa-fallback.mjs",
     "preview": "vite preview --config vite.config.ts",
