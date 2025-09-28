@@ -1,6 +1,7 @@
 // Real API base configuration
 // In production without VITE_API_BASE, we'll disable API calls to prevent 404s
-const RAW_BASE = import.meta.env?.VITE_API_BASE ?? (import.meta.env.PROD ? null : '/api');
+const IS_GITHUB_PAGES = typeof location !== 'undefined' && location.hostname.endsWith('github.io');
+const RAW_BASE = import.meta.env?.VITE_API_BASE ?? (import.meta.env.PROD && !IS_GITHUB_PAGES ? null : '/api');
 
 // RequestInit type for fetch
 type RequestInit = globalThis.RequestInit;
@@ -16,8 +17,11 @@ export const API_BASE = normalizeApiBase(RAW_BASE);
 
 // Check if API is available
 export const isApiAvailable = (): boolean => {
-  return API_BASE !== null;
+  return API_BASE !== null && !IS_GITHUB_PAGES;
 };
+
+// Export GitHub Pages detection for components
+export { IS_GITHUB_PAGES };
 
 // Safe URL joining
 export function joinApiPath(basePath: string, endpoint: string): string {
