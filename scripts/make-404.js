@@ -1,19 +1,20 @@
-import path from 'path';
-import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'fs';
+import { copyFileSync, existsSync, mkdirSync, writeFileSync, readFileSync } from 'fs';
 
-const outputDir = process.env.BUILD_OUTPUT_DIR || 'dist';
-const indexPath = path.join(outputDir, 'index.html');
-const fallbackPath = path.join(outputDir, '404.html');
-const noJekyllPath = path.join(outputDir, '.nojekyll');
+const BASE = process.env.VITE_BASE_PATH || '/newboltailearn2/';
 
-mkdirSync(outputDir, { recursive: true });
+mkdirSync('docs', { recursive: true });
 
-if (existsSync(indexPath)) {
-  copyFileSync(indexPath, fallbackPath);
-  writeFileSync(noJekyllPath, '');
-  console.log(`✅ SPA fallback created: ${fallbackPath}`);
-  console.log(`✅ Jekyll disabled: ${noJekyllPath}`);
+if (existsSync('docs/index.html')) {
+  // Create proper 404.html with meta refresh for SPA fallback
+  const indexContent = readFileSync('docs/index.html', 'utf8');
+  const metaRefresh = `<meta http-equiv="refresh" content="0; url=${BASE}">`;
+  const updatedContent = indexContent.replace('<head>', `<head>\n    ${metaRefresh}`);
+  
+  writeFileSync('docs/404.html', updatedContent);
+  writeFileSync('docs/.nojekyll', '');
+  console.log('✅ SPA fallback created: docs/404.html with meta refresh');
+  console.log('✅ Jekyll disabled: docs/.nojekyll');
 } else {
-  console.error(`❌ Build first - ${indexPath} not found`);
+  console.error('❌ Build first - docs/index.html not found');
   process.exit(1);
 }

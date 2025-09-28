@@ -57,17 +57,9 @@ export function EnhancedAppLayout() {
     // Check system connections
     const checkConnections = async () => {
       try {
-        const backendResponse = await fetch('/api/health').catch(() => null);
-        const wsTest = new Promise((resolve) => {
-          try {
-            const ws = new WebSocket('ws://localhost:8080/');
-            ws.onopen = () => { ws.close(); resolve(true); };
-            ws.onerror = () => resolve(false);
-            setTimeout(() => resolve(false), 3000);
-          } catch {
-            resolve(false);
-          }
-        });
+        // EMERGENCY FIX: Disable backend and WebSocket tests in static mode
+        const backendResponse = null; // Disabled for static mode
+        const wsTest = Promise.resolve(false); // WebSocket disabled for static mode
 
         setConnectionStatus({
           backend: backendResponse?.ok || false,

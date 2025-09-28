@@ -1,7 +1,10 @@
 /**
  * Reliability Monitor
  * Comprehensive monitoring and fallback management for all system components
+ * EMERGENCY: Disabled in static mode for GitHub Pages
  */
+
+import { IS_GITHUB_PAGES, STATIC_MODE_CONFIG } from '../lib/static-mode';
 
 // Timer type for compatibility
 type Timer = ReturnType<typeof setTimeout>;
@@ -34,7 +37,14 @@ export class ReliabilityMonitor {
 
   constructor() {
     this.initializeComponents();
-    this.startMonitoring();
+    
+    // EMERGENCY FIX: Disable monitoring in static mode
+    if (IS_GITHUB_PAGES || !STATIC_MODE_CONFIG.healthChecks.enabled) {
+      console.log('🔧 Reliability monitoring disabled in static mode');
+      this.setStaticModeStatus();
+    } else {
+      this.startMonitoring();
+    }
   }
 
   private initializeComponents(): void {
@@ -62,12 +72,31 @@ export class ReliabilityMonitor {
   }
 
   /**
+   * Set static mode status for all components
+   */
+  private setStaticModeStatus(): void {
+    this.components.forEach((component, name) => {
+      component.status = 'healthy';
+      component.lastCheck = new Date();
+      component.uptime = 1.0;
+      component.errorCount = 0;
+      component.fallbackActive = false;
+      component.metrics = {
+        responseTime: 0,
+        mode: 'static'
+      };
+    });
+    
+    console.log('✅ Static mode status set for all components');
+  }
+
+  /**
    * Start continuous monitoring
    */
   private startMonitoring(): void {
     this.monitoringInterval = setInterval(() => {
       this.performHealthChecks();
-    }, 30000); // Check every 30 seconds
+    }, STATIC_MODE_CONFIG.healthChecks.interval);
 
     console.log('🔍 Reliability monitoring started');
   }

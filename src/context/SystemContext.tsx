@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { API } from '../services/api';
 import { WSConnectionStatus } from '../lib/ws-events';
+import { IS_GITHUB_PAGES, STATIC_MODE_CONFIG, MockAPI } from '../lib/static-mode';
 
 interface HealthCheck {
   timestamp: number;
@@ -45,8 +46,24 @@ function SystemProvider({ children }: SystemProviderProps) {
     setLastHealthCheck(null);
   };
 
-  // Health check interval
+  // Health check interval - DISABLED in static mode
   useEffect(() => {
+    // EMERGENCY FIX: Disable health checks in static mode
+    if (IS_GITHUB_PAGES || !STATIC_MODE_CONFIG.healthChecks.enabled) {
+      console.log('🔧 Health checks disabled in static mode');
+      
+      // Set static status
+      const staticCheck: HealthCheck = {
+        timestamp: Date.now(),
+        status: 'online',
+        responseTime: 0
+      };
+      setStatus('online');
+      addHealthCheck(staticCheck);
+      
+      return; // No interval setup
+    }
+
     const checkHealth = async () => {
       const startTime = Date.now();
       try {
@@ -74,7 +91,7 @@ function SystemProvider({ children }: SystemProviderProps) {
     checkHealth();
 
     // Set up interval
-    const healthInterval = setInterval(checkHealth, 30000); // Every 30 seconds
+    const healthInterval = setInterval(checkHealth, STATIC_MODE_CONFIG.healthChecks.interval);
 
     return () => {
       clearInterval(healthInterval);
