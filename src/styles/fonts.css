@@ -3,7 +3,8 @@
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
-  src: url('/newboltailearn2/fonts/vazirmatn/Vazirmatn-Variable.woff2') format('woff2'),
+  src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-Variable.woff2') format('woff2-variations'),
+       url('/newboltailearn2/fonts/vazirmatn/Vazirmatn-Variable.woff2') format('woff2'),
        url('/newboltailearn2/fonts/vazirmatn/Vazirmatn-Regular.woff2') format('woff2'),
        url('/newboltailearn2/fonts/vazirmatn/Vazirmatn-Bold.woff2') format('woff2');
 }
@@ -13,7 +14,8 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('/newboltailearn2/fonts/vazirmatn/Vazirmatn-Regular.woff2') format('woff2');
+  src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-Regular.woff2') format('woff2'),
+       url('/newboltailearn2/fonts/vazirmatn/Vazirmatn-Regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -21,7 +23,8 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('/newboltailearn2/fonts/vazirmatn/Vazirmatn-Bold.woff2') format('woff2');
+  src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-Bold.woff2') format('woff2'),
+       url('/newboltailearn2/fonts/vazirmatn/Vazirmatn-Bold.woff2') format('woff2');
 }
 
 /* Font loading with fallbacks */

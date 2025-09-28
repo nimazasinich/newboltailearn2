@@ -53,18 +53,29 @@ export class FontLoader {
    */
   private async detectFontLoading(): Promise<void> {
     try {
-      const fontFace = new FontFace(
-        'Vazirmatn',
-        'url(/newboltailearn2/fonts/vazirmatn/Vazirmatn-Variable.woff2) format("woff2")'
-      );
+      // EMERGENCY FIX: Try CDN first, then fallback to local
+      const cdnUrl = 'https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-Variable.woff2';
+      const localUrl = '/newboltailearn2/fonts/vazirmatn/Vazirmatn-Variable.woff2';
+      
+      let fontFace;
+      try {
+        // Try CDN first
+        fontFace = new FontFace('Vazirmatn', `url(${cdnUrl}) format("woff2-variations")`);
+        await fontFace.load();
+        console.log('✅ Vazirmatn font loaded from CDN');
+      } catch (cdnError) {
+        console.warn('⚠️ CDN font failed, trying local:', cdnError);
+        // Fallback to local
+        fontFace = new FontFace('Vazirmatn', `url(${localUrl}) format("woff2")`);
+        await fontFace.load();
+        console.log('✅ Vazirmatn font loaded from local');
+      }
 
-      await fontFace.load();
       document.fonts.add(fontFace);
       this.loadedFonts.add('Vazirmatn');
       this.updateFontClass('font-loaded');
-      console.log('✅ Vazirmatn font loaded successfully');
     } catch (error) {
-      console.warn('⚠️ Vazirmatn font loading failed, using fallback:', error);
+      console.warn('⚠️ Vazirmatn font loading failed completely, using fallback:', error);
       this.failedFonts.add('Vazirmatn');
       this.updateFontClass('font-loading');
     }
@@ -202,7 +213,7 @@ export class FontLoader {
     const criticalFonts = [
       {
         family: 'Vazirmatn',
-        url: '/newboltailearn2/fonts/vazirmatn/Vazirmatn-Variable.woff2'
+        url: 'https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-Variable.woff2'
       }
     ];
 
@@ -211,6 +222,12 @@ export class FontLoader {
         await this.loadFont(font.family, font.url);
       } catch (error) {
         console.warn(`Failed to preload font ${font.family}:`, error);
+        // Try local fallback
+        try {
+          await this.loadFont(font.family, '/newboltailearn2/fonts/vazirmatn/Vazirmatn-Variable.woff2');
+        } catch (fallbackError) {
+          console.warn(`Local fallback also failed for ${font.family}:`, fallbackError);
+        }
       }
     }
   }

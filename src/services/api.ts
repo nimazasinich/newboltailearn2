@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { API_BASE } from '../lib/config'
+import { IS_GITHUB_PAGES, MockAPI, MOCK_DATA } from '../lib/static-mode'
 
 type RequestInit = globalThis.RequestInit
 
@@ -106,6 +107,18 @@ async function getCsrf() {
 }
 
 async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
+  // EMERGENCY FIX: Use mock API in static mode
+  if (IS_GITHUB_PAGES) {
+    console.log('🔧 Using mock API for static mode:', path);
+    const mockAPI = MockAPI.getInstance();
+    
+    if (init.method === 'GET' || !init.method) {
+      return mockAPI.get(path);
+    } else {
+      return mockAPI.post(path, init.body ? JSON.parse(init.body as string) : {});
+    }
+  }
+
   const token = localStorage.getItem('token') || ''
   const headers: Record<string, string> = {
     Accept: 'application/json',
