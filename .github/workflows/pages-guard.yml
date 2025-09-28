@@ -1,0 +1,81 @@
+name: GitHub Pages Guard
+
+on:
+  push:
+    branches: [ main, cursor/* ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  pages-guard:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build for GitHub Pages
+      run: |
+        VITE_BASE_PATH=/newboltailearn2/ npm run build:gh
+        
+    - name: Verify base path in index.html
+      run: |
+        if ! grep -q '/newboltailearn2/' docs/index.html; then
+          echo "❌ FAIL: docs/index.html does not contain /newboltailearn2/ base path"
+          exit 1
+        fi
+        echo "✅ PASS: Base path correctly set in index.html"
+        
+    - name: Verify SPA fallback in 404.html
+      run: |
+        if ! grep -q 'meta http-equiv="refresh" content="0; url=/newboltailearn2/"' docs/404.html; then
+          echo "❌ FAIL: docs/404.html does not contain correct meta refresh"
+          exit 1
+        fi
+        echo "✅ PASS: SPA fallback correctly configured in 404.html"
+        
+    - name: Verify .nojekyll exists
+      run: |
+        if [ ! -f docs/.nojekyll ]; then
+          echo "❌ FAIL: docs/.nojekyll file is missing"
+          exit 1
+        fi
+        echo "✅ PASS: .nojekyll file exists"
+        
+    - name: Verify fonts are deployed
+      run: |
+        if [ ! -f docs/fonts/vazirmatn/Vazirmatn-Variable.woff2 ]; then
+          echo "❌ FAIL: Vazirmatn-Variable.woff2 font is missing"
+          exit 1
+        fi
+        echo "✅ PASS: Fonts are properly deployed"
+        
+    - name: Verify no WASM backend imports
+      run: |
+        if grep -r "tfjs-backend-wasm" docs/assets/ 2>/dev/null; then
+          echo "❌ FAIL: WASM backend found in built assets"
+          exit 1
+        fi
+        echo "✅ PASS: No WASM backend imports found"
+        
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: pages-build
+        path: docs/
+        retention-days: 7
+        
+    - name: Summary
+      run: |
+        echo "🎉 All GitHub Pages deployment checks passed!"
+        echo "📁 Build artifacts uploaded for inspection"
+        echo "🔗 Ready for deployment to gh-pages branch"
