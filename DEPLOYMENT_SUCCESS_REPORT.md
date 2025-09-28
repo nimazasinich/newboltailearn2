@@ -21,7 +21,7 @@
 - **Trigger**: Push to main branch
 - **Build Command**: `npm run build:gh`
 - **SPA Fallback**: `npm run ensure:spa`
-- **Deploy Path**: `/docs`
+- **Deploy Path**: `/dist`
 
 #### ✅ **3. SPA Fallback System Working**
 - **404.html**: ✅ Properly configured and accessible
@@ -30,8 +30,8 @@
 - **Content Length**: 1059 bytes (consistent across all pages)
 
 #### ✅ **4. Build Configuration Verified**
-- **Vite Config**: Dynamic base path (`/newboltailearn/`)
-- **Output Directory**: `docs/`
+- **Vite Config**: Static base path (`/newboltailearn2/`)
+- **Output Directory**: `dist/`
 - **Asset Optimization**: Code splitting and minification
 - **Source Maps**: Available for debugging
 

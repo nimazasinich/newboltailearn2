@@ -205,9 +205,9 @@ docker-compose down -v
 
 ### Frontend: GitHub Pages
 - **Hosting**: GitHub Pages with static deployment
-- **Build folder**: `docs/` directory
+- **Build folder**: `dist/` directory
 - **Router**: HashRouter for SPA compatibility
-- **Base path**: `/newboltailearn/` for asset loading
+- **Base path**: `/newboltailearn2/` for asset loading
 - **Fallback**: `404.html` and `.nojekyll` for SPA routing
 
 ### Backend: Render.com
@@ -222,7 +222,6 @@ docker-compose down -v
   - `RENDER_EXTERNAL_URL` (backend URL)
   - `VITE_API_URL` (API endpoint for frontend)
   - `VITE_WS_URL` (WebSocket endpoint)
-  - `VITE_BASE_PATH=/newboltailearn/`
 
 ### API Endpoints
 - **Root endpoint** (`/`): Returns JSON status
@@ -246,7 +245,7 @@ docker-compose down -v
 3. **Configure GitHub Pages**
    - Go to repository Settings → Pages
    - Set source to "Deploy from a branch"
-   - Select branch: `main` and folder: `/docs`
+   - Select branch: `gh-pages` and folder: `/ (root)`
 
 ## 🔧 Configuration
 
@@ -260,7 +259,7 @@ VITE_WS_PATH=/ws
 
 **Production:**
 - Set `GHPAGES=true` for GitHub Pages deployment
-- Base path automatically configured as `/newboltailearn/`
+- Base path automatically configured as `/newboltailearn2/`
 
 ### Proxy Configuration
 
@@ -279,7 +278,7 @@ Development server proxies API calls:
 
 2. **Asset Loading Issues**
    - **Error**: 404 errors or missing CSS/assets
-   - **Solution**: Check `docs/index.html` asset paths begin with `/newboltailearn/`
+   - **Solution**: Check `dist/index.html` asset paths begin with `/newboltailearn2/`
    - **Fix applied**: Proper base path configuration in build process
 
 3. **TypeScript Errors**
@@ -436,7 +435,7 @@ The pipeline is configured to:
 
 ### Deployment Strategy
 
-- **Frontend**: Automatically deployed to GitHub Pages from `docs/` folder
+- **Frontend**: Automatically deployed to GitHub Pages from `dist/` folder
 - **Backend**: Deployed to Render with environment-based configuration
 - **CI Validation**: Pipeline validates code quality but doesn't auto-deploy
 
@@ -457,10 +456,10 @@ Verify the deployment and functionality with these commands:
 npm run build:gh
 
 # Serve locally to test
-npx serve -s docs -l 5174
+npx serve -s dist -l 5174
 
 # Test frontend
-# Navigate to: http://localhost:5174/newboltailearn/
+# Navigate to: http://localhost:5174/newboltailearn2/
 # Test routes: #/overview, #/models, #/datasets, etc.
 # Verify: No router context errors, all assets load correctly
 

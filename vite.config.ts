@@ -4,17 +4,17 @@ import path from 'path';
 
 export default ({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
-  // Use VITE_BASE_PATH if provided (e.g. '/newboltailearn2/'), otherwise '/'
+  // Use VITE_BASE_PATH if provided (e.g. '/newboltailearn2/'), otherwise '/newboltailearn2/'
   const base = env.VITE_BASE_PATH && env.VITE_BASE_PATH.trim() !== '' ? env.VITE_BASE_PATH : '/newboltailearn2/';
 
   return defineConfig({
-    resolve: { 
-      alias: { 
-        '@': path.resolve(__dirname, 'src') 
-      } 
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, 'src')
+      }
     },
     plugins: [react()],
-    base,
+    base: base,
     server: {
       port: 5173,
       strictPort: true,
@@ -44,4 +44,3 @@ export default ({ mode }) => {
       }
     }
   });
-};
