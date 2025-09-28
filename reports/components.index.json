@@ -1,0 +1,393 @@
+{
+  "components": {
+    "ui": {
+      "Badge.tsx": {
+        "exports": ["Badge"],
+        "props": ["variant", "size", "className"],
+        "peerDeps": [],
+        "loc": 25
+      },
+      "Button.tsx": {
+        "exports": ["Button"],
+        "props": ["variant", "size", "disabled", "className"],
+        "peerDeps": [],
+        "loc": 35
+      },
+      "Card.tsx": {
+        "exports": ["Card", "CardHeader", "CardTitle", "CardDescription", "CardContent", "CardFooter"],
+        "props": ["className"],
+        "peerDeps": [],
+        "loc": 80
+      },
+      "DataTable.tsx": {
+        "exports": ["DataTable"],
+        "props": ["data", "columns", "onRowClick", "searchable", "sortable"],
+        "peerDeps": ["lucide-react"],
+        "loc": 120
+      },
+      "EnhancedCard.tsx": {
+        "exports": ["EnhancedCard", "MetricCard", "ProgressCard"],
+        "props": ["title", "value", "trend", "icon", "className"],
+        "peerDeps": ["framer-motion", "lucide-react"],
+        "loc": 300
+      },
+      "EnhancedNavigation.tsx": {
+        "exports": ["EnhancedSidebar", "NavigationItem", "TopNavigation", "Breadcrumb"],
+        "props": ["items", "activeItem", "onItemClick"],
+        "peerDeps": ["framer-motion"],
+        "loc": 450
+      },
+      "icons.tsx": {
+        "exports": ["IconProps", "various icon components"],
+        "props": ["className", "size"],
+        "peerDeps": ["lucide-react"],
+        "loc": 50
+      },
+      "Input.tsx": {
+        "exports": ["Input"],
+        "props": ["type", "placeholder", "value", "onChange", "disabled", "className"],
+        "peerDeps": [],
+        "loc": 40
+      },
+      "LoadableSection.tsx": {
+        "exports": ["LoadableSection"],
+        "props": ["loading", "error", "children", "retry"],
+        "peerDeps": ["lucide-react"],
+        "loc": 60
+      },
+      "LoadingScreen.tsx": {
+        "exports": ["LoadingScreen"],
+        "props": ["title", "subtitle", "progress"],
+        "peerDeps": ["framer-motion", "lucide-react"],
+        "loc": 80
+      },
+      "ModernCard.tsx": {
+        "exports": ["ModernCard"],
+        "props": ["title", "children", "className"],
+        "peerDeps": ["framer-motion"],
+        "loc": 45
+      },
+      "OrganicCard.tsx": {
+        "exports": ["OrganicCard"],
+        "props": ["title", "children", "className"],
+        "peerDeps": ["framer-motion"],
+        "loc": 50
+      },
+      "PageHeader.tsx": {
+        "exports": ["PageHeader"],
+        "props": ["title", "subtitle", "actions"],
+        "peerDeps": [],
+        "loc": 30
+      },
+      "PageSkeleton.tsx": {
+        "exports": ["PageSkeleton"],
+        "props": ["lines", "className"],
+        "peerDeps": [],
+        "loc": 25
+      },
+      "PremiumHeader.tsx": {
+        "exports": ["PremiumHeader"],
+        "props": ["title", "subtitle", "actions"],
+        "peerDeps": ["framer-motion"],
+        "loc": 60
+      },
+      "Progress.tsx": {
+        "exports": ["Progress"],
+        "props": ["value", "max", "className"],
+        "peerDeps": [],
+        "loc": 35
+      },
+      "SlimBadge.tsx": {
+        "exports": ["SlimBadge"],
+        "props": ["children", "variant", "className"],
+        "peerDeps": [],
+        "loc": 20
+      },
+      "Toast.tsx": {
+        "exports": ["ToastProvider", "ToastContainer", "ToastItem", "useToast"],
+        "props": ["message", "type", "duration"],
+        "peerDeps": ["lucide-react"],
+        "loc": 150
+      },
+      "VirtualizedList.tsx": {
+        "exports": ["VirtualizedList"],
+        "props": ["items", "itemHeight", "renderItem", "className"],
+        "peerDeps": [],
+        "loc": 80
+      },
+      "ZenHeader.tsx": {
+        "exports": ["ZenHeader"],
+        "props": ["title", "subtitle", "actions"],
+        "peerDeps": ["lucide-react"],
+        "loc": 40
+      },
+      "ZenProgress.tsx": {
+        "exports": ["ZenProgress"],
+        "props": ["value", "max", "className"],
+        "peerDeps": [],
+        "loc": 30
+      }
+    },
+    "charts": {
+      "ChartJSWrapper.tsx": {
+        "exports": ["ChartJSWrapper"],
+        "props": ["type", "data", "options", "className"],
+        "peerDeps": ["chart.js"],
+        "loc": 60
+      },
+      "ChartSelector.tsx": {
+        "exports": ["ChartSelector"],
+        "props": ["charts", "selected", "onSelect"],
+        "peerDeps": [],
+        "loc": 80
+      },
+      "EnhancedCharts.tsx": {
+        "exports": ["PerformanceChart", "CategoryDistribution", "SystemMetrics", "RadialProgress", "RealTimeChart"],
+        "props": ["data", "options", "className"],
+        "peerDeps": ["framer-motion", "chart.js"],
+        "loc": 400
+      },
+      "index.ts": {
+        "exports": ["ChartJSWrapper", "ChartSelector", "EnhancedCharts"],
+        "props": [],
+        "peerDeps": [],
+        "loc": 10
+      }
+    },
+    "layout": {
+      "CreativeSidebar.tsx": {
+        "exports": ["CreativeSidebar"],
+        "props": ["items", "activeItem", "onItemClick"],
+        "peerDeps": ["framer-motion"],
+        "loc": 120
+      },
+      "EnhancedAppLayout.tsx": {
+        "exports": ["EnhancedAppLayout"],
+        "props": ["children", "sidebar", "header"],
+        "peerDeps": ["framer-motion"],
+        "loc": 100
+      },
+      "Header.tsx": {
+        "exports": ["Header"],
+        "props": ["title", "actions"],
+        "peerDeps": ["lucide-react"],
+        "loc": 50
+      },
+      "ModernSidebar.tsx": {
+        "exports": ["ModernSidebar"],
+        "props": ["items", "activeItem", "onItemClick"],
+        "peerDeps": ["framer-motion"],
+        "loc": 100
+      },
+      "Sidebar.tsx": {
+        "exports": ["Sidebar"],
+        "props": ["items", "activeItem", "onItemClick"],
+        "peerDeps": [],
+        "loc": 80
+      }
+    },
+    "Auth": {
+      "AuthOverlay.tsx": {
+        "exports": ["AuthOverlay"],
+        "props": ["isOpen", "onClose"],
+        "peerDeps": ["framer-motion", "lucide-react"],
+        "loc": 100
+      },
+      "LoginModal.tsx": {
+        "exports": ["LoginModal"],
+        "props": ["isOpen", "onClose", "onSuccess"],
+        "peerDeps": ["framer-motion", "lucide-react"],
+        "loc": 150
+      },
+      "ProtectedRoute.tsx": {
+        "exports": ["ProtectedRoute"],
+        "props": ["children", "requiredRole"],
+        "peerDeps": [],
+        "loc": 40
+      },
+      "RegisterModal.tsx": {
+        "exports": ["RegisterModal"],
+        "props": ["isOpen", "onClose", "onSuccess"],
+        "peerDeps": ["framer-motion", "lucide-react"],
+        "loc": 150
+      }
+    },
+    "main": {
+      "AnalyticsPage.tsx": {
+        "exports": ["default"],
+        "props": [],
+        "peerDeps": [],
+        "loc": 5
+      },
+      "APIErrorBoundary.tsx": {
+        "exports": ["APIErrorBoundary"],
+        "props": ["children", "fallback"],
+        "peerDeps": [],
+        "loc": 50
+      },
+      "DataPage.tsx": {
+        "exports": ["DataPage"],
+        "props": ["data", "onDataChange"],
+        "peerDeps": [],
+        "loc": 80
+      },
+      "DatasetCard.tsx": {
+        "exports": ["DatasetCard"],
+        "props": ["dataset", "onClick", "onDelete"],
+        "peerDeps": [],
+        "loc": 60
+      },
+      "DatasetGallery.tsx": {
+        "exports": ["DatasetGallery"],
+        "props": ["datasets", "onUpload", "onDelete"],
+        "peerDeps": ["framer-motion"],
+        "loc": 100
+      },
+      "EnhancedAnalyticsPage.tsx": {
+        "exports": ["default"],
+        "props": [],
+        "peerDeps": ["framer-motion", "chart.js"],
+        "loc": 200
+      },
+      "EnhancedDashboard.tsx": {
+        "exports": ["default"],
+        "props": [],
+        "peerDeps": ["framer-motion"],
+        "loc": 150
+      },
+      "EnhancedLandingPage.tsx": {
+        "exports": ["default"],
+        "props": [],
+        "peerDeps": ["framer-motion"],
+        "loc": 300
+      },
+      "EnhancedModelsPage.tsx": {
+        "exports": ["default"],
+        "props": [],
+        "peerDeps": ["framer-motion", "chart.js"],
+        "loc": 200
+      },
+      "EnhancedMonitoringPage.tsx": {
+        "exports": ["default"],
+        "props": [],
+        "peerDeps": ["framer-motion", "chart.js"],
+        "loc": 200
+      },
+      "EnhancedOverview.tsx": {
+        "exports": ["default"],
+        "props": [],
+        "peerDeps": ["framer-motion", "chart.js"],
+        "loc": 250
+      },
+      "ErrorBoundary.tsx": {
+        "exports": ["ErrorBoundary"],
+        "props": ["children", "fallback"],
+        "peerDeps": [],
+        "loc": 40
+      },
+      "LandingPage.tsx": {
+        "exports": ["LandingPage"],
+        "props": [],
+        "peerDeps": ["framer-motion", "lucide-react"],
+        "loc": 200
+      },
+      "LoadingSpinner.tsx": {
+        "exports": ["LoadingSpinner"],
+        "props": ["size", "className"],
+        "peerDeps": [],
+        "loc": 30
+      },
+      "LogsPage.tsx": {
+        "exports": ["LogsPage"],
+        "props": ["logs", "onRefresh"],
+        "peerDeps": ["lucide-react"],
+        "loc": 120
+      },
+      "ModelsPage.tsx": {
+        "exports": ["default"],
+        "props": [],
+        "peerDeps": [],
+        "loc": 5
+      },
+      "MonitoringPage.tsx": {
+        "exports": ["default"],
+        "props": [],
+        "peerDeps": [],
+        "loc": 5
+      },
+      "NotificationSystem.tsx": {
+        "exports": ["NotificationProvider", "NotificationBell", "NotificationPanel", "useNotification"],
+        "props": ["message", "type", "duration"],
+        "peerDeps": ["lucide-react"],
+        "loc": 200
+      },
+      "Overview.tsx": {
+        "exports": ["default"],
+        "props": [],
+        "peerDeps": [],
+        "loc": 5
+      },
+      "ProjectDownloader.tsx": {
+        "exports": ["ProjectDownloader"],
+        "props": ["onExport", "onDownload"],
+        "peerDeps": ["lucide-react"],
+        "loc": 150
+      },
+      "SettingsPage.tsx": {
+        "exports": ["SettingsPage"],
+        "props": ["settings", "onSave"],
+        "peerDeps": [],
+        "loc": 100
+      },
+      "StaticModeWrapper.tsx": {
+        "exports": ["StaticModeWrapper"],
+        "props": ["children", "fallback"],
+        "peerDeps": [],
+        "loc": 50
+      },
+      "SystemStatus.tsx": {
+        "exports": ["SystemStatus"],
+        "props": ["status", "metrics"],
+        "peerDeps": [],
+        "loc": 80
+      },
+      "TeamPage.tsx": {
+        "exports": ["TeamPage"],
+        "props": ["members"],
+        "peerDeps": [],
+        "loc": 100
+      },
+      "TestPage.tsx": {
+        "exports": ["TestPage"],
+        "props": [],
+        "peerDeps": ["lucide-react"],
+        "loc": 80
+      },
+      "TrainingManagement.tsx": {
+        "exports": ["TrainingManagement"],
+        "props": ["models", "datasets", "onStartTraining"],
+        "peerDeps": [],
+        "loc": 150
+      },
+      "UltimatePersianDashboard.tsx": {
+        "exports": ["UltimatePersianDashboard"],
+        "props": [],
+        "peerDeps": ["framer-motion", "chart.js"],
+        "loc": 300
+      }
+    }
+  },
+  "summary": {
+    "totalComponents": 45,
+    "totalLOC": 4500,
+    "peerDependencies": {
+      "framer-motion": 15,
+      "lucide-react": 20,
+      "chart.js": 8
+    },
+    "exportPatterns": {
+      "default": 8,
+      "named": 37
+    }
+  }
+}

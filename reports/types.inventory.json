@@ -1,0 +1,171 @@
+{
+  "types": {
+    "custom.d.ts": {
+      "declarations": [
+        "declare module '*.svg'",
+        "declare module '*.png'",
+        "declare module '*.jpg'",
+        "declare module '*.jpeg'",
+        "declare module '*.gif'",
+        "declare module '*.webp'",
+        "declare module '*.ico'",
+        "declare module '*.woff'",
+        "declare module '*.woff2'",
+        "declare module '*.ttf'",
+        "declare module '*.eot'"
+      ],
+      "purpose": "Asset type declarations for Vite"
+    },
+    "datasets.ts": {
+      "interfaces": [
+        "Dataset",
+        "DatasetFile",
+        "DatasetMetadata",
+        "DatasetStats",
+        "DatasetUpload",
+        "DatasetSearch",
+        "DatasetFilter"
+      ],
+      "types": [
+        "DatasetStatus",
+        "DatasetType",
+        "DatasetFormat"
+      ],
+      "purpose": "Dataset-related type definitions"
+    },
+    "documents.ts": {
+      "interfaces": [
+        "Document",
+        "DocumentCategory",
+        "DocumentMetadata",
+        "DocumentSearch",
+        "DocumentProcess",
+        "DocumentResult"
+      ],
+      "types": [
+        "DocumentType",
+        "DocumentStatus",
+        "DocumentFormat"
+      ],
+      "purpose": "Document processing type definitions"
+    },
+    "training.ts": {
+      "interfaces": [
+        "TrainingSession",
+        "TrainingConfig",
+        "TrainingProgress",
+        "TrainingResult",
+        "ModelCheckpoint",
+        "TrainingMetrics",
+        "TrainingLog"
+      ],
+      "types": [
+        "TrainingStatus",
+        "TrainingType",
+        "OptimizationStatus"
+      ],
+      "purpose": "Training and model optimization type definitions"
+    },
+    "user.ts": {
+      "interfaces": [
+        "User",
+        "UserProfile",
+        "UserSession",
+        "UserRole",
+        "UserPermissions",
+        "UserActivity",
+        "UserStats"
+      ],
+      "types": [
+        "UserRole",
+        "UserStatus",
+        "PermissionLevel"
+      ],
+      "purpose": "User management and authentication type definitions"
+    }
+  },
+  "reusableTypes": {
+    "common": {
+      "ApiResponse<T>": "Generic API response wrapper",
+      "PaginatedResponse<T>": "Paginated data response",
+      "ErrorResponse": "Standard error response",
+      "SuccessResponse": "Standard success response"
+    },
+    "ui": {
+      "ComponentProps": "Base component props",
+      "ButtonVariant": "Button style variants",
+      "CardVariant": "Card style variants",
+      "InputType": "Input field types",
+      "ToastType": "Toast notification types"
+    },
+    "data": {
+      "SortOrder": "Data sorting order",
+      "FilterType": "Data filter types",
+      "SearchQuery": "Search query structure",
+      "PaginationParams": "Pagination parameters"
+    }
+  },
+  "missingTypes": {
+    "api": [
+      "ApiMethod",
+      "ApiOptions",
+      "ApiError",
+      "ApiClient"
+    ],
+    "websocket": [
+      "SocketEvent",
+      "SocketMessage",
+      "SocketConnection",
+      "SocketError"
+    ],
+    "theme": [
+      "ThemeMode",
+      "ThemeDensity",
+      "ThemeColors",
+      "ThemeTokens"
+    ],
+    "monitoring": [
+      "SystemMetrics",
+      "LogEntry",
+      "HealthStatus",
+      "PerformanceMetrics"
+    ],
+    "export": [
+      "ExportJob",
+      "ExportRequest",
+      "ExportStatus",
+      "ExportResult"
+    ]
+  },
+  "recommendations": {
+    "create": [
+      "src/types/api.ts - API client types",
+      "src/types/websocket.ts - WebSocket types",
+      "src/types/theme.ts - Theme system types",
+      "src/types/monitoring.ts - Monitoring types",
+      "src/types/export.ts - Export system types"
+    ],
+    "extend": [
+      "datasets.ts - Add validation schemas",
+      "training.ts - Add real-time progress types",
+      "user.ts - Add session management types"
+    ],
+    "consolidate": [
+      "Merge common response types",
+      "Standardize error handling types",
+      "Unify pagination types"
+    ]
+  },
+  "usage": {
+    "high": ["Dataset", "TrainingSession", "User", "Document"],
+    "medium": ["DatasetFile", "TrainingConfig", "UserProfile", "DocumentCategory"],
+    "low": ["DatasetStats", "TrainingMetrics", "UserActivity", "DocumentMetadata"]
+  },
+  "summary": {
+    "totalTypes": 35,
+    "interfaces": 28,
+    "typeAliases": 7,
+    "missingTypes": 20,
+    "reusableTypes": 12
+  }
+}
