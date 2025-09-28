@@ -73,7 +73,7 @@ export class TensorFlowCompatibilityLayer {
     this.compatibilityReport = {
       webgl: Number(await tf.ENV.getAsync('WEBGL_VERSION')) || 0,
       wasm: typeof WebAssembly === 'object',
-      simd: Boolean(await tf.ENV.getAsync('WASM_HAS_SIMD_SUPPORT')) || false,
+      simd: false, // Disable WASM SIMD detection to prevent errors
       memory: Number(await tf.ENV.getAsync('WEBGL_MAX_TEXTURE_SIZE')) || 0,
       device: isMobile ? 'mobile' : 'desktop',
       browser,
@@ -114,9 +114,10 @@ export class TensorFlowCompatibilityLayer {
       tf.ENV.set('WEBGL_VERSION', 1);
     }
 
-    if (wasm) {
-      tf.ENV.set('WASM_HAS_SIMD_SUPPORT', this.compatibilityReport.simd);
-    }
+    // Skip WASM configuration to prevent errors
+    // if (wasm) {
+    //   tf.ENV.set('WASM_HAS_SIMD_SUPPORT', this.compatibilityReport.simd);
+    // }
   }
 
   /**
@@ -227,26 +228,20 @@ export class TensorFlowCompatibilityLayer {
    */
   private getOptimalBackendOrder(): string[] {
     if (!this.compatibilityReport) {
-      return ['webgl', 'wasm', 'cpu'];
+      return ['webgl', 'cpu']; // Remove WASM to prevent errors
     }
 
-    const { device, webgl, wasm } = this.compatibilityReport;
+    const { device, webgl } = this.compatibilityReport;
     
     if (device === 'mobile') {
-      // Mobile: prioritize CPU and WASM for battery life
-      if (wasm) {
-        return ['wasm', 'cpu', 'webgl'];
-      } else {
-        return ['cpu', 'webgl'];
-      }
+      // Mobile: prioritize CPU for battery life, avoid WASM
+      return ['cpu', 'webgl'];
     } else {
-      // Desktop: prioritize WebGL for performance
+      // Desktop: prioritize WebGL for performance, avoid WASM
       if (webgl >= 2) {
-        return ['webgl', 'wasm', 'cpu'];
+        return ['webgl', 'cpu'];
       } else if (webgl === 1) {
-        return ['webgl', 'wasm', 'cpu'];
-      } else if (wasm) {
-        return ['wasm', 'cpu'];
+        return ['webgl', 'cpu'];
       } else {
         return ['cpu'];
       }
