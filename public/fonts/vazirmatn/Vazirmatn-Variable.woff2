@@ -93,13 +93,21 @@
   <meta name="route-pattern" content="/:user_id/:repository/raw/*name(/*path)" data-turbo-transient>
   <meta name="route-controller" content="blob" data-turbo-transient>
   <meta name="route-action" content="raw" data-turbo-transient>
+<<<<<<< HEAD
   <meta name="fetch-nonce" content="v2:f069628a-0029-fca3-8a34-e85c2c774ff2">
+=======
+  <meta name="fetch-nonce" content="v2:815b3446-13f6-ee74-c9a8-f428dc27a69c">
+>>>>>>> cursor/setup-canonical-ci-cd-for-github-pages-25cf
 
     
   <meta name="current-catalog-service-hash" content="f3abb0cc802f3d7b95fc8762b94bdcb13bf39634c40c357301c4aa1d67a256fb">
 
 
+<<<<<<< HEAD
   <meta name="request-id" content="5C29:807E6:1787935:1DCAB67:68D88939" data-turbo-transient="true" /><meta name="html-safe-nonce" content="e5a66141416bd722565a30be7bc67301f65157aa61bd88f2e2047b5f77ec2a44" data-turbo-transient="true" /><meta name="visitor-payload" content="eyJyZWZlcnJlciI6bnVsbCwicmVxdWVzdF9pZCI6IjVDMjk6ODA3RTY6MTc4NzkzNToxRENBQjY3OjY4RDg4OTM5IiwidmlzaXRvcl9pZCI6Ijg1OTg2NDkwMTM2ODMxMjg2MzMiLCJyZWdpb25fZWRnZSI6ImlhZCIsInJlZ2lvbl9yZW5kZXIiOiJpYWQifQ==" data-turbo-transient="true" /><meta name="visitor-hmac" content="821a9d737335584d2c8add580a5e9f4139717a35a55f2bf577bb4c5bf6f1d264" data-turbo-transient="true" />
+=======
+  <meta name="request-id" content="83E9:34DAA4:16C05C5:1CDC5E9:68D88B17" data-turbo-transient="true" /><meta name="html-safe-nonce" content="ca24081dda9d9904605103479dd0156355512c4b994caf19465f25d9af91b632" data-turbo-transient="true" /><meta name="visitor-payload" content="eyJyZWZlcnJlciI6bnVsbCwicmVxdWVzdF9pZCI6IjgzRTk6MzREQUE0OjE2QzA1QzU6MUNEQzVFOTo2OEQ4OEIxNyIsInZpc2l0b3JfaWQiOiI4NDYzMzU3MDE5ODczMTE4OTk5IiwicmVnaW9uX2VkZ2UiOiJpYWQiLCJyZWdpb25fcmVuZGVyIjoiaWFkIn0=" data-turbo-transient="true" /><meta name="visitor-hmac" content="7b9f1185f4cb3057d39517c228ba6b44e3493b671f09be700e8ea4d840f25517" data-turbo-transient="true" />
+>>>>>>> cursor/setup-canonical-ci-cd-for-github-pages-25cf
 
 
     <meta name="hovercard-subject-tag" content="repository:44182075" data-turbo-transient>
@@ -108,7 +116,11 @@
   <meta name="github-keyboard-shortcuts" content="copilot" data-turbo-transient="true" />
   
 
+<<<<<<< HEAD
   <meta name="selected-link" value="/rastikerdar/vazirmatn/raw/master/fonts/webfonts/Vazirmatn-Variable.woff2" data-turbo-transient>
+=======
+  <meta name="selected-link" value="/rastikerdar/vazirmatn/raw/main/fonts/webfonts/Vazirmatn-Variable.woff2" data-turbo-transient>
+>>>>>>> cursor/setup-canonical-ci-cd-for-github-pages-25cf
   <link rel="assets" href="https://github.githubassets.com/">
 
     <meta name="google-site-verification" content="Apib7-x98H0j5cPqHWwSMm6dNU4GmODRoqxLiDzdx9I">
@@ -136,7 +148,11 @@
 
     <link rel="fluid-icon" href="https://github.com/fluidicon.png" title="GitHub">
     <meta property="fb:app_id" content="1401488693436528">
+<<<<<<< HEAD
     <meta name="apple-itunes-app" content="app-id=1477376905, app-argument=https://github.com/rastikerdar/vazirmatn/raw/master/fonts/webfonts/Vazirmatn-Variable.woff2" />
+=======
+    <meta name="apple-itunes-app" content="app-id=1477376905, app-argument=https://github.com/rastikerdar/vazirmatn/raw/main/fonts/webfonts/Vazirmatn-Variable.woff2" />
+>>>>>>> cursor/setup-canonical-ci-cd-for-github-pages-25cf
 
       <meta property="og:url" content="https://github.com">
   <meta property="og:site_name" content="GitHub">
@@ -193,7 +209,11 @@
 
 
 
+<<<<<<< HEAD
       <link rel="canonical" href="https://github.com/rastikerdar/vazirmatn/raw/master/fonts/webfonts/Vazirmatn-Variable.woff2" data-turbo-transient>
+=======
+      <link rel="canonical" href="https://github.com/rastikerdar/vazirmatn/raw/main/fonts/webfonts/Vazirmatn-Variable.woff2" data-turbo-transient>
+>>>>>>> cursor/setup-canonical-ci-cd-for-github-pages-25cf
 
 
     <meta name="turbo-body-classes" content="logged-out env-production page-responsive min-height-full d-flex flex-column">
@@ -287,19 +307,32 @@
 
       <div class="d-flex flex-1 flex-order-2 text-right d-lg-none gap-2 flex-justify-end">
           <a
+<<<<<<< HEAD
             href="/login?return_to=https%3A%2F%2Fgithub.com%2Frastikerdar%2Fvazirmatn%2Fraw%2Fmaster%2Ffonts%2Fwebfonts%2FVazirmatn-Variable.woff2"
             class="HeaderMenu-link HeaderMenu-button d-inline-flex f5 no-underline border color-border-default rounded-2 px-2 py-1 color-fg-inherit js-prevent-focus-on-mobile-nav"
             data-hydro-click="{&quot;event_type&quot;:&quot;authentication.click&quot;,&quot;payload&quot;:{&quot;location_in_page&quot;:&quot;site header menu&quot;,&quot;repository_id&quot;:null,&quot;auth_type&quot;:&quot;SIGN_UP&quot;,&quot;originating_url&quot;:&quot;https://github.com/rastikerdar/vazirmatn/raw/master/fonts/webfonts/Vazirmatn-Variable.woff2&quot;,&quot;user_id&quot;:null}}" data-hydro-click-hmac="23668911f1c1db444f355f3bde402284986afc4bca30f14e6f4020bcc4bad86a"
+=======
+            href="/login?return_to=https%3A%2F%2Fgithub.com%2Frastikerdar%2Fvazirmatn%2Fraw%2Fmain%2Ffonts%2Fwebfonts%2FVazirmatn-Variable.woff2"
+            class="HeaderMenu-link HeaderMenu-button d-inline-flex f5 no-underline border color-border-default rounded-2 px-2 py-1 color-fg-inherit js-prevent-focus-on-mobile-nav"
+            data-hydro-click="{&quot;event_type&quot;:&quot;authentication.click&quot;,&quot;payload&quot;:{&quot;location_in_page&quot;:&quot;site header menu&quot;,&quot;repository_id&quot;:null,&quot;auth_type&quot;:&quot;SIGN_UP&quot;,&quot;originating_url&quot;:&quot;https://github.com/rastikerdar/vazirmatn/raw/main/fonts/webfonts/Vazirmatn-Variable.woff2&quot;,&quot;user_id&quot;:null}}" data-hydro-click-hmac="20d111b2e560274e362e1c6142f3e602a267b59a89c9969a9d022a327b5aa42a"
+>>>>>>> cursor/setup-canonical-ci-cd-for-github-pages-25cf
             data-analytics-event="{&quot;category&quot;:&quot;Marketing nav&quot;,&quot;action&quot;:&quot;click to Sign in&quot;,&quot;label&quot;:&quot;ref_page:Marketing;ref_cta:Sign in;ref_loc:Header&quot;}"
           >
             Sign in
           </a>
               <div class="AppHeader-appearanceSettings">
     <react-partial-anchor>
+<<<<<<< HEAD
       <button data-target="react-partial-anchor.anchor" id="icon-button-bca25f26-6c96-4101-8a74-5b2461043d67" aria-labelledby="tooltip-d9fce9a4-ac5e-4aec-9e09-0b833bf74182" type="button" disabled="disabled" data-view-component="true" class="Button Button--iconOnly Button--invisible Button--medium AppHeader-button HeaderMenu-link border cursor-wait">  <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-sliders Button-visual">
     <path d="M15 2.75a.75.75 0 0 1-.75.75h-4a.75.75 0 0 1 0-1.5h4a.75.75 0 0 1 .75.75Zm-8.5.75v1.25a.75.75 0 0 0 1.5 0v-4a.75.75 0 0 0-1.5 0V2H1.75a.75.75 0 0 0 0 1.5H6.5Zm1.25 5.25a.75.75 0 0 0 0-1.5h-6a.75.75 0 0 0 0 1.5h6ZM15 8a.75.75 0 0 1-.75.75H11.5V10a.75.75 0 1 1-1.5 0V6a.75.75 0 0 1 1.5 0v1.25h2.75A.75.75 0 0 1 15 8Zm-9 5.25v-2a.75.75 0 0 0-1.5 0v1.25H1.75a.75.75 0 0 0 0 1.5H4.5v1.25a.75.75 0 0 0 1.5 0v-2Zm9 0a.75.75 0 0 1-.75.75h-6a.75.75 0 0 1 0-1.5h6a.75.75 0 0 1 .75.75Z"></path>
 </svg>
 </button><tool-tip id="tooltip-d9fce9a4-ac5e-4aec-9e09-0b833bf74182" for="icon-button-bca25f26-6c96-4101-8a74-5b2461043d67" popover="manual" data-direction="s" data-type="label" data-view-component="true" class="sr-only position-absolute">Appearance settings</tool-tip>
+=======
+      <button data-target="react-partial-anchor.anchor" id="icon-button-86cb65c8-c03d-4aaa-a115-3a6a60e65bd7" aria-labelledby="tooltip-b4478236-9439-4981-97ae-2d8347f41e91" type="button" disabled="disabled" data-view-component="true" class="Button Button--iconOnly Button--invisible Button--medium AppHeader-button HeaderMenu-link border cursor-wait">  <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-sliders Button-visual">
+    <path d="M15 2.75a.75.75 0 0 1-.75.75h-4a.75.75 0 0 1 0-1.5h4a.75.75 0 0 1 .75.75Zm-8.5.75v1.25a.75.75 0 0 0 1.5 0v-4a.75.75 0 0 0-1.5 0V2H1.75a.75.75 0 0 0 0 1.5H6.5Zm1.25 5.25a.75.75 0 0 0 0-1.5h-6a.75.75 0 0 0 0 1.5h6ZM15 8a.75.75 0 0 1-.75.75H11.5V10a.75.75 0 1 1-1.5 0V6a.75.75 0 0 1 1.5 0v1.25h2.75A.75.75 0 0 1 15 8Zm-9 5.25v-2a.75.75 0 0 0-1.5 0v1.25H1.75a.75.75 0 0 0 0 1.5H4.5v1.25a.75.75 0 0 0 1.5 0v-2Zm9 0a.75.75 0 0 1-.75.75h-6a.75.75 0 0 1 0-1.5h6a.75.75 0 0 1 .75.75Z"></path>
+</svg>
+</button><tool-tip id="tooltip-b4478236-9439-4981-97ae-2d8347f41e91" for="icon-button-86cb65c8-c03d-4aaa-a115-3a6a60e65bd7" popover="manual" data-direction="s" data-type="label" data-view-component="true" class="sr-only position-absolute">Appearance settings</tool-tip>
+>>>>>>> cursor/setup-canonical-ci-cd-for-github-pages-25cf
 
       <template data-target="react-partial-anchor.template">
         <link crossorigin="anonymous" media="all" rel="stylesheet" href="https://github.githubassets.com/assets/primer-react.ad9424369aeb6fec9e91.module.css" />
@@ -1062,7 +1095,11 @@
                 
 
 
+<<<<<<< HEAD
 <qbsearch-input class="search-input" data-scope="owner:rastikerdar" data-custom-scopes-path="/search/custom_scopes" data-delete-custom-scopes-csrf="49DpPIt_SG33bnAidbINpfp9Drnj5RY93UO5mXHoXsclsMw-cTL38j9FUSRYwVoD2U9sRjoJifUTJ-_RGuCW0g" data-max-custom-scopes="10" data-header-redesign-enabled="false" data-initial-value="" data-blackbird-suggestions-path="/search/suggestions" data-jump-to-suggestions-path="/_graphql/GetSuggestedNavigationDestinations" data-current-repository="" data-current-org="" data-current-owner="" data-logged-in="false" data-copilot-chat-enabled="false" data-nl-search-enabled="false" data-retain-scroll-position="true">
+=======
+<qbsearch-input class="search-input" data-scope="owner:rastikerdar" data-custom-scopes-path="/search/custom_scopes" data-delete-custom-scopes-csrf="1W7nEBFeYdUQODED0Mu4bJoPi48zGvP5sylKPctcJw5VYi9N9-ssOqUkTSrZtDj1vKJaEZ4gFwaNKS9TSp2MVg" data-max-custom-scopes="10" data-header-redesign-enabled="false" data-initial-value="" data-blackbird-suggestions-path="/search/suggestions" data-jump-to-suggestions-path="/_graphql/GetSuggestedNavigationDestinations" data-current-repository="" data-current-org="" data-current-owner="" data-logged-in="false" data-copilot-chat-enabled="false" data-nl-search-enabled="false" data-retain-scroll-position="true">
+>>>>>>> cursor/setup-canonical-ci-cd-for-github-pages-25cf
   <div
     class="search-input-container search-with-dialog position-relative d-flex flex-row flex-items-center mr-4 rounded"
     data-action="click:qbsearch-input#searchInputContainerClicked"
@@ -1126,7 +1163,11 @@
           ></div>
           <div class="QueryBuilder-InputWrapper">
             <div aria-hidden="true" class="QueryBuilder-Sizer" data-target="query-builder.sizer"></div>
+<<<<<<< HEAD
             <input id="query-builder-test" name="query-builder-test" value="" autocomplete="off" type="text" role="combobox" spellcheck="false" aria-expanded="false" aria-describedby="validation-d028614e-8f75-4c3c-b6fb-1f9e5a790b63" data-target="query-builder.input" data-action="
+=======
+            <input id="query-builder-test" name="query-builder-test" value="" autocomplete="off" type="text" role="combobox" spellcheck="false" aria-expanded="false" aria-describedby="validation-e45d4803-eadd-49cd-a39b-6195a085a735" data-target="query-builder.input" data-action="
+>>>>>>> cursor/setup-canonical-ci-cd-for-github-pages-25cf
           input:query-builder#inputChange
           blur:query-builder#inputBlur
           keydown:query-builder#inputKeydown
@@ -1364,7 +1405,11 @@
                   tabindex="-1"
                 ></ul>
         </div>
+<<<<<<< HEAD
       <div class="FormControl-inlineValidation" id="validation-d028614e-8f75-4c3c-b6fb-1f9e5a790b63" hidden="hidden">
+=======
+      <div class="FormControl-inlineValidation" id="validation-e45d4803-eadd-49cd-a39b-6195a085a735" hidden="hidden">
+>>>>>>> cursor/setup-canonical-ci-cd-for-github-pages-25cf
         <span class="FormControl-inlineValidation--visual">
           <svg aria-hidden="true" height="12" viewBox="0 0 12 12" version="1.1" width="12" data-view-component="true" class="octicon octicon-alert-fill">
     <path d="M4.855.708c.5-.896 1.79-.896 2.29 0l4.675 8.351a1.312 1.312 0 0 1-1.146 1.954H1.33A1.313 1.313 0 0 1 .183 9.058ZM7 7V3H5v4Zm-1 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"></path>
@@ -1405,7 +1450,11 @@
   
 </div>
       <scrollable-region data-labelled-by="feedback-dialog-title">
+<<<<<<< HEAD
         <div data-view-component="true" class="Overlay-body">        <!-- '"` --><!-- </textarea></xmp> --></option></form><form id="code-search-feedback-form" data-turbo="false" action="/search/feedback" accept-charset="UTF-8" method="post"><input type="hidden" name="authenticity_token" value="e8hUE890myhqn09gpZ_zPNJNiSn7-4o5zgGeG7dOUXWuepr_isejFEqGwsG3kcol40_-zwE8JgORp-3e7HTTIw" />
+=======
+        <div data-view-component="true" class="Overlay-body">        <!-- '"` --><!-- </textarea></xmp> --></option></form><form id="code-search-feedback-form" data-turbo="false" action="/search/feedback" accept-charset="UTF-8" method="post"><input type="hidden" name="authenticity_token" value="G__wE4t4B78N0lyavkCh4uLDChYnlHx7RDwMW62rEU61mpWC05huqPsWEZ20jpbPPKNOfFVRmANUKeD95qp7EQ" />
+>>>>>>> cursor/setup-canonical-ci-cd-for-github-pages-25cf
           <p>We read every piece of feedback, and take your input very seriously.</p>
           <textarea name="feedback" class="form-control width-full mb-2" style="height: 120px" id="feedback"></textarea>
           <input name="include_email" id="include_email" aria-label="Include my email address so I can be contacted" class="form-control mr-2" type="checkbox">
@@ -1443,7 +1492,11 @@
         <div data-view-component="true" class="Overlay-body">        <div data-target="custom-scopes.customScopesModalDialogFlash"></div>
 
         <div hidden class="create-custom-scope-form" data-target="custom-scopes.createCustomScopeForm">
+<<<<<<< HEAD
         <!-- '"` --><!-- </textarea></xmp> --></option></form><form id="custom-scopes-dialog-form" data-turbo="false" action="/search/custom_scopes" accept-charset="UTF-8" method="post"><input type="hidden" name="authenticity_token" value="KBnepBMtafVu1rvWNBTeCUkSHumAHwlXhJBszF6H65bJEUddm-xZAAjE9PnrH0xwbvE-ajxDLqo3se4jw3pSog" />
+=======
+        <!-- '"` --><!-- </textarea></xmp> --></option></form><form id="custom-scopes-dialog-form" data-turbo="false" action="/search/custom_scopes" accept-charset="UTF-8" method="post"><input type="hidden" name="authenticity_token" value="6S2w6-mH72CSRHR4EZx62X1mplhtijxc7JJA0WbEV2w3Yl1XLvdfEZ6kvTGoh_Pc9ZbEyDevjdEgnxwiTSafVQ" />
+>>>>>>> cursor/setup-canonical-ci-cd-for-github-pages-25cf
           <div data-target="custom-scopes.customScopesModalDialogFlash"></div>
 
           <input type="hidden" id="custom_scope_id" name="custom_scope_id" data-target="custom-scopes.customScopesIdField">
@@ -1461,7 +1514,11 @@
                 placeholder="github-ruby"
                 required
                 maxlength="50">
+<<<<<<< HEAD
               <input type="hidden" value="GTPxM3vnoVW3_r0g-I3aSjcLAhDeZjZIVOaDBImgsWhZ996yvvLVKvFeQwkufC1tLpWe43V0LeeBsiWtcKs5_w" data-csrf="true" />
+=======
+              <input type="hidden" value="hWiKO1D6wEIufGjuRPDFr5M-jjS1GmUX_3c_3NYZYSZYTb0MBUwPF-FVgsZJRVfPJLSlO-2s1AwXSajc17zKsQ" data-csrf="true" />
+>>>>>>> cursor/setup-canonical-ci-cd-for-github-pages-25cf
             </auto-check>
           </div>
 
@@ -1503,10 +1560,17 @@
 
             <div class="position-relative HeaderMenu-link-wrap d-lg-inline-block">
               <a
+<<<<<<< HEAD
                 href="/login?return_to=https%3A%2F%2Fgithub.com%2Frastikerdar%2Fvazirmatn%2Fraw%2Fmaster%2Ffonts%2Fwebfonts%2FVazirmatn-Variable.woff2"
                 class="HeaderMenu-link HeaderMenu-link--sign-in HeaderMenu-button flex-shrink-0 no-underline d-none d-lg-inline-flex border border-lg-0 rounded px-2 py-1"
                 style="margin-left: 12px;"
                 data-hydro-click="{&quot;event_type&quot;:&quot;authentication.click&quot;,&quot;payload&quot;:{&quot;location_in_page&quot;:&quot;site header menu&quot;,&quot;repository_id&quot;:null,&quot;auth_type&quot;:&quot;SIGN_UP&quot;,&quot;originating_url&quot;:&quot;https://github.com/rastikerdar/vazirmatn/raw/master/fonts/webfonts/Vazirmatn-Variable.woff2&quot;,&quot;user_id&quot;:null}}" data-hydro-click-hmac="23668911f1c1db444f355f3bde402284986afc4bca30f14e6f4020bcc4bad86a"
+=======
+                href="/login?return_to=https%3A%2F%2Fgithub.com%2Frastikerdar%2Fvazirmatn%2Fraw%2Fmain%2Ffonts%2Fwebfonts%2FVazirmatn-Variable.woff2"
+                class="HeaderMenu-link HeaderMenu-link--sign-in HeaderMenu-button flex-shrink-0 no-underline d-none d-lg-inline-flex border border-lg-0 rounded px-2 py-1"
+                style="margin-left: 12px;"
+                data-hydro-click="{&quot;event_type&quot;:&quot;authentication.click&quot;,&quot;payload&quot;:{&quot;location_in_page&quot;:&quot;site header menu&quot;,&quot;repository_id&quot;:null,&quot;auth_type&quot;:&quot;SIGN_UP&quot;,&quot;originating_url&quot;:&quot;https://github.com/rastikerdar/vazirmatn/raw/main/fonts/webfonts/Vazirmatn-Variable.woff2&quot;,&quot;user_id&quot;:null}}" data-hydro-click-hmac="20d111b2e560274e362e1c6142f3e602a267b59a89c9969a9d022a327b5aa42a"
+>>>>>>> cursor/setup-canonical-ci-cd-for-github-pages-25cf
                 data-analytics-event="{&quot;category&quot;:&quot;Marketing nav&quot;,&quot;action&quot;:&quot;click to go to homepage&quot;,&quot;label&quot;:&quot;ref_page:Marketing;ref_cta:Sign in;ref_loc:Header&quot;}"
               >
                 Sign in
@@ -1516,7 +1580,11 @@
     <h4 data-view-component="true" class="color-fg-default mb-2">                    Sign in to GitHub
 </h4>
                         
+<<<<<<< HEAD
 <!-- '"` --><!-- </textarea></xmp> --></option></form><form data-turbo="false" action="/session" accept-charset="UTF-8" method="post"><input type="hidden" name="authenticity_token" value="tnsN2HgsVAqDDR_1WtvffZeeoTuo3ybQd1fngGtqKy9_bdCzFi8z4APn60fqstjWPk8hi15GP3UOxuOq9g6dhg" />  <input type="hidden" name="add_account" id="add_account" autocomplete="off" class="form-control" />
+=======
+<!-- '"` --><!-- </textarea></xmp> --></option></form><form data-turbo="false" action="/session" accept-charset="UTF-8" method="post"><input type="hidden" name="authenticity_token" value="ylZy60CCi6jA7_AoeGMg_P8sF5znQHjPqtA0v_uwXtAQYXa0PjuWkVQE1dCSPoCX53acLm4IDkpm9rIB32NYGw" />  <input type="hidden" name="add_account" id="add_account" autocomplete="off" class="form-control" />
+>>>>>>> cursor/setup-canonical-ci-cd-for-github-pages-25cf
 
     <label for="login_field">
       Username or email address
@@ -1534,17 +1602,29 @@
 <input type="hidden" class="js-support" name="javascript-support" value="unknown">
 <input type="hidden" class="js-webauthn-support" name="webauthn-support" value="unknown">
 <input type="hidden" class="js-webauthn-iuvpaa-support" name="webauthn-iuvpaa-support" value="unknown">
+<<<<<<< HEAD
 <input type="hidden" name="return_to" id="return_to" value="https://github.com/rastikerdar/vazirmatn/raw/master/fonts/webfonts/Vazirmatn-Variable.woff2" autocomplete="off" class="form-control" />
 <input type="hidden" name="allow_signup" id="allow_signup" autocomplete="off" class="form-control" />
 <input type="hidden" name="client_id" id="client_id" autocomplete="off" class="form-control" />
 <input type="hidden" name="integration" id="integration" autocomplete="off" class="form-control" />
 <input type="text" name="required_field_7c82" hidden="hidden" class="form-control" /><input type="hidden" name="timestamp" value="1759021369806" autocomplete="off" class="form-control" /><input type="hidden" name="timestamp_secret" value="2a926f703fc3b324778e49e036fe87945249001de1582349546ca41f1de6173e" autocomplete="off" class="form-control" />
+=======
+<input type="hidden" name="return_to" id="return_to" value="https://github.com/rastikerdar/vazirmatn/raw/main/fonts/webfonts/Vazirmatn-Variable.woff2" autocomplete="off" class="form-control" />
+<input type="hidden" name="allow_signup" id="allow_signup" autocomplete="off" class="form-control" />
+<input type="hidden" name="client_id" id="client_id" autocomplete="off" class="form-control" />
+<input type="hidden" name="integration" id="integration" autocomplete="off" class="form-control" />
+<input type="text" name="required_field_bffb" hidden="hidden" class="form-control" /><input type="hidden" name="timestamp" value="1759021847930" autocomplete="off" class="form-control" /><input type="hidden" name="timestamp_secret" value="bee032aaff6ae4ae02cb666d7a0f1415df2d55333e8d0e5e11b392b64d203b41" autocomplete="off" class="form-control" />
+>>>>>>> cursor/setup-canonical-ci-cd-for-github-pages-25cf
 
     <input type="submit" name="commit" value="Sign in" class="btn btn-primary btn-block js-sign-in-button" data-disable-with="Signing in…" data-signin-label="Sign in" data-sso-label="Sign in with your identity provider" development="false" disable-emu-sso="false" />
   </div>
 </form>  <webauthn-status class="js-webauthn-login-emu-control">
         <div data-target="webauthn-status.partial" class="d-flex flex-justify-between flex-column mt-3 mb-0" hidden>
+<<<<<<< HEAD
           <a href="/login?return_to=https%3A%2F%2Fgithub.com%2Frastikerdar%2Fvazirmatn%2Fraw%2Fmaster%2Ffonts%2Fwebfonts%2FVazirmatn-Variable.woff2" data-analytics-event="{&quot;category&quot;:&quot;passkey_404_login&quot;,&quot;action&quot;:&quot;clicked&quot;,&quot;label&quot;:null}" data-view-component="true" class="Button--link Button--medium Button">  <span class="Button-content">
+=======
+          <a href="/login?return_to=https%3A%2F%2Fgithub.com%2Frastikerdar%2Fvazirmatn%2Fraw%2Fmain%2Ffonts%2Fwebfonts%2FVazirmatn-Variable.woff2" data-analytics-event="{&quot;category&quot;:&quot;passkey_404_login&quot;,&quot;action&quot;:&quot;clicked&quot;,&quot;label&quot;:null}" data-view-component="true" class="Button--link Button--medium Button">  <span class="Button-content">
+>>>>>>> cursor/setup-canonical-ci-cd-for-github-pages-25cf
     <span class="Button-label">or continue with other methods</span>
   </span>
 </a>
@@ -1554,20 +1634,34 @@
 
 </div></div>            </div>
 
+<<<<<<< HEAD
               <a href="/signup?ref_cta=Sign+up&amp;ref_loc=header+logged+out&amp;ref_page=%2Frastikerdar%2Fvazirmatn%2Fraw%2Fmaster%2Ffonts%2Fwebfonts%2FVazirmatn-Variable.woff2&amp;source=header"
                 class="HeaderMenu-link HeaderMenu-link--sign-up HeaderMenu-button flex-shrink-0 d-flex d-lg-inline-flex no-underline border color-border-default rounded px-2 py-1"
                 data-hydro-click="{&quot;event_type&quot;:&quot;authentication.click&quot;,&quot;payload&quot;:{&quot;location_in_page&quot;:&quot;site header menu&quot;,&quot;repository_id&quot;:null,&quot;auth_type&quot;:&quot;SIGN_UP&quot;,&quot;originating_url&quot;:&quot;https://github.com/rastikerdar/vazirmatn/raw/master/fonts/webfonts/Vazirmatn-Variable.woff2&quot;,&quot;user_id&quot;:null}}" data-hydro-click-hmac="23668911f1c1db444f355f3bde402284986afc4bca30f14e6f4020bcc4bad86a"
                 data-analytics-event="{&quot;category&quot;:&quot;Sign up&quot;,&quot;action&quot;:&quot;click to sign up for account&quot;,&quot;label&quot;:&quot;ref_page:/rastikerdar/vazirmatn/raw/master/fonts/webfonts/Vazirmatn-Variable.woff2;ref_cta:Sign up;ref_loc:header logged out&quot;}"
+=======
+              <a href="/signup?ref_cta=Sign+up&amp;ref_loc=header+logged+out&amp;ref_page=%2Frastikerdar%2Fvazirmatn%2Fraw%2Fmain%2Ffonts%2Fwebfonts%2FVazirmatn-Variable.woff2&amp;source=header"
+                class="HeaderMenu-link HeaderMenu-link--sign-up HeaderMenu-button flex-shrink-0 d-flex d-lg-inline-flex no-underline border color-border-default rounded px-2 py-1"
+                data-hydro-click="{&quot;event_type&quot;:&quot;authentication.click&quot;,&quot;payload&quot;:{&quot;location_in_page&quot;:&quot;site header menu&quot;,&quot;repository_id&quot;:null,&quot;auth_type&quot;:&quot;SIGN_UP&quot;,&quot;originating_url&quot;:&quot;https://github.com/rastikerdar/vazirmatn/raw/main/fonts/webfonts/Vazirmatn-Variable.woff2&quot;,&quot;user_id&quot;:null}}" data-hydro-click-hmac="20d111b2e560274e362e1c6142f3e602a267b59a89c9969a9d022a327b5aa42a"
+                data-analytics-event="{&quot;category&quot;:&quot;Sign up&quot;,&quot;action&quot;:&quot;click to sign up for account&quot;,&quot;label&quot;:&quot;ref_page:/rastikerdar/vazirmatn/raw/main/fonts/webfonts/Vazirmatn-Variable.woff2;ref_cta:Sign up;ref_loc:header logged out&quot;}"
+>>>>>>> cursor/setup-canonical-ci-cd-for-github-pages-25cf
               >
                 Sign up
               </a>
 
                 <div class="AppHeader-appearanceSettings">
     <react-partial-anchor>
+<<<<<<< HEAD
       <button data-target="react-partial-anchor.anchor" id="icon-button-ec05611f-73f4-4561-9e35-edc4f3837f3f" aria-labelledby="tooltip-96e11825-d75f-44ff-b749-a932dc4a0727" type="button" disabled="disabled" data-view-component="true" class="Button Button--iconOnly Button--invisible Button--medium AppHeader-button HeaderMenu-link border cursor-wait">  <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-sliders Button-visual">
     <path d="M15 2.75a.75.75 0 0 1-.75.75h-4a.75.75 0 0 1 0-1.5h4a.75.75 0 0 1 .75.75Zm-8.5.75v1.25a.75.75 0 0 0 1.5 0v-4a.75.75 0 0 0-1.5 0V2H1.75a.75.75 0 0 0 0 1.5H6.5Zm1.25 5.25a.75.75 0 0 0 0-1.5h-6a.75.75 0 0 0 0 1.5h6ZM15 8a.75.75 0 0 1-.75.75H11.5V10a.75.75 0 1 1-1.5 0V6a.75.75 0 0 1 1.5 0v1.25h2.75A.75.75 0 0 1 15 8Zm-9 5.25v-2a.75.75 0 0 0-1.5 0v1.25H1.75a.75.75 0 0 0 0 1.5H4.5v1.25a.75.75 0 0 0 1.5 0v-2Zm9 0a.75.75 0 0 1-.75.75h-6a.75.75 0 0 1 0-1.5h6a.75.75 0 0 1 .75.75Z"></path>
 </svg>
 </button><tool-tip id="tooltip-96e11825-d75f-44ff-b749-a932dc4a0727" for="icon-button-ec05611f-73f4-4561-9e35-edc4f3837f3f" popover="manual" data-direction="s" data-type="label" data-view-component="true" class="sr-only position-absolute">Appearance settings</tool-tip>
+=======
+      <button data-target="react-partial-anchor.anchor" id="icon-button-a9ce82b1-caa4-40d5-95d7-e7911ed7784b" aria-labelledby="tooltip-de33c6b4-eda6-4f51-a713-91bae4fc456c" type="button" disabled="disabled" data-view-component="true" class="Button Button--iconOnly Button--invisible Button--medium AppHeader-button HeaderMenu-link border cursor-wait">  <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-sliders Button-visual">
+    <path d="M15 2.75a.75.75 0 0 1-.75.75h-4a.75.75 0 0 1 0-1.5h4a.75.75 0 0 1 .75.75Zm-8.5.75v1.25a.75.75 0 0 0 1.5 0v-4a.75.75 0 0 0-1.5 0V2H1.75a.75.75 0 0 0 0 1.5H6.5Zm1.25 5.25a.75.75 0 0 0 0-1.5h-6a.75.75 0 0 0 0 1.5h6ZM15 8a.75.75 0 0 1-.75.75H11.5V10a.75.75 0 1 1-1.5 0V6a.75.75 0 0 1 1.5 0v1.25h2.75A.75.75 0 0 1 15 8Zm-9 5.25v-2a.75.75 0 0 0-1.5 0v1.25H1.75a.75.75 0 0 0 0 1.5H4.5v1.25a.75.75 0 0 0 1.5 0v-2Zm9 0a.75.75 0 0 1-.75.75h-6a.75.75 0 0 1 0-1.5h6a.75.75 0 0 1 .75.75Z"></path>
+</svg>
+</button><tool-tip id="tooltip-de33c6b4-eda6-4f51-a713-91bae4fc456c" for="icon-button-a9ce82b1-caa4-40d5-95d7-e7911ed7784b" popover="manual" data-direction="s" data-type="label" data-view-component="true" class="sr-only position-absolute">Appearance settings</tool-tip>
+>>>>>>> cursor/setup-canonical-ci-cd-for-github-pages-25cf
 
       <template data-target="react-partial-anchor.template">
         <link crossorigin="anonymous" media="all" rel="stylesheet" href="https://github.githubassets.com/assets/primer-react.ad9424369aeb6fec9e91.module.css" />
@@ -1605,10 +1699,17 @@
         <span class="js-stale-session-flash-signed-out" hidden>You signed out in another tab or window. <a class="Link--inTextBlock" href="">Reload</a> to refresh your session.</span>
         <span class="js-stale-session-flash-switched" hidden>You switched accounts on another tab or window. <a class="Link--inTextBlock" href="">Reload</a> to refresh your session.</span>
 
+<<<<<<< HEAD
     <button id="icon-button-583ba750-f244-471d-8bdb-11b6469d949d" aria-labelledby="tooltip-8a81374a-e797-4c07-a768-0e31a8510d58" type="button" data-view-component="true" class="Button Button--iconOnly Button--invisible Button--medium flash-close js-flash-close">  <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-x Button-visual">
     <path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"></path>
 </svg>
 </button><tool-tip id="tooltip-8a81374a-e797-4c07-a768-0e31a8510d58" for="icon-button-583ba750-f244-471d-8bdb-11b6469d949d" popover="manual" data-direction="s" data-type="label" data-view-component="true" class="sr-only position-absolute">Dismiss alert</tool-tip>
+=======
+    <button id="icon-button-562f6564-d9c4-4cbd-85a7-e007eb400e78" aria-labelledby="tooltip-ef08a33b-dfbf-4eda-93e4-6fd42cf739e0" type="button" data-view-component="true" class="Button Button--iconOnly Button--invisible Button--medium flash-close js-flash-close">  <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-x Button-visual">
+    <path d="M3.72 3.72a.75.75 0 0 1 1.06 0L8 6.94l3.22-3.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L9.06 8l3.22 3.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L8 9.06l-3.22 3.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L6.94 8 3.72 4.78a.75.75 0 0 1 0-1.06Z"></path>
+</svg>
+</button><tool-tip id="tooltip-ef08a33b-dfbf-4eda-93e4-6fd42cf739e0" for="icon-button-562f6564-d9c4-4cbd-85a7-e007eb400e78" popover="manual" data-direction="s" data-type="label" data-view-component="true" class="sr-only position-absolute">Dismiss alert</tool-tip>
+>>>>>>> cursor/setup-canonical-ci-cd-for-github-pages-25cf
 
 
   

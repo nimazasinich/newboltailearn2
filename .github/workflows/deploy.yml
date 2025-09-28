@@ -1,12 +1,19 @@
-name: CI
+name: Deploy GH Pages
 
 on:
   push:
-    branches: [ main, develop ]
-  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gh-pages
+  cancel-in-progress: true
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,8 +33,9 @@ jobs:
       - name: Postbuild (SPA files)
         run: npm run postbuild
 
-      - name: Upload dist artifact
-        uses: actions/upload-artifact@v4
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          name: dist
-          path: dist
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
