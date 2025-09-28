@@ -1,0 +1,36 @@
+name: Build & Test
+on:
+  push: { branches: [main, develop] }
+  pull_request: { branches: [main] }
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [18.x, 20.x]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: ${{ matrix.node }}, cache: npm }
+      - run: npm ci
+      - run: npm run type-check
+      - run: npm run build
+      - run: npm run postbuild
+      - run: npm run server:build
+      - name: Verify Pages files
+        shell: bash
+        run: |
+          test -f dist/404.html || (echo "❌ 404.html missing" && exit 1)
+          test -f dist/.nojekyll || (echo "❌ .nojekyll missing" && exit 1)
+          echo "✅ GitHub Pages files verified"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.os }}-node${{ matrix.node }}
+          path: |
+            dist/
+            server-dist/
