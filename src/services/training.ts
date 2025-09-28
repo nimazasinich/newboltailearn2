@@ -14,6 +14,20 @@ export interface TrainingConfig {
 
 export type ModelStatus = 'idle' | 'training' | 'paused' | 'completed' | 'failed' | 'error';
 
+export interface DatasetInfo {
+  id: string;
+  name: string;
+  description?: string;
+  size?: number;
+  size_mb?: number;
+  samples?: number;
+  status?: string;
+  type?: string;
+  source?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
 export interface ModelInfo {
   id: string;
   name: string;

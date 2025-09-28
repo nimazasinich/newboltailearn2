@@ -169,7 +169,7 @@ jobs:
           ENV PORT=${PORT:-8000}
           EXPOSE 8000
           USER node
-          CMD ["node", "server.js"]
+          CMD ["node", "server/main.js"]
           EOF
             echo "✅ Created Dockerfile"
           fi

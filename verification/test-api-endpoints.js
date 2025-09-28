@@ -119,7 +119,7 @@ async function runAPITests() {
     
     // Test login
     let authToken = null;
-    if (registerResult.passed || true) { // Try login anyway
+    if (registerResult.passed) { // Try login if registration passed
         const loginResult = await testEndpoint('POST', '/api/auth/login', {
             data: {
                 email: testUser.email,

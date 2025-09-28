@@ -132,18 +132,31 @@ async function initializeEnterpriseComponents() {
     return components;
 }
 
-try {
-    await import('./database/init.js');
-    console.log('✅ Database initialization complete');
-} catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    console.log('⚠️ Database initialization skipped:', message);
-}
+(async () => {
+    try {
+        await import('./database/init.js');
+        console.log('✅ Database initialization complete');
+    } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        console.log('⚠️ Database initialization skipped:', message);
+    }
+})();
 
 const app = express();
 let db = null;
 
-const { dbPool, apiMonitor, cacheManager, securityManager } = await initializeEnterpriseComponents();
+let dbPool, apiMonitor, cacheManager, securityManager;
+(async () => {
+    try {
+        const components = await initializeEnterpriseComponents();
+        dbPool = components.dbPool;
+        apiMonitor = components.apiMonitor;
+        cacheManager = components.cacheManager;
+        securityManager = components.securityManager;
+    } catch (error) {
+        console.log('⚠️ Enterprise components initialization skipped:', error.message);
+    }
+})();
 
 const healthResponse = () => ({
     status: 'ok',

@@ -169,13 +169,11 @@ export default function EnhancedOverview() {
           const metricsData = await metricsResponse.json();
           // Transform API response to match expected format
           setSystemMetrics({
-            cpu: { usage: 45, cores: 8, temperature: 65 },
+            cpu: 45,
             memory: { used: 8.2, total: 16, percentage: 51 },
-            gpu: { usage: 65, temperature: 72, memory: 4.1 },
-            storage: { used: 120, total: 500, percentage: 24 },
-            network: { in: 1.2, out: 0.8, latency: 12 },
+            disk: { used: 120, total: 500, percentage: 24 },
             uptime: 3600,
-            timestamp: new Date().toISOString()
+            status: 'ok' as const
           });
         } else {
           setSystemMetrics(MOCK_SYSTEM_METRICS);
