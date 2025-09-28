@@ -1,0 +1,432 @@
+{
+  "endpoints": {
+    "health": {
+      "GET /health": {
+        "description": "Basic health check",
+        "response": "{\"ok\": true, \"ts\": number}"
+      },
+      "GET /healthz": {
+        "description": "Kubernetes health check",
+        "response": "{\"ok\": true, \"ts\": number}"
+      },
+      "GET /readyz": {
+        "description": "Kubernetes readiness check",
+        "response": "{\"ok\": true, \"ts\": number}"
+      },
+      "GET /api/health": {
+        "description": "API health check",
+        "response": "{\"status\": \"ok\", \"timestamp\": string}"
+      },
+      "GET /api/health/enterprise": {
+        "description": "Enterprise health check",
+        "response": "{\"status\": \"ok\", \"enterprise\": true}"
+      }
+    },
+    "auth": {
+      "POST /api/auth/login": {
+        "description": "User login",
+        "payload": "{\"email\": string, \"password\": string}",
+        "response": "{\"token\": string, \"user\": object}"
+      },
+      "POST /api/auth/register": {
+        "description": "User registration",
+        "payload": "{\"email\": string, \"password\": string, \"name\": string}",
+        "response": "{\"token\": string, \"user\": object}"
+      },
+      "GET /api/auth/me": {
+        "description": "Get current user",
+        "auth": "required",
+        "response": "{\"user\": object}"
+      },
+      "PUT /api/auth/profile": {
+        "description": "Update user profile",
+        "auth": "required",
+        "payload": "{\"name\": string, \"email\": string}",
+        "response": "{\"user\": object}"
+      },
+      "POST /api/auth/change-password": {
+        "description": "Change password",
+        "auth": "required",
+        "payload": "{\"currentPassword\": string, \"newPassword\": string}",
+        "response": "{\"success\": boolean}"
+      }
+    },
+    "models": {
+      "GET /api/models": {
+        "description": "List all models",
+        "response": "[{\"id\": string, \"name\": string, \"status\": string}]"
+      },
+      "POST /api/models": {
+        "description": "Create new model",
+        "payload": "{\"name\": string, \"type\": string, \"config\": object}",
+        "response": "{\"id\": string, \"model\": object}"
+      },
+      "GET /api/models/:id": {
+        "description": "Get model details",
+        "response": "{\"id\": string, \"name\": string, \"status\": string, \"config\": object}"
+      },
+      "PUT /api/models/:id": {
+        "description": "Update model",
+        "payload": "{\"name\": string, \"config\": object}",
+        "response": "{\"model\": object}"
+      },
+      "DELETE /api/models/:id": {
+        "description": "Delete model",
+        "response": "{\"success\": boolean}"
+      },
+      "POST /api/models/:id/train": {
+        "description": "Start model training",
+        "auth": "required",
+        "role": "trainer",
+        "payload": "{\"datasetId\": string, \"config\": object}",
+        "response": "{\"sessionId\": string, \"status\": string}"
+      },
+      "POST /api/models/:id/pause": {
+        "description": "Pause model training",
+        "auth": "required",
+        "role": "trainer",
+        "response": "{\"success\": boolean}"
+      },
+      "POST /api/models/:id/resume": {
+        "description": "Resume model training",
+        "auth": "required",
+        "role": "trainer",
+        "response": "{\"success\": boolean}"
+      },
+      "POST /api/models/:id/optimize": {
+        "description": "Start model optimization",
+        "payload": "{\"config\": object}",
+        "response": "{\"optimizationId\": string, \"status\": string}"
+      },
+      "POST /api/models/:id/export": {
+        "description": "Export model",
+        "auth": "required",
+        "role": "trainer",
+        "response": "{\"exportId\": string, \"downloadUrl\": string}"
+      },
+      "POST /api/models/:id/load": {
+        "description": "Load model",
+        "auth": "required",
+        "role": "trainer",
+        "response": "{\"success\": boolean, \"modelPath\": string}"
+      },
+      "GET /api/models/:id/checkpoints": {
+        "description": "Get model checkpoints",
+        "response": "[{\"id\": string, \"timestamp\": string, \"accuracy\": number}]"
+      },
+      "GET /api/models/:id/download/:filename": {
+        "description": "Download model file",
+        "response": "file stream"
+      },
+      "GET /api/models/stats/overview": {
+        "description": "Get models overview stats",
+        "auth": "required",
+        "response": "{\"total\": number, \"active\": number, \"training\": number}"
+      }
+    },
+    "datasets": {
+      "GET /api/datasets": {
+        "description": "List all datasets",
+        "response": "[{\"id\": string, \"name\": string, \"size\": number, \"createdAt\": string}]"
+      },
+      "POST /api/datasets": {
+        "description": "Create new dataset",
+        "payload": "{\"name\": string, \"description\": string}",
+        "response": "{\"id\": string, \"dataset\": object}"
+      },
+      "GET /api/datasets/:id": {
+        "description": "Get dataset details",
+        "response": "{\"id\": string, \"name\": string, \"size\": number, \"files\": array}"
+      },
+      "POST /api/datasets/upload": {
+        "description": "Upload dataset file",
+        "payload": "FormData with file",
+        "response": "{\"id\": string, \"filename\": string, \"size\": number}"
+      },
+      "POST /api/datasets/upload-multiple": {
+        "description": "Upload multiple dataset files",
+        "payload": "FormData with files[]",
+        "response": "[{\"id\": string, \"filename\": string, \"size\": number}]"
+      },
+      "POST /api/datasets/:id/download": {
+        "description": "Download dataset",
+        "response": "file stream"
+      },
+      "DELETE /api/datasets/:id": {
+        "description": "Delete dataset",
+        "response": "{\"success\": boolean}"
+      },
+      "GET /api/datasets/search": {
+        "description": "Search datasets",
+        "query": "{\"q\": string, \"limit\": number}",
+        "response": "[{\"id\": string, \"name\": string, \"score\": number}]"
+      }
+    },
+    "training": {
+      "GET /api/training/sessions": {
+        "description": "List training sessions",
+        "response": "[{\"id\": string, \"modelId\": string, \"status\": string, \"progress\": number}]"
+      },
+      "GET /api/training/sessions/:sessionId": {
+        "description": "Get training session details",
+        "response": "{\"id\": string, \"modelId\": string, \"status\": string, \"progress\": number, \"logs\": array}"
+      },
+      "POST /api/training/sessions": {
+        "description": "Create training session",
+        "payload": "{\"modelId\": string, \"datasetId\": string, \"config\": object}",
+        "response": "{\"id\": string, \"session\": object}"
+      },
+      "GET /api/training/stats": {
+        "description": "Get training statistics",
+        "response": "{\"totalSessions\": number, \"activeSessions\": number, \"completedSessions\": number}"
+      },
+      "POST /api/training/start": {
+        "description": "Start training",
+        "payload": "{\"modelId\": string, \"datasetId\": string}",
+        "response": "{\"id\": string, \"status\": string}"
+      }
+    },
+    "monitoring": {
+      "GET /api/monitoring": {
+        "description": "Get system monitoring data",
+        "response": "{\"cpu\": number, \"memory\": number, \"disk\": number, \"uptime\": number}"
+      },
+      "GET /api/monitoring/logs": {
+        "description": "Get system logs",
+        "auth": "required",
+        "role": "admin",
+        "response": "[{\"id\": string, \"level\": string, \"message\": string, \"timestamp\": string}]"
+      },
+      "GET /api/monitoring/health": {
+        "description": "Get system health status",
+        "response": "{\"status\": string, \"components\": object}"
+      },
+      "GET /api/monitoring/performance": {
+        "description": "Get performance metrics",
+        "auth": "required",
+        "role": "admin",
+        "response": "{\"metrics\": object, \"charts\": object}"
+      },
+      "GET /api/system/metrics": {
+        "description": "Get system metrics",
+        "response": "{\"cpu\": number, \"memory\": number, \"gpu\": number, \"uptime\": number}"
+      },
+      "GET /api/logs": {
+        "description": "Get application logs",
+        "response": "[{\"id\": string, \"level\": string, \"message\": string, \"timestamp\": string}]"
+      }
+    },
+    "analytics": {
+      "GET /api/analytics": {
+        "description": "Get basic analytics",
+        "response": "{\"overview\": object, \"charts\": object}"
+      },
+      "GET /api/analytics/advanced": {
+        "description": "Get advanced analytics",
+        "auth": "required",
+        "role": "viewer",
+        "response": "{\"performance\": object, \"usage\": object, \"trends\": object}"
+      },
+      "GET /api/analytics/performance": {
+        "description": "Get performance analytics",
+        "auth": "required",
+        "role": "viewer",
+        "response": "{\"metrics\": object, \"charts\": object}"
+      },
+      "GET /api/analytics/usage": {
+        "description": "Get usage statistics",
+        "auth": "required",
+        "role": "admin",
+        "response": "{\"users\": object, \"models\": object, \"datasets\": object}"
+      },
+      "GET /api/analytics/export": {
+        "description": "Export analytics data",
+        "response": "file stream"
+      }
+    },
+    "export": {
+      "POST /api/export/project": {
+        "description": "Export entire project",
+        "auth": "required",
+        "role": "admin",
+        "payload": "{\"includeModels\": boolean, \"includeData\": boolean, \"includeLogs\": boolean}",
+        "response": "{\"exportId\": string, \"status\": string}"
+      },
+      "POST /api/export/models/:id": {
+        "description": "Export specific model",
+        "auth": "required",
+        "role": "trainer",
+        "response": "{\"exportId\": string, \"downloadUrl\": string}"
+      },
+      "GET /api/export/:exportId/status": {
+        "description": "Get export status",
+        "response": "{\"id\": string, \"status\": string, \"progress\": number}"
+      },
+      "GET /api/export/:exportId/download": {
+        "description": "Download export file",
+        "response": "file stream"
+      },
+      "GET /api/export/structure": {
+        "description": "Get project structure",
+        "response": "{\"structure\": object}"
+      },
+      "POST /api/export/generate-zip": {
+        "description": "Generate project zip",
+        "response": "{\"zipId\": string, \"downloadUrl\": string}"
+      },
+      "GET /api/export/logs": {
+        "description": "Get export logs",
+        "response": "[{\"id\": string, \"message\": string, \"timestamp\": string}]"
+      },
+      "GET /api/export/datasets/:id": {
+        "description": "Export dataset",
+        "response": "file stream"
+      }
+    },
+    "optimization": {
+      "GET /api/optimization/status": {
+        "description": "Get optimization status",
+        "response": "{\"active\": number, \"queued\": number, \"completed\": number}"
+      },
+      "GET /api/optimization/:id": {
+        "description": "Get optimization details",
+        "response": "{\"id\": string, \"status\": string, \"progress\": number, \"results\": object}"
+      },
+      "POST /api/optimization/:id/stop": {
+        "description": "Stop optimization",
+        "response": "{\"success\": boolean}"
+      }
+    },
+    "users": {
+      "GET /api/users": {
+        "description": "List all users",
+        "auth": "required",
+        "role": "admin",
+        "response": "[{\"id\": string, \"name\": string, \"email\": string, \"role\": string}]"
+      },
+      "DELETE /api/users/:id": {
+        "description": "Delete user",
+        "auth": "required",
+        "role": "admin",
+        "response": "{\"success\": boolean}"
+      }
+    },
+    "team": {
+      "GET /api/team": {
+        "description": "Get team information",
+        "response": "{\"members\": array, \"stats\": object}"
+      }
+    },
+    "settings": {
+      "GET /api/settings": {
+        "description": "Get system settings",
+        "response": "{\"settings\": object}"
+      },
+      "PUT /api/settings": {
+        "description": "Update system settings",
+        "payload": "{\"settings\": object}",
+        "response": "{\"success\": boolean}"
+      }
+    },
+    "documents": {
+      "GET /api/documents": {
+        "description": "List documents",
+        "response": "[{\"id\": string, \"title\": string, \"category\": string, \"createdAt\": string}]"
+      },
+      "GET /api/documents/:id": {
+        "description": "Get document details",
+        "response": "{\"id\": string, \"title\": string, \"content\": string, \"category\": string}"
+      },
+      "POST /api/documents/process": {
+        "description": "Process document",
+        "payload": "{\"content\": string, \"type\": string}",
+        "response": "{\"id\": string, \"result\": object}"
+      },
+      "GET /api/categories": {
+        "description": "Get document categories",
+        "response": "[{\"id\": string, \"name\": string, \"count\": number}]"
+      }
+    },
+    "rankings": {
+      "GET /api/rankings": {
+        "description": "Get model rankings",
+        "response": "[{\"modelId\": string, \"rank\": number, \"score\": number, \"metrics\": object}]"
+      }
+    },
+    "sessions": {
+      "GET /api/sessions": {
+        "description": "Get user sessions",
+        "response": "[{\"id\": string, \"userId\": string, \"startTime\": string, \"endTime\": string}]"
+      }
+    },
+    "reliability": {
+      "GET /api/reliability/status": {
+        "description": "Get reliability status",
+        "response": "{\"status\": string, \"components\": object}"
+      },
+      "GET /api/reliability/component/:name": {
+        "description": "Get component reliability",
+        "response": "{\"name\": string, \"status\": string, \"metrics\": object}"
+      },
+      "POST /api/reliability/fallback/:name/activate": {
+        "description": "Activate fallback for component",
+        "response": "{\"success\": boolean}"
+      },
+      "POST /api/reliability/fallback/:name/deactivate": {
+        "description": "Deactivate fallback for component",
+        "response": "{\"success\": boolean}"
+      },
+      "GET /api/reliability/health": {
+        "description": "Get reliability health",
+        "response": "{\"health\": string, \"score\": number}"
+      }
+    },
+    "error": {
+      "POST /api/error/log": {
+        "description": "Log error",
+        "payload": "{\"message\": string, \"stack\": string, \"level\": string}",
+        "response": "{\"success\": boolean}"
+      },
+      "GET /api/error/logs": {
+        "description": "Get error logs",
+        "auth": "required",
+        "role": "admin",
+        "response": "[{\"id\": string, \"message\": string, \"level\": string, \"timestamp\": string}]"
+      },
+      "GET /api/error/stats": {
+        "description": "Get error statistics",
+        "auth": "required",
+        "role": "admin",
+        "response": "{\"total\": number, \"byLevel\": object, \"byTime\": object}"
+      },
+      "DELETE /api/error/clean": {
+        "description": "Clean error logs",
+        "auth": "required",
+        "role": "admin",
+        "response": "{\"success\": boolean}"
+      }
+    }
+  },
+  "websocket": {
+    "namespaces": {
+      "default": {
+        "events": {
+          "connection": "Client connects",
+          "disconnect": "Client disconnects",
+          "authenticate": "Client authentication",
+          "join-training": "Join training session",
+          "leave-training": "Leave training session",
+          "error": "Error occurred"
+        }
+      }
+    }
+  },
+  "summary": {
+    "totalEndpoints": 89,
+    "authRequired": 25,
+    "roleRequired": 15,
+    "websocketEvents": 6,
+    "fileUploads": 3,
+    "fileDownloads": 8
+  }
+}

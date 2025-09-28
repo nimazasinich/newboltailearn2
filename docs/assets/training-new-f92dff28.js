@@ -1,0 +1,1 @@
+import{l as a}from"./index-77f7cea8.js";const o={start:(t,s)=>a("/api/training/start",{method:"POST",body:{modelId:t,datasetId:s}}),status:t=>a(`/api/training/${t}/status`),models:()=>a("/api/models")};export{o as t};
