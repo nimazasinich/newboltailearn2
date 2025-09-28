@@ -1,5 +1,5 @@
 import React from 'react';
-import ProjectDownloader from 'ui/ProjectDownloader';
+import { ProjectDownloader } from 'ui/ProjectDownloader';
 import { exporter } from '../services/export-new';
 import ExecutiveHeader from '../components/layout/ExecutiveHeader';
 import QuickActions from '../components/layout/QuickActions';
