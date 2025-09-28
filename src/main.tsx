@@ -5,6 +5,7 @@ import { ThemeProvider } from './theme/ThemeProvider';
 import './styles/tokens.css';
 import './styles/theme.css';
 import './styles/effects.css';
+import './styles/loader.css';
 import './styles/fonts.css';
 import './index.css';
 

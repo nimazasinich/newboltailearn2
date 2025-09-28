@@ -30,10 +30,10 @@ const TrainingManagement = lazyCompat(() => import('./components/TrainingManagem
 const ProjectDownloader  = lazyCompat(() => import('./components/ProjectDownloader'), 'ProjectDownloader')
 const DatasetGallery     = lazyCompat(() => import('./components/DatasetGallery'), 'DatasetGallery')
 
-import { LoadingScreen } from './components/ui/LoadingScreen';
+import MinimalLoader from './components/ui/MinimalLoader';
 
 function AppLoading() {
-  return <LoadingScreen />
+  return <MinimalLoader />
 }
 
 export default function App() {
