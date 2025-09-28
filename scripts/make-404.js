@@ -6,8 +6,9 @@ if (existsSync('docs/index.html')) {
   // Read the index.html content
   const indexContent = readFileSync('docs/index.html', 'utf8');
   
-  // Add meta refresh tag after the charset meta tag
-  const metaRefresh = '    <meta http-equiv="refresh" content="0; url=/newboltailearn2/">';
+  // Use the same BASE constant as vite.config.ts
+  const BASE = process.env.VITE_BASE_PATH || '/newboltailearn2/';
+  const metaRefresh = `    <meta http-equiv="refresh" content="0; url=${BASE}">`;
   const updatedContent = indexContent.replace(
     '<meta charset="UTF-8" />',
     `<meta charset="UTF-8" />\n${metaRefresh}`

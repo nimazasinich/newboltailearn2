@@ -1,0 +1,20 @@
+name: Pages Guard
+on: [pull_request]
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: 'npm' }
+      - run: npm ci
+      - run: VITE_BASE_PATH=/newboltailearn2/ npm run build:gh
+      - name: Assert base baked
+        run: |
+          test -f docs/index.html
+          grep -q '/newboltailearn2/' docs/index.html || (echo "❌ base not baked" && exit 1)
+      - name: Assert SPA fallback exists
+        run: |
+          test -f docs/404.html
+          grep -q 'meta http-equiv="refresh" content="0; url=/newboltailearn2/"' docs/404.html || (echo "❌ 404 meta refresh missing" && exit 1)
