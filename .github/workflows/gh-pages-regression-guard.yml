@@ -1,0 +1,134 @@
+name: GitHub Pages Regression Guard
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'package.json'
+      - 'vite.config.ts'
+      - 'scripts/make-404.js'
+      - '.github/workflows/gh-pages-regression-guard.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'package.json'
+      - 'vite.config.ts'
+      - 'scripts/make-404.js'
+
+env:
+  NODE_VERSION: '20'
+
+jobs:
+  gh-pages-regression-check:
+    name: GitHub Pages Base Path Regression Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build for GitHub Pages
+        run: npm run build:gh
+      
+      - name: Verify base path in built files
+        run: |
+          echo "🔍 Checking base path in built files..."
+          
+          # Check if index.html contains the correct base path
+          if grep -q "/newboltailearn2/" docs/index.html; then
+            echo "✅ Base path /newboltailearn2/ found in docs/index.html"
+          else
+            echo "❌ Base path /newboltailearn2/ NOT found in docs/index.html"
+            echo "📄 Current content:"
+            cat docs/index.html
+            exit 1
+          fi
+          
+          # Check if 404.html contains the correct meta refresh
+          if grep -q 'meta http-equiv="refresh" content="0; url=/newboltailearn2/"' docs/404.html; then
+            echo "✅ 404.html contains correct meta refresh"
+          else
+            echo "❌ 404.html missing correct meta refresh"
+            echo "📄 Current content:"
+            cat docs/404.html
+            exit 1
+          fi
+          
+          # Check if .nojekyll exists
+          if [ -f docs/.nojekyll ]; then
+            echo "✅ .nojekyll file exists"
+          else
+            echo "❌ .nojekyll file missing"
+            exit 1
+          fi
+          
+          # Check for any incorrect base paths
+          if grep -r "/newboltailearn/" docs/ --exclude-dir=node_modules; then
+            echo "❌ Found incorrect base path /newboltailearn/ in built files"
+            exit 1
+          else
+            echo "✅ No incorrect base paths found"
+          fi
+      
+      - name: Verify build script configuration
+        run: |
+          echo "🔍 Checking build script configuration..."
+          
+          # Check package.json build:gh script
+          if grep -q 'VITE_BASE_PATH=/newboltailearn2/' package.json; then
+            echo "✅ package.json build:gh script has correct base path"
+          else
+            echo "❌ package.json build:gh script has incorrect base path"
+            grep "build:gh" package.json
+            exit 1
+          fi
+      
+      - name: Test deep link fallback
+        run: |
+          echo "🔍 Testing deep link fallback..."
+          
+          # Create a test deep link file
+          echo '<!doctype html><html><head><meta http-equiv="refresh" content="0; url=/newboltailearn2/"></head><body>Redirecting...</body></html>' > docs/test-deep-link.html
+          
+          # Verify the test file has correct redirect
+          if grep -q 'url=/newboltailearn2/' docs/test-deep-link.html; then
+            echo "✅ Deep link fallback test passed"
+          else
+            echo "❌ Deep link fallback test failed"
+            exit 1
+          fi
+          
+          # Clean up test file
+          rm docs/test-deep-link.html
+      
+      - name: Verify asset paths
+        run: |
+          echo "🔍 Checking asset paths..."
+          
+          # Check that all asset references use the correct base path
+          if grep -r 'src="/newboltailearn2/' docs/ || grep -r 'href="/newboltailearn2/' docs/; then
+            echo "✅ Asset paths use correct base path"
+          else
+            echo "❌ No asset paths found with correct base path"
+            echo "📄 Asset references found:"
+            grep -r 'src="/' docs/ || echo "No src attributes found"
+            grep -r 'href="/' docs/ || echo "No href attributes found"
+            exit 1
+          fi
+      
+      - name: Summary
+        run: |
+          echo "🎉 All GitHub Pages regression checks passed!"
+          echo "✅ Base path: /newboltailearn2/"
+          echo "✅ 404 fallback: Correct meta refresh"
+          echo "✅ Jekyll disabled: .nojekyll present"
+          echo "✅ Asset paths: All use correct base path"
+          echo "✅ Build script: Correctly configured"

@@ -10,7 +10,7 @@ import './styles/animations.css';
 import './styles/components.css';
 import './styles/theme.css';
 
-const basename = (import.meta as any).env.BASE_URL || '/newboltailearn/';
+const basename = (import.meta as any).env.VITE_BASE_PATH || '/newboltailearn2/';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
