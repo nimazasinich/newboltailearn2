@@ -26,7 +26,7 @@ export default ({ mode }) => {
       }
     },
     build: {
-      outDir: 'docs',
+      outDir: 'dist',
       sourcemap: true,
       emptyOutDir: true,
       minify: 'terser',

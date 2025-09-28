@@ -4,9 +4,9 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = `${__dirname}/..`;
-const indexPath = `${rootDir}/docs/index.html`;
-const fallbackPath = `${rootDir}/docs/404.html`;
-const noJekyllPath = `${rootDir}/docs/.nojekyll`;
+const indexPath = `${rootDir}/dist/index.html`;
+const fallbackPath = `${rootDir}/dist/404.html`;
+const noJekyllPath = `${rootDir}/dist/.nojekyll`;
 
 if (!existsSync(indexPath)) {
   console.error(`[ERROR] ${indexPath} not found. Run the build before enforcing SPA fallback.`);
@@ -30,12 +30,12 @@ if (shouldMirror) {
   writeFileSync(fallbackPath, indexHtml);
   console.log(`[ok] Ensured SPA fallback: ${fallbackPath} mirrors ${indexPath}`);
 } else {
-  console.log('[ok] docs/404.html already provides SPA fallback');
+  console.log('[ok] dist/404.html already provides SPA fallback');
 }
 
 if (!existsSync(noJekyllPath)) {
   writeFileSync(noJekyllPath, '');
-  console.log('[ok] Created docs/.nojekyll');
+  console.log('[ok] Created dist/.nojekyll');
 } else {
-  console.log('[ok] docs/.nojekyll already exists');
+  console.log('[ok] dist/.nojekyll already exists');
 }

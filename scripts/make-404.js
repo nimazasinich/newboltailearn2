@@ -1,13 +1,13 @@
 import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'fs';
 
-mkdirSync('docs', { recursive: true });
+mkdirSync('dist', { recursive: true });
 
-if (existsSync('docs/index.html')) {
-  copyFileSync('docs/index.html', 'docs/404.html');
-  writeFileSync('docs/.nojekyll', '');
-  console.log('✅ SPA fallback created: docs/404.html');
-  console.log('✅ Jekyll disabled: docs/.nojekyll');
+if (existsSync('dist/index.html')) {
+  copyFileSync('dist/index.html', 'dist/404.html');
+  writeFileSync('dist/.nojekyll', '');
+  console.log('✅ SPA fallback created: dist/404.html');
+  console.log('✅ Jekyll disabled: dist/.nojekyll');
 } else {
-  console.error('❌ Build first - docs/index.html not found');
+  console.error('❌ Build first - dist/index.html not found');
   process.exit(1);
 }
