@@ -1,4 +1,4 @@
-import { API_BASE, joinApiPath, apiRequest } from '../lib/api-config';
+import { API_BASE, joinApiPath, apiRequest, isApiAvailable } from '../lib/api-config';
 import { User, LoginCredentials } from '../types/user';
 
 export interface AuthResponse {
@@ -14,14 +14,22 @@ export interface RegisterData extends LoginCredentials {
   role?: string;
 }
 
+// Helper function to check API availability
+const checkApiAvailability = () => {
+  if (!isApiAvailable()) {
+    throw new Error('API not available in production mode');
+  }
+};
+
 export const authService = {
   /**
    * Login user
    */
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     try {
+      checkApiAvailability();
       const response = await apiRequest(
-        joinApiPath(API_BASE, '/auth/login'),
+        joinApiPath(API_BASE!, '/auth/login'),
         {
           method: 'POST',
           body: JSON.stringify(credentials),
@@ -33,7 +41,7 @@ export const authService = {
       console.error('Login failed:', error);
       return {
         success: false,
-        error: 'خطا در ورود به سیستم'
+        error: error instanceof Error ? error.message : 'خطا در ورود به سیستم'
       };
     }
   },
@@ -43,8 +51,9 @@ export const authService = {
    */
   async register(data: RegisterData): Promise<AuthResponse> {
     try {
+      checkApiAvailability();
       const response = await apiRequest(
-        joinApiPath(API_BASE, '/auth/register'),
+        joinApiPath(API_BASE!, '/auth/register'),
         {
           method: 'POST',
           body: JSON.stringify(data),
@@ -56,7 +65,7 @@ export const authService = {
       console.error('Registration failed:', error);
       return {
         success: false,
-        error: 'خطا در ثبت‌نام'
+        error: error instanceof Error ? error.message : 'خطا در ثبت‌نام'
       };
     }
   },
@@ -66,8 +75,9 @@ export const authService = {
    */
   async logout(): Promise<{ success: boolean; message: string }> {
     try {
+      checkApiAvailability();
       const response = await apiRequest(
-        joinApiPath(API_BASE, '/auth/logout'),
+        joinApiPath(API_BASE!, '/auth/logout'),
         {
           method: 'POST',
         }
@@ -88,6 +98,7 @@ export const authService = {
    */
   async refreshToken(): Promise<AuthResponse> {
     try {
+      checkApiAvailability();
       const token = localStorage.getItem('token');
       if (!token) {
         return {
@@ -97,7 +108,7 @@ export const authService = {
       }
 
       const response = await apiRequest(
-        joinApiPath(API_BASE, '/auth/refresh'),
+        joinApiPath(API_BASE!, '/auth/refresh'),
         {
           method: 'POST',
           headers: {
@@ -111,7 +122,7 @@ export const authService = {
       console.error('Token refresh failed:', error);
       return {
         success: false,
-        error: 'خطا در تازه‌سازی توکن'
+        error: error instanceof Error ? error.message : 'خطا در تازه‌سازی توکن'
       };
     }
   },
@@ -121,11 +132,12 @@ export const authService = {
    */
   async getCurrentUser(): Promise<User | null> {
     try {
+      checkApiAvailability();
       const token = localStorage.getItem('token');
       if (!token) return null;
 
       const response = await apiRequest(
-        joinApiPath(API_BASE, '/auth/me'),
+        joinApiPath(API_BASE!, '/auth/me'),
         {
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -145,6 +157,7 @@ export const authService = {
    */
   async updateProfile(updates: Partial<User>): Promise<{ success: boolean; user?: User; message?: string }> {
     try {
+      checkApiAvailability();
       const token = localStorage.getItem('token');
       if (!token) {
         return {
@@ -154,7 +167,7 @@ export const authService = {
       }
 
       const response = await apiRequest(
-        joinApiPath(API_BASE, '/auth/profile'),
+        joinApiPath(API_BASE!, '/auth/profile'),
         {
           method: 'PUT',
           headers: {
@@ -169,7 +182,7 @@ export const authService = {
       console.error('Update profile failed:', error);
       return {
         success: false,
-        message: 'خطا در به‌روزرسانی پروفایل'
+        message: error instanceof Error ? error.message : 'خطا در به‌روزرسانی پروفایل'
       };
     }
   },
@@ -179,6 +192,7 @@ export const authService = {
    */
   async changePassword(currentPassword: string, newPassword: string): Promise<{ success: boolean; message: string }> {
     try {
+      checkApiAvailability();
       const token = localStorage.getItem('token');
       if (!token) {
         return {
@@ -188,7 +202,7 @@ export const authService = {
       }
 
       const response = await apiRequest(
-        joinApiPath(API_BASE, '/auth/change-password'),
+        joinApiPath(API_BASE!, '/auth/change-password'),
         {
           method: 'POST',
           headers: {
@@ -206,7 +220,7 @@ export const authService = {
       console.error('Change password failed:', error);
       return {
         success: false,
-        message: 'خطا در تغییر رمز عبور'
+        message: error instanceof Error ? error.message : 'خطا در تغییر رمز عبور'
       };
     }
   },
@@ -216,8 +230,9 @@ export const authService = {
    */
   async requestPasswordReset(email: string): Promise<{ success: boolean; message: string }> {
     try {
+      checkApiAvailability();
       const response = await apiRequest(
-        joinApiPath(API_BASE, '/auth/forgot-password'),
+        joinApiPath(API_BASE!, '/auth/forgot-password'),
         {
           method: 'POST',
           body: JSON.stringify({ email }),
@@ -229,7 +244,7 @@ export const authService = {
       console.error('Password reset request failed:', error);
       return {
         success: false,
-        message: 'خطا در درخواست بازنشانی رمز عبور'
+        message: error instanceof Error ? error.message : 'خطا در درخواست بازنشانی رمز عبور'
       };
     }
   },
@@ -239,8 +254,9 @@ export const authService = {
    */
   async resetPassword(token: string, newPassword: string): Promise<{ success: boolean; message: string }> {
     try {
+      checkApiAvailability();
       const response = await apiRequest(
-        joinApiPath(API_BASE, '/auth/reset-password'),
+        joinApiPath(API_BASE!, '/auth/reset-password'),
         {
           method: 'POST',
           body: JSON.stringify({
@@ -255,7 +271,7 @@ export const authService = {
       console.error('Password reset failed:', error);
       return {
         success: false,
-        message: 'خطا در بازنشانی رمز عبور'
+        message: error instanceof Error ? error.message : 'خطا در بازنشانی رمز عبور'
       };
     }
   },
@@ -265,8 +281,9 @@ export const authService = {
    */
   async verifyEmail(token: string): Promise<{ success: boolean; message: string }> {
     try {
+      checkApiAvailability();
       const response = await apiRequest(
-        joinApiPath(API_BASE, '/auth/verify-email'),
+        joinApiPath(API_BASE!, '/auth/verify-email'),
         {
           method: 'POST',
           body: JSON.stringify({ token }),
@@ -278,7 +295,7 @@ export const authService = {
       console.error('Email verification failed:', error);
       return {
         success: false,
-        message: 'خطا در تأیید ایمیل'
+        message: error instanceof Error ? error.message : 'خطا در تأیید ایمیل'
       };
     }
   }

@@ -4,7 +4,11 @@ import { HashRouter } from 'react-router-dom';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import App from './App';
 
+// Initialize TensorFlow.js with WebGL backend
+import './services/ai/tf-init';
+
 // Import all CSS files in the correct order
+import './styles/fonts.css';
 import './index.css';
 import './styles/animations.css';
 import './styles/components.css';

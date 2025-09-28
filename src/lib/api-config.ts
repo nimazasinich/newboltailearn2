@@ -1,16 +1,23 @@
 // Real API base configuration
-const RAW_BASE = import.meta.env?.VITE_API_BASE ?? '/api';
+// In production without VITE_API_BASE, we'll disable API calls to prevent 404s
+const RAW_BASE = import.meta.env?.VITE_API_BASE ?? (import.meta.env.PROD ? null : '/api');
 
 // RequestInit type for fetch
 type RequestInit = globalThis.RequestInit;
 
-function normalizeApiBase(base: string): string {
-  const trimmed = (base || '').trim();
+function normalizeApiBase(base: string | null): string | null {
+  if (!base) return null;
+  const trimmed = base.trim();
   const withoutTrailingSlash = trimmed.endsWith('/') ? trimmed.slice(0, -1) : trimmed;
   return withoutTrailingSlash.startsWith('/') ? withoutTrailingSlash : `/${withoutTrailingSlash}`;
 }
 
 export const API_BASE = normalizeApiBase(RAW_BASE);
+
+// Check if API is available
+export const isApiAvailable = (): boolean => {
+  return API_BASE !== null;
+};
 
 // Safe URL joining
 export function joinApiPath(basePath: string, endpoint: string): string {
@@ -20,9 +27,14 @@ export function joinApiPath(basePath: string, endpoint: string): string {
 
 // Request wrapper with proper error handling
 export async function apiRequest(endpoint: string, options?: RequestInit): Promise<Response> {
+  // Check if API is available
+  if (!isApiAvailable()) {
+    throw new Error('API not available in production mode');
+  }
+
   const url = endpoint.startsWith('/api') || endpoint.startsWith('http') 
     ? endpoint 
-    : joinApiPath(API_BASE, endpoint);
+    : joinApiPath(API_BASE!, endpoint);
   
   const response = await fetch(url, {
     credentials: 'include',

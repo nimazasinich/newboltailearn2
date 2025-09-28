@@ -10,7 +10,9 @@ export default ({ mode }) => {
   return defineConfig({
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, 'src')
+        '@': path.resolve(__dirname, 'src'),
+        // Block WASM backend to prevent GitHub Pages issues
+        '@tensorflow/tfjs-backend-wasm': path.resolve(__dirname, 'src/services/ai/empty-module.js')
       }
     },
     plugins: [react()],

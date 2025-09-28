@@ -1,27 +1,11 @@
-/* Import Google Fonts first - using self-hosted Inter for better reliability */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* Fonts are now loaded via fonts.css */
 
 /* Tailwind CSS directives */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Local Persian Font Declarations - using absolute paths for GitHub Pages */
-@font-face {
-  font-family: 'Vazirmatn';
-  src: url('/newboltailearn2/assets/fonts/Vazirmatn-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Vazirmatn';
-  src: url('/newboltailearn2/assets/fonts/Vazirmatn-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
+/* Font declarations moved to fonts.css */
 
 :root {
   /* Base Colors */
