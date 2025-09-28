@@ -1,6 +1,10 @@
 import { createRoot } from 'react-dom/client';
 import { HashRouter } from 'react-router-dom';
 import App from './App';
+import { ThemeProvider } from './theme/ThemeProvider';
+import './styles/tokens.css';
+import './styles/theme.css';
+import './styles/effects.css';
 import './styles/fonts.css';
 import './index.css';
 
@@ -13,7 +17,9 @@ const routerConfig = {
 };
 
 createRoot(document.getElementById('root')!).render(
-  <HashRouter future={routerConfig.future}>
-    <App />
-  </HashRouter>
+  <ThemeProvider>
+    <HashRouter future={routerConfig.future}>
+      <App />
+    </HashRouter>
+  </ThemeProvider>
 );
