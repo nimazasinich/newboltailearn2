@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { SystemMetrics } from '../types/training';
 import { 
   Brain, TrendingUp, Database, Users, Activity, Play, Pause, Square,
   BarChart3, PieChart, LineChart, Monitor, Cpu, HardDrive, Wifi,
@@ -16,8 +17,8 @@ import {
   LineChart as RechartsLine, Line, PieChart as RechartsPie, Pie, Cell, Area, AreaChart
 } from 'recharts';
 import { EnhancedCard, MetricCard, ProgressCard } from './ui/EnhancedCard';
-import { EnhancedSidebar, TopNavigation } from './ui/EnhancedNavigation';
-import { PerformanceChart, CategoryDistribution, SystemMetrics, RadialProgress } from './charts/EnhancedCharts';
+import { TopNavigation } from './ui/EnhancedNavigation';
+import { PerformanceChart, CategoryDistribution, SystemMetrics as SystemMetricsChart, RadialProgress } from './charts/EnhancedCharts';
 import { cn } from '../utils/cn';
 
 interface Model {
@@ -31,17 +32,11 @@ interface Model {
   created_at: string;
 }
 
-interface SystemMetrics {
-  cpu_usage: number;
-  memory_usage: number;
-  gpu_usage: number;
-  disk_usage: number;
-  active_connections: number;
-  uptime: number;
-}
+// SystemMetrics is imported from types/training.ts
 
 interface LegalCategory {
   name: string;
+  value: number;
   models: number;
   accuracy: number;
   documents: number;
@@ -58,11 +53,11 @@ export default function UltimatePersianDashboard() {
 
   // Legal categories specific to Iranian law
   const legalCategories: LegalCategory[] = [
-    { name: 'قوانین مدنی', models: 4, accuracy: 94.2, documents: 15400, color: '#10b981' },
-    { name: 'قوانین جزایی', models: 3, accuracy: 91.8, documents: 12800, color: '#3b82f6' },
-    { name: 'قوانین تجاری', models: 2, accuracy: 88.5, documents: 8900, color: '#06b6d4' },
-    { name: 'قوانین اداری', models: 2, accuracy: 92.1, documents: 11200, color: '#8b5cf6' },
-    { name: 'قوانین قضایی', models: 1, accuracy: 87.3, documents: 6700, color: '#f59e0b' }
+    { name: 'قوانین مدنی', value: 35, models: 4, accuracy: 94.2, documents: 15400, color: '#10b981' },
+    { name: 'قوانین جزایی', value: 28, models: 3, accuracy: 91.8, documents: 12800, color: '#3b82f6' },
+    { name: 'قوانین تجاری', value: 20, models: 2, accuracy: 88.5, documents: 8900, color: '#06b6d4' },
+    { name: 'قوانین اداری', value: 12, models: 2, accuracy: 92.1, documents: 11200, color: '#8b5cf6' },
+    { name: 'قوانین قضایی', value: 5, models: 1, accuracy: 87.3, documents: 6700, color: '#f59e0b' }
   ];
 
   // Performance data over time
@@ -136,12 +131,18 @@ export default function UltimatePersianDashboard() {
 
       // Mock metrics
       setMetrics({
-        cpu_usage: Math.floor(Math.random() * 30 + 40),
-        memory_usage: Math.floor(Math.random() * 20 + 60),
-        gpu_usage: Math.floor(Math.random() * 40 + 50),
-        disk_usage: Math.floor(Math.random() * 15 + 75),
-        active_connections: Math.floor(Math.random() * 10 + 15),
-        uptime: Math.floor(Math.random() * 86400 + 3600)
+        cpuUsage: Math.floor(Math.random() * 30 + 40),
+        memoryUsage: Math.floor(Math.random() * 20 + 60),
+        gpuUsage: Math.floor(Math.random() * 40 + 50),
+        diskUsage: Math.floor(Math.random() * 15 + 75),
+        activeConnections: Math.floor(Math.random() * 10 + 15),
+        storageUsage: Math.floor(Math.random() * 20 + 30),
+        networkUsage: Math.floor(Math.random() * 15 + 25),
+        activeTrainingSessions: Math.floor(Math.random() * 3 + 1),
+        totalDocuments: Math.floor(Math.random() * 1000 + 500),
+        systemHealth: 'good' as const,
+        uptime: Math.floor(Math.random() * 86400 + 3600),
+        lastUpdate: new Date()
       });
 
       setLastUpdate(new Date());
@@ -204,15 +205,8 @@ export default function UltimatePersianDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800" dir="rtl">
-      {/* Enhanced Sidebar */}
-      <EnhancedSidebar 
-        collapsed={sidebarCollapsed}
-        onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
-        currentPath="/dashboard-ultimate"
-      />
-
       {/* Main Content */}
-      <div className={cn('transition-all duration-300', sidebarCollapsed ? 'mr-16' : 'mr-72')}>
+      <div className="w-full">
         {/* Top Navigation */}
         <TopNavigation 
           onMenuToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
@@ -307,7 +301,7 @@ export default function UltimatePersianDashboard() {
           </div>
 
           {/* System Metrics */}
-          <SystemMetrics data={systemMetricsData} delay={0.8} />
+          <SystemMetricsChart data={systemMetricsData} delay={0.8} />
 
           {/* Enhanced Models Section */}
           <motion.div

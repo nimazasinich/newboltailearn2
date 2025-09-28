@@ -1,6 +1,6 @@
 import Database from 'better-sqlite3';
 import bcrypt from 'bcryptjs';
-import { generateToken } from '../middleware/auth';
+import { generateToken } from '../middleware/auth.js';
 
 export interface User {
   id: number;

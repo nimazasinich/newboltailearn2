@@ -3,6 +3,9 @@
  * Centralized management of all fallback mechanisms across the system
  */
 
+// Timer type for compatibility
+type Timer = ReturnType<typeof setTimeout>;
+
 export interface FallbackConfig {
   name: string;
   primaryComponent: string;
@@ -31,7 +34,7 @@ export interface FallbackStatus {
 export class FallbackSystemManager {
   private fallbackConfigs: Map<string, FallbackConfig> = new Map();
   private fallbackStatuses: Map<string, FallbackStatus> = new Map();
-  private monitoringInterval: NodeJS.Timeout | null = null;
+  private monitoringInterval: Timer | null = null;
 
   constructor() {
     this.initializeFallbackConfigs();

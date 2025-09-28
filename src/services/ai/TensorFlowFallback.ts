@@ -175,7 +175,7 @@ export async function loadTensorFlow(): Promise<TensorFlowFallback> {
     return tf as any;
   } catch (error) {
     console.warn('⚠️ TensorFlow.js not available, using advanced fallback');
-    console.warn('Error:', error.message);
+    console.warn('Error:', error instanceof Error ? error.message : String(error));
     
     // Return enhanced mock implementation
     return new MockTensorFlow();
@@ -189,6 +189,10 @@ export class PersianBertProcessorFallback {
 
   constructor(tf: TensorFlowFallback) {
     this.tf = tf;
+  }
+
+  getModel(): any {
+    return this.model;
   }
 
   async initialize(): Promise<void> {

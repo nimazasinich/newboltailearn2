@@ -13,72 +13,104 @@ import { Server } from 'socket.io';
 import Database from 'better-sqlite3';
 import createSimpleApiRouter from './routes/simple-api.js';
 
-// Enterprise Components (optional - will fallback if not available)
-let DatabaseConnectionPool, APIMonitor, RedisCacheManager, SecurityManager;
-try {
-    const dbPool = await import('./database/connection-pool.js');
-    const apiMonitor = await import('./middleware/api-monitoring.js');
-    const cacheManager = await import('./cache/redis-cache.js');
-    const securityManager = await import('./middleware/security.js');
-    
-    DatabaseConnectionPool = dbPool.default;
-    APIMonitor = apiMonitor.default;
-    RedisCacheManager = cacheManager.default;
-    SecurityManager = securityManager.default;
-    
-    console.log('✅ Enterprise components loaded successfully');
-} catch (error) {
-    console.log('⚠️ Enterprise components not available, using fallback mode');
-    console.log('Error:', error.message);
+if (!process.env.NODE_ENV) {
+    process.env.NODE_ENV = 'production';
 }
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const app = express();
-// Enterprise Components Initialization
-let dbPool = null;
-let apiMonitor = null;
-let cacheManager = null;
-let securityManager = null;
+const optionalModuleErrorCodes = ['ERR_MODULE_NOT_FOUND', 'MODULE_NOT_FOUND'];
+
+async function importOptionalModule(modulePath, label) {
+    try {
+        const module = await import(modulePath);
+        console.log(`✅ ${label} module loaded`);
+        return module.default ?? module;
+    } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        const errorCode = error && typeof error === 'object' && 'code' in error ? error.code : undefined;
+
+        if (optionalModuleErrorCodes.includes(errorCode) || message.includes('Cannot find module')) {
+            console.log(`⚠️ ${label} module not available (${message})`);
+        } else {
+            console.warn(`⚠️ ${label} module failed to load: ${message}`);
+        }
+
+        return null;
+    }
+}
 
 async function initializeEnterpriseComponents() {
-    try {
-        console.log('🔧 Initializing enterprise components...');
-        
-        // Initialize database connection pool (if available)
-        if (DatabaseConnectionPool) {
-            dbPool = new DatabaseConnectionPool({
+    console.log('🔧 Initializing enterprise components...');
+
+    const [
+        DatabaseConnectionPool,
+        APIMonitor,
+        RedisCacheManager,
+        SecurityManager
+    ] = await Promise.all([
+        importOptionalModule('./database/connection-pool.js', 'Database connection pool'),
+        importOptionalModule('./middleware/api-monitoring.js', 'API monitoring'),
+        importOptionalModule('./cache/redis-cache.js', 'Cache manager'),
+        importOptionalModule('./middleware/security.js', 'Security manager')
+    ]);
+
+    const components = {
+        dbPool: null,
+        apiMonitor: null,
+        cacheManager: null,
+        securityManager: null
+    };
+
+    if (DatabaseConnectionPool) {
+        try {
+            const pool = new DatabaseConnectionPool({
                 maxConnections: 10,
                 minConnections: 2,
                 databasePath: process.env.DATABASE_PATH || './data/database.sqlite'
             });
-            await dbPool.initialize();
+            components.dbPool = pool;
             console.log('✅ Database connection pool initialized');
+        } catch (error) {
+            console.warn('⚠️ Failed to initialize database connection pool:', error instanceof Error ? error.message : error);
         }
-        
-        // Initialize API monitoring (if available)
-        if (APIMonitor) {
-            apiMonitor = new APIMonitor({
+    }
+
+    if (APIMonitor) {
+        try {
+            components.apiMonitor = new APIMonitor({
                 logLevel: 'info',
                 logFile: './logs/api-monitor.log'
             });
             console.log('✅ API monitoring initialized');
+        } catch (error) {
+            console.warn('⚠️ Failed to initialize API monitoring:', error instanceof Error ? error.message : error);
         }
-        
-        // Initialize cache manager (if available)
-        if (RedisCacheManager) {
-            cacheManager = new RedisCacheManager({
-                host: process.env.REDIS_HOST || 'localhost',
-                port: process.env.REDIS_PORT || 6379,
-                enableFallback: true
-            });
-            console.log('✅ Cache manager initialized');
+    }
+
+    if (RedisCacheManager) {
+        const redisConfigured = Boolean(process.env.REDIS_HOST || process.env.REDIS_URL || process.env.REDIS_PORT);
+        if (!redisConfigured) {
+            console.log('ℹ️ Redis cache not configured; skipping cache manager initialization');
+        } else {
+            try {
+                components.cacheManager = new RedisCacheManager({
+                    host: process.env.REDIS_HOST || 'localhost',
+                    port: Number(process.env.REDIS_PORT) || 6379,
+                    url: process.env.REDIS_URL,
+                    enableFallback: true
+                });
+                console.log('✅ Cache manager initialized');
+            } catch (error) {
+                console.warn('⚠️ Failed to initialize cache manager:', error instanceof Error ? error.message : error);
+            }
         }
-        
-        // Initialize security manager (if available)
-        if (SecurityManager) {
-            securityManager = new SecurityManager({
+    }
+
+    if (SecurityManager) {
+        try {
+            components.securityManager = new SecurityManager({
                 enableHelmet: true,
                 enableRateLimit: true,
                 enableInputValidation: true,
@@ -86,39 +118,161 @@ async function initializeEnterpriseComponents() {
                 enableCSRFProtection: true
             });
             console.log('✅ Security manager initialized');
+        } catch (error) {
+            console.warn('⚠️ Failed to initialize security manager:', error instanceof Error ? error.message : error);
         }
-        
+    }
+
+    if (Object.values(components).some(Boolean)) {
         console.log('✅ Enterprise components initialized successfully');
+    } else {
+        console.log('⚠️ Enterprise components not available, running in fallback mode');
+    }
+
+    return components;
+}
+
+(async () => {
+    try {
+        await import('./database/init.js');
+        console.log('✅ Database initialization complete');
     } catch (error) {
-        console.error('❌ Failed to initialize enterprise components:', error);
-        // Continue without enterprise features
+        const message = error instanceof Error ? error.message : String(error);
+        console.log('⚠️ Database initialization skipped:', message);
+    }
+})();
+
+const app = express();
+let db = null;
+
+let dbPool, apiMonitor, cacheManager, securityManager;
+(async () => {
+    try {
+        const components = await initializeEnterpriseComponents();
+        dbPool = components.dbPool;
+        apiMonitor = components.apiMonitor;
+        cacheManager = components.cacheManager;
+        securityManager = components.securityManager;
+    } catch (error) {
+        console.log('⚠️ Enterprise components initialization skipped:', error.message);
+    }
+})();
+
+const healthResponse = () => ({
+    status: 'ok',
+    uptime: process.uptime(),
+    now: new Date().toISOString()
+});
+
+function trimStringValues(target) {
+    if (!target || typeof target !== 'object') {
+        return;
+    }
+
+    for (const key of Object.keys(target)) {
+        const value = target[key];
+        if (typeof value === 'string') {
+            target[key] = value.trim();
+        }
     }
 }
 
-// Initialize enterprise components
-initializeEnterpriseComponents();
+function registerHealthEndpoints(application) {
+    const handler = (_req, res) => {
+        res.status(200).json(healthResponse());
+    };
+
+    application.get('/health', handler);
+    application.get('/api/health', handler);
+}
+
+const defaultOrigins = [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://localhost:8080'
+];
+
+const allowedOrigins = Array.from(new Set((process.env.ALLOWED_ORIGINS
+    ? process.env.ALLOWED_ORIGINS.split(',').map(origin => origin.trim()).filter(Boolean)
+    : defaultOrigins
+)));
 
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: ['http://localhost:5173', 'http://localhost:3000', 'http://localhost:8080'],
+    origin: allowedOrigins,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
   }
 });
 
-const PORT = process.env.PORT || 8080;
+const portFromEnv = Number.parseInt(process.env.PORT ?? '', 10);
+const PORT = Number.isFinite(portFromEnv) && portFromEnv > 0 ? portFromEnv : 8080;
+
+const buildHealthPayload = (extra = {}) => ({
+    status: 'ok',
+    now: new Date().toISOString(),
+    uptime: process.uptime(),
+    ...extra,
+});
+
+app.get('/health', (_req, res) => {
+    res.json(buildHealthPayload());
+});
+
+app.get('/api/health', (_req, res) => {
+    const payload = buildHealthPayload({
+        memory: process.memoryUsage(),
+        version: process.env.npm_package_version || '1.0.0',
+        environment: process.env.NODE_ENV || 'development',
+        database: 'disconnected',
+    });
+
+    if (db) {
+        try {
+            db.prepare('SELECT 1').get();
+            payload.database = 'connected';
+        } catch (error) {
+            payload.database = 'error';
+            payload.databaseError = error instanceof Error ? error.message : String(error);
+        }
+    }
+
+    res.json(payload);
+});
+
+app.get('/api/health/enterprise', (_req, res) => {
+    const payload = buildHealthPayload({
+        memory: process.memoryUsage(),
+        database: db ? 'connected' : 'disconnected',
+    });
+
+    res.json({
+        ...payload,
+        enterprise: {
+            databasePool: dbPool ? dbPool.getStats() : null,
+            apiMonitor: apiMonitor ? apiMonitor.getHealthStatus() : null,
+            cacheManager: cacheManager ? cacheManager.getStats() : null,
+            securityManager: securityManager ? securityManager.getSecurityMetrics() : null,
+        },
+    });
+});
 
 console.log('🧠 Starting Persian Legal AI Server');
 console.log('=====================================');
 
 // Middleware
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:3000', 'http://localhost:8080'],
+    origin: allowedOrigins,
     credentials: true
 }));
 
-// Security middleware
+registerHealthEndpoints(app);
+
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+
+// Basic rate limiting guard
 app.use((req, res, next) => {
     // Rate limiting (simple implementation)
     const clientIP = req.ip || req.connection.remoteAddress;
@@ -144,47 +298,57 @@ app.use((req, res, next) => {
     next();
 });
 
-// Input validation middleware
-app.use((req, res, next) => {
-    // Basic input sanitization
-    if (req.body && typeof req.body === 'object') {
-        for (const key in req.body) {
-            if (typeof req.body[key] === 'string') {
-                req.body[key] = req.body[key].trim();
-            }
-        }
-    }
+// Basic input sanitization
+app.use((req, _res, next) => {
+    trimStringValues(req.body);
+    trimStringValues(req.query);
+    trimStringValues(req.params);
     next();
 });
 
-app.use(express.json({ limit: '50mb' }));
-app.use(express.static('dist'));
 // Enterprise Middleware
 if (securityManager) {
     // Security middleware
-    app.use(securityManager.getHelmetConfig());
-    app.use(securityManager.getRateLimitConfig());
-    app.use(securityManager.getSlowDownConfig());
-    app.use(securityManager.securityHeaders());
-    app.use(securityManager.inputValidation());
-    app.use(securityManager.xssProtection());
-    app.use(securityManager.sqlInjectionProtection());
-    app.use(securityManager.fileUploadProtection());
+    if (typeof securityManager.getHelmetConfig === 'function') {
+        app.use(securityManager.getHelmetConfig());
+    }
+    if (typeof securityManager.getRateLimitConfig === 'function') {
+        app.use(securityManager.getRateLimitConfig());
+    }
+    if (typeof securityManager.getSlowDownConfig === 'function') {
+        app.use(securityManager.getSlowDownConfig());
+    }
+    if (typeof securityManager.securityHeaders === 'function') {
+        app.use(securityManager.securityHeaders());
+    }
+    if (typeof securityManager.inputValidation === 'function') {
+        app.use(securityManager.inputValidation());
+    }
+    if (typeof securityManager.xssProtection === 'function') {
+        app.use(securityManager.xssProtection());
+    }
+    if (typeof securityManager.sqlInjectionProtection === 'function') {
+        app.use(securityManager.sqlInjectionProtection());
+    }
+    if (typeof securityManager.fileUploadProtection === 'function') {
+        app.use(securityManager.fileUploadProtection());
+    }
 }
 
-if (apiMonitor) {
+if (apiMonitor && typeof apiMonitor.middleware === 'function') {
     // API monitoring middleware
     app.use(apiMonitor.middleware());
 }
 
-if (cacheManager) {
+if (cacheManager && typeof cacheManager.middleware === 'function') {
     // Cache middleware for specific routes
     app.use('/api/documents', cacheManager.middleware({ ttl: 300 })); // 5 minutes
     app.use('/api/analytics', cacheManager.middleware({ ttl: 60 })); // 1 minute
 }
 
+app.use(express.static('dist'));
+
 // Database Setup
-let db = null;
 try {
     const dataDir = path.join(__dirname, '..', 'data');
     if (!fs.existsSync(dataDir)) {
@@ -482,54 +646,6 @@ io.on('connection', (socket) => {
 });
 
 // API Routes
-app.get('/api/health', (req, res) => {
-    const healthStatus = {
-        status: 'healthy',
-        timestamp: new Date().toISOString(),
-        uptime: process.uptime(),
-        memory: process.memoryUsage(),
-        database: db ? 'connected' : 'disconnected',
-        version: process.env.npm_package_version || '1.0.0',
-        environment: process.env.NODE_ENV || 'development'
-    };
-    
-    // Check if database is accessible
-    if (db) {
-        try {
-            db.prepare('SELECT 1').get();
-            healthStatus.database = 'connected';
-        } catch (error) {
-            healthStatus.database = 'error';
-            healthStatus.databaseError = error.message;
-        }
-    }
-    
-    res.json(healthStatus);
-});
-
-// Root health check for Docker
-app.get('/health', (req, res) => {
-    res.json({ status: 'healthy', timestamp: new Date().toISOString() });
-// Enhanced health check with enterprise metrics
-app.get('/api/health/enterprise', (req, res) => {
-    const healthData = {
-        status: 'healthy',
-        timestamp: new Date().toISOString(),
-        uptime: process.uptime(),
-        memory: process.memoryUsage(),
-        database: db ? 'connected' : 'disconnected',
-        enterprise: {
-            databasePool: dbPool ? dbPool.getStats() : null,
-            apiMonitor: apiMonitor ? apiMonitor.getHealthStatus() : null,
-            cacheManager: cacheManager ? cacheManager.getStats() : null,
-            securityManager: securityManager ? securityManager.getSecurityMetrics() : null
-        }
-    };
-    
-    res.json(healthData);
-});
-
-});
 
 // Documents API
 app.get('/api/documents', (req, res) => {
@@ -787,49 +903,79 @@ app.get('*', (req, res) => {
 // Start server
 server.listen(PORT, () => {
     console.log(`🚀 Persian Legal AI Server running on port ${PORT}`);
-    console.log(`📊 WebSocket server ready for real-time updates`);
+    console.log('📊 WebSocket server ready for real-time updates');
     console.log(`🗄️  Database: ${db ? 'Connected' : 'Disconnected'}`);
 });
 
-// Graceful shutdown
-process.on('SIGTERM', () => {
-    console.log('🛑 SIGTERM received, shutting down gracefully');
-    if (db) {
-        db.close();
+let isShuttingDown = false;
+
+async function shutdown(signal) {
+    if (isShuttingDown) {
+        return;
     }
-    server.close(() => {
-        console.log('✅ Server closed');
-        process.exit(0);
-    });
+
+    isShuttingDown = true;
+    console.log(`🔄 ${signal} received, shutting down gracefully...`);
+
+    try {
+        await Promise.all([
+            new Promise((resolve) => {
+                if (server.listening) {
+                    server.close((error) => {
+                        if (error) {
+                            console.error('❌ Error closing HTTP server:', error);
+                        }
+                        resolve();
+                    });
+                } else {
+                    resolve();
+                }
+            }),
+            new Promise((resolve) => {
+                io.close(() => resolve());
+            })
+        ]);
+        console.log('✅ Network services closed');
+    } catch (error) {
+        console.error('❌ Failed during network shutdown:', error);
+    }
+
+    if (db) {
+        try {
+            db.close();
+            console.log('✅ Database connection closed');
+        } catch (error) {
+            console.error('❌ Error closing database connection:', error);
+        }
+    }
+
+    if (dbPool && typeof dbPool.close === 'function') {
+        try {
+            await dbPool.close();
+            console.log('✅ Database pool closed');
+        } catch (error) {
+            console.error('❌ Error closing database pool:', error);
+        }
+    }
+
+    if (cacheManager && typeof cacheManager.close === 'function') {
+        try {
+            await cacheManager.close();
+            console.log('✅ Cache manager closed');
+        } catch (error) {
+            console.error('❌ Error closing cache manager:', error);
+        }
+    }
+
+    process.exit(0);
+}
+
+process.on('SIGTERM', () => {
+    void shutdown('SIGTERM');
+});
+
+process.on('SIGINT', () => {
+    void shutdown('SIGINT');
 });
 
 export default app;
-
-// Graceful shutdown
-process.on('SIGTERM', async () => {
-    console.log('🔄 SIGTERM received, shutting down gracefully...');
-    
-    if (dbPool) {
-        await dbPool.close();
-    }
-    
-    if (cacheManager) {
-        await cacheManager.close();
-    }
-    
-    process.exit(0);
-});
-
-process.on('SIGINT', async () => {
-    console.log('🔄 SIGINT received, shutting down gracefully...');
-    
-    if (dbPool) {
-        await dbPool.close();
-    }
-    
-    if (cacheManager) {
-        await cacheManager.close();
-    }
-    
-    process.exit(0);
-});

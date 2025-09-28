@@ -1,4 +1,4 @@
-import DatabaseManager from './DatabaseManager';
+import DatabaseManager from './DatabaseManager.js';
 
 /**
  * Legacy database initialization function - now uses DatabaseManager singleton

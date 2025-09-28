@@ -1,0 +1,1 @@
+{"version":3,"file":"monitoring.routes.d.ts","sourceRoot":"","sources":["../../server/routes/monitoring.routes.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AACjC,OAAO,EAAE,oBAAoB,EAAE,MAAM,8CAA8C,CAAC;AAIpF,wBAAgB,sBAAsB,CAAC,UAAU,EAAE,oBAAoB,GAAG,MAAM,CAc/E"}

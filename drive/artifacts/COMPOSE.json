@@ -1,0 +1,32 @@
+{
+  "timestamp": "2025-09-27T11:40:05+00:00",
+  "profiles": ["dev", "prod", "nginx", "gpu"],
+  "services": {
+    "backend": {
+      "port": 3000,
+      "health": "/health",
+      "status": "configured"
+    },
+    "frontend": {
+      "port_prod": 80,
+      "port_dev": 5173,
+      "status": "configured"
+    },
+    "nginx": {
+      "port": 8080,
+      "status": "configured"
+    },
+    "redis": {
+      "port": 6379,
+      "status": "configured"
+    }
+  },
+  "volumes": [
+    "sqlite_data",
+    "app_logs",
+    "redis_data",
+    "node_modules_be",
+    "node_modules_fe"
+  ],
+  "networks": ["app_network"]
+}

@@ -50,17 +50,16 @@ import {
   Scatter
 } from 'recharts';
 import { EnhancedCard, MetricCard, ProgressCard } from './ui/EnhancedCard';
-import { EnhancedSidebar, TopNavigation } from './ui/EnhancedNavigation';
+import { TopNavigation } from './ui/EnhancedNavigation';
 import { PerformanceChart, CategoryDistribution, SystemMetrics, RadialProgress } from './charts/EnhancedCharts';
 import { cn } from '../utils/cn';
 
 // Mock Data for Analytics
 const MOCK_PERFORMANCE_DATA = Array.from({ length: 30 }, (_, i) => ({
-  date: new Date(Date.now() - (29 - i) * 24 * 60 * 60 * 1000).toLocaleDateString('fa-IR'),
-  models_trained: Math.floor(Math.random() * 8) + 2,
-  avg_accuracy: Math.random() * 0.2 + 0.8,
-  training_hours: Math.floor(Math.random() * 12) + 4,
-  success_rate: Math.random() * 0.15 + 0.85
+  epoch: i + 1,
+  accuracy: Math.random() * 0.2 + 0.8,
+  loss: Math.random() * 0.5 + 0.1,
+  time: new Date(Date.now() - (29 - i) * 24 * 60 * 60 * 1000).toLocaleDateString('fa-IR')
 }));
 
 const MOCK_MODEL_ACCURACY = [
@@ -72,11 +71,11 @@ const MOCK_MODEL_ACCURACY = [
 ];
 
 const MOCK_CATEGORY_DISTRIBUTION = [
-  { name: 'قوانین مدنی', value: 35, color: '#10b981', documents: 15400 },
-  { name: 'قوانین جزایی', value: 28, color: '#3b82f6', documents: 12800 },
-  { name: 'قوانین تجاری', value: 20, color: '#06b6d4', documents: 8900 },
-  { name: 'قوانین اداری', value: 12, color: '#8b5cf6', documents: 11200 },
-  { name: 'قوانین قضایی', value: 5, color: '#f59e0b', documents: 6700 }
+  { name: 'قوانین مدنی', value: 35, color: '#10b981', models: 8, documents: 15400 },
+  { name: 'قوانین جزایی', value: 28, color: '#3b82f6', models: 6, documents: 12800 },
+  { name: 'قوانین تجاری', value: 20, color: '#06b6d4', models: 4, documents: 8900 },
+  { name: 'قوانین اداری', value: 12, color: '#8b5cf6', models: 3, documents: 11200 },
+  { name: 'قوانین قضایی', value: 5, color: '#f59e0b', models: 2, documents: 6700 }
 ];
 
 const MOCK_TRAINING_TRENDS = Array.from({ length: 12 }, (_, i) => ({
@@ -118,11 +117,10 @@ export default function EnhancedAnalyticsPage() {
       // Update data based on time range
       const days = selectedTimeRange === '7d' ? 7 : selectedTimeRange === '30d' ? 30 : 90;
       const newData = Array.from({ length: days }, (_, i) => ({
-        date: new Date(Date.now() - (days - 1 - i) * 24 * 60 * 60 * 1000).toLocaleDateString('fa-IR'),
-        models_trained: Math.floor(Math.random() * 8) + 2,
-        avg_accuracy: Math.random() * 0.2 + 0.8,
-        training_hours: Math.floor(Math.random() * 12) + 4,
-        success_rate: Math.random() * 0.15 + 0.85
+        epoch: i + 1,
+        accuracy: Math.random() * 0.2 + 0.8,
+        loss: Math.random() * 0.5 + 0.1,
+        time: new Date(Date.now() - (days - 1 - i) * 24 * 60 * 60 * 1000).toLocaleDateString('fa-IR')
       }));
       
       setPerformanceData(newData);
@@ -167,15 +165,8 @@ export default function EnhancedAnalyticsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800" dir="rtl">
-      {/* Enhanced Sidebar */}
-      <EnhancedSidebar 
-        collapsed={sidebarCollapsed}
-        onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
-        currentPath="/analytics"
-      />
-
       {/* Main Content */}
-      <div className={cn('transition-all duration-300', sidebarCollapsed ? 'mr-16' : 'mr-72')}>
+      <div className="w-full">
         {/* Top Navigation */}
         <TopNavigation 
           onMenuToggle={() => setSidebarCollapsed(!sidebarCollapsed)}

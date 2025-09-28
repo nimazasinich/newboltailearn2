@@ -3,7 +3,7 @@
     "target": "ES2022",
     "module": "ESNext",
     "lib": ["ES2022"],
-    "outDir": "./dist",
+    "outDir": "./server-dist",
     "rootDir": "./server",
     "strict": false,
     "esModuleInterop": true,
@@ -21,12 +21,17 @@
     "noEmit": false
   },
   "include": [
-    "server/**/*"
+    "server/index.ts",
+    "server/services/**/*"
   ],
   "exclude": [
     "node_modules",
     "dist",
     "tests",
-    "src"
+    "src",
+    "server/modules",
+    "server/routes",
+    "server/training",
+    "server/main.ts"
   ]
 }

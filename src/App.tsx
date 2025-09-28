@@ -7,6 +7,7 @@ import { ErrorBoundary } from './components/ErrorBoundary'
 import { ToastProvider } from './components/ui/Toast'
 import { SystemProvider } from './context/SystemContext'
 import { NotificationProvider } from './components/NotificationSystem'
+import { AuthProvider } from './contexts/AuthContext'
 
 const lazyCompat = <T extends Record<string, any>>(imp: () => Promise<T>, key: string) =>
   lazy(async () => { const m = await imp(); return { default: m.default ?? m[key] } })
@@ -25,30 +26,21 @@ const TrainingManagement = lazyCompat(() => import('./components/TrainingManagem
 const ProjectDownloader  = lazyCompat(() => import('./components/ProjectDownloader'), 'ProjectDownloader')
 const DatasetGallery     = lazyCompat(() => import('./components/DatasetGallery'), 'DatasetGallery')
 
+import { LoadingScreen } from './components/ui/LoadingScreen';
+
 function AppLoading() {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800" dir="rtl">
-      <div className="text-center space-y-4">
-        <div className="w-16 h-16 rounded-full border-4 border-blue-500 border-t-transparent animate-spin mx-auto" />
-        <div className="text-white font-persian text-lg">
-          در حال بارگذاری سیستم هوش مصنوعی حقوقی...
-        </div>
-        <div className="text-slate-400 text-sm">
-          لطفاً صبر کنید
-        </div>
-      </div>
-    </div>
-  )
+  return <LoadingScreen />
 }
 
 export default function App() {
   return (
     <ErrorBoundary>
-      <SystemProvider>
-        <NotificationProvider>
-          <ToastProvider>
-            <Suspense fallback={<AppLoading />}>
-              <Routes>
+      <AuthProvider>
+        <SystemProvider>
+          <NotificationProvider>
+            <ToastProvider>
+              <Suspense fallback={<AppLoading />}>
+                <Routes>
                 <Route path="/" element={<EnhancedLandingPage />} />
                 <Route element={<EnhancedAppLayout />}>
                   <Route path="/overview" element={<Overview />} />
@@ -71,11 +63,12 @@ export default function App() {
                   <Route path="/import" element={<DataPage />} />
                 </Route>
                 <Route path="*" element={<Navigate to="/overview" replace />} />
-              </Routes>
-            </Suspense>
-          </ToastProvider>
-        </NotificationProvider>
-      </SystemProvider>
+                </Routes>
+              </Suspense>
+            </ToastProvider>
+          </NotificationProvider>
+        </SystemProvider>
+      </AuthProvider>
     </ErrorBoundary>
   )
 }

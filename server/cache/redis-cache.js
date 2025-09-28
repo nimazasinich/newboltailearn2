@@ -3,6 +3,10 @@
  * Provides high-performance caching with in-memory fallback when Redis is unavailable
  */
 
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+
 class RedisCacheManager {
     constructor(options = {}) {
         this.config = {
@@ -46,29 +50,23 @@ class RedisCacheManager {
 
     async connectToRedis() {
         try {
-            // Try to import redis
-            const redis = require('redis');
-            
-            this.redis = redis.createClient({
-                host: this.config.host,
-                port: this.config.port,
-                password: this.config.password,
-                db: this.config.db,
-                retry_strategy: (options) => {
-                    if (options.error && options.error.code === 'ECONNREFUSED') {
-                        console.warn('⚠️ Redis server refused connection');
-                        return new Error('Redis server refused connection');
-                    }
-                    if (options.total_retry_time > 1000 * 60 * 60) {
-                        console.warn('⚠️ Redis retry time exhausted');
-                        return new Error('Retry time exhausted');
-                    }
-                    if (options.attempt > this.config.maxRetries) {
-                        console.warn('⚠️ Redis max retries reached');
-                        return new Error('Max retries reached');
-                    }
-                    return Math.min(options.attempt * 100, 3000);
-                }
+            const redisModule = await import('redis');
+            const { createClient } = redisModule;
+
+            this.redis = createClient({
+                socket: {
+                    host: this.config.host,
+                    port: this.config.port,
+                    reconnectStrategy: (retries) => {
+                        if (retries > this.config.maxRetries) {
+                            console.warn('⚠️ Redis max retries reached');
+                            return new Error('Max retries reached');
+                        }
+                        return Math.min(retries * 100, 3000);
+                    },
+                },
+                password: this.config.password ?? undefined,
+                database: this.config.db,
             });
 
             this.redis.on('connect', () => {
@@ -89,7 +87,7 @@ class RedisCacheManager {
             });
 
             await this.redis.connect();
-            
+
         } catch (error) {
             console.warn('⚠️ Redis not available, using fallback cache:', error.message);
             this.isConnected = false;
@@ -357,4 +355,4 @@ class RedisCacheManager {
     }
 }
 
-module.exports = RedisCacheManager;
+export default RedisCacheManager;

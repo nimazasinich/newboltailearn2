@@ -1,76 +1,254 @@
+# Comprehensive .dockerignore for production Docker builds
+
+# ============================================
+# Version Control
+# ============================================
+.git
+.gitignore
+.gitattributes
+.github
+.gitlab
+.bitbucket
+
+# ============================================
 # Dependencies
-node_modules/
+# ============================================
+node_modules
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.pnpm-store
+.yarn
 
-# Development files
-.git/
-.gitignore
-README.md
+# ============================================
+# Build Outputs
+# ============================================
+dist
+build
+out
+.next
+.nuxt
+.vuepress/dist
+.serverless
+.fusebox
+.dynamodb
+.webpack
+.parcel-cache
+
+# ============================================
+# Development Files
+# ============================================
+.env
 .env.local
 .env.development
+.env.development.local
 .env.test
-
-# Build artifacts
-dist/
-build/
-coverage/
-.nyc_output/
-
-# IDE files
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# Logs
-logs/
+.env.test.local
+.env.production.local
 *.log
-
-# Runtime data
-pids/
 *.pid
 *.seed
 *.pid.lock
 
-# Test files
-tests/
-test/
-__tests__/
-*.test.js
-*.test.ts
-*.spec.js
-*.spec.ts
+# ============================================
+# IDE and Editor Files
+# ============================================
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+.vs
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+.c9
+*.launch
+.settings
+*.iml
+.editorconfig
 
+# ============================================
+# Testing
+# ============================================
+coverage
+.nyc_output
+test-results
+playwright-report
+test-results.xml
+junit.xml
+*.lcov
+.coverage
+htmlcov
+.pytest_cache
+.phpunit.result.cache
+
+# ============================================
 # Documentation
-docs/
+# ============================================
+docs
 *.md
-!docs/assets/
+!README.md
+LICENSE
+CONTRIBUTING
+CHANGELOG
+AUTHORS
+CONTRIBUTORS
 
-# Scripts (keep only essential ones)
-scripts/
-!scripts/docker-*.sh
+# ============================================
+# CI/CD
+# ============================================
+.travis.yml
+.circleci
+.drone.yml
+.gitlab-ci.yml
+azure-pipelines.yml
+appveyor.yml
+.jenkinsfile
+bitbucket-pipelines.yml
 
-# Backup files
-*.backup
-*.bak
-*.tmp
+# ============================================
+# Docker Files (avoid recursive copies)
+# ============================================
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+docker/
 
-# Database files (will be created in container)
+# ============================================
+# Database Files
+# ============================================
 *.sqlite
+*.sqlite3
+*.db
 *.sqlite-shm
 *.sqlite-wal
+database.sqlite*
+data/
+backups/
+dumps/
 
-# Cache directories
-.cache/
-.parcel-cache/
+# ============================================
+# Temporary Files
+# ============================================
+tmp
+temp
+cache
+.cache
+*.tmp
+*.temp
+*.bak
+*.backup
+*.old
+*.orig
+*.rej
 
-# Temporary files
-tmp/
-temp/
+# ============================================
+# Logs
+# ============================================
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.npm
+.eslintcache
+.stylelintcache
+
+# ============================================
+# OS Files
+# ============================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# ============================================
+# Archives
+# ============================================
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+*.dmg
+*.iso
+
+# ============================================
+# Secrets and Credentials
+# ============================================
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+secrets/
+credentials/
+.secrets
+.credentials
+
+# ============================================
+# Project Specific
+# ============================================
+archive/
+audit/
+checkpoints/
+cursor-memory/
+cursor-outputs/
+deploy-reports/
+test-results/
+e2e/
+scripts/
+migrations/
+seeds/
+fixtures/
+
+# ============================================
+# Miscellaneous
+# ============================================
+*.patch
+*.diff
+.grunt
+bower_components
+jspm_packages
+web_modules
+*.tsbuildinfo
+.snowpack
+.docusaurus
+.umi
+.umi-production
+.umi-test
+.env.production
+
+# ============================================
+# Keep Required Files
+# ============================================
+!package.json
+!package-lock.json
+!tsconfig.json
+!vite.config.ts
+!tailwind.config.cjs
+!postcss.config.cjs
+!server/
+!src/
+!public/
+!index.html
+!docker/scripts/*.sh

@@ -3,6 +3,9 @@
  * Comprehensive monitoring and fallback management for all system components
  */
 
+// Timer type for compatibility
+type Timer = ReturnType<typeof setTimeout>;
+
 export interface ComponentStatus {
   name: string;
   status: 'healthy' | 'degraded' | 'failed' | 'unknown';
@@ -22,7 +25,7 @@ export interface ReliabilityReport {
 
 export class ReliabilityMonitor {
   private components: Map<string, ComponentStatus> = new Map();
-  private monitoringInterval: NodeJS.Timeout | null = null;
+  private monitoringInterval: Timer | null = null;
   private alertThresholds = {
     errorRate: 0.1, // 10% error rate
     responseTime: 5000, // 5 seconds
@@ -250,6 +253,9 @@ export class ReliabilityMonitor {
     try {
       // Simulate file system check
       // In a real implementation, this would check disk space, permissions, etc.
+      if (Math.random() < 0.1) {
+        throw new Error('Simulated file system failure');
+      }
       return 'healthy';
     } catch (error) {
       return 'failed';
@@ -263,6 +269,9 @@ export class ReliabilityMonitor {
     try {
       // Check external API dependencies
       // This would check HuggingFace API, etc.
+      if (Math.random() < 0.1) {
+        throw new Error('Simulated API failure');
+      }
       return 'healthy';
     } catch (error) {
       return 'failed';

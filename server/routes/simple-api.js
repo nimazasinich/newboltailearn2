@@ -25,17 +25,16 @@ export default function createSimpleApiRouter(db) {
 
     router.post('/models', (req, res) => {
         try {
-            const { name, type, dataset_id, config } = req.body;
+            const { name, type, config } = req.body;
             const result = db.prepare(`
-                INSERT INTO models (name, type, dataset_id, config, created_at, updated_at)
-                VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-            `).run(name, type, dataset_id || null, JSON.stringify(config || {}));
+                INSERT INTO models (name, type, config_json, status, created_at, updated_at)
+                VALUES (?, ?, ?, 'idle', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+            `).run(name, type, JSON.stringify(config || {}));
             
             res.status(201).json({
                 id: result.lastInsertRowid,
                 name,
                 type,
-                dataset_id,
                 config,
                 status: 'idle',
                 created_at: new Date().toISOString()
@@ -77,6 +76,44 @@ export default function createSimpleApiRouter(db) {
         } catch (error) {
             console.error('Error creating dataset:', error);
             res.status(500).json({ error: 'Failed to create dataset' });
+        }
+    });
+
+    // Training sessions endpoints
+    router.get('/training-sessions', (req, res) => {
+        try {
+            const sessions = db.prepare(`
+                SELECT ts.*, m.name as model_name 
+                FROM training_sessions ts 
+                JOIN models m ON ts.model_id = m.id 
+                ORDER BY ts.started_at DESC
+            `).all();
+            res.json(sessions);
+        } catch (error) {
+            console.error('Error fetching training sessions:', error);
+            res.status(500).json({ error: 'Failed to fetch training sessions' });
+        }
+    });
+
+    router.post('/training-sessions', (req, res) => {
+        try {
+            const { model_id, session_name, config } = req.body;
+            const result = db.prepare(`
+                INSERT INTO training_sessions (model_id, session_name, config_json, status, started_at)
+                VALUES (?, ?, ?, 'pending', CURRENT_TIMESTAMP)
+            `).run(model_id, session_name, JSON.stringify(config || {}));
+            
+            res.status(201).json({
+                id: result.lastInsertRowid,
+                model_id,
+                session_name,
+                config,
+                status: 'pending',
+                started_at: new Date().toISOString()
+            });
+        } catch (error) {
+            console.error('Error creating training session:', error);
+            res.status(500).json({ error: 'Failed to create training session' });
         }
     });
 

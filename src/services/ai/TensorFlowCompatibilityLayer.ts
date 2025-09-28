@@ -71,10 +71,10 @@ export class TensorFlowCompatibilityLayer {
     const browser = this.detectBrowser();
     
     this.compatibilityReport = {
-      webgl: await tf.ENV.getAsync('WEBGL_VERSION') || 0,
+      webgl: Number(await tf.ENV.getAsync('WEBGL_VERSION')) || 0,
       wasm: typeof WebAssembly === 'object',
-      simd: await tf.ENV.getAsync('WASM_HAS_SIMD_SUPPORT') || false,
-      memory: await tf.ENV.getAsync('WEBGL_MAX_TEXTURE_SIZE') || 0,
+      simd: false, // Disable WASM SIMD detection to prevent errors
+      memory: Number(await tf.ENV.getAsync('WEBGL_MAX_TEXTURE_SIZE')) || 0,
       device: isMobile ? 'mobile' : 'desktop',
       browser,
       optimalBackend: 'unknown'
@@ -114,9 +114,10 @@ export class TensorFlowCompatibilityLayer {
       tf.ENV.set('WEBGL_VERSION', 1);
     }
 
-    if (wasm) {
-      tf.ENV.set('WASM_HAS_SIMD_SUPPORT', this.compatibilityReport.simd);
-    }
+    // Skip WASM configuration to prevent errors
+    // if (wasm) {
+    //   tf.ENV.set('WASM_HAS_SIMD_SUPPORT', this.compatibilityReport.simd);
+    // }
   }
 
   /**
@@ -214,7 +215,7 @@ export class TensorFlowCompatibilityLayer {
         return;
         
       } catch (error) {
-        console.warn(`⚠️ Backend ${backend} initialization failed:`, error.message);
+        console.warn(`⚠️ Backend ${backend} initialization failed:`, error instanceof Error ? error.message : String(error));
         continue;
       }
     }
@@ -227,26 +228,20 @@ export class TensorFlowCompatibilityLayer {
    */
   private getOptimalBackendOrder(): string[] {
     if (!this.compatibilityReport) {
-      return ['webgl', 'wasm', 'cpu'];
+      return ['webgl', 'cpu']; // Remove WASM to prevent errors
     }
 
-    const { device, webgl, wasm } = this.compatibilityReport;
+    const { device, webgl } = this.compatibilityReport;
     
     if (device === 'mobile') {
-      // Mobile: prioritize CPU and WASM for battery life
-      if (wasm) {
-        return ['wasm', 'cpu', 'webgl'];
-      } else {
-        return ['cpu', 'webgl'];
-      }
+      // Mobile: prioritize CPU for battery life, avoid WASM
+      return ['cpu', 'webgl'];
     } else {
-      // Desktop: prioritize WebGL for performance
+      // Desktop: prioritize WebGL for performance, avoid WASM
       if (webgl >= 2) {
-        return ['webgl', 'wasm', 'cpu'];
+        return ['webgl', 'cpu'];
       } else if (webgl === 1) {
-        return ['webgl', 'wasm', 'cpu'];
-      } else if (wasm) {
-        return ['wasm', 'cpu'];
+        return ['webgl', 'cpu'];
       } else {
         return ['cpu'];
       }
