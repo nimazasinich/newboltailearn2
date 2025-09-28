@@ -40,20 +40,26 @@ export async function apiRequest(endpoint: string, options?: RequestInit): Promi
     ? endpoint 
     : joinApiPath(API_BASE!, endpoint);
   
-  const response = await fetch(url, {
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      ...options?.headers,
-    },
-    ...options,
-  });
+  try {
+    const response = await fetch(url, {
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        ...options?.headers,
+      },
+      ...options,
+    });
 
-  if (!response.ok) {
-    throw new Error(`API Error: ${response.status} ${response.statusText} - ${url}`);
+    if (!response.ok) {
+      throw new Error(`API Error: ${response.status} ${response.statusText} - ${url}`);
+    }
+
+    return response;
+  } catch (error) {
+    console.error(`Critical API Failure at ${endpoint}:`, error);
+    // Re-throw to be handled by error boundaries
+    throw error;
   }
-
-  return response;
 }
 
 // Typed API responses

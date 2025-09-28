@@ -4,10 +4,12 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { EnhancedAppLayout } from './components/layout/EnhancedAppLayout'
 import { EnhancedLandingPage } from './components/EnhancedLandingPage'
 import { ErrorBoundary } from './components/ErrorBoundary'
+import { APIErrorBoundary } from './components/APIErrorBoundary'
 import { ToastProvider } from './components/ui/Toast'
 import { SystemProvider } from './context/SystemContext'
 import { NotificationProvider } from './components/NotificationSystem'
 import { AuthProvider } from './contexts/AuthContext'
+import { fontLoader } from './services/FontLoader'
 
 const lazyCompat = <T extends Record<string, any>>(imp: () => Promise<T>, key: string) =>
   lazy(async () => { const m = await imp(); return { default: m.default ?? m[key] } })
@@ -33,42 +35,51 @@ function AppLoading() {
 }
 
 export default function App() {
+  // Initialize font loading
+  React.useEffect(() => {
+    fontLoader.preloadCriticalFonts().catch((error) => {
+      console.warn('Font preloading failed:', error);
+    });
+  }, []);
+
   return (
     <ErrorBoundary>
-      <AuthProvider>
-        <SystemProvider>
-          <NotificationProvider>
-            <ToastProvider>
-              <Suspense fallback={<AppLoading />}>
-                <Routes>
-                <Route path="/" element={<EnhancedLandingPage />} />
-                <Route element={<EnhancedAppLayout />}>
-                  <Route path="/overview" element={<Overview />} />
-                  <Route path="/dashboard" element={<DashboardAdvanced />} />
-                  <Route path="/dashboard-advanced" element={<DashboardAdvanced />} />
-                  <Route path="/dashboard-ultimate" element={<UltimateDashboard />} />
-                  <Route path="/analytics" element={<AnalyticsPage />} />
-                  <Route path="/data" element={<DataPage />} />
-                  <Route path="/data-gallery" element={<DatasetGallery />} />
-                  <Route path="/logs" element={<LogsPage />} />
-                  <Route path="/models" element={<ModelsPage />} />
-                  <Route path="/models/:category" element={<ModelsPage />} />
-                  <Route path="/monitoring" element={<MonitoringPage />} />
-                  <Route path="/training" element={<TrainingManagement />} />
-                  <Route path="/team" element={<TeamPage />} />
-                  <Route path="/settings" element={<SettingsPage />} />
-                  <Route path="/download" element={<ProjectDownloader />} />
-                  <Route path="/legal-docs" element={<DataPage />} />
-                  <Route path="/export" element={<ProjectDownloader />} />
-                  <Route path="/import" element={<DataPage />} />
-                </Route>
-                <Route path="*" element={<Navigate to="/overview" replace />} />
-                </Routes>
-              </Suspense>
-            </ToastProvider>
-          </NotificationProvider>
-        </SystemProvider>
-      </AuthProvider>
+      <APIErrorBoundary>
+        <AuthProvider>
+          <SystemProvider>
+            <NotificationProvider>
+              <ToastProvider>
+                <Suspense fallback={<AppLoading />}>
+                  <Routes>
+                  <Route path="/" element={<EnhancedLandingPage />} />
+                  <Route element={<EnhancedAppLayout />}>
+                    <Route path="/overview" element={<Overview />} />
+                    <Route path="/dashboard" element={<DashboardAdvanced />} />
+                    <Route path="/dashboard-advanced" element={<DashboardAdvanced />} />
+                    <Route path="/dashboard-ultimate" element={<UltimateDashboard />} />
+                    <Route path="/analytics" element={<AnalyticsPage />} />
+                    <Route path="/data" element={<DataPage />} />
+                    <Route path="/data-gallery" element={<DatasetGallery />} />
+                    <Route path="/logs" element={<LogsPage />} />
+                    <Route path="/models" element={<ModelsPage />} />
+                    <Route path="/models/:category" element={<ModelsPage />} />
+                    <Route path="/monitoring" element={<MonitoringPage />} />
+                    <Route path="/training" element={<TrainingManagement />} />
+                    <Route path="/team" element={<TeamPage />} />
+                    <Route path="/settings" element={<SettingsPage />} />
+                    <Route path="/download" element={<ProjectDownloader />} />
+                    <Route path="/legal-docs" element={<DataPage />} />
+                    <Route path="/export" element={<ProjectDownloader />} />
+                    <Route path="/import" element={<DataPage />} />
+                  </Route>
+                  <Route path="*" element={<Navigate to="/overview" replace />} />
+                  </Routes>
+                </Suspense>
+              </ToastProvider>
+            </NotificationProvider>
+          </SystemProvider>
+        </AuthProvider>
+      </APIErrorBoundary>
     </ErrorBoundary>
   )
 }
