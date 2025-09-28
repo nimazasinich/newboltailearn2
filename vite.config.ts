@@ -11,6 +11,9 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, 'src'),
       '@tensorflow/tfjs-backend-wasm': path.resolve(__dirname, 'src/shims/tfjs-backend-wasm-empty.ts'),
+      'ui': path.resolve(__dirname, 'src/components'),
+      '@ui': path.resolve(__dirname, 'src/components'),
+      '@types': path.resolve(__dirname, 'src/types')
     },
   },
   build: {
