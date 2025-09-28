@@ -3,12 +3,13 @@
  * Comprehensive security measures for the Persian Legal AI system
  */
 
-const crypto = require('crypto');
-const rateLimit = require('express-rate-limit');
-const slowDown = require('express-slow-down');
-const helmet = require('helmet');
-const validator = require('validator');
-const DOMPurify = require('isomorphic-dompurify');
+import crypto from 'crypto';
+import rateLimit from 'express-rate-limit';
+import slowDown from 'express-slow-down';
+import helmet from 'helmet';
+import validator from 'validator';
+import DOMPurify from 'isomorphic-dompurify';
+import path from 'path';
 
 class SecurityManager {
     constructor(options = {}) {
@@ -126,11 +127,8 @@ class SecurityManager {
         return slowDown({
             windowMs: 15 * 60 * 1000, // 15 minutes
             delayAfter: 50, // Allow 50 requests per 15 minutes, then...
-            delayMs: 500, // Add 500ms delay per request above 50
-            maxDelayMs: 20000, // Maximum delay of 20 seconds
-            onLimitReached: (req, res, options) => {
-                console.warn(`⚠️ Slow down triggered for IP: ${req.ip}`);
-            }
+            delayMs: () => 500, // Add 500ms delay per request above 50
+            maxDelayMs: 20000 // Maximum delay of 20 seconds
         });
     }
 
@@ -353,7 +351,7 @@ class SecurityManager {
         }
 
         // Check file extension
-        const extension = require('path').extname(file.originalname).toLowerCase();
+        const extension = path.extname(file.originalname).toLowerCase();
         if (!allowedExtensions.includes(extension)) {
             return false;
         }
@@ -416,4 +414,4 @@ class SecurityManager {
     }
 }
 
-module.exports = SecurityManager;
+export default SecurityManager;

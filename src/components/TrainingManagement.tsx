@@ -3,6 +3,10 @@ import { ModernCard } from './ui/ModernCard';
 import { SlimBadge } from './ui/SlimBadge';
 import { Progress } from './ui/Progress';
 import { Button } from './ui/Button';
+import { trainingService, ModelInfo, DatasetInfo } from '../services/training';
+import { tensorFlowEngine, TensorFlowTrainingConfig, TrainingProgress } from '../services/ai/TensorFlowIntegration';
+import { QueuedTraining } from '../types/training';
+import * as tf from '@tensorflow/tfjs';
 import { 
   Play, 
   Pause, 
@@ -40,7 +44,150 @@ import {
   Cell
 } from 'recharts';
 
-// Mock Data برای Training Management
+// Enhanced Training Management Component with Real API Integration
+export default function TrainingManagement() {
+  const [trainingSessions, setTrainingSessions] = useState<any[]>([]);
+  const [models, setModels] = useState<ModelInfo[]>([]);
+  const [datasets, setDatasets] = useState<DatasetInfo[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedModel, setSelectedModel] = useState<ModelInfo | null>(null);
+  const [trainingConfig, setTrainingConfig] = useState<TensorFlowTrainingConfig>({
+    epochs: 50,
+    batchSize: 32,
+    learningRate: 0.001,
+    validationSplit: 0.2,
+    earlyStopping: true,
+    patience: 5
+  });
+  const [isTraining, setIsTraining] = useState(false);
+  const [trainingProgress, setTrainingProgress] = useState<TrainingProgress | null>(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [activeSessions, setActiveSessions] = useState<any[]>([]);
+  const [trainingQueue, setTrainingQueue] = useState<QueuedTraining[]>([]);
+
+  // Load initial data
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // Load models, datasets, and training sessions
+      const [modelsData, datasetsData, sessionsData] = await Promise.all([
+        trainingService.getModels(),
+        trainingService.getDatasets(),
+        trainingService.getTrainingSessions()
+      ]);
+      
+      setModels(modelsData.models || []);
+      setDatasets(datasetsData.datasets || []);
+      setTrainingSessions(sessionsData || []);
+    } catch (err) {
+      console.error('Failed to load training data:', err);
+      setError('خطا در بارگذاری داده‌ها');
+      // Use mock data as fallback
+      setTrainingSessions(MOCK_TRAINING_SESSIONS);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleStartTraining = async (modelId: number) => {
+    try {
+      setIsTraining(true);
+      setTrainingProgress(null);
+      
+      const result = await trainingService.startTraining(modelId, {
+        epochs: trainingConfig.epochs,
+        batchSize: trainingConfig.batchSize,
+        learningRate: trainingConfig.learningRate,
+        validationSplit: trainingConfig.validationSplit,
+        earlyStopping: trainingConfig.earlyStopping,
+        patience: trainingConfig.patience
+      });
+      
+      if (result.success) {
+        // Start TensorFlow training with progress tracking
+        await startTensorFlowTraining(modelId, trainingConfig);
+      }
+    } catch (err) {
+      console.error('Failed to start training:', err);
+      setError('خطا در شروع آموزش');
+    }
+  };
+
+  const startTensorFlowTraining = async (modelId: number, config: TensorFlowTrainingConfig) => {
+    try {
+      // Create model
+      const model = tensorFlowEngine.createModel(config);
+      
+      // Generate mock training data (in real implementation, this would come from datasets)
+      const xTrain = tf.randomNormal([1000, 768]); // Mock BERT embeddings
+      const yTrain = tf.oneHot(tf.randomUniform([1000], 0, 10, 'int32'), 10);
+      
+      // Train with progress tracking
+      const metrics = await tensorFlowEngine.trainModel(
+        xTrain,
+        yTrain,
+        config,
+        (progress) => {
+          setTrainingProgress(progress);
+        }
+      );
+      
+      console.log('Training completed:', metrics);
+      setIsTraining(false);
+      setTrainingProgress(null);
+      
+      // Refresh data
+      await loadData();
+    } catch (err) {
+      console.error('TensorFlow training failed:', err);
+      setError('خطا در آموزش TensorFlow');
+      setIsTraining(false);
+    }
+  };
+
+  const handlePauseTraining = async (modelId: number) => {
+    try {
+      await trainingService.pauseTraining(modelId);
+      tensorFlowEngine.pauseTraining();
+      await loadData();
+    } catch (err) {
+      console.error('Failed to pause training:', err);
+      setError('خطا در توقف آموزش');
+    }
+  };
+
+  const handleResumeTraining = async (modelId: number) => {
+    try {
+      await trainingService.resumeTraining(modelId);
+      tensorFlowEngine.resumeTraining();
+      await loadData();
+    } catch (err) {
+      console.error('Failed to resume training:', err);
+      setError('خطا در ادامه آموزش');
+    }
+  };
+
+  const handleStopTraining = async (modelId: number) => {
+    try {
+      await trainingService.stopTraining(String(modelId));
+      tensorFlowEngine.stopTraining();
+      setIsTraining(false);
+      setTrainingProgress(null);
+      await loadData();
+    } catch (err) {
+      console.error('Failed to stop training:', err);
+      setError('خطا در متوقف کردن آموزش');
+    }
+  };
+
+// Mock Data برای Training Management (fallback)
 const MOCK_TRAINING_SESSIONS = [
   {
     id: 1,
@@ -142,11 +289,12 @@ const MOCK_RESOURCE_USAGE = Array.from({ length: 24 }, (_, i) => ({
   cpu_usage: Math.floor(Math.random() * 25) + 25
 }));
 
-export default function TrainingManagement() {
-  const [activeSessions, setActiveSessions] = useState(MOCK_TRAINING_SESSIONS);
-  const [trainingQueue, setTrainingQueue] = useState(MOCK_TRAINING_QUEUE);
-  const [loading, setLoading] = useState(false);
-  const [showCreateModal, setShowCreateModal] = useState(false);
+  // Update active sessions when training sessions change
+  useEffect(() => {
+    setActiveSessions(trainingSessions.filter(session => 
+      session.status === 'training' || session.status === 'paused'
+    ));
+  }, [trainingSessions]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -192,9 +340,9 @@ export default function TrainingManagement() {
     active: activeSessions.filter(s => s.status === 'training').length,
     paused: activeSessions.filter(s => s.status === 'paused').length,
     queued: trainingQueue.length,
-    avgAccuracy: activeSessions.reduce((sum, s) => sum + s.accuracy, 0) / activeSessions.length * 100,
-    totalGpuUsage: activeSessions.reduce((sum, s) => sum + s.gpu_usage, 0),
-    totalMemoryUsage: activeSessions.reduce((sum, s) => sum + s.memory_usage, 0)
+    avgAccuracy: activeSessions.reduce((sum, s) => sum + (s.accuracy || 0), 0) / activeSessions.length * 100,
+    totalGpuUsage: activeSessions.reduce((sum, s) => sum + (s.gpu_usage || 0), 0),
+    totalMemoryUsage: activeSessions.reduce((sum, s) => sum + (s.memory_usage || 0), 0)
   };
 
   return (
@@ -294,7 +442,7 @@ export default function TrainingManagement() {
                         {session.model_name}
                       </h4>
                       <p className="text-slate-600 dark:text-slate-400">
-                        {session.model_type} • {session.dataset}
+                        {session.modelType} • {session.dataset}
                       </p>
                     </div>
                   </div>
@@ -312,10 +460,10 @@ export default function TrainingManagement() {
                     <span className="text-slate-600 dark:text-slate-400">پیشرفت آموزش</span>
                     <span className="font-medium">{session.current_epoch}/{session.total_epochs} epochs</span>
                   </div>
-                  <Progress value={session.progress} className="h-3" />
+                  <Progress value={session.progress.completionPercentage} className="h-3" />
                   <div className="flex justify-between text-xs text-slate-500">
-                    <span>دقت: {(session.accuracy * 100).toFixed(1)}%</span>
-                    <span>خطا: {session.loss.toFixed(3)}</span>
+                    <span>دقت: {((session.accuracy || 0) * 100).toFixed(1)}%</span>
+                    <span>خطا: {(session.loss || 0).toFixed(3)}</span>
                     <span>زمان باقی‌مانده: {session.estimated_completion}</span>
                   </div>
                 </div>
@@ -343,18 +491,34 @@ export default function TrainingManagement() {
                 {/* Actions */}
                 <div className="flex items-center gap-3">
                   {session.status === 'training' && (
-                    <Button variant="outline" size="sm" className="rounded-lg">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="rounded-lg"
+                      onClick={() => handlePauseTraining(Number(session.id))}
+                    >
                       <Pause className="w-3 h-3 ml-1" />
                       توقف
                     </Button>
                   )}
                   {session.status === 'paused' && (
-                    <Button variant="outline" size="sm" className="rounded-lg">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="rounded-lg"
+                      onClick={() => handleResumeTraining(Number(session.id))}
+                    >
                       <Play className="w-3 h-3 ml-1" />
                       ادامه
                     </Button>
                   )}
-                  <Button variant="outline" size="sm" className="rounded-lg">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="rounded-lg"
+                    onClick={() => handleStopTraining(Number(session.id))}
+                    disabled={session.status === 'completed'}
+                  >
                     <Square className="w-3 h-3 ml-1" />
                     توقف کامل
                   </Button>
@@ -371,6 +535,59 @@ export default function TrainingManagement() {
             ))}
           </div>
         </ModernCard>
+
+        {/* Training Progress Display */}
+        {isTraining && trainingProgress && (
+          <ModernCard variant="outlined" className="mb-8">
+            <div className="p-6">
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-4 flex items-center gap-2">
+                <Activity className="w-5 h-5 text-green-500" />
+                پیشرفت آموزش
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-blue-600">{trainingProgress.epoch}</div>
+                  <div className="text-sm text-slate-600">دوره فعلی</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-green-600">{(trainingProgress.accuracy * 100).toFixed(1)}%</div>
+                  <div className="text-sm text-slate-600">دقت</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-red-600">{trainingProgress.loss.toFixed(3)}</div>
+                  <div className="text-sm text-slate-600">خطا</div>
+                </div>
+              </div>
+              <div className="mt-4">
+                <Progress value={trainingProgress.progress} className="h-2" />
+                <div className="text-sm text-slate-600 mt-2 text-center">
+                  {trainingProgress.progress.toFixed(1)}% تکمیل شده
+                </div>
+              </div>
+            </div>
+          </ModernCard>
+        )}
+
+        {/* Error Display */}
+        {error && (
+          <ModernCard variant="outlined" className="mb-8 border-red-200 bg-red-50">
+            <div className="p-6">
+              <div className="flex items-center gap-2 text-red-600">
+                <AlertCircle className="w-5 h-5" />
+                <span className="font-medium">خطا</span>
+              </div>
+              <p className="text-red-700 mt-2">{error}</p>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="mt-3"
+                onClick={() => setError(null)}
+              >
+                بستن
+              </Button>
+            </div>
+          </ModernCard>
+        )}
 
         {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -492,7 +709,7 @@ export default function TrainingManagement() {
                   <div>
                     <h4 className="font-medium text-slate-900 dark:text-slate-100">{item.model_name}</h4>
                     <p className="text-sm text-slate-600 dark:text-slate-400">
-                      {item.model_type} • {item.dataset}
+                      {item.modelType} • {item.dataset}
                     </p>
                   </div>
                 </div>
@@ -502,7 +719,7 @@ export default function TrainingManagement() {
                      item.priority === 'medium' ? 'اولویت متوسط' : 'اولویت پایین'}
                   </SlimBadge>
                   <div className="text-sm text-slate-500">
-                    زمان تخمینی: {item.estimated_duration}
+                    زمان تخمینی: {item.estimatedDuration || item.estimated_duration}
                   </div>
                   <Button variant="outline" size="sm" className="rounded-lg">
                     <Play className="w-3 h-3 ml-1" />

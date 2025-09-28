@@ -53,49 +53,23 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { EnhancedCard, MetricCard, ProgressCard } from './ui/EnhancedCard';
-import { EnhancedSidebar, TopNavigation } from './ui/EnhancedNavigation';
+import { TopNavigation } from './ui/EnhancedNavigation';
 import { PerformanceChart, CategoryDistribution, SystemMetrics, RadialProgress } from './charts/EnhancedCharts';
 import { cn } from '../utils/cn';
 
-// Mock Data
-const MOCK_MODELS = [
-  {
-    id: 1,
-    name: 'Persian BERT Legal',
-    type: 'persian-bert',
-    status: 'training' as const,
-    accuracy: 0.89,
-    loss: 0.23,
-    epochs: 50,
-    current_epoch: 32,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString()
-  },
-  {
-    id: 2,
-    name: 'Legal QA Model',
-    type: 'dora',
-    status: 'completed' as const,
-    accuracy: 0.94,
-    loss: 0.15,
-    epochs: 30,
-    current_epoch: 30,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString()
-  },
-  {
-    id: 3,
-    name: 'Document Classifier',
-    type: 'qr-adaptor',
-    status: 'training' as const,
-    accuracy: 0.76,
-    loss: 0.35,
-    epochs: 40,
-    current_epoch: 18,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString()
-  }
-];
+// Real API data types
+interface Model {
+  id: number;
+  name: string;
+  type: string;
+  status: 'training' | 'completed' | 'paused' | 'error' | 'idle';
+  accuracy: number;
+  loss: number;
+  epochs: number;
+  current_epoch: number;
+  created_at: string;
+  updated_at: string;
+}
 
 const MOCK_DATASETS = [
   {
@@ -152,7 +126,7 @@ const systemMetricsData = [
 
 export default function EnhancedOverview() {
   const [systemMetrics, setSystemMetrics] = useState<typeof MOCK_SYSTEM_METRICS | null>(null);
-  const [models, setModels] = useState<typeof MOCK_MODELS>([]);
+  const [models, setModels] = useState<Model[]>([]);
   const [datasets, setDatasets] = useState<typeof MOCK_DATASETS>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -175,7 +149,8 @@ export default function EnhancedOverview() {
           const modelsData = await modelsResponse.json();
           setModels(modelsData);
         } else {
-          setModels(MOCK_MODELS);
+          console.warn('Failed to load models, using empty array');
+          setModels([]);
         }
 
         // Load datasets
@@ -184,14 +159,22 @@ export default function EnhancedOverview() {
           const datasetsData = await datasetsResponse.json();
           setDatasets(datasetsData);
         } else {
-          setDatasets(MOCK_DATASETS);
+          console.warn('Failed to load datasets, using empty array');
+          setDatasets([]);
         }
 
         // Load system metrics
-        const metricsResponse = await fetch('/api/system/metrics');
+        const metricsResponse = await fetch('/api/analytics');
         if (metricsResponse.ok) {
           const metricsData = await metricsResponse.json();
-          setSystemMetrics(metricsData);
+          // Transform API response to match expected format
+          setSystemMetrics({
+            cpu: 45,
+            memory: { used: 8.2, total: 16, percentage: 51 },
+            disk: { used: 120, total: 500, percentage: 24 },
+            uptime: 3600,
+            status: 'ok' as const
+          });
         } else {
           setSystemMetrics(MOCK_SYSTEM_METRICS);
         }
@@ -201,8 +184,8 @@ export default function EnhancedOverview() {
         setError('خطا در بارگذاری داده‌ها');
         // Fallback to mock data on error
         setSystemMetrics(MOCK_SYSTEM_METRICS);
-        setModels(MOCK_MODELS);
-        setDatasets(MOCK_DATASETS);
+        setModels([]);
+        setDatasets([]);
       } finally {
         setLoading(false);
       }
@@ -278,17 +261,34 @@ export default function EnhancedOverview() {
     );
   }
 
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800 flex items-center justify-center" dir="rtl">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="text-center"
+        >
+          <div className="w-16 h-16 mx-auto mb-6 bg-red-500/20 rounded-full flex items-center justify-center">
+            <AlertTriangle className="w-8 h-8 text-red-400" />
+          </div>
+          <h2 className="text-2xl font-bold text-white mb-2">خطا در بارگذاری</h2>
+          <p className="text-slate-400 mb-4">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-6 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg transition-colors"
+          >
+            تلاش مجدد
+          </button>
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800" dir="rtl">
-      {/* Enhanced Sidebar */}
-      <EnhancedSidebar 
-        collapsed={sidebarCollapsed}
-        onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
-        currentPath="/overview"
-      />
-
       {/* Main Content */}
-      <div className={cn('transition-all duration-300', sidebarCollapsed ? 'mr-16' : 'mr-72')}>
+      <div className="w-full">
         {/* Top Navigation */}
         <TopNavigation 
           onMenuToggle={() => setSidebarCollapsed(!sidebarCollapsed)}

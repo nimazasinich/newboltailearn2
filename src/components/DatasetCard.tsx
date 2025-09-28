@@ -32,7 +32,7 @@ const DatasetCard: React.FC<Props> = ({ item, busy, progress, onDownload }) => {
       <div className="mt-1">
         <button
           disabled={busy}
-          onClick={() => onDownload(item.id, item.title || item.id)}
+          onClick={() => onDownload(String(item.id), item.title || String(item.id))}
           className="w-full rounded-lg border border-slate-300 px-3 py-2 text-slate-800 hover:bg-slate-50 disabled:opacity-60"
         >
           {busy ? (progress ? `Downloading ${progress}%` : 'Preparing…') : 'One-Click Download'}

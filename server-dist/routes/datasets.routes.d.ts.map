@@ -1,0 +1,1 @@
+{"version":3,"file":"datasets.routes.d.ts","sourceRoot":"","sources":["../../server/routes/datasets.routes.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AACjC,OAAO,EAAE,MAAM,EAAE,MAAM,WAAW,CAAC;AACnC,OAAO,EAAE,kBAAkB,EAAE,MAAM,4CAA4C,CAAC;AAMhF,wBAAgB,oBAAoB,CAAC,UAAU,EAAE,kBAAkB,EAAE,EAAE,EAAE,MAAM,GAAG,MAAM,CAyBvF"}

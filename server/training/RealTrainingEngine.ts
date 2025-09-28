@@ -1,5 +1,6 @@
 import * as tf from "@tensorflow/tfjs-node";
 import { PersianTokenizer } from "./tokenizer";
+import { ModelPersistence, SaveModelOptions } from "../services/ModelPersistence";
 import fs from "fs";
 import path from "path";
 
@@ -10,6 +11,11 @@ export interface TrainOptions {
   batchSize?: number;
   learningRate?: number;
   validationSplit?: number;   // اگر valData نداشتیم
+  modelId?: string;
+  modelName?: string;
+  modelType?: string;
+  saveModel?: boolean;
+  createdBy?: number;
   onProgress?: (p: {
     epoch: number;
     loss: number;
@@ -17,7 +23,7 @@ export interface TrainOptions {
     val_loss?: number;
     val_accuracy?: number;
   }) => void;
-  onComplete?: () => void;
+  onComplete?: (modelId?: string) => void;
   onError?: (err: string) => void;
 }
 
@@ -25,9 +31,11 @@ export class RealTrainingEngine {
   private model: tf.LayersModel | null = null;
   private tokenizer: PersianTokenizer;
   private maxLen = 128;
+  private modelPersistence: ModelPersistence | null = null;
 
-  constructor() {
+  constructor(modelPersistence?: ModelPersistence) {
     this.tokenizer = new PersianTokenizer({ maxLen: this.maxLen });
+    this.modelPersistence = modelPersistence || null;
   }
 
   /** معماری سبک و واقعی برای طبقه‌بندی متن */
@@ -170,7 +178,38 @@ export class RealTrainingEngine {
             const p = path.join(ckptDir, `model_final_${Date.now()}`);
             await model.save(`file://${p}`);
             this.tokenizer.save();
-            opts.onComplete?.();
+            
+            // Save model to persistence system if enabled
+            let savedModelId: string | undefined;
+            if (opts.saveModel && this.modelPersistence && opts.modelId) {
+              try {
+                const finalLoss = history.history.loss[history.history.loss.length - 1];
+                const finalAccuracy = history.history.acc ? 
+                  history.history.acc[history.history.acc.length - 1] : 
+                  (history.history.accuracy ? history.history.accuracy[history.history.accuracy.length - 1] : 0);
+
+                const saveOptions: SaveModelOptions = {
+                  modelId: opts.modelId,
+                  modelName: opts.modelName || `Model_${opts.modelId}`,
+                  modelType: opts.modelType || 'persian-bert',
+                  accuracy: finalAccuracy,
+                  loss: finalLoss,
+                  epochs: opts.epochs,
+                  vocabSize: this.tokenizer.getVocabSize(),
+                  maxLen: this.maxLen,
+                  numClasses: opts.numClasses,
+                  createdBy: opts.createdBy
+                };
+
+                await this.modelPersistence.saveModel(model, this.tokenizer, saveOptions);
+                savedModelId = opts.modelId;
+                console.log(`Model saved to persistence system: ${opts.modelId}`);
+              } catch (saveError) {
+                console.error('Failed to save model to persistence system:', saveError);
+              }
+            }
+            
+            opts.onComplete?.(savedModelId);
           },
         },
       });

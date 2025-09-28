@@ -3,8 +3,8 @@
  * Comprehensive monitoring, logging, and error handling for all API endpoints
  */
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 class APIMonitor {
     constructor(options = {}) {
@@ -419,4 +419,4 @@ class APIMonitor {
     }
 }
 
-module.exports = APIMonitor;
+export default APIMonitor;

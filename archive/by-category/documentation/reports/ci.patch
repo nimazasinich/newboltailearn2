@@ -1,0 +1,82 @@
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -55,7 +55,6 @@
+       - name: Run ESLint
+-        run: npm run lint
+-        continue-on-error: true
++        run: npm run lint
+       
+       - name: Run TypeScript type check
+         run: npm run type-check
+@@ -75,7 +74,6 @@
+       - name: Test (allow soft-fail for now)
+-        continue-on-error: true
+         run: |
+           if npm run | grep -qE '(^| )test( |$)'; then
+             npm test --silent || echo "Tests failed but not blocking CI temporarily."
+           else
+             echo "No test script. Skipping."
+           fi
+@@ -90,7 +88,6 @@
+           file: ./coverage/lcov.info
+           flags: unittests
+           name: codecov-umbrella
+-        continue-on-error: true
+ 
+   test-integration:
+     name: Integration Tests
+@@ -115,7 +112,6 @@
+       
+       - name: Run integration tests (if present)
+-        continue-on-error: true
+         run: |
+           if npm run | grep -qE '(^| )test:integration( |$)'; then
+             npm run test:integration || echo "Integration tests failed but not blocking CI temporarily."
+           else
+             echo "No integration test script. Skipping."
+           fi
+@@ -165,7 +161,6 @@
+       
+       - name: Run E2E tests
+         run: npm run test:e2e || echo "⚠️ Some E2E tests failed - documented for review"
+-        continue-on-error: true
+       
+       - name: Upload test artifacts
+         if: always()
+@@ -241,7 +236,6 @@
+           echo "✅ Database backup created"
+           else
+             echo "⚠️ No database file found, skipping backup"
+           fi
+-        continue-on-error: true
+       
+       - name: Upload backup artifact
+         if: always()
+@@ -250,7 +244,6 @@
+           name: database-backup-${{ github.sha }}
+           path: backups/
+           retention-days: 30
+-        continue-on-error: true
+ 
+   docker-build:
+     name: Docker Build & Scan
+@@ -312,7 +305,6 @@
+           format: 'sarif'
+           output: 'trivy-results.sarif'
+           severity: 'CRITICAL,HIGH'
+-        continue-on-error: true
+       
+       - name: Upload Trivy results to GitHub Security
+         uses: github/codeql-action/upload-sarif@v3
+         if: always()
+         with:
+           sarif_file: 'trivy-results.sarif'
+-        continue-on-error: true
+       
+       - name: Container health check
+         if: ${{ secrets.DOCKERHUB_USERNAME == '' || secrets.DOCKERHUB_TOKEN == '' }}
+@@ -332,7 +324,6 @@
+           sleep 15
+           curl -f http://localhost:8000/health || echo "⚠️ Health check failed"
+           docker stop test-container || true
+-        continue-on-error: true

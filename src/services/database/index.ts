@@ -170,7 +170,7 @@ export class PersianLegalAIDB extends Dexie {
         const highlights: any[] = [];
 
         queryTokens.forEach(token => {
-          const tokenMatches = doc.searchTokens.filter(searchToken => 
+          const tokenMatches = (doc.searchTokens || []).filter(searchToken => 
             searchToken.includes(token)
           ).length;
           
@@ -208,7 +208,7 @@ export class PersianLegalAIDB extends Dexie {
   async updateSystemMetrics(metrics: Partial<SystemMetrics>): Promise<void> {
     const existingMetrics = await this.systemMetrics.orderBy('id').last();
     
-    if (existingMetrics) {
+    if (existingMetrics && existingMetrics.id) {
       await this.systemMetrics.update(existingMetrics.id, {
         ...metrics,
         lastUpdate: new Date()
