@@ -1,0 +1,1 @@
+import{l as e}from"./index-77f7cea8.js";const d={list:()=>e("/api/datasets"),upload:async o=>{const a=new FormData;a.append("file",o);const t=await fetch("/api/datasets/upload",{method:"POST",body:a,credentials:"include"});if(!t.ok)throw new Error("Upload failed");return t.json()}};export{d};
